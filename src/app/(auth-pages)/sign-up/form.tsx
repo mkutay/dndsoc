@@ -3,6 +3,8 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { redirect } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,11 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { signUpAction } from "./action";
 import { signUpFormSchema } from "../schemas";
 
 export function SignUpForm() {
+  const { toast } = useToast();
+  const [pending, setPending] = useState(false);
+
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
@@ -30,12 +36,27 @@ export function SignUpForm() {
   });
  
   const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
-    await signUpAction(values);
+    setPending(true);
+    const result = await signUpAction(values);
+    setPending(false);
+
+    if (result.ok) {
+      console.log("Sign up successful");
+      redirect("/protected");
+    } else {
+      // Handle error
+      console.error(result.error.message);
+      toast({
+        title: "Sign Up Failed",
+        description: "Please try again. " + result.error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" aria-disabled={pending}>
         <FormField
           control={form.control}
           name="username"

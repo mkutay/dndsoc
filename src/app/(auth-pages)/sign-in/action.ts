@@ -1,29 +1,51 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { z } from "zod";
+import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
+import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
 import { createClient } from "@/utils/supabase/server";
-import { encodedRedirect } from "@/utils/utils";
 import { signInFormSchema } from "../schemas";
 
-export const signInAction = async (values: z.infer<typeof signInFormSchema>) => {
+type SignInError = {
+  message: string;
+  code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
+}
+
+export async function signInAction(values: z.infer<typeof signInFormSchema>):
+  Promise<ActionResult<void, SignInError>> {
   const validation = signInFormSchema.safeParse(values);
   if (!validation.success) {
-    const errorMessage = validation.error.message;
-    return encodedRedirect("error", "/sign-in", errorMessage);
+    return actionErr({
+      message: "Invalid form data.",
+      code: "INVALID_FORM",
+    });
   }
   
-  const supabase = await createClient();
+  const supabase = ResultAsync.fromPromise(createClient(), () => ({
+    message: "Failed to create Supabase client.",
+    code: "SUPABASE_CLIENT_ERROR",
+  } as SignInError));
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: values.email,
-    password: values.password,
+  const signed = supabase.andThen((supabase) => {
+    const result = supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    return ResultAsync.fromPromise(result, () => ({
+      message: "Failed to sign in.",
+      code: "DATABASE_ERROR",
+    } as SignInError));
+  }).andThen((result) => {
+    if (result.error) {
+      return errAsync({
+        message: "Failed to sign in.",
+        code: "DATABASE_ERROR",
+      } as SignInError);
+    }
+    return okAsync();
   });
 
-  if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
-  }
-
-  return redirect("/protected");
+  return resultAsyncToActionResult(signed);
 };

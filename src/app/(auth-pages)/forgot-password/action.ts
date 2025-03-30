@@ -1,43 +1,69 @@
 "use server";
 
+import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { z } from "zod";
+import { headers } from "next/headers";
 
 import { createClient } from "@/utils/supabase/server";
-import { encodedRedirect } from "@/utils/utils";
-import { headers } from "next/headers";
+import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
 import { forgotPasswordFormSchema } from "../schemas";
 
-export const forgotPasswordAction = async (values: z.infer<typeof forgotPasswordFormSchema>) => {
+type ForgotPasswordError = {
+  message: string;
+  code: "INVALID_FORM" | "SUPABASE_CLIENT_ERROR" | "DATABASE_ERROR";
+}
+
+export async function forgotPasswordAction(values: z.infer<typeof forgotPasswordFormSchema>):
+  Promise<ActionResult<void, ForgotPasswordError>> {
   const validation = forgotPasswordFormSchema.safeParse(values);
   if (!validation.success) {
-    const errorMessage = validation.error.message;
-    return encodedRedirect("error", "/forgot-password", errorMessage);
+    return actionErr({
+      message: "Invalid form data.",
+      code: "INVALID_FORM",
+    });
   }
 
   const { email } = values;
-  const supabase = await createClient();
-  const origin = (await headers()).get("origin");
 
-  if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
-  }
+  const supabase = ResultAsync.fromPromise(createClient(), () => ({
+    message: "Failed to create Supabase client.",
+    code: "SUPABASE_CLIENT_ERROR",
+  } as ForgotPasswordError));
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+  const origin = ResultAsync.fromPromise(headers(), () => ({
+    message: "Failed to get headers.",
+    code: "SUPABASE_CLIENT_ERROR",
+  } as ForgotPasswordError)).andThen((headers) => {
+    const origin = headers.get("origin");
+    if (!origin) {
+      return errAsync({
+        message: "Origin header not found.",
+        code: "SUPABASE_CLIENT_ERROR",
+      } as ForgotPasswordError);
+    }
+    return okAsync(origin);
   });
 
-  if (error) {
-    console.error(error.message);
-    return encodedRedirect(
-      "error",
-      "/forgot-password",
-      "Could not reset password",
-    );
-  }
+  const combined = ResultAsync.combine([origin, supabase]);
 
-  return encodedRedirect(
-    "success",
-    "/forgot-password",
-    "Check your email for a link to reset your password.",
-  );
+  const result = combined.andThen(([origin, supabase]) => {
+    const response = supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+    });
+
+    return ResultAsync.fromPromise(response, () => ({
+      message: "Failed to reset password.",
+      code: "DATABASE_ERROR",
+    } as ForgotPasswordError));
+  }).andThen((result) => {
+    if (result.error) {
+      return errAsync({
+        message: "Failed to reset password: " + result.error.message,
+        code: "DATABASE_ERROR",
+      } as ForgotPasswordError);
+    }
+    return okAsync();
+  });
+  
+  return resultAsyncToActionResult(result);
 };

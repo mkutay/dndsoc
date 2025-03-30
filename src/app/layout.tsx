@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 
 import { NavBar } from "@/components/nav-bar/nav-bar";
 import { Footer } from "@/components/footer";
+import { Toaster } from "@/components/ui/toaster";
 import "@/app/globals.css";
 
 const defaultUrl = process.env.PRODUCTION_SITE_URL
@@ -41,6 +42,7 @@ export default function RootLayout({
             </div>
             <Footer />
           </main>
+        <Toaster />
         </ThemeProvider>
       </body>
     </html>
