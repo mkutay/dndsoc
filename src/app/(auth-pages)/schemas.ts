@@ -1,0 +1,17 @@
+import { z } from "zod";
+
+export const forgotPasswordFormSchema = z.object({
+  email: z.string().email(),
+});
+
+export const signInFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6).max(100),
+});
+
+export const signUpFormSchema = z.object({
+  knumber: z.string().min(9).max(9).startsWith("K", "K-number must start with 'K'"),
+  username: z.string().min(2).max(50),
+  email: z.string().email(),
+  password: z.string().min(6).max(100),
+});

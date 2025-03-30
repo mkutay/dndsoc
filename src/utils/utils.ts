@@ -11,6 +11,6 @@ export function encodedRedirect(
   type: "error" | "success",
   path: string,
   message: string,
-) {
+): never {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`);
 }
