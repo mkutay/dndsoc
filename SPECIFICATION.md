@@ -1,5 +1,3 @@
-# SPECIFICATION.md
-
 A GENERAL CMS IS NEEDED: IMAGES, MARKDOWN(X)
 
 ## specification
@@ -31,13 +29,18 @@ A GENERAL CMS IS NEEDED: IMAGES, MARKDOWN(X)
 
 ## roles table
 - user uuid
-- role = admin, DM, player -- probably there is a better way to integrate this with supabase auth, eh maybe not
+- role = admin, DM, player -- probably there is a better way to integrate this with supabase auth like an enum, eh maybe not
 
 ## DMs table
 - user uuid
+- level
+- campaign ids
 
 ## players table
 - user uuid
+- campaign ids as an array
+- level
+- achievement ids as array
 
 ## characters table
 - player's uuid
