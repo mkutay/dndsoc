@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { siteConfig } from "@/config/site";
-import AuthButton from "@/components/nav-bar/header-auth";
+import AuthButtons from "@/components/nav-bar/auth-buttons";
 import { NavigationDropdown } from "@/components/nav-bar/navigation-dropdown";
 
 export function NavBar() {
@@ -27,7 +27,7 @@ export function NavBar() {
         </div>
         <div className="flex flex-row place-items-center gap-4">
           <ThemeSwitcher />
-          <AuthButton />
+          <AuthButtons />
           <div className="flex lg:hidden">
             <NavigationDropdown />
           </div>

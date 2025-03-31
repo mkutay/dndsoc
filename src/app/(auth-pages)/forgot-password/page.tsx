@@ -5,10 +5,7 @@ import { ForgotPasswordForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 
-export default async function ForgotPassword(props: {
-  searchParams: Promise<Message>;
-}) {
-  const searchParams = await props.searchParams;
+export default function ForgotPassword() {
   return (
     <div className="flex flex-col w-full mx-auto max-w-prose my-12">
       <div>
@@ -22,7 +19,6 @@ export default async function ForgotPassword(props: {
       </div>
       <div className="flex flex-col gap-2 mt-8">
         <ForgotPasswordForm />
-        <FormMessage message={searchParams} />
       </div>
     </div>
   );

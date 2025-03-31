@@ -60,6 +60,7 @@ export function ForgotPasswordForm() {
         <FormField
           control={form.control}
           name="email"
+          disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>

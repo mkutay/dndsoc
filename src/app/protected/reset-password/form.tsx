@@ -1,10 +1,8 @@
-"use client";
+"use client"
 
 import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -19,34 +17,38 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { signInAction } from "./action";
-import { signInFormSchema } from "../schemas";
+import { resetPasswordSchema } from "./schema";
+import { resetPasswordAction } from "./actions";
 
-export function SignInForm() {
+export function ResetPasswordForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
-  const form = useForm<z.infer<typeof signInFormSchema>>({
-    resolver: zodResolver(signInFormSchema),
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
  
-  const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
     setPending(true);
-    const result = await signInAction(values);
+    const result = await resetPasswordAction(values);
     setPending(false);
     if (result.ok) {
-      console.log("Sign in successful");
-      redirect("/protected");
+      console.log("Password updated successfully.");
+      toast({
+        title: "Password Updated",
+        description: "Your password has been updated successfully.",
+        variant: "default",
+      });
     } else {
       // Handle error
       console.error(result.error.message);
       toast({
-        title: "Sign In Failed",
-        description: "Please try again. " + result.error.message,
+        title: "Error Updating Password",
+        description: result.error.message,
         variant: "destructive",
       })
     }
@@ -57,16 +59,20 @@ export function SignInForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" aria-disabled={pending}>
         <FormField
           control={form.control}
-          name="email"
+          name="newPassword"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>New Password</FormLabel>
               <FormControl>
-                <Input placeholder="first.second@kcl.ac.uk" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Your new password"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
-                This is your KCL email address.
+                This is your new password. It must be at least 6 characters long.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -74,25 +80,22 @@ export function SignInForm() {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="confirmPassword"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel className="flex flex-row justify-between items-center">
-                Password
-                <Link className="text-xs font-normal text-muted-foreground underline hover:text-muted-foreground/80 transition-colors" href="/forgot-password">
-                  Forgot your password?
-                </Link>
+                Confirm Password
               </FormLabel>
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="Your password"
+                  placeholder="Your old password"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                This is your password. It must be at least 6 characters long.
+                This is your current password.
               </FormDescription>
               <FormMessage />
             </FormItem>

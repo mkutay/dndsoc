@@ -60,6 +60,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="username"
+          disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -76,6 +77,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="knumber"
+          disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>K-Number</FormLabel>
@@ -92,6 +94,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="email"
+          disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -108,6 +111,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="password"
+          disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
