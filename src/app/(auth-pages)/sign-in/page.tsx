@@ -9,7 +9,7 @@ export default function Login() {
     <div className="flex flex-col w-full mx-auto max-w-prose my-12">
       <TypographyH1>Sign In!</TypographyH1>
       <TypographyParagraph>
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link className="text-foreground font-medium underline hover:text-foreground/80 transition-colors" href="/sign-up">
           Sign Up
         </Link>

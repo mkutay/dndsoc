@@ -5,7 +5,6 @@ import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
 import { createClient } from "@/utils/supabase/server";
-import { encodedRedirect } from "@/utils/utils";
 import { resetPasswordSchema } from "./schema";
 
 type ResetPasswordError = {
@@ -23,6 +22,13 @@ export async function resetPasswordAction(values: z.infer<typeof resetPasswordSc
   const password = values.newPassword
   const confirmPassword = values.confirmPassword;
 
+  if (password !== confirmPassword) {
+    return actionErr({
+      message: "Passwords do not match.",
+      code: "PASSWORD_MISMATCH",
+    } as ResetPasswordError);
+  }
+
   const updated = supabase.andThen((supabase) => {
     const updated = supabase.auth.updateUser({
       password: password,
@@ -34,8 +40,8 @@ export async function resetPasswordAction(values: z.infer<typeof resetPasswordSc
   }).andThen((result) => {
     if (result.error) {
       return errAsync({
-        message: "Passwords do not match.",
-        code: "PASSWORD_MISMATCH",
+        message: "Failed to update password.",
+        code: "DATABASE_ERROR",
       } as ResetPasswordError);
     }
     return okAsync();

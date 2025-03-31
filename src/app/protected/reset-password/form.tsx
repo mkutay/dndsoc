@@ -1,6 +1,6 @@
 "use client"
 
-import { set, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useState } from "react";
@@ -56,7 +56,7 @@ export function ResetPasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" aria-disabled={pending}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="newPassword"
@@ -90,18 +90,18 @@ export function ResetPasswordForm() {
               <FormControl>
                 <Input
                   type="password"
-                  placeholder="Your old password"
+                  placeholder="Type again to confirm"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                This is your current password.
+                Type your new password again to confirm it.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={pending}>Submit</Button>
       </form>
     </Form>
   )

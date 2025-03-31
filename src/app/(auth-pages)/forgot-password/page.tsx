@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { FormMessage, Message } from "@/components/form-message";
 import { ForgotPasswordForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";

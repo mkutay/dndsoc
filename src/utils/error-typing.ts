@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { err, ok, Result, ResultAsync } from "neverthrow";
 
 export type InferOkData<T> = T extends Result<infer TData, any> ? TData : never;
