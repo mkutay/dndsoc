@@ -1,32 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { err, ok, Result, ResultAsync } from "neverthrow";
 
-export type InferOkData<T> = T extends Result<infer TData, any> ? TData : never;
-export type InferAsyncOkData<T> =
-  T extends ResultAsync<infer TData, any> ? TData : never;
-
-export type InferErrError<T> =
-  T extends Result<any, infer TError> ? TError : never;
-export type InferAsyncErrError<T> =
-  T extends ResultAsync<any, infer TError> ? TError : never;
-
-export type MergeResults<T1, T2> =
-  T1 extends Result<infer D1, infer E1>
-    ? T2 extends Result<infer D2, infer E2>
-      ? Result<D1 | D2, E1 | E2>
-      : never
-    : never;
-
-export type ResultToResultAsync<T extends Result<unknown, unknown>> =
-  T extends Result<infer D, infer E> ? ResultAsync<D, E> : never;
-
-export type MergeResultAsync<T1, T2> =
-  T1 extends ResultAsync<infer D1, infer E1>
-    ? T2 extends ResultAsync<infer D2, infer E2>
-      ? ResultAsync<D1 | D2, E1 | E2>
-      : never
-    : never;
-
 // These are needed for the `createAction()` method to work.
 // neverthrow results can not be sent over the wire in server actions.
 
@@ -60,12 +34,6 @@ export type ResultAsyncToActionResult<T> = [T] extends [
   ResultAsync<infer D, infer E>,
 ]
   ? ActionResult<D, E>
-  : never;
-
-export type ActionResultToResultAsync<T> = [T] extends [
-  ActionResult<infer D, infer E>,
-]
-  ? ResultAsync<D, E>
   : never;
 
 export type ActionResultToResult<T> = [T] extends [
