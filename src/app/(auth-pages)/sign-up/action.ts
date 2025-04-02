@@ -5,7 +5,7 @@ import { z } from "zod";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
-import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
+import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { signUpFormSchema } from "../schemas";
 
 type SignUpError = {

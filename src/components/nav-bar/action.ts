@@ -2,7 +2,7 @@
 
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
-import { ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
+import { ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 

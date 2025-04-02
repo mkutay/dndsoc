@@ -14,8 +14,6 @@ export const actionOk = <T>(value: T): ActionOk<T, never> => ({
   ok: true,
   value,
 });
-export type InferActionOkData<T> =
-  T extends ActionOk<infer TData, any> ? TData : never;
 
 export type ActionErr<T, E> = {
   ok: false;
@@ -25,8 +23,7 @@ export const actionErr = <E>(error: E): ActionErr<never, E> => ({
   ok: false,
   error,
 });
-export type InferActionErrError<T> =
-  T extends ActionErr<any, infer TError> ? TError : never;
+
 /**
  * Converts a `ResultAsync<T,E>` to a `<ActionResult<T,E>`.
  */

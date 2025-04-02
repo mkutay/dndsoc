@@ -5,7 +5,7 @@ import { z } from "zod";
 import { headers } from "next/headers";
 
 import { createClient } from "@/utils/supabase/server";
-import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
+import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { forgotPasswordFormSchema } from "../schemas";
 
 type ForgotPasswordError = {

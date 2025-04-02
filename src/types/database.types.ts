@@ -9,6 +9,96 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      campaigns: {
+        Row: {
+          id: string
+          name: string | null
+        }
+        Insert: {
+          id?: string
+          name?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string | null
+        }
+        Relationships: []
+      }
+      characters: {
+        Row: {
+          campaign_ids: string[] | null
+          class: string | null
+          id: string
+          level: number | null
+          name: string | null
+          species: string | null
+          user_uuid: string
+        }
+        Insert: {
+          campaign_ids?: string[] | null
+          class?: string | null
+          id?: string
+          level?: number | null
+          name?: string | null
+          species?: string | null
+          user_uuid?: string
+        }
+        Update: {
+          campaign_ids?: string[] | null
+          class?: string | null
+          id?: string
+          level?: number | null
+          name?: string | null
+          species?: string | null
+          user_uuid?: string
+        }
+        Relationships: []
+      }
+      dms: {
+        Row: {
+          campaign_ids: string[] | null
+          id: string
+          level: number
+          user_uuid: string
+        }
+        Insert: {
+          campaign_ids?: string[] | null
+          id?: string
+          level?: number
+          user_uuid: string
+        }
+        Update: {
+          campaign_ids?: string[] | null
+          id?: string
+          level?: number
+          user_uuid?: string
+        }
+        Relationships: []
+      }
+      players: {
+        Row: {
+          achievement_ids: string[] | null
+          campaign_ids: string[] | null
+          id: string
+          level: number
+          user_uuid: string
+        }
+        Insert: {
+          achievement_ids?: string[] | null
+          campaign_ids?: string[] | null
+          id?: string
+          level?: number
+          user_uuid?: string
+        }
+        Update: {
+          achievement_ids?: string[] | null
+          campaign_ids?: string[] | null
+          id?: string
+          level?: number
+          user_uuid?: string
+        }
+        Relationships: []
+      }
       roles: {
         Row: {
           role: string

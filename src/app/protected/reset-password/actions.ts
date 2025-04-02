@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
-import { actionErr, ActionResult, resultAsyncToActionResult } from "@/utils/error-typing";
+import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { createClient } from "@/utils/supabase/server";
 import { resetPasswordSchema } from "./schema";
 
