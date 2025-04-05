@@ -1,16 +1,16 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerData } from "./action";
+import { getPlayerByUsername } from "@/lib/players/query";
 
 export default async function Page(props: 
   { params: Promise<{ username: string }> }
 ) {
   const { username } = await props.params;
 
-  const playerData = await getPlayerData(username);
+  const playerData = await getPlayerByUsername(username);
 
-  if (!playerData.ok) {
+  if (!playerData.isOk()) {
     return <ErrorPage error={playerData.error.message} />;
   }
 
