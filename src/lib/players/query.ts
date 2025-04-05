@@ -2,7 +2,7 @@ import { ResultAsync } from "neverthrow";
 
 import { Tables } from "@/types/database.types";
 import { getUserByUsername } from "@/lib/users/query-username";
-import { getPlayerByUuid } from "./query-username";
+import { getPlayerByUuid } from "./query-uuid";
 
 type GetPlayerByUsernameError = {
   message: string;

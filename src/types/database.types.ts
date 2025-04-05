@@ -46,6 +46,7 @@ export type Database = {
           id: string
           level: number | null
           name: string | null
+          shortened: string
           species: string | null
           user_uuid: string
         }
@@ -55,6 +56,7 @@ export type Database = {
           id?: string
           level?: number | null
           name?: string | null
+          shortened: string
           species?: string | null
           user_uuid?: string
         }
@@ -64,6 +66,7 @@ export type Database = {
           id?: string
           level?: number | null
           name?: string | null
+          shortened?: string
           species?: string | null
           user_uuid?: string
         }
