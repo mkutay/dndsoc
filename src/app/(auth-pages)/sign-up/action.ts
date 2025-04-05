@@ -7,11 +7,14 @@ import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { createClient } from "@/utils/supabase/server";
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { signUpFormSchema } from "../schemas";
+import { Database } from "@/types/database.types";
 
 type SignUpError = {
   message: string;
   code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
+
+type Role = Database["public"]["Enums"]["role"];
 
 export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
   Promise<ActionResult<void, SignUpError>> {
@@ -100,9 +103,25 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
       return okAsync();
     });
 
+  const addRoleResult = ResultAsync
+    .combine([signUpResult, supabase])
+    .andThen(([signUpResult, supabase]) => {
+      const roleInsert = supabase
+        .from("roles")
+        .insert({
+          role: "player" as Role,
+          user_uuid: signUpResult,
+        });
+
+      return ResultAsync.fromPromise(roleInsert, () => ({
+        message: "Failed to insert user in database in table \"roles\".",
+        code: "DATABASE_ERROR",
+      } as SignUpError));
+    })
+
   const result = ResultAsync
-    .combine([addUsersResult, signUpResult, supabase])
-    .andThen(([addUsersResult, signUpResult, supabase]) => {
+    .combine([addUsersResult, addRoleResult, signUpResult, supabase])
+    .andThen(([addUsersResult, addRoleResult, signUpResult, supabase]) => {
       const playersInsert = supabase
         .from("players")
         .insert({
