@@ -11,14 +11,17 @@ export type Database = {
     Tables: {
       achievements: {
         Row: {
+          description: string
           id: string
           name: string
         }
         Insert: {
+          description: string
           id?: string
           name: string
         }
         Update: {
+          description?: string
           id?: string
           name?: string
         }
@@ -26,16 +29,25 @@ export type Database = {
       }
       campaigns: {
         Row: {
+          description: string
+          end_date: string
           id: string
           name: string | null
+          start_date: string
         }
         Insert: {
+          description: string
+          end_date: string
           id?: string
           name?: string | null
+          start_date: string
         }
         Update: {
+          description?: string
+          end_date?: string
           id?: string
           name?: string | null
+          start_date?: string
         }
         Relationships: []
       }
@@ -95,24 +107,51 @@ export type Database = {
       }
       players: {
         Row: {
-          achievement_ids: string[] | null
-          campaign_ids: string[] | null
+          about: string
+          achievement_ids: string[]
+          campaign_ids: string[]
           id: string
           level: number
           user_uuid: string
         }
         Insert: {
-          achievement_ids?: string[] | null
-          campaign_ids?: string[] | null
+          about?: string
+          achievement_ids?: string[]
+          campaign_ids: string[]
           id?: string
           level?: number
           user_uuid?: string
         }
         Update: {
-          achievement_ids?: string[] | null
-          campaign_ids?: string[] | null
+          about?: string
+          achievement_ids?: string[]
+          campaign_ids?: string[]
           id?: string
           level?: number
+          user_uuid?: string
+        }
+        Relationships: []
+      }
+      received_achievements: {
+        Row: {
+          achievement_uuid: string
+          count: number
+          first_received_date: string
+          last_received_date: string
+          user_uuid: string
+        }
+        Insert: {
+          achievement_uuid: string
+          count?: number
+          first_received_date: string
+          last_received_date: string
+          user_uuid: string
+        }
+        Update: {
+          achievement_uuid?: string
+          count?: number
+          first_received_date?: string
+          last_received_date?: string
           user_uuid?: string
         }
         Relationships: []

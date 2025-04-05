@@ -3,38 +3,39 @@ import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
-type GetCharactersError = {
+type GetCampaignsFromIdsError = {
   message: string;
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
 
-type Character = Tables<"characters">;
+type Campaign = Tables<"campaigns">;
 
-export function getCharacters():
-  ResultAsync<Character[], GetCharactersError> {
+export function getCampaignsFromIds(ids: string[]):
+  ResultAsync<Campaign[], GetCampaignsFromIdsError> {
 
   const supabase = ResultAsync.fromPromise(createClient(), () => ({
     message: "Failed to create Supabase client.",
     code: "SUPABASE_CLIENT_ERROR",
-  } as GetCharactersError));
+  } as GetCampaignsFromIdsError));
 
   const result = supabase
     .andThen((supabase) => {
       const response = supabase
-        .from("characters")
-        .select("*");
+        .from("campaigns")
+        .select("*")
+        .in("id", ids);
 
       return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to get character data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `Failed to get campaigns' data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
         code: "DATABASE_ERROR",
-      } as GetCharactersError));
+      } as GetCampaignsFromIdsError));
     })
     .andThen((response) => {
       if (response.error) {
         return errAsync({
-          message: "Failed to get character data from Supabase: " + response.error.message,
+          message: "Failed to get campaigns' data from Supabase: " + response.error.message,
           code: "DATABASE_ERROR",
-        } as GetCharactersError);
+        } as GetCampaignsFromIdsError);
       }
       return okAsync(response.data);
     });

@@ -27,10 +27,10 @@ export function NavBar() {
         </div>
         <div className="flex flex-row place-items-center gap-4">
           <ThemeSwitcher />
-          <AuthButtons />
           <div className="flex lg:hidden">
             <NavigationDropdown />
           </div>
+          <AuthButtons />
         </div>
       </div>
     </nav>

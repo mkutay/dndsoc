@@ -1,7 +1,9 @@
-import { TypographyH1 } from "@/components/typography/headings";
-import { TypographyParagraph } from "@/components/typography/paragraph";
+import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
+import { TypographyLarge, TypographyMuted, TypographyParagraph, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { getPlayerByUsername } from "@/lib/players/query";
+import { CampaignCards } from "@/components/campaigns";
+import { AchievementCards } from "@/components/achievements";
 
 export default async function Page(props: 
   { params: Promise<{ username: string }> }
@@ -14,10 +16,21 @@ export default async function Page(props:
     return <ErrorPage error={playerData.error.message} />;
   }
 
+  const player = playerData.value;
+
   return (
-    <div className="flex flex-col w-full mx-auto max-w-prose my-12">
-      <TypographyH1>Player: {username}</TypographyH1>
-      <TypographyParagraph>Placeholder for the player page.</TypographyParagraph>
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+      <TypographyH1 className="text-primary">{username}</TypographyH1>
+      <TypographyLarge className="mt-1">Level: {player.level}</TypographyLarge>
+      {player.about && player.about.length != 0 && <TypographyParagraph>{player.about}</TypographyParagraph>}
+      {player.campaign_ids && player.campaign_ids.length != 0 && <>
+        <TypographyH2 className="mt-6">Campaigns</TypographyH2>
+        <CampaignCards campaignIds={player.campaign_ids} />
+      </>}
+      {player.achievement_ids && player.achievement_ids.length != 0 && <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards achievementIds={player.achievement_ids} userUuid={player.user_uuid} />
+      </>}
     </div>
   );
 }
