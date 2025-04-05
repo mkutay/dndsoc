@@ -45,7 +45,7 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
 
   const combined = ResultAsync.combine([origin, supabase]);
 
-  const result = combined.andThen(([origin, supabase]) => {
+  const signUpResult = combined.andThen(([origin, supabase]) => {
     const response = supabase.auth.signUp({
       email: values.email,
       password: values.password,
@@ -55,7 +55,7 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
     });
 
     return ResultAsync.fromPromise(response, () => ({
-      message: "Failed to sign up.",
+      message: "Failed to sign up in Supabase.",
       code: "DATABASE_ERROR",
     } as SignUpError));
   }).andThen((result) => {
@@ -65,8 +65,66 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
         code: "DATABASE_ERROR",
       } as SignUpError);
     }
-    return okAsync();
+    if (!result.data.user) {
+      return errAsync({
+        message: "User not found.",
+        code: "DATABASE_ERROR",
+      } as SignUpError);
+    }
+    return okAsync(result.data.user.id);
   });
+
+  const addUsersResult = ResultAsync
+    .combine([signUpResult, supabase])
+    .andThen(([signUpResult, supabase]) => {
+      const usersInsert = supabase
+        .from("users")
+        .insert({
+          username: values.username,
+          knumber: values.knumber,
+          user_uuid: signUpResult,
+        });
+
+      return ResultAsync.fromPromise(usersInsert, () => ({
+        message: "Failed to insert user in database in table \"users\".",
+        code: "DATABASE_ERROR",
+      } as SignUpError));
+    })
+    .andThen((result) => {
+      if (result.error) {
+        return errAsync({
+          message: "Failed to insert user in database in table \"users\": " + result.error.message,
+          code: "DATABASE_ERROR",
+        } as SignUpError);
+      }
+      return okAsync();
+    });
+
+  const result = ResultAsync
+    .combine([addUsersResult, signUpResult, supabase])
+    .andThen(([addUsersResult, signUpResult, supabase]) => {
+      const playersInsert = supabase
+        .from("players")
+        .insert({
+          id: crypto.randomUUID(),
+          user_uuid: signUpResult,
+          level: 1,
+        });
+
+      return ResultAsync.fromPromise(playersInsert, () => ({
+        message: "Failed to insert user in database in table \"players\".",
+        code: "DATABASE_ERROR",
+      } as SignUpError));
+    })
+    .andThen((result) => {
+      if (result.error) {
+        return errAsync({
+          message: "Failed to insert user in database in table \"players\": " + result.error.message,
+          code: "DATABASE_ERROR",
+        } as SignUpError);
+      }
+      return okAsync();
+    });
 
   return resultAsyncToActionResult(result);
 }

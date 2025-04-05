@@ -129,6 +129,24 @@ export type Database = {
         }
         Relationships: []
       }
+      users: {
+        Row: {
+          knumber: string
+          user_uuid: string
+          username: string
+        }
+        Insert: {
+          knumber: string
+          user_uuid: string
+          username: string
+        }
+        Update: {
+          knumber?: string
+          user_uuid?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
