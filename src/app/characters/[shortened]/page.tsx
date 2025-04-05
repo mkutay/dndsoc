@@ -16,8 +16,8 @@ export default async function Page(props:
 
   return (
     <div className="flex flex-col w-full mx-auto max-w-prose my-12">
-      <TypographyH1>Player: {shortened}</TypographyH1>
-      <TypographyParagraph>Placeholder for the player page.</TypographyParagraph>
+      <TypographyH1>Character: {shortened}</TypographyH1>
+      <TypographyParagraph>Placeholder for the character page.</TypographyParagraph>
     </div>
   );
 }
