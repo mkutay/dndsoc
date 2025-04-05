@@ -42,7 +42,11 @@ export function SignUpForm() {
 
     if (result.ok) {
       console.log("Sign up successful");
-      redirect("/protected");
+      toast({
+        title: "Verification Email Sent",
+        description: "Please check your email to verify your account.",
+        variant: "default",
+      });
     } else {
       // Handle error
       console.error(result.error.message);
