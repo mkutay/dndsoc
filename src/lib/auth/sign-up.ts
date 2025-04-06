@@ -1,6 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
 import { z } from "zod";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
@@ -8,10 +7,11 @@ import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/erro
 import { Enums } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 import { signUpFormSchema } from "@/config/auth-schemas";
+import { getOrigin } from "./origin";
 
 type SignUpError = {
   message: string;
-  code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
+  code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "GET_ORIGIN_ERROR";
 };
 
 type Role = Enums<"role">;
@@ -29,19 +29,7 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
 
   const supabase = createClient();
 
-  const origin = ResultAsync.fromPromise(headers(), () => ({
-    message: "Failed to get headers.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as SignUpError)).andThen((headers) => {
-    const origin = headers.get("origin");
-    if (!origin) {
-      return errAsync({
-        message: "Origin header not found.",
-        code: "SUPABASE_CLIENT_ERROR",
-      } as SignUpError);
-    }
-    return okAsync(origin);
-  });
+  const origin = getOrigin();
 
   const combined = ResultAsync.combine([origin, supabase]);
 

@@ -7,10 +7,11 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { forgotPasswordFormSchema } from "../../config/auth-schemas";
+import { getOrigin } from "./origin";
 
 type ForgotPasswordError = {
   message: string;
-  code: "INVALID_FORM" | "SUPABASE_CLIENT_ERROR" | "DATABASE_ERROR";
+  code: "INVALID_FORM" | "SUPABASE_CLIENT_ERROR" | "DATABASE_ERROR" | "GET_ORIGIN_ERROR";
 }
 
 export async function forgotPasswordAction(values: z.infer<typeof forgotPasswordFormSchema>):
@@ -27,19 +28,7 @@ export async function forgotPasswordAction(values: z.infer<typeof forgotPassword
 
   const supabase = createClient();
 
-  const origin = ResultAsync.fromPromise(headers(), () => ({
-    message: "Failed to get headers.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as ForgotPasswordError)).andThen((headers) => {
-    const origin = headers.get("origin");
-    if (!origin) {
-      return errAsync({
-        message: "Origin header not found.",
-        code: "SUPABASE_CLIENT_ERROR",
-      } as ForgotPasswordError);
-    }
-    return okAsync(origin);
-  });
+  const origin = getOrigin();
 
   const combined = ResultAsync.combine([origin, supabase]);
 
