@@ -16,7 +16,7 @@ export default async function Page() {
 
   // combine players and users
   const playersWithUsers = players.map((player) => {
-    const user = users.find((user) => user.user_uuid === player.user_uuid);
+    const user = users.find((user) => user.id === player.user_uuid);
     return {
       ...player,
       username: user?.username || "Unknown",

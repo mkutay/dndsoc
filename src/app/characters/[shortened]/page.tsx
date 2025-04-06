@@ -4,7 +4,7 @@ import { ErrorPage } from "@/components/error-page";
 import { CampaignCards } from "@/components/campaigns";
 import { CharacterEditButton } from "@/components/character-edit-button";
 import { getCharacterByShortened } from "@/lib/characters/query-shortened";
-import { Tables } from "@/types/database.types";
+import { formatClasses, formatRaces } from "@/utils/formattin";
 
 export default async function Page(props: 
   { params: Promise<{ shortened: string }> }
@@ -33,12 +33,4 @@ export default async function Page(props:
       </>}
     </div>
   );
-}
-
-export function formatClasses(classes: Tables<"classes">[]) {
-  return classes.map((cls) => cls.name).join(", ");
-}
-
-export function formatRaces(races: Tables<"races">[]) {
-  return races.map((race) => race.name).join(", ");
 }

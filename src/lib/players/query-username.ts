@@ -2,7 +2,7 @@ import { ResultAsync } from "neverthrow";
 
 import { Tables } from "@/types/database.types";
 import { getUserByUsername } from "@/lib/users/query-username";
-import { getPlayerByUuid } from "./query-uuid";
+import { getPlayerByAuthUuid } from "./query-uuid";
 
 type GetPlayerByUsernameError = {
   message: string;
@@ -18,6 +18,6 @@ export function getPlayerByUsername(username: string):
 
   return getUserByUsername(username)
     .andThen((user) => {
-      return getPlayerByUuid(user.user_uuid);
+      return getPlayerByAuthUuid(user.auth_user_uuid);
     });
 }
