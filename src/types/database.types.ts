@@ -51,36 +51,116 @@ export type Database = {
         }
         Relationships: []
       }
+      character_class: {
+        Row: {
+          character_id: string
+          class_id: string
+        }
+        Insert: {
+          character_id?: string
+          class_id?: string
+        }
+        Update: {
+          character_id?: string
+          class_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_class_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "character_class_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      character_races: {
+        Row: {
+          character_id: string
+          race_id: string
+        }
+        Insert: {
+          character_id?: string
+          race_id?: string
+        }
+        Update: {
+          character_id?: string
+          race_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_races_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "character_races_race_id_fkey"
+            columns: ["race_id"]
+            isOneToOne: false
+            referencedRelation: "races"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       characters: {
         Row: {
           campaign_ids: string[] | null
-          class: string | null
           id: string
           level: number | null
           name: string | null
+          player_uuid: string
           shortened: string
-          species: string | null
-          user_uuid: string
         }
         Insert: {
           campaign_ids?: string[] | null
-          class?: string | null
           id?: string
           level?: number | null
           name?: string | null
+          player_uuid?: string
           shortened: string
-          species?: string | null
-          user_uuid?: string
         }
         Update: {
           campaign_ids?: string[] | null
-          class?: string | null
           id?: string
           level?: number | null
           name?: string | null
+          player_uuid?: string
           shortened?: string
-          species?: string | null
-          user_uuid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "characters_player_uuid_fkey"
+            columns: ["player_uuid"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          id: string
+          name: string
+          shortened: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          shortened: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          shortened?: string
         }
         Relationships: []
       }
@@ -139,6 +219,24 @@ export type Database = {
             referencedColumns: ["user_uuid"]
           },
         ]
+      }
+      races: {
+        Row: {
+          id: string
+          name: string
+          shortened: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          shortened: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          shortened?: string
+        }
+        Relationships: []
       }
       received_achievements: {
         Row: {
