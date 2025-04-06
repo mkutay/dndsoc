@@ -1,15 +1,17 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/lib/users/user";
 import { signOut } from "./action";
 
 export default async function AuthButtons() {
-  const supabase = await createClient();
+  const userResult = await getUser();
+  if (userResult.isErr()) {
+    console.error(userResult.error.message);
+    return null;
+  }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = userResult.value;
   
   return user ? (
     <div className="flex items-center">
