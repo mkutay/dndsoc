@@ -8,9 +8,12 @@ type GetPlayerByUuidError = {
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "NOT_FOUND";
 };
 
-type Player = Tables<"players">;
+type Player = Tables<"players"> & {
+  campaigns: Tables<"campaigns">[];
+  users: Tables<"users">;
+};
 
-export function getPlayerByUuid(uuid: string):
+export function getPlayerByAuthUuid(uuid: string):
   ResultAsync<Player, GetPlayerByUuidError> {
 
   const supabase = ResultAsync.fromPromise(createClient(), () => ({
@@ -22,8 +25,8 @@ export function getPlayerByUuid(uuid: string):
     .andThen((supabase) => {
       const response = supabase
         .from("players")
-        .select("*")
-        .eq("user_uuid", uuid)
+        .select("*, campaigns(*), users(*)")
+        .eq("users.auth_user_uuid", uuid)
         .single();
 
       return ResultAsync.fromPromise(response, (error) => ({

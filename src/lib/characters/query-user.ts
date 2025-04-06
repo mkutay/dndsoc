@@ -8,13 +8,16 @@ type GetCharactersError = {
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
 
-type Character = Tables<"characters"> & {
+export type Character = Tables<"characters"> & {
   races: Tables<"races">[];
   classes: Tables<"classes">[];
+  players: Tables<"players"> & {
+    users: Tables<"users">;
+  };
 }
 
-export function getCharacters():
-  ResultAsync<Character[], GetCharactersError> {
+export function getCharacterByUser(authUserUuid: string):
+  ResultAsync<Character, GetCharactersError> {
 
   const supabase = ResultAsync.fromPromise(createClient(), () => ({
     message: "Failed to create Supabase client.",
@@ -25,7 +28,17 @@ export function getCharacters():
     .andThen((supabase) => {
       const response = supabase
         .from("characters")
-        .select("*, races(*), classes(*)");
+        .select(`
+          *,
+          races(*),
+          classes(*),
+          players!inner(
+            *,
+            users!inner(*)
+          )
+        `)
+        .eq("players.users.auth_user_uuid", authUserUuid)
+        .single();
 
       return ResultAsync.fromPromise(response, (error) => ({
         message: `Failed to get character data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,

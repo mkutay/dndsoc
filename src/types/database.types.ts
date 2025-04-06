@@ -51,6 +51,36 @@ export type Database = {
         }
         Relationships: []
       }
+      character_campaigns: {
+        Row: {
+          campaign_id: string
+          character_id: string
+        }
+        Insert: {
+          campaign_id?: string
+          character_id?: string
+        }
+        Update: {
+          campaign_id?: string
+          character_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_campaigns_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "character_campaigns_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       character_class: {
         Row: {
           character_id: string
@@ -81,7 +111,7 @@ export type Database = {
           },
         ]
       }
-      character_races: {
+      character_race: {
         Row: {
           character_id: string
           race_id: string
@@ -113,25 +143,25 @@ export type Database = {
       }
       characters: {
         Row: {
-          campaign_ids: string[] | null
+          about: string
           id: string
-          level: number | null
+          level: number
           name: string | null
           player_uuid: string
           shortened: string
         }
         Insert: {
-          campaign_ids?: string[] | null
+          about?: string
           id?: string
-          level?: number | null
+          level?: number
           name?: string | null
           player_uuid?: string
           shortened: string
         }
         Update: {
-          campaign_ids?: string[] | null
+          about?: string
           id?: string
-          level?: number | null
+          level?: number
           name?: string | null
           player_uuid?: string
           shortened?: string
@@ -150,17 +180,14 @@ export type Database = {
         Row: {
           id: string
           name: string
-          shortened: string
         }
         Insert: {
           id?: string
           name: string
-          shortened: string
         }
         Update: {
           id?: string
           name?: string
-          shortened?: string
         }
         Relationships: []
       }
@@ -185,11 +212,40 @@ export type Database = {
         }
         Relationships: []
       }
+      player_campaigns: {
+        Row: {
+          campaign_id: string
+          player_id: string
+        }
+        Insert: {
+          campaign_id?: string
+          player_id?: string
+        }
+        Update: {
+          campaign_id?: string
+          player_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_campaigns_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_campaigns_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       players: {
         Row: {
           about: string
           achievement_ids: string[]
-          campaign_ids: string[]
           id: string
           level: number
           user_uuid: string
@@ -197,7 +253,6 @@ export type Database = {
         Insert: {
           about?: string
           achievement_ids?: string[]
-          campaign_ids: string[]
           id?: string
           level?: number
           user_uuid?: string
@@ -205,7 +260,6 @@ export type Database = {
         Update: {
           about?: string
           achievement_ids?: string[]
-          campaign_ids?: string[]
           id?: string
           level?: number
           user_uuid?: string
@@ -216,7 +270,7 @@ export type Database = {
             columns: ["user_uuid"]
             isOneToOne: false
             referencedRelation: "users"
-            referencedColumns: ["user_uuid"]
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -224,17 +278,14 @@ export type Database = {
         Row: {
           id: string
           name: string
-          shortened: string
         }
         Insert: {
           id?: string
           name: string
-          shortened: string
         }
         Update: {
           id?: string
           name?: string
-          shortened?: string
         }
         Relationships: []
       }
@@ -268,6 +319,13 @@ export type Database = {
             referencedRelation: "achievements"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "received_achievements_user_uuid_fkey"
+            columns: ["user_uuid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       roles: {
@@ -283,22 +341,33 @@ export type Database = {
           role?: Database["public"]["Enums"]["role"]
           user_uuid?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "roles_user_uuid_fkey"
+            columns: ["user_uuid"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
+          auth_user_uuid: string
+          id: string
           knumber: string
-          user_uuid: string
           username: string
         }
         Insert: {
+          auth_user_uuid: string
+          id?: string
           knumber: string
-          user_uuid: string
           username: string
         }
         Update: {
+          auth_user_uuid?: string
+          id?: string
           knumber?: string
-          user_uuid?: string
           username?: string
         }
         Relationships: []

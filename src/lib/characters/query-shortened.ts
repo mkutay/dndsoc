@@ -8,7 +8,11 @@ type GetCharacterByShortenedError = {
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
 
-type Character = Tables<"characters">;
+type Character = Tables<"characters"> & {
+  races: Tables<"races">[];
+  classes: Tables<"classes">[];
+  campaigns: Tables<"campaigns">[];
+};
 
 export function getCharacterByShortened(shortened: string):
   ResultAsync<Character, GetCharacterByShortenedError> {
@@ -22,7 +26,7 @@ export function getCharacterByShortened(shortened: string):
     .andThen((supabase) => {
       const response = supabase
         .from("characters")
-        .select("*")
+        .select("*, races(*), classes(*), campaigns(*)")
         .eq("shortened", shortened)
         .single();
 

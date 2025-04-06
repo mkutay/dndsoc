@@ -85,7 +85,7 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
         .insert({
           username: values.username,
           knumber: values.knumber,
-          user_uuid: signUpResult,
+          auth_user_uuid: signUpResult,
         });
 
       return ResultAsync.fromPromise(usersInsert, () => ({

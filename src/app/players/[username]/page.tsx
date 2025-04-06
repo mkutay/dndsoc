@@ -27,9 +27,9 @@ export default async function Page(props:
       </div>
       <TypographyLarge>Level: {player.level}</TypographyLarge>
       {player.about && player.about.length != 0 && <TypographyLead>{player.about}</TypographyLead>}
-      {player.campaign_ids && player.campaign_ids.length != 0 && <>
+      {player.campaigns && player.campaigns.length != 0 && <>
         <TypographyH2 className="mt-6">Campaigns</TypographyH2>
-        <CampaignCards campaignIds={player.campaign_ids} />
+        <CampaignCards campaigns={player.campaigns} />
       </>}
       {player.achievement_ids && player.achievement_ids.length != 0 && <>
         <TypographyH2 className="mt-6">Achievements</TypographyH2>

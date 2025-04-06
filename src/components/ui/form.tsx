@@ -5,7 +5,10 @@ import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
+  FieldError,
+  FieldErrorsImpl,
   FormProvider,
+  Merge,
   useFormContext,
   type ControllerProps,
   type FieldPath,
@@ -142,29 +145,54 @@ const FormDescription = React.forwardRef<
 })
 FormDescription.displayName = "FormDescription"
 
-const FormMessage = React.forwardRef<
-  HTMLParagraphElement,
+type ArrayFieldError = Merge<
+  FieldError,
+  FieldErrorsImpl<{
+    value: string;
+    id: string;
+  }>>
+
+const isFormArrayField = (
+  arg: FieldError | ArrayFieldError
+): arg is ArrayFieldError => {
+  return (arg as ArrayFieldError).value !== undefined;
+};
+
+type FormFieldError = FieldError | ArrayFieldError | undefined; 
+
+const FormMessage = React.forwardRef<HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? "") : children
+>
+(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField();
+
+  const extendedError = error as FormFieldError;
+
+  let body;
+  if (extendedError === undefined) {
+    body = children;
+  } else if (isFormArrayField(extendedError)) {
+    body = String(extendedError.value?.message);
+  } else {
+    body = String(extendedError.message);
+  }
 
   if (!body) {
-    return null
+    return null;
   }
 
   return (
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
+      className={cn("text-sm text-red-400", className)}
       {...props}
     >
       {body}
     </p>
-  )
-})
-FormMessage.displayName = "FormMessage"
+  );
+});
+FormMessage.displayName = "FormMessage";
 
 export {
   useFormField,

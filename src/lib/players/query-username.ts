@@ -9,7 +9,9 @@ type GetPlayerByUsernameError = {
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "NOT_FOUND";
 };
 
-type Player = Tables<"players">;
+type Player = Tables<"players"> & {
+  campaigns: Tables<"campaigns">[];
+};
 
 export function getPlayerByUsername(username: string):
   ResultAsync<Player, GetPlayerByUsernameError> {

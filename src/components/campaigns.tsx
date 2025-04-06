@@ -4,18 +4,13 @@ import { getCampaignsFromIds } from "@/lib/campaigns/query-ids";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph } from "./typography/paragraph";
 import { ErrorPage } from "./error-page";
+import { Tables } from "@/types/database.types";
 
 export async function CampaignCards({
-  campaignIds,
+  campaigns,
 }: {
-  campaignIds: string[];
+  campaigns: Tables<"campaigns">[];
 }) {
-  const campaignsResult = await getCampaignsFromIds(campaignIds);
-  if (!campaignsResult.isOk()) {
-    return <ErrorPage error={campaignsResult.error.message} />;
-  }
-
-  const campaigns = campaignsResult.value;
 
   // sort by start date
   campaigns.sort((a, b) => {
