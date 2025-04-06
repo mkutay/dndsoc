@@ -30,7 +30,7 @@ export function Footer() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground lg:hidden flex text-center justify-center">
-          {`© 2023-present ${siteConfig.author}. All Rights Reserved.`}
+          {`© 2025-present ${siteConfig.author}. All Rights Reserved.`}
         </p>
       </div>
     </footer>
