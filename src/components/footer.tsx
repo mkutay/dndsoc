@@ -13,7 +13,7 @@ export function Footer() {
             </p>
           </div>
           <p className="text-sm text-muted-foreground lg:flex hidden">
-            {`© 2023-present ${siteConfig.author}. All Rights Reserved.`}
+            {`© 2025-present ${siteConfig.author}. All Rights Reserved.`}
           </p>
         </div>
         <div className="flex flex-row gap-16 h-fit">
