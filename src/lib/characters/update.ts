@@ -181,9 +181,8 @@ function updateClasses({
     });
 
   const characterClassResult = ResultAsync
-    .combine([classesResult, characterClassDeletionResult, supabase])
-    .andThen(([classesResult, characterClassDeletionResult, supabase]) => {
-      console.log(classesResult)
+    .combine([classesResult, supabase])
+    .andThen(([classesResult, supabase]) => {
       const response = supabase
         .from("character_class")
         .upsert(classes.map((cls) => ({
@@ -206,5 +205,8 @@ function updateClasses({
       return okAsync();
     });
 
-  return characterClassResult;
+  const result = ResultAsync
+    .combine([characterClassDeletionResult, characterClassResult])
+
+  return result;
 }

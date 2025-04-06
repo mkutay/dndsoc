@@ -1,9 +1,7 @@
 import { format } from "date-fns";
 
-import { getCampaignsFromIds } from "@/lib/campaigns/query-ids";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph } from "./typography/paragraph";
-import { ErrorPage } from "./error-page";
 import { Tables } from "@/types/database.types";
 
 export async function CampaignCards({

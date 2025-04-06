@@ -119,9 +119,9 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
       } as SignUpError));
     })
 
-  const result = ResultAsync
-    .combine([addUsersResult, addRoleResult, signUpResult, supabase])
-    .andThen(([addUsersResult, addRoleResult, signUpResult, supabase]) => {
+  const playersResult = ResultAsync
+    .combine([signUpResult, supabase])
+    .andThen(([signUpResult, supabase]) => {
       const playersInsert = supabase
         .from("players")
         .insert({
@@ -144,6 +144,9 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
       }
       return okAsync();
     });
+
+  const result = ResultAsync
+    .combine([addUsersResult, addRoleResult, playersResult]);
 
   return resultAsyncToActionResult(result);
 }
