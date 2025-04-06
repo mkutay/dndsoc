@@ -28,14 +28,14 @@ export function getCombinedAchievements(ids: string[]):
         .in("id", ids);
 
       return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to get achievements' data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `Failed to get combined achievements' data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
         code: "DATABASE_ERROR",
       } as GetCombinedAchievementsError));
     })
     .andThen((response) => {
       if (response.error) {
         return errAsync({
-          message: "Failed to get achievements' data from Supabase: " + response.error.message,
+          message: "Failed to get combined achievements' data from Supabase: " + response.error.message,
           code: "DATABASE_ERROR",
         } as GetCombinedAchievementsError);
       }

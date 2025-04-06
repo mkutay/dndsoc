@@ -5,15 +5,9 @@ import { getUser } from "@/lib/users/user";
 import { signOut } from "./action";
 
 export default async function AuthButtons() {
-  const userResult = await getUser();
-  if (userResult.isErr()) {
-    console.error(userResult.error.message);
-    return null;
-  }
-
-  const user = userResult.value;
+  const user = await getUser();
   
-  return user ? (
+  return user.isOk() ? (
     <div className="flex items-center">
       <form action={signOut}>
         <Button variant={"outline"} type="submit">

@@ -130,7 +130,15 @@ export type Database = {
           level?: number
           user_uuid?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "players_user_uuid_fkey"
+            columns: ["user_uuid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["user_uuid"]
+          },
+        ]
       }
       received_achievements: {
         Row: {
