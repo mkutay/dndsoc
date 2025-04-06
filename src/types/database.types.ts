@@ -154,7 +154,15 @@ export type Database = {
           last_received_date?: string
           user_uuid?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "received_achievements_achievement_uuid_fkey"
+            columns: ["achievement_uuid"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       roles: {
         Row: {

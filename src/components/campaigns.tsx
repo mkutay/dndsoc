@@ -26,7 +26,7 @@ export async function CampaignCards({
   campaigns.reverse();
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-8">
+    <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
       {campaigns.map((campaign) => (
         <Card key={campaign.id} className="w-full">
           <CardHeader>

@@ -33,7 +33,7 @@ export default async function Page(props:
       </>}
       {player.achievement_ids && player.achievement_ids.length != 0 && <>
         <TypographyH2 className="mt-6">Achievements</TypographyH2>
-        <AchievementCards achievementIds={player.achievement_ids} userUuid={player.user_uuid} />
+        <AchievementCards achievementIds={player.achievement_ids} />
       </>}
     </div>
   );
