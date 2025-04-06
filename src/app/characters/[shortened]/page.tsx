@@ -23,7 +23,7 @@ export default async function Page(props:
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{character.name}</TypographyH1>
-        <CharacterEditButton playerUuid={character.player_uuid} />
+        <CharacterEditButton playerUuid={character.player_uuid} shortened={shortened} />
       </div>
       <TypographyLarge>Level {character.level} | {formatClasses(character.classes)} | {formatRaces(character.races)}</TypographyLarge>
       {character.about && character.about.length !== 0 && <TypographyLead className="mt-2">{character.about}</TypographyLead>}

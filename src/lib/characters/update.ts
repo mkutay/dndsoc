@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { createClient } from "@/utils/supabase/server";
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
-import { characterEditSchema } from "@/app/characters/edit/schema";
+import { characterEditSchema } from "@/app/characters/[shortened]/edit/schema";
 
 type UpdateCharacterError = {
   message: string;

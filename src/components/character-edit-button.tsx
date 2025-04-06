@@ -5,7 +5,7 @@ import { getUser } from "@/lib/users/user";
 import { Button } from "./ui/button";
 import { getPlayerByAuthUuid } from "@/lib/players/query-uuid";
 
-export async function CharacterEditButton({ playerUuid }: { playerUuid: string }) {
+export async function CharacterEditButton({ playerUuid, shortened }: { playerUuid: string, shortened: string }) {
   const userResult = await getUser();
   if (userResult.isErr()) {
     return null;
@@ -24,7 +24,7 @@ export async function CharacterEditButton({ playerUuid }: { playerUuid: string }
 
   return (
     <Button asChild variant="outline" size="icon">
-      <Link href={`/characters/edit`}>
+      <Link href={`/characters/${shortened}/edit`}>
         <Edit />
       </Link>
     </Button>

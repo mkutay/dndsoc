@@ -17,7 +17,7 @@ export type Character = Tables<"characters"> & {
 }
 
 export function getCharacterByUser(authUserUuid: string):
-  ResultAsync<Character, GetCharactersError> {
+  ResultAsync<Character[], GetCharactersError> {
 
   const supabase = ResultAsync.fromPromise(createClient(), () => ({
     message: "Failed to create Supabase client.",
@@ -37,8 +37,7 @@ export function getCharacterByUser(authUserUuid: string):
             users!inner(*)
           )
         `)
-        .eq("players.users.auth_user_uuid", authUserUuid)
-        .single();
+        .eq("players.users.auth_user_uuid", authUserUuid);
 
       return ResultAsync.fromPromise(response, (error) => ({
         message: `Failed to get character data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
