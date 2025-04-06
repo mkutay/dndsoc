@@ -2,8 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 import { Database } from "@/types/database.types";
+import { ResultAsync } from "neverthrow";
 
-export const createClient = async () => {
+export const createAsyncClient = async () => {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
@@ -33,3 +34,15 @@ export const createClient = async () => {
     },
   );
 };
+
+type CreateClientError = {
+  message: string;
+  code: "SUPABASE_CLIENT_ERROR";
+}
+
+export const createClient = () => {
+  return ResultAsync.fromPromise(createAsyncClient(), () => ({
+    message: "Failed to create Supabase client.",
+    code: "SUPABASE_CLIENT_ERROR",
+  } as CreateClientError));
+}

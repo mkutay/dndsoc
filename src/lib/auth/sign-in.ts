@@ -5,7 +5,7 @@ import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { createClient } from "@/utils/supabase/server";
-import { signInFormSchema } from "../schemas";
+import { signInFormSchema } from "../../config/auth-schemas";
 
 type SignInError = {
   message: string;
@@ -22,10 +22,7 @@ export async function signInAction(values: z.infer<typeof signInFormSchema>):
     });
   }
   
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as SignInError));
+  const supabase = createClient();
 
   const signed = supabase.andThen((supabase) => {
     const result = supabase.auth.signInWithPassword({

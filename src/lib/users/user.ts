@@ -11,10 +11,7 @@ type GetUserError = {
 export function getUser():
   ResultAsync<User, GetUserError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetUserError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

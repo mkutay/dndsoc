@@ -13,10 +13,7 @@ type ReceivedAchievement = Tables<"received_achievements">;
 export function getReceivedAchievements(ids: string[], user_uuid: string):
   ResultAsync<ReceivedAchievement[], GetReceivedAchievementsError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetReceivedAchievementsError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

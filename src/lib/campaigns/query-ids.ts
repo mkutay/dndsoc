@@ -13,10 +13,7 @@ type Campaign = Tables<"campaigns">;
 export function getCampaignsFromIds(ids: string[]):
   ResultAsync<Campaign[], GetCampaignsFromIdsError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetCampaignsFromIdsError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

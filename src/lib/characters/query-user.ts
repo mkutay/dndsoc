@@ -19,10 +19,7 @@ export type Character = Tables<"characters"> & {
 export function getCharacterByUser(authUserUuid: string):
   ResultAsync<Character[], GetCharactersError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetCharactersError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

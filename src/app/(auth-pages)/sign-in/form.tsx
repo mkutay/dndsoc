@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { signInAction } from "./action";
-import { signInFormSchema } from "../schemas";
+import { signInAction } from "../../../lib/auth/sign-in";
+import { signInFormSchema } from "../../../config/auth-schemas";
 
 export function SignInForm() {
   const { toast } = useToast();

@@ -13,10 +13,7 @@ type User = Tables<"users">;
 export function getUsers():
   ResultAsync<User[], GetUsersError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetUsersError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

@@ -16,10 +16,7 @@ type Player = Tables<"players"> & {
 export function getPlayerByAuthUuid(uuid: string):
   ResultAsync<Player, GetPlayerByUuidError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetPlayerByUuidError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

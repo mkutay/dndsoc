@@ -16,8 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { forgotPasswordAction } from "./action";
-import { forgotPasswordFormSchema } from "../schemas";
+import { forgotPasswordAction } from "../../../lib/auth/forgot-password";
+import { forgotPasswordFormSchema } from "../../../config/auth-schemas";
 import { useToast } from "@/hooks/use-toast";
 
 export function ForgotPasswordForm() {

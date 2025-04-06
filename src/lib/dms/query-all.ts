@@ -13,10 +13,7 @@ type DM = Tables<"dms">;
 export function getDMs():
   ResultAsync<DM[], GetDMsError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetDMsError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

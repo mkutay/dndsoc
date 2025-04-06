@@ -13,10 +13,7 @@ type DM = Tables<"dms">;
 export function getDMByUuid(uuid: string):
   ResultAsync<DM, GetDMByUuidError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetDMByUuidError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

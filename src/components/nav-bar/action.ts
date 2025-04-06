@@ -12,10 +12,7 @@ type SignOutError = {
 };
 
 export const signOutAction = async (): Promise<ActionResult<void, SignOutError>> => {
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as SignOutError));
+  const supabase = createClient();
 
   const result = supabase.andThen((supabase) =>
     ResultAsync.fromPromise(supabase.auth.signOut(), () => ({

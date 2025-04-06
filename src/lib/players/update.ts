@@ -31,10 +31,7 @@ export async function updatePlayer(values: z.infer<typeof playersEditSchema>, us
     });
   }
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as UpdatePlayerError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

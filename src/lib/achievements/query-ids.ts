@@ -13,10 +13,7 @@ type Achievement = Tables<"achievements">;
 export function getAchievementsFromIds(ids: string[]):
   ResultAsync<Achievement[], GetAchievementsFromIdsError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetAchievementsFromIdsError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

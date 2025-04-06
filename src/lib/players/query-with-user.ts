@@ -15,10 +15,7 @@ type PlayerUser = Tables<"players"> & {
 export function getPlayerWithUser(uuid: string):
   ResultAsync<PlayerUser, GetPlayerWithUserError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetPlayerWithUserError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

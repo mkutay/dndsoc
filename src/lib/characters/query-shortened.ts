@@ -17,10 +17,7 @@ type Character = Tables<"characters"> & {
 export function getCharacterByShortened(shortened: string):
   ResultAsync<Character, GetCharacterByShortenedError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetCharacterByShortenedError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

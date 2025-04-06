@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 
 import { createClient } from "@/utils/supabase/server";
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
-import { forgotPasswordFormSchema } from "../schemas";
+import { forgotPasswordFormSchema } from "../../config/auth-schemas";
 
 type ForgotPasswordError = {
   message: string;
@@ -25,10 +25,7 @@ export async function forgotPasswordAction(values: z.infer<typeof forgotPassword
 
   const { email } = values;
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as ForgotPasswordError));
+  const supabase = createClient();
 
   const origin = ResultAsync.fromPromise(headers(), () => ({
     message: "Failed to get headers.",

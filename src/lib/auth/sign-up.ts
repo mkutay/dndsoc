@@ -4,17 +4,17 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
-import { createClient } from "@/utils/supabase/server";
 import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
-import { signUpFormSchema } from "../schemas";
-import { Database } from "@/types/database.types";
+import { Enums } from "@/types/database.types";
+import { createClient } from "@/utils/supabase/server";
+import { signUpFormSchema } from "@/config/auth-schemas";
 
 type SignUpError = {
   message: string;
   code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
 
-type Role = Database["public"]["Enums"]["role"];
+type Role = Enums<"role">;
 
 export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
   Promise<ActionResult<void, SignUpError>> {
@@ -22,15 +22,12 @@ export async function signUpAction(values: z.infer<typeof signUpFormSchema>):
 
   if (!validation.success) {
     return actionErr({
-      message: "Invalid form data.",
+      message: "Invalid form data: " + validation.error.message,
       code: "INVALID_FORM",
     });
   }
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as SignUpError));
+  const supabase = createClient();
 
   const origin = ResultAsync.fromPromise(headers(), () => ({
     message: "Failed to get headers.",

@@ -23,10 +23,7 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
     });
   }
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as UpdateCharacterError));
+  const supabase = createClient();
 
   const charactersResult = supabase
     .andThen((supabase) => {
@@ -64,10 +61,7 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
 }
 
 function updateRace({ race, characterId }: { race: string; characterId: string; }) {
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as UpdateCharacterError));
+  const supabase = createClient();
 
   const racesResult = supabase
     .andThen((supabase) => {
@@ -126,10 +120,7 @@ function updateClasses({
   classes: { value: string }[];
   characterId: string;
 }) {
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as UpdateCharacterError));
+  const supabase = createClient();
 
   const classesResult = supabase
     .andThen((supabase) => {

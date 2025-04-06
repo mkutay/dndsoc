@@ -15,10 +15,7 @@ type CombinedAchievement = Tables<"achievements"> & {
 export function getCombinedAchievements(ids: string[]):
   ResultAsync<CombinedAchievement[], GetCombinedAchievementsError> {
 
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as GetCombinedAchievementsError));
+  const supabase = createClient();
 
   const result = supabase
     .andThen((supabase) => {

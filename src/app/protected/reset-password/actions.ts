@@ -14,10 +14,7 @@ type ResetPasswordError = {
 
 export async function resetPasswordAction(values: z.infer<typeof resetPasswordSchema>):
   Promise<ActionResult<void, ResetPasswordError>> {
-  const supabase = ResultAsync.fromPromise(createClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as ResetPasswordError));
+  const supabase = createClient();
 
   const password = values.newPassword
   const confirmPassword = values.confirmPassword;
