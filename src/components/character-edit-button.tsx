@@ -1,24 +1,22 @@
 import { Edit } from "lucide-react";
 import Link from "next/link";
 
-import { getUser } from "@/lib/users/user";
+import { getPlayerAuthUserUuid } from "@/lib/players/query-auth-user-uuid";
+import { getUser } from "@/lib/auth/user";
 import { Button } from "./ui/button";
-import { getPlayerByAuthUuid } from "@/lib/players/query-uuid";
 
 export async function CharacterEditButton({ playerUuid, shortened }: { playerUuid: string, shortened: string }) {
   const userResult = await getUser();
   if (userResult.isErr()) {
     return null;
   }
-  const user = userResult.value;
   
-  const playerResult = await getPlayerByAuthUuid(user.id);
+  const playerResult = await getPlayerAuthUserUuid({ authUserUuid: userResult.value.id });
   if (playerResult.isErr()) {
     return null;
   }
-  const player = playerResult.value;
 
-  if (player.id !== playerUuid) {
+  if (playerResult.value.id !== playerUuid) {
     return null;
   }
 

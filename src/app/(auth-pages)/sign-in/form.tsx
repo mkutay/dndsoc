@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { signInAction } from "../../../lib/auth/sign-in";
-import { signInFormSchema } from "../../../config/auth-schemas";
+import { signInAction } from "@/lib/auth/sign-in";
+import { signInFormSchema } from "@/config/auth-schemas";
 
 export function SignInForm() {
   const { toast } = useToast();
@@ -39,11 +39,8 @@ export function SignInForm() {
     const result = await signInAction(values);
     setPending(false);
     if (result.ok) {
-      console.log("Sign in successful");
       redirect("/protected");
     } else {
-      // Handle error
-      console.error(result.error.message);
       toast({
         title: "Sign In Failed",
         description: "Please try again. " + result.error.message,

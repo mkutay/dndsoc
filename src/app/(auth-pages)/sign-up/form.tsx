@@ -40,15 +40,12 @@ export function SignUpForm() {
     setPending(false);
 
     if (result.ok) {
-      console.log("Sign up successful");
       toast({
         title: "Verification Email Sent",
         description: "Please check your email to verify your account.",
         variant: "default",
       });
     } else {
-      // Handle error
-      console.error(result.error.message);
       toast({
         title: "Sign Up Failed",
         description: "Please try again. " + result.error.message,

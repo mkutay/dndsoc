@@ -1,48 +1,52 @@
 "use server";
 
 import { z } from "zod";
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync } from "neverthrow";
 
-import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
+import { resultAsyncToActionResult } from "@/types/error-typing";
+import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
-import { signInFormSchema } from "../../config/auth-schemas";
+import { parseSchema } from "@/utils/parse-schema";
+import { completeSignUp } from "./complete-sign-up";
+import { getPublicUser } from "../users/query-uuid";
 
 type SignInError = {
   message: string;
-  code: "INVALID_FORM" | "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
+  code: "DATABASE_ERROR";
 }
 
-export async function signInAction(values: z.infer<typeof signInFormSchema>):
-  Promise<ActionResult<void, SignInError>> {
-  const validation = signInFormSchema.safeParse(values);
-  if (!validation.success) {
-    return actionErr({
-      message: "Invalid form data.",
-      code: "INVALID_FORM",
-    });
-  }
-  
-  const supabase = createClient();
-
-  const signed = supabase.andThen((supabase) => {
-    const result = supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    });
-
-    return ResultAsync.fromPromise(result, () => ({
-      message: "Failed to sign in.",
-      code: "DATABASE_ERROR",
-    } as SignInError));
-  }).andThen((result) => {
-    if (result.error) {
-      return errAsync({
-        message: "Failed to sign in.",
-        code: "DATABASE_ERROR",
-      } as SignInError);
-    }
-    return okAsync();
-  });
-
-  return resultAsyncToActionResult(signed);
-};
+export const signInAction = async (values: z.infer<typeof signInFormSchema>) => 
+  resultAsyncToActionResult(
+    parseSchema(signInFormSchema, values)
+      .asyncAndThen(() => 
+        createClient()
+        .andThen((supabase) => 
+          fromPromise(
+            supabase.auth.signInWithPassword({
+              email: values.email,
+              password: values.password,
+            }),
+            () => ({
+              message: "Failed to sign in.",
+              code: "DATABASE_ERROR",
+            } as SignInError)
+          )
+        )
+        .andThen((result) => 
+          !result.error
+            ? okAsync(result.data.user.id)
+            : errAsync({
+              message: "Failed to sign in.",
+              code: "DATABASE_ERROR",
+            } as SignInError)
+        )
+        .andThen((authUserUuid) =>
+          getPublicUser({ authUserUuid })
+            .orTee((userError) =>
+              userError.code === "USER_NOT_FOUND"
+                ? completeSignUp()
+                : errAsync(userError)
+            )
+        )
+      )
+  );

@@ -16,6 +16,6 @@ export function getDMByUsername(username: string):
 
   return getUserByUsername(username)
     .andThen((user) => {
-      return getDMByUuid(user.id);
+      return getDMByUuid(user.auth_user_uuid);
     });
 }

@@ -1,47 +1,33 @@
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync } from "neverthrow";
 
-import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
+import { Character } from "@/types/full-database.types";
 
 type GetCharacterByShortenedError = {
   message: string;
-  code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
+  code: "DATABASE_ERROR";
 };
 
-type Character = Tables<"characters"> & {
-  races: Tables<"races">[];
-  classes: Tables<"classes">[];
-  campaigns: Tables<"campaigns">[];
-};
-
-export function getCharacterByShortened(shortened: string):
-  ResultAsync<Character, GetCharacterByShortenedError> {
-
-  const supabase = createClient();
-
-  const result = supabase
-    .andThen((supabase) => {
-      const response = supabase
+export const getCharacterByShortened = ({ shortened }: { shortened: string }) =>
+  createClient()
+  .andThen((supabase) =>
+    fromPromise(
+      supabase
         .from("characters")
         .select("*, races(*), classes(*), campaigns(*)")
         .eq("shortened", shortened)
-        .single();
-
-      return ResultAsync.fromPromise(response, (error) => ({
+        .single(),
+      (error) => ({
         message: `Failed to get character data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
         code: "DATABASE_ERROR",
-      } as GetCharacterByShortenedError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
+      } as GetCharacterByShortenedError)
+    )
+  )
+  .andThen((response) => 
+    !response.error
+      ? okAsync(response.data as Character)
+      : errAsync({
           message: "Failed to get character data from Supabase: " + response.error.message,
           code: "DATABASE_ERROR",
-        } as GetCharacterByShortenedError);
-      }
-      const playerData = response.data;
-      return okAsync(playerData);
-    });
-
-  return result;
-}
+        } as GetCharacterByShortenedError)
+  );

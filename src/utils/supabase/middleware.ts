@@ -42,11 +42,8 @@ export const updateSession = async (request: NextRequest) => {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  if (pathname.startsWith("/players/edit") && user.error) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
-
-  if (pathname.includes("/characters") && pathname.includes("/edit") && user.error) {
+  // Edit page in any protected route
+  if (pathname.includes("/edit") && user.error) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 

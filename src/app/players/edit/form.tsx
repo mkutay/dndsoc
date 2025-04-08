@@ -19,10 +19,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { updatePlayer } from "@/lib/players/update";
-import { playersEditSchema } from "./schema";
-import { Tables } from "@/types/database.types";
+import { playersEditSchema } from "@/config/player-edit-schema";
+import { Player } from "@/types/full-database.types";
 
-export function PlayerEditForm({ player, username }: { player: Tables<"players">, username: string }) {
+export function PlayerEditForm({ player }: { player: Player }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
@@ -30,25 +30,21 @@ export function PlayerEditForm({ player, username }: { player: Tables<"players">
     resolver: zodResolver(playersEditSchema),
     defaultValues: {
       about: player.about,
-      originalAbout: player.about,
     },
   });
  
   const onSubmit = async (values: z.infer<typeof playersEditSchema>) => {
     setPending(true);
-    const result = await updatePlayer(values, player.user_uuid);
+    const result = await updatePlayer(values, player.id);
     setPending(false);
 
     if (result.ok) {
-      console.log("Update successful");
       toast({
         title: "Update Successful",
         description: "Your profile has been updated.",
       });
-      redirect("/players/" + username);
+      redirect("/players/" + player.users.username);
     } else {
-      // Handle error
-      console.error(result.error.message);
       toast({
         title: "Update Failed",
         description: "Please try again. " + result.error.message,
@@ -77,7 +73,6 @@ export function PlayerEditForm({ player, username }: { player: Tables<"players">
             </FormItem>
           )}
         />
-        <input type="hidden" {...form.register("originalAbout")} />
         <Button type="submit" disabled={pending}>Submit</Button>
       </form>
     </Form>

@@ -1,8 +1,9 @@
+import { createClient as supaCreateClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
+import { ResultAsync } from "neverthrow";
 import { cookies } from "next/headers";
 
 import { Database } from "@/types/database.types";
-import { ResultAsync } from "neverthrow";
 
 export const createAsyncClient = async () => {
   const cookieStore = await cookies();
@@ -21,10 +22,7 @@ export const createAsyncClient = async () => {
               cookieStore.set(name, value, options);
             });
           } catch (error) {
-            console.error(
-              "Error setting cookies. This is likely because you are using a Server Component.",
-              error,
-            );
+            console.log(error)
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
@@ -35,14 +33,23 @@ export const createAsyncClient = async () => {
   );
 };
 
+const createBasicClient = async () =>
+  supaCreateClient<Database>(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+  );
+
 type CreateClientError = {
   message: string;
   code: "SUPABASE_CLIENT_ERROR";
 }
 
-export const createClient = () => {
-  return ResultAsync.fromPromise(createAsyncClient(), () => ({
-    message: "Failed to create Supabase client.",
-    code: "SUPABASE_CLIENT_ERROR",
-  } as CreateClientError));
-}
+export const createClient = () =>
+  ResultAsync.fromPromise(
+    process.env.MODE === "test"
+      ? createBasicClient() 
+      : createAsyncClient(),
+    (error) => ({
+      message: "Failed to create Supabase client." + error,
+      code: "SUPABASE_CLIENT_ERROR",
+    } as CreateClientError));

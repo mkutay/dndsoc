@@ -1,47 +1,39 @@
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync } from "neverthrow";
 
-import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
-type GetUserByUuidError = {
+type GetPublicUserError = {
   message: string;
-  code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "NOT_FOUND";
+  code: "DATABASE_ERROR" | "USER_NOT_FOUND";
 }
 
-type User = Tables<"users">;
-
-export function getUserByUuid(uuid: string):
-  ResultAsync<User, GetUserByUuidError> {
-    
-  const supabase = createClient();
-
-  const userResult = supabase.andThen((supabase) => {
-    const response = supabase
-      .from("users")
-      .select("*")
-      .eq("user_uuid", uuid)
-      .single();
-
-    return ResultAsync.fromPromise(response, (error) => ({
-      message: `Failed to get user data with uuid from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      code: "DATABASE_ERROR",
-    } as GetUserByUuidError));
-  }).andThen((response) => {
+export const getPublicUser = ({ authUserUuid }: { authUserUuid: string }) => createClient()
+  .andThen((supabase) => 
+    fromPromise(
+      supabase
+        .from("users")
+        .select("*")
+        .eq("auth_user_uuid", authUserUuid)
+        .single(),
+      (error) => ({
+        message: `Failed to get user data with uuid from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        code: "DATABASE_ERROR",
+      } as GetPublicUserError)
+    )
+  )
+  .andThen((response) => {
     if (response.error) {
       // Check for not found specifically
       if (response.error.code === 'PGRST116') {
         return errAsync({
-          message: `User with uuid '${uuid}' not found`,
-          code: "NOT_FOUND",
-        } as GetUserByUuidError);
+          message: `User with auth uuid '${authUserUuid}' not found.`,
+          code: "USER_NOT_FOUND",
+        } as GetPublicUserError);
       }
       return errAsync({
         message: "Failed to get user data with username from Supabase: " + response.error.message,
         code: "DATABASE_ERROR",
-      } as GetUserByUuidError);
+      } as GetPublicUserError);
     }
     return okAsync(response.data);
   });
-
-  return userResult;
-}

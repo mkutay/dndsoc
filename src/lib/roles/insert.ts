@@ -11,7 +11,7 @@ type InsertRoleError = {
 type Role = Tables<"roles">;
 type RoleArgument = {
   role?: Enums<"role">;
-  user_uuid: string;
+  auth_user_uuid: string;
 }
 
 export const insertRole = (role: RoleArgument): ResultAsync<Role, InsertRoleError> =>

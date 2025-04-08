@@ -1,11 +1,11 @@
-import { errAsync, fromPromise, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync } from "neverthrow";
 
 import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 type InsertUserError = {
   message: string;
-  code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
+  code: "DATABASE_ERROR";
 }
 
 type User = Tables<"users">;
@@ -13,10 +13,9 @@ type UserArgument = {
   username: string;
   knumber: string;
   auth_user_uuid: string;
-  id?: string;
 }
 
-export const insertUser = (user: UserArgument): ResultAsync<User, InsertUserError> =>
+export const insertUser = (user: UserArgument) =>
   createClient()
   .andThen((supabase) => fromPromise(
     supabase
@@ -31,7 +30,7 @@ export const insertUser = (user: UserArgument): ResultAsync<User, InsertUserErro
   )
   .andThen((result) =>
     !result.error
-      ? okAsync(result.data)
+      ? okAsync(result.data as User)
       : errAsync({
           message: "Failed to insert user into table \"users\": " + result.error.message,
           code: "DATABASE_ERROR",

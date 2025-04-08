@@ -36,16 +36,12 @@ export function ForgotPasswordForm() {
     const result = await forgotPasswordAction(values);
     setPending(false);
     if (result.ok) {
-      // Handle success
-      console.log("Password reset email sent.");
       toast({
         title: "Password Reset Email Sent",
         description: "Please check your email for further instructions.",
         variant: "default",
       });
     } else {
-      // Handle error
-      console.error(result.error);
       toast({
         title: "Error Resetting Password",
         description: result.error.message,

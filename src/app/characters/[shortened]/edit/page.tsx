@@ -1,40 +1,32 @@
 import { redirect } from "next/navigation";
 
+import { getCharacterByShortened } from "@/lib/characters/query-shortened";
+import { getPlayerUser } from "@/lib/player-user";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getUser } from "@/lib/users/user";
-import { ErrorPage } from "@/components/error-page";
-import { getCharacterByUser } from "@/lib/characters/query-user";
 import { CharacterEditForm } from "./form";
 
 export default async function Page(props: 
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await props.params;
+  const playerUser = await getPlayerUser();
+  if (playerUser.isErr()) redirect("/sign-in");
 
-  const userResult = await getUser();
-  if (userResult.isErr()) {
-    redirect("/sign-in");
-  }
-  const user = userResult.value;
-
-  const characterResult = await getCharacterByUser(user.id);
+  const characterResult = await getCharacterByShortened({ shortened });
   if (characterResult.isErr()) {
-    return <ErrorPage error={characterResult.error.message + characterResult.error.code} />;
+    return redirect("/error?error=" + characterResult.error.message);
   }
   const character = characterResult.value;
-  if (character.length === 0) {
-    return <ErrorPage error="You have no characters." />;
-  }
 
-  const characterToEdit = character.find((char) => char.shortened === shortened);
-  if (!characterToEdit) {
+  // Check if the character belongs to the player
+  if (character.player_uuid !== playerUser.value.id) {
     return redirect(`/characters/${shortened}`);
   }
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-6 px-4 gap-6">
-      <TypographyH1>Edit <span className="text-primary">{characterToEdit.name}</span>&apos;s Page</TypographyH1>
-      <CharacterEditForm character={characterToEdit} />
+      <TypographyH1>Edit <span className="text-primary">{character.name}</span>&apos;s Page</TypographyH1>
+      <CharacterEditForm character={character} />
     </div>
   );
 }

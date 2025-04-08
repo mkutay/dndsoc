@@ -1,203 +1,87 @@
 "use server";
 
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync, ResultAsync } from "neverthrow";
 import { z } from "zod";
 
-import { createClient } from "@/utils/supabase/server";
-import { actionErr, ActionResult, resultAsyncToActionResult } from "@/types/error-typing";
 import { characterEditSchema } from "@/app/characters/[shortened]/edit/schema";
+import { resultAsyncToActionResult } from "@/types/error-typing";
+import { createClient } from "@/utils/supabase/server";
+import { parseSchema } from "@/utils/parse-schema";
+import { upsertCharacterRace } from "@/lib/races/upsert-character-race";
+import { deleteCharacterRace } from "@/lib/races/delete-character-race";
+import { insertClasses } from "@/lib/classes/insert";
+import { upsertRace } from "@/lib/races/upsert";
+import { deleteCharacterClass } from "./delete-character-class";
+import { upsertCharacterClass } from "./upsert-character-class";
 
 type UpdateCharacterError = {
   message: string;
-  code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "INVALID_FORM";
+  code: "DATABASE_ERROR";
 };
 
-export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterId: string):
-  Promise<ActionResult<void, UpdateCharacterError>> {
-
-  const validation = characterEditSchema.safeParse(values);
-  if (!validation.success) {
-    return actionErr({
-      message: "Invalid input data.",
-      code: "INVALID_FORM",
-    });
-  }
-
-  const supabase = createClient();
-
-  const charactersResult = supabase
-    .andThen((supabase) => {
-      const response = supabase
-        .from("characters")
-        .update({
-          about: values.about,
-          level: values.level,
-        })
-        .eq("id", characterId);
-
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to update characters table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to update characters table: " + response.error.message,
+export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterId: string) {
+  const charactersResult =
+    parseSchema(characterEditSchema, values)
+    .asyncAndThen(() => createClient())
+    .andThen((supabase) => 
+      fromPromise(
+        supabase
+          .from("characters")
+          .update({
+            about: values.about,
+            level: values.level,
+          })
+          .eq("id", characterId),
+        (error) => ({
+          message: `Failed to update characters table: ${error instanceof Error ? error.message : 'Unknown error'}`,
           code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync();
-    });
+        } as UpdateCharacterError)
+      )
+    )
+    .andThen((response) => 
+      !response.error
+        ? okAsync()
+        : errAsync({
+            message: "Failed to update characters table: " + response.error.message,
+            code: "DATABASE_ERROR",
+          } as UpdateCharacterError)
+    );
 
   const characterClassResult = updateClasses({ classes: values.classes, characterId });
-
   const characterRaceResult = updateRace({ race: values.race, characterId });
 
-  const result = ResultAsync
-    .combine([charactersResult, characterClassResult, characterRaceResult])
-
+  const result = ResultAsync.combine([charactersResult, characterClassResult, characterRaceResult])
   return resultAsyncToActionResult(result);
 }
 
-function updateRace({ race, characterId }: { race: string; characterId: string; }) {
-  const supabase = createClient();
+const updateRace = ({ race, characterId }: { race: string; characterId: string; }) =>
+  deleteCharacterRace({ characterId })
+    .andThen(() =>
+      upsertRace({ race })
+        .andThen((response) => 
+          upsertCharacterRace({
+            raceId: response.id,
+            characterId,
+          })
+        )
+    );
 
-  const racesResult = supabase
-    .andThen((supabase) => {
-      const response = supabase
-        .from("races")
-        .upsert({ name: race }, { ignoreDuplicates: false, onConflict: "name" })
-        .select("*");
-
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to update races table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to update races table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync(response.data);
-    });
-
-  const characterRaceResult = ResultAsync
-    .combine([racesResult, supabase])
-    .andThen(([racesResult, supabase]) => {
-      const response = supabase
-        .from("character_race")
-        .update({
-          race_id: racesResult.find((r) => r.name === race)?.id,
-        })
-        .eq("character_id", characterId);
-      
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to update character_race table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to update character_race table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync();
-    });
-
-  return characterRaceResult;
-}
-
-function updateClasses({
+const updateClasses = ({
   classes,
   characterId,
 }: {
   classes: { value: string }[];
   characterId: string;
-}) {
-  const supabase = createClient();
-
-  const classesResult = supabase
-    .andThen((supabase) => {
-      const response = supabase
-        .from("classes")
-        .upsert(
-          classes.map((cls) => ({ name: cls.value })),
-          { ignoreDuplicates: false, onConflict: "name" },
+}) =>
+  deleteCharacterClass({ characterId })
+    .andThen(() =>
+      insertClasses({ classes: classes.map((cls) => ({ name: cls.value })) })
+        .andThen((classes) =>
+          upsertCharacterClass({
+            classes: classes.map((cls) => ({
+              character_id: characterId,
+              class_id: cls.id,
+            }))
+          })
         )
-        .select("*");
-
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to update classes table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to update classes table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync(response.data);
-    });
-
-  const characterClassDeletionResult = ResultAsync
-    .combine([classesResult, supabase])
-    .andThen(([classesResult, supabase]) => {
-      console.log(classesResult)
-      const response = supabase
-        .from("character_class")
-        .delete()
-        .eq("character_id", characterId)
-
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to delete in the character_class table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to delete in the character_class table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync();
-    });
-
-  const characterClassResult = ResultAsync
-    .combine([classesResult, supabase])
-    .andThen(([classesResult, supabase]) => {
-      const response = supabase
-        .from("character_class")
-        .upsert(classes.map((cls) => ({
-          character_id: characterId,
-          class_id: classesResult.find((c) => c.name === cls.value)?.id,
-        })));
-
-      return ResultAsync.fromPromise(response, (error) => ({
-        message: `Failed to update character_class table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as UpdateCharacterError));
-    })
-    .andThen((response) => {
-      if (response.error) {
-        return errAsync({
-          message: "Failed to update character_class table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError);
-      }
-      return okAsync();
-    });
-
-  const result = ResultAsync
-    .combine([characterClassDeletionResult, characterClassResult])
-
-  return result;
-}
+    );

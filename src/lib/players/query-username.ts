@@ -1,23 +1,33 @@
-import { ResultAsync } from "neverthrow";
+import { errAsync, fromPromise, okAsync } from "neverthrow";
 
-import { Tables } from "@/types/database.types";
-import { getUserByUsername } from "@/lib/users/query-username";
-import { getPlayerByAuthUuid } from "./query-uuid";
+import { createClient } from "@/utils/supabase/server";
+import { Player } from "@/types/full-database.types";
 
 type GetPlayerByUsernameError = {
   message: string;
-  code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR" | "NOT_FOUND";
+  code: "DATABASE_ERROR";
 };
 
-type Player = Tables<"players"> & {
-  campaigns: Tables<"campaigns">[];
-};
-
-export function getPlayerByUsername(username: string):
-  ResultAsync<Player, GetPlayerByUsernameError> {
-
-  return getUserByUsername(username)
-    .andThen((user) => {
-      return getPlayerByAuthUuid(user.auth_user_uuid);
-    });
-}
+export const getPlayerByUsername = ({ username }: { username: string }) =>
+  createClient()
+  .andThen((supabase) =>
+    fromPromise(
+      supabase
+        .from("players")
+        .select(`*, users(*), received_achievements(*, achievements(*))`)
+        .eq("users.username", username)
+        .single(),
+      (error) => ({
+        message: `Could not get player with username ${username}: ` + (error as Error).message,
+        code: "DATABASE_ERROR",
+      } as GetPlayerByUsernameError)
+    )
+  )
+  .andThen((response) => 
+    !response.error
+      ? okAsync(response.data as Player)
+      : errAsync({
+          message: `Could not get player with username ${username}: ` + response.error.message,
+          code: "DATABASE_ERROR",
+        } as GetPlayerByUsernameError)
+  )

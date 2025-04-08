@@ -14,7 +14,7 @@ type PlayerArgument = {
   achievement_ids?: string[];
   id?: string;
   level?: number;
-  user_uuid: string;
+  auth_user_uuid: string;
 }
 
 export const insertPlayer = (player: PlayerArgument): ResultAsync<Player, InsertPlayerError> =>

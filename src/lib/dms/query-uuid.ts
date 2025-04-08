@@ -20,7 +20,7 @@ export function getDMByUuid(uuid: string):
       const response = supabase
         .from("dms")
         .select("*")
-        .eq("user_uuid", uuid)
+        .eq("auth_user_uuid", uuid)
         .single();
 
       return ResultAsync.fromPromise(response, (error) => ({

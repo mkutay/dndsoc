@@ -21,11 +21,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { updateCharacter } from "@/lib/characters/update";
-import { Character } from "@/lib/characters/query-user";
 import { cn } from "@/lib/utils";
 import { characterEditSchema } from "./schema";
+import { Character } from "@/types/full-database.types";
 
 export function CharacterEditForm({ character }: { character: Character }) {
+  console.log(character)
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
@@ -34,7 +35,7 @@ export function CharacterEditForm({ character }: { character: Character }) {
     defaultValues: {
       about: character.about,
       level: character.level,
-      race: character.races[0].name,
+      race: character.races.length ? character.races[0].name : "",
       classes: character.classes.map((cls) => ({ value: cls.name })),
     },
   });

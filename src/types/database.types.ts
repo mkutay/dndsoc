@@ -146,24 +146,24 @@ export type Database = {
           about: string
           id: string
           level: number
-          name: string | null
-          player_uuid: string
+          name: string
+          player_uuid: string | null
           shortened: string
         }
         Insert: {
           about?: string
           id?: string
           level?: number
-          name?: string | null
-          player_uuid?: string
+          name?: string
+          player_uuid?: string | null
           shortened: string
         }
         Update: {
           about?: string
           id?: string
           level?: number
-          name?: string | null
-          player_uuid?: string
+          name?: string
+          player_uuid?: string | null
           shortened?: string
         }
         Relationships: [
@@ -193,84 +193,59 @@ export type Database = {
       }
       dms: {
         Row: {
+          auth_user_uuid: string
           campaign_ids: string[] | null
           id: string
           level: number
-          user_uuid: string
         }
         Insert: {
+          auth_user_uuid: string
           campaign_ids?: string[] | null
           id?: string
           level?: number
-          user_uuid: string
         }
         Update: {
+          auth_user_uuid?: string
           campaign_ids?: string[] | null
           id?: string
           level?: number
-          user_uuid?: string
-        }
-        Relationships: []
-      }
-      player_campaigns: {
-        Row: {
-          campaign_id: string
-          player_id: string
-        }
-        Insert: {
-          campaign_id?: string
-          player_id?: string
-        }
-        Update: {
-          campaign_id?: string
-          player_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "player_campaigns_campaign_id_fkey"
-            columns: ["campaign_id"]
+            foreignKeyName: "dms_auth_user_uuid_fkey1"
+            columns: ["auth_user_uuid"]
             isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "player_campaigns_player_id_fkey"
-            columns: ["player_id"]
-            isOneToOne: false
-            referencedRelation: "players"
-            referencedColumns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
           },
         ]
       }
       players: {
         Row: {
           about: string
-          achievement_ids: string[]
+          auth_user_uuid: string
           id: string
           level: number
-          user_uuid: string
         }
         Insert: {
           about?: string
-          achievement_ids?: string[]
+          auth_user_uuid: string
           id?: string
           level?: number
-          user_uuid?: string
         }
         Update: {
           about?: string
-          achievement_ids?: string[]
+          auth_user_uuid?: string
           id?: string
           level?: number
-          user_uuid?: string
         }
         Relationships: [
           {
-            foreignKeyName: "players_user_uuid_fkey"
-            columns: ["user_uuid"]
+            foreignKeyName: "players_auth_user_uuid_fkey1"
+            columns: ["auth_user_uuid"]
             isOneToOne: false
             referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedColumns: ["auth_user_uuid"]
           },
         ]
       }
@@ -295,21 +270,21 @@ export type Database = {
           count: number
           first_received_date: string
           last_received_date: string
-          user_uuid: string
+          player_uuid: string
         }
         Insert: {
           achievement_uuid: string
           count?: number
           first_received_date: string
           last_received_date: string
-          user_uuid: string
+          player_uuid: string
         }
         Update: {
           achievement_uuid?: string
           count?: number
           first_received_date?: string
           last_received_date?: string
-          user_uuid?: string
+          player_uuid?: string
         }
         Relationships: [
           {
@@ -320,53 +295,50 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "received_achievements_user_uuid_fkey"
-            columns: ["user_uuid"]
+            foreignKeyName: "received_achievements_player_uuid_fkey"
+            columns: ["player_uuid"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "players"
             referencedColumns: ["id"]
           },
         ]
       }
       roles: {
         Row: {
+          auth_user_uuid: string
           role: Database["public"]["Enums"]["role"]
-          user_uuid: string
         }
         Insert: {
+          auth_user_uuid?: string
           role?: Database["public"]["Enums"]["role"]
-          user_uuid?: string
         }
         Update: {
+          auth_user_uuid?: string
           role?: Database["public"]["Enums"]["role"]
-          user_uuid?: string
         }
         Relationships: [
           {
-            foreignKeyName: "roles_user_uuid_fkey"
-            columns: ["user_uuid"]
+            foreignKeyName: "roles_auth_user_uuid_fkey"
+            columns: ["auth_user_uuid"]
             isOneToOne: true
             referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedColumns: ["auth_user_uuid"]
           },
         ]
       }
       users: {
         Row: {
           auth_user_uuid: string
-          id: string
           knumber: string
           username: string
         }
         Insert: {
-          auth_user_uuid: string
-          id?: string
+          auth_user_uuid?: string
           knumber: string
           username: string
         }
         Update: {
           auth_user_uuid?: string
-          id?: string
           knumber?: string
           username?: string
         }
