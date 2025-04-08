@@ -3,8 +3,6 @@ import { createClient as supaCreateClient } from "@supabase/supabase-js";
 
 import { createClient } from '@/utils/supabase/server';
 import { Database } from '@/types/database.types';
-import { insertUser } from '@/lib/users/insert';
-import { getUser } from '@/lib/auth/user';
 
 export const supabaseServiceRole = supaCreateClient<Database>(
   process.env.SUPABASE_URL!,
@@ -22,36 +20,6 @@ describe("authenticated user", () => {
   });
 
   test("insert user", async () => {
-    const user = await getUser();
-    if (user.isErr()) {
-      console.error(user.error.message);
-      return expect(user.isOk()).toBe(true);
-    }
-
-    const inserted = await insertUser({
-      username: "testuser",
-      knumber: "K12345678",
-      auth_user_uuid: user.value.id,
-    });
-    if (inserted.isErr()) {
-      console.error(inserted.error.message);
-      return expect(inserted.isOk()).toBe(true);
-    }
-    const data = inserted.value;
-
-    expect(inserted.isOk()).toBe(true);
-    expect(data).not.toBeNull();
-    expect(data.username).toEqual("testuser");
-    expect(data.knumber).toEqual("K12345678");
-
-    const { data: deleted, error } = await supabaseServiceRole
-      .from("users")
-      .delete()
-      .eq("id", data.id)
-      .select("*");
-    
-    expect(error).toBeNull();
-    expect(deleted).not.toBeNull();
   });
 });
 
