@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 
 type GetPublicUserError = {
   message: string;
-  code: "DATABASE_ERROR" | "USER_NOT_FOUND";
+  code: "DATABASE_ERROR" | "PUBLIC_USER_NOT_FOUND";
 }
 
 export const getPublicUser = ({ authUserUuid }: { authUserUuid: string }) => createClient()
@@ -26,12 +26,12 @@ export const getPublicUser = ({ authUserUuid }: { authUserUuid: string }) => cre
       // Check for not found specifically
       if (response.error.code === 'PGRST116') {
         return errAsync({
-          message: `User with auth uuid '${authUserUuid}' not found.`,
-          code: "USER_NOT_FOUND",
+          message: `Public user with auth uuid '${authUserUuid}' not found from table users`,
+          code: "PUBLIC_USER_NOT_FOUND",
         } as GetPublicUserError);
       }
       return errAsync({
-        message: "Failed to get user data with username from Supabase: " + response.error.message,
+        message: "Failed to get public user data with username from Supabase: " + response.error.message,
         code: "DATABASE_ERROR",
       } as GetPublicUserError);
     }

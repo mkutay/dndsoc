@@ -38,9 +38,10 @@ export function SignInForm() {
     setPending(true);
     const result = await signInAction(values);
     setPending(false);
-    if (result.ok) {
+    if (result.ok || result.error.code === "PUBLIC_USER_NOT_FOUND") {
       redirect("/protected");
     } else {
+      console.error(result.error.message + " " + result.error.code);
       toast({
         title: "Sign In Failed",
         description: "Please try again. " + result.error.message,
