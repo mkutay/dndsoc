@@ -14,7 +14,7 @@ export const getPlayerByUsername = ({ username }: { username: string }) =>
     fromPromise(
       supabase
         .from("players")
-        .select(`*, users(*), received_achievements(*, achievements(*))`)
+        .select(`*, users!inner(*), received_achievements(*, achievements(*))`)
         .eq("users.username", username)
         .single(),
       (error) => ({
@@ -23,11 +23,12 @@ export const getPlayerByUsername = ({ username }: { username: string }) =>
       } as GetPlayerByUsernameError)
     )
   )
-  .andThen((response) => 
-    !response.error
+  .andThen((response) => {
+    console.log(response, username)
+    return !response.error
       ? okAsync(response.data as Player)
       : errAsync({
           message: `Could not get player with username ${username}: ` + response.error.message,
           code: "DATABASE_ERROR",
-        } as GetPlayerByUsernameError)
+        } as GetPlayerByUsernameError)}
   )
