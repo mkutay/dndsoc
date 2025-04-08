@@ -5,8 +5,8 @@ import { completeSignUp } from "@/lib/auth/complete-sign-up";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
+  const origin = process.env.PRODUCTION_SITE_URL ? process.env.PRODUCTION_SITE_URL : "http://localhost:3000";
   const code = requestUrl.searchParams.get("code");
-  const origin = requestUrl.origin;
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
   const type = requestUrl.searchParams.get("type")?.toString();
 
