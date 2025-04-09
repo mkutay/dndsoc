@@ -32,21 +32,21 @@ export type Database = {
           description: string
           end_date: string
           id: string
-          name: string | null
+          name: string
           start_date: string
         }
         Insert: {
           description: string
           end_date: string
           id?: string
-          name?: string | null
+          name: string
           start_date: string
         }
         Update: {
           description?: string
           end_date?: string
           id?: string
-          name?: string | null
+          name?: string
           start_date?: string
         }
         Relationships: []
