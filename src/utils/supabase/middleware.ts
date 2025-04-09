@@ -38,17 +38,13 @@ export const updateSession = async (request: NextRequest) => {
   const pathname = request.nextUrl.pathname;
 
   /* Protected Routes */
-  if (pathname.startsWith("/protected") && user.error) {
+  if (pathname.startsWith("/reset-password") && user.error) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   // Edit page in any protected route
   if (pathname.includes("/edit") && user.error) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
-
-  if (pathname === "/" && !user.error) {
-    return NextResponse.redirect(new URL("/protected", request.url));
   }
 
   return response;

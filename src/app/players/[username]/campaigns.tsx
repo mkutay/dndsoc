@@ -1,8 +1,9 @@
-import { CampaignCards } from "@/components/campaigns-cards";
-import { TypographyH2 } from "@/components/typography/headings";
-import { getCampaignsByPlayerUuid } from "@/lib/campaigns/query-player-uuid";
-import { Player } from "@/types/full-database.types";
 import { redirect } from "next/navigation";
+
+import { getCampaignsByPlayerUuid } from "@/lib/campaigns/query-player-uuid";
+import { TypographyH2 } from "@/components/typography/headings";
+import { CampaignCards } from "@/components/campaigns-cards";
+import { Player } from "@/types/full-database.types";
 
 export async function Campaigns({ player }: { player: Player }) {
   const result = await getCampaignsByPlayerUuid({ playerUuid: player.id });

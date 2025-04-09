@@ -24,7 +24,7 @@ export const forgotPasswordAction = async (values: z.infer<typeof forgotPassword
 
       return combined.andThen(([origin, supabase]) => {
         const response = supabase.auth.resetPasswordForEmail(values.email, {
-          redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+          redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
         });
 
         return ResultAsync.fromPromise(response, () => ({
