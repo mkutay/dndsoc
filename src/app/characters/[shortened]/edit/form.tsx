@@ -26,7 +26,6 @@ import { characterEditSchema } from "./schema";
 import { Character } from "@/types/full-database.types";
 
 export function CharacterEditForm({ character }: { character: Character }) {
-  console.log(character)
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
