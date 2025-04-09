@@ -39,7 +39,7 @@ export function SignInForm() {
     const result = await signInAction(values);
     setPending(false);
     if (result.ok || result.error.code === "PUBLIC_USER_NOT_FOUND") {
-      redirect("/protected");
+      redirect(`/players/${result.ok ? result.value.username : ""}`);
     } else {
       console.error(result.error.message + " " + result.error.code);
       toast({

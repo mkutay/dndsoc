@@ -7,8 +7,8 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
+import { getPublicUser } from "@/lib/users/query-uuid";
 import { completeSignUp } from "./complete-sign-up";
-import { getPublicUser } from "../users/query-uuid";
 
 type SignInError = {
   message: string;
