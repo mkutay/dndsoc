@@ -20,14 +20,16 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { characterEditSchema } from "@/config/character-edit-schema";
+import { Character } from "@/types/full-database.types";
 import { updateCharacter } from "@/lib/characters/update";
 import { cn } from "@/lib/utils";
-import { characterEditSchema } from "../../../../config/character-edit-schema";
-import { Character } from "@/types/full-database.types";
 
 export function CharacterEditForm({ character }: { character: Character }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+
+  const classes = character.classes.map((cls) => ({ value: cls.name }))
 
   const form = useForm<z.infer<typeof characterEditSchema>>({
     resolver: zodResolver(characterEditSchema),
@@ -35,7 +37,7 @@ export function CharacterEditForm({ character }: { character: Character }) {
       about: character.about,
       level: character.level,
       race: character.races.length ? character.races[0].name : "",
-      classes: character.classes.map((cls) => ({ value: cls.name })),
+      classes: classes.length ? classes : [{ value: "" }],
     },
   });
 
