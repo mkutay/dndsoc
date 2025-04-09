@@ -9,7 +9,6 @@ export async function CampaignCards({
 }: {
   campaigns: Tables<"campaigns">[];
 }) {
-
   // sort by start date
   campaigns.sort((a, b) => {
     const dateA = new Date(a.start_date);

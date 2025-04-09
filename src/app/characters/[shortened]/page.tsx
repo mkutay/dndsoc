@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
-import { CampaignCards } from "@/components/campaigns";
+import { CampaignCards } from "@/components/campaigns-cards";
 import { getCharacterByShortened } from "@/lib/characters/query-shortened";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 
