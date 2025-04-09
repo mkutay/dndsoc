@@ -3,7 +3,7 @@
 import { errAsync, fromPromise, okAsync, ResultAsync } from "neverthrow";
 import { z } from "zod";
 
-import { characterEditSchema } from "@/app/characters/[shortened]/edit/schema";
+import { characterEditSchema } from "@/config/character-edit-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";

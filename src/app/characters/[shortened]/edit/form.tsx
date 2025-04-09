@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { updateCharacter } from "@/lib/characters/update";
 import { cn } from "@/lib/utils";
-import { characterEditSchema } from "./schema";
+import { characterEditSchema } from "../../../../config/character-edit-schema";
 import { Character } from "@/types/full-database.types";
 
 export function CharacterEditForm({ character }: { character: Character }) {

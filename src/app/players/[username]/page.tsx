@@ -6,6 +6,7 @@ import { PlayerEditButton } from "@/components/player-edit-button";
 import { AchievementCards } from "@/components/achievements";
 import { getPlayerByUsername } from "@/lib/players/query-username";
 import { Campaigns } from "./campaigns";
+import { Characters } from "./characters";
 
 export default async function Page(props: 
   { params: Promise<{ username: string }> }
@@ -26,6 +27,7 @@ export default async function Page(props:
       </div>
       <TypographyLarge>Level: {player.level}</TypographyLarge>
       {player.about && player.about.length != 0 && <TypographyLead>{player.about}</TypographyLead>}
+      <Characters playerUuid={player.id} />
       <Campaigns player={player} />
       {player.received_achievements && player.received_achievements.length != 0 && <>
         <TypographyH2 className="mt-6">Achievements</TypographyH2>
