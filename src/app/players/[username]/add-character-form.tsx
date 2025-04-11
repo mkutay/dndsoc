@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
@@ -68,7 +67,7 @@ export function AddCharacterForm() {
                 <Input placeholder="Giant Lizard The Junior" {...field} />
               </FormControl>
               <FormDescription>
-                This is your character's name. You can't change this after submitting.
+                This is your character&apos;s name. You can&apos;t change this after submitting.
               </FormDescription>
               <FormMessage />
             </FormItem>
