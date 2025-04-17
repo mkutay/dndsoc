@@ -8,18 +8,13 @@ type GetCharactersError = {
   code: "DATABASE_ERROR" | "SUPABASE_CLIENT_ERROR";
 };
 
-type Character = Tables<"characters"> & {
-  races: Tables<"races">[];
-  classes: Tables<"classes">[];
-}
-
 export const getCharacters = () =>
   createClient()
     .andThen((supabase) =>
       ResultAsync.fromPromise(
         supabase
           .from("characters")
-          .select("*, races(*), classes(*)"),
+          .select("*, races(*), classes(*), players(*, users(*))"),
         (error) => ({
           message: `Failed to get character data from Supabase: ${error instanceof Error ? error.message : 'Unknown error'}`,
           code: "DATABASE_ERROR",
@@ -28,7 +23,7 @@ export const getCharacters = () =>
     )
     .andThen((response) =>
       !response.error
-        ? okAsync(response.data as Character[])
+        ? okAsync(response.data)
         : errAsync({
             message: "Failed to get character data from Supabase: " + response.error.message,
             code: "DATABASE_ERROR",

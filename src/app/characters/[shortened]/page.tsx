@@ -1,12 +1,14 @@
 import { redirect } from "next/navigation";
 
-import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
+import { TypographyLarge, TypographyLead, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
 import { CampaignCards } from "@/components/campaigns-cards";
 import { getCharacterByShortened } from "@/lib/characters/query-shortened";
 import { getCharacters } from "@/lib/characters/query-all";
 import { formatClasses, formatRaces } from "@/utils/formatting";
+import { getPlayerByUsername } from "@/lib/players/query-username";
+import { getPlayerByUuid } from "@/lib/players/query-uuid";
 
 export const dynamicParams = true;
 
@@ -20,10 +22,20 @@ export default async function Page(props:
   }
   const character = characterResult.value;
 
+  const player = await getPlayerByUuid({
+    uuid: character.player_uuid || "",
+  });
+  
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <div className="flex flex-row justify-between items-center">
-        <TypographyH1 className="text-primary">{character.name}</TypographyH1>
+        <div className="flex flex-row gap-4 items-baseline">
+          <TypographyH1 className="text-primary">{character.name}</TypographyH1>
+          {player.isOk() && <TypographySmall className="text-muted-foreground">
+            Played by {player.value.users.username}
+          </TypographySmall>}
+        </div>
         <CharacterEditButton playerUuid={character.player_uuid} shortened={shortened} />
       </div>
       <TypographyLarge>Level {character.level} | {formatClasses(character.classes)} | {formatRaces(character.races)}</TypographyLarge>

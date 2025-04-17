@@ -13,7 +13,6 @@ export async function Characters({ playerUuid }: { playerUuid: string }) {
   const characters = result.value;
 
   const playerUser = await getPlayerUser();
-  if (playerUser.isErr()) redirect(`/error?error=${playerUser.error.message}`);
 
   return (
     <div className="flex flex-row gap-4 mt-4 items-center">
@@ -28,7 +27,7 @@ export async function Characters({ playerUuid }: { playerUuid: string }) {
             </Link>
           </Button>
         ))}
-        {playerUser.value.id === playerUuid && <AddCharacterButton />}
+        {playerUser.isOk() && playerUser.value.id === playerUuid && <AddCharacterButton />}
       </div>
     </div>
   );
