@@ -7,8 +7,10 @@ import { Player } from "@/types/full-database.types";
 
 export async function Campaigns({ player }: { player: Player }) {
   const result = await getCampaignsByPlayerUuid({ playerUuid: player.id });
-  if (result.isErr()) redirect(`/error?error=${result.error.message}`);
-  const campaigns = result.value;
+  if (result.isErr() && result.error.code !== "NOT_FOUND") {
+    redirect(`/error?error=${result.error.message}`);
+  }
+  const campaigns = result.isOk() ? result.value : [];
 
   return (
     <>

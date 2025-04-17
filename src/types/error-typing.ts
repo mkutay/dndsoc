@@ -71,3 +71,19 @@ export const resultAsyncToActionResult = async <
   }
   return actionErr(result.error);
 };
+
+/**
+ * Converts a `Result<T,E>` to an `ActionResult<T,E>`.
+ */
+export const resultToActionResult = <
+  R extends Result<any, any>,
+  T = R extends Result<infer T, any> ? T : never,
+  E = R extends Result<any, infer E> ? E : never,
+>(
+  result: R,
+): ActionResult<T, E> => {
+  if (result.isOk()) {
+    return actionOk(result.value);
+  }
+  return actionErr(result.error);
+};
