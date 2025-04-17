@@ -28,7 +28,7 @@ export const upsertCharacterClass = ({
   )
   .andThen((response) => 
     !response.error
-      ? okAsync(response.data)
+      ? okAsync()
       : errAsync({
           message: "Failed to update character_class table: " + response.error.message,
           code: "DATABASE_ERROR",

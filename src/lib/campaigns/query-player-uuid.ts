@@ -46,9 +46,6 @@ export const getCampaignsByPlayerUuid = ({
     )
     .map((characterCampaigns) =>
       characterCampaigns.map((characterCampaign) => ({
-        description: characterCampaign.campaigns.description,
-        endDate: characterCampaign.campaigns.end_date,
-        name: characterCampaign.campaigns.name,
-        startDate: characterCampaign.campaigns.start_date,
+        ...characterCampaign.campaigns,
       }))
     )

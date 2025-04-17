@@ -21,11 +21,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { characterEditSchema } from "@/config/character-edit-schema";
-import { Character } from "@/types/full-database.types";
 import { updateCharacter } from "@/lib/characters/update";
 import { cn } from "@/lib/utils";
 
-export function CharacterEditForm({ character }: { character: Character }) {
+export function CharacterEditForm({
+  character
+}: {
+  character: {
+    races: {
+      name: string;
+    }[];
+    classes: {
+      name: string;
+    }[];
+    about: string;
+    level: number;
+    shortened: string;
+  };
+}) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
@@ -48,7 +61,7 @@ export function CharacterEditForm({ character }: { character: Character }) {
  
   const onSubmit = async (values: z.infer<typeof characterEditSchema>) => {
     setPending(true);
-    const result = await updateCharacter(values, character.id);
+    const result = await updateCharacter(values, character.shortened);
     setPending(false);
 
     if (result.ok) {

@@ -2,16 +2,12 @@ import { format } from "date-fns";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph } from "./typography/paragraph";
+import { Tables } from "@/types/database.types";
 
 export function CampaignCards({
   campaigns,
 }: {
-  campaigns: {
-    description: string;
-    startDate: string;
-    endDate: string;
-    name: string;
-  }[];
+  campaigns: Tables<"campaigns">[];
 }) {
   if (!campaigns || campaigns.length === 0) {
     return (
@@ -23,8 +19,8 @@ export function CampaignCards({
 
   // sort by start date
   campaigns.sort((a, b) => {
-    const dateA = new Date(a.startDate);
-    const dateB = new Date(b.startDate);
+    const dateA = new Date(a.start_date);
+    const dateB = new Date(b.start_date);
     return dateA.getTime() - dateB.getTime();
   });
   campaigns.reverse();
@@ -36,7 +32,7 @@ export function CampaignCards({
           <CardHeader>
             <CardTitle>{campaign.name}</CardTitle>
             <CardDescription>
-              {format(campaign.startDate, "PP")} - {format(campaign.startDate, "PP")}
+              {format(campaign.start_date, "PP")} - {format(campaign.start_date, "PP")}
             </CardDescription>
           </CardHeader>
           <CardContent>

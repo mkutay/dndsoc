@@ -5,7 +5,7 @@ import { getPlayerAuthUserUuid } from "@/lib/players/query-auth-user-uuid";
 import { getUser } from "@/lib/auth/user";
 import { Button } from "./ui/button";
 
-export async function CharacterEditButton({ playerUuid, shortened }: { playerUuid: string, shortened: string }) {
+export async function CharacterEditButton({ playerUuid, shortened }: { playerUuid: string | null, shortened: string }) {
   const userResult = await getUser();
   if (userResult.isErr()) {
     return null;
