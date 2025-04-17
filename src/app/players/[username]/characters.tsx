@@ -5,11 +5,15 @@ import { getCharactersByPlayerUuid } from "@/lib/characters/query-player-uuid";
 import { AddCharacterButton } from "@/components/add-character-button";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
+import { getPlayerUser } from "@/lib/player-user";
 
 export async function Characters({ playerUuid }: { playerUuid: string }) {
   const result = await getCharactersByPlayerUuid({ playerUuid });
   if (result.isErr()) redirect(`/error?error=${result.error.message}`);
   const characters = result.value;
+
+  const playerUser = await getPlayerUser();
+  if (playerUser.isErr()) redirect(`/error?error=${playerUser.error.message}`);
 
   return (
     <div className="flex flex-row gap-4 mt-4 items-center">
@@ -24,7 +28,7 @@ export async function Characters({ playerUuid }: { playerUuid: string }) {
             </Link>
           </Button>
         ))}
-        <AddCharacterButton />
+        {playerUser.value.id === playerUuid && <AddCharacterButton />}
       </div>
     </div>
   );
