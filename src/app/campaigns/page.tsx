@@ -2,6 +2,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { getCampaigns } from "@/lib/campaigns/query-all";
 import { CampaignCards } from "@/components/campaigns-cards";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   const campaigns = await getCampaigns();
   if (campaigns.isErr()) {
