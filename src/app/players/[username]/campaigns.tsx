@@ -15,7 +15,7 @@ export async function Campaigns({ player }: { player: Player }) {
   return (
     <>
       <TypographyH2 className="mt-6">Campaigns</TypographyH2>
-      <CampaignCards campaigns={campaigns} />
+      <CampaignCards campaigns={campaigns} link="/campaigns" />
     </>
   );
 }

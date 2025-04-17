@@ -33,6 +33,7 @@ export type Database = {
           end_date: string
           id: string
           name: string
+          shortened: string
           start_date: string
         }
         Insert: {
@@ -40,6 +41,7 @@ export type Database = {
           end_date: string
           id?: string
           name: string
+          shortened?: string
           start_date: string
         }
         Update: {
@@ -47,6 +49,7 @@ export type Database = {
           end_date?: string
           id?: string
           name?: string
+          shortened?: string
           start_date?: string
         }
         Relationships: []

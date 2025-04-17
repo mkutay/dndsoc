@@ -1,13 +1,17 @@
 import { format } from "date-fns";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph } from "./typography/paragraph";
 import { Tables } from "@/types/database.types";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function CampaignCards({
   campaigns,
+  link,
 }: {
   campaigns: Tables<"campaigns">[];
+  link?: string;
 }) {
   if (!campaigns || campaigns.length === 0) {
     return (
@@ -40,6 +44,13 @@ export function CampaignCards({
               {campaign.description}
             </TypographyParagraph>
           </CardContent>
+          {link && <CardFooter>
+            <Button variant="outline" asChild>
+              <Link href={`${link}/${campaign.shortened}`}>
+                View {campaign.name}
+              </Link>
+            </Button>
+          </CardFooter>}
         </Card>
       ))}
     </div>

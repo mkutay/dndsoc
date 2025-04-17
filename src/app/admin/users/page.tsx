@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getUsers } from "@/lib/users/query-all";
 import { Button } from "@/components/ui/button";
@@ -21,9 +21,6 @@ export default async function Page() {
               <CardTitle>{user.username}</CardTitle>
               <CardDescription>{user.roles?.role}</CardDescription>
             </CardHeader>
-            <CardContent>
-              
-            </CardContent>
             <CardFooter>
               <Button variant="outline" size="default" asChild>
                 <Link href={`/admin/users/${user.username}`}>

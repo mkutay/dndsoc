@@ -5,8 +5,6 @@ import { getPlayerByUsername } from "@/lib/players/query-username";
 import { getUsers } from "@/lib/users/query-all";
 import { getRole } from "@/lib/roles/query";
 import { AdminRoleEditForm } from "./role-form";
-import { getUser } from "@/lib/auth/user";
-import { TypographyParagraph } from "@/components/typography/paragraph";
 
 export const dynamicParams = false;
 export const dynamic = 'force-dynamic';
@@ -26,20 +24,14 @@ export default async function Page({ params }: { params: Promise<{ username: str
     notFound();
   }
 
-  const user = await getUser();
-  if (user.isErr()) {
-    console.error(user.error);
-    notFound();
-  }
-
-  if (user.value.id === player.value.auth_user_uuid) {
-    return (
-      <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-        <TypographyH1>{username}</TypographyH1>
-        <TypographyParagraph>You cannot edit yourself.</TypographyParagraph>
-      </div>
-    );
-  }
+  // if (role.value.role === "admin") {
+  //   return (
+  //     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+  //       <TypographyH1>{username}</TypographyH1>
+  //       <TypographyParagraph>You cannot edit an admin.</TypographyParagraph>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
