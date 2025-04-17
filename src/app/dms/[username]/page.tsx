@@ -1,17 +1,23 @@
+import { notFound } from "next/navigation";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { ErrorPage } from "@/components/error-page";
 import { getDMByUsername } from "@/lib/dms/query-username";
+import { getDMs } from "@/lib/dms/query-all";
 
-export default async function Page(props: 
+export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
+
+export default async function Page({ params }: 
   { params: Promise<{ username: string }> }
 ) {
-  const { username } = await props.params;
+  const { username } = await params;
 
   const dm = await getDMByUsername(username);
 
   if (!dm.isOk()) {
-    return <ErrorPage error={dm.error.message} />;
+    console.error(`Failed to get DM data: ${dm.error.message}`);
+    notFound();
   }
 
   return (
@@ -20,4 +26,12 @@ export default async function Page(props:
       <TypographyParagraph>Placeholder for the DM page.</TypographyParagraph>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const dms = await getDMs();
+  if (dms.isErr()) return [];
+  return dms.value.map((dm) => ({
+    username: dm.users.username,
+  }));
 }

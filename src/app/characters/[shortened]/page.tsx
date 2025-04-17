@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 import { TypographyLarge, TypographyLead, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
@@ -7,18 +7,20 @@ import { CampaignCards } from "@/components/campaigns-cards";
 import { getCharacterByShortened } from "@/lib/characters/query-shortened";
 import { getCharacters } from "@/lib/characters/query-all";
 import { formatClasses, formatRaces } from "@/utils/formatting";
-import { getPlayerByUsername } from "@/lib/players/query-username";
 import { getPlayerByUuid } from "@/lib/players/query-uuid";
 
-export const dynamicParams = true;
+export const dynamicParams = false;
+export const dynamic = 'force-dynamic';
 
-export default async function Page(props: 
+export default async function Page({ params }: 
   { params: Promise<{ shortened: string }> }
 ) {
-  const { shortened } = await props.params;
+  const { shortened } = await params;
   const characterResult = await getCharacterByShortened({ shortened });
+
   if (characterResult.isErr()) {
-    redirect("/error?error=" + characterResult.error.message);
+    console.error(`Failed to get character data: ${characterResult.error.message}`);
+    notFound();
   }
   const character = characterResult.value;
 

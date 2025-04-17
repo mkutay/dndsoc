@@ -1,6 +1,5 @@
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 
-import { Tables } from "@/types/database.types";
 import { createClient } from "@/utils/supabase/server";
 
 type GetCharactersError = {
