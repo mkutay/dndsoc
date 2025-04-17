@@ -191,6 +191,36 @@ export type Database = {
         }
         Relationships: []
       }
+      dm_campaigns: {
+        Row: {
+          campaign_id: string
+          dm_id: string
+        }
+        Insert: {
+          campaign_id: string
+          dm_id: string
+        }
+        Update: {
+          campaign_id?: string
+          dm_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dm_campaigns_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dm_campaigns_dm_id_fkey"
+            columns: ["dm_id"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dms: {
         Row: {
           auth_user_uuid: string
