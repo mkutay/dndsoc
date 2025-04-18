@@ -1,5 +1,6 @@
-import { ErrorPage } from "@/components/error-page";
 import { redirect } from "next/navigation";
+
+import { ErrorPage } from "@/components/error-page";
 
 export default async function Page({
   searchParams
