@@ -1,5 +1,5 @@
 import { TypographyH1 } from "@/components/typography/headings";
-import { getCampaigns } from "@/lib/campaigns/query-all";
+import { getCampaigns } from "@/lib/campaigns";
 import { CampaignCards } from "@/components/campaigns-cards";
 
 export const dynamic = 'force-dynamic';

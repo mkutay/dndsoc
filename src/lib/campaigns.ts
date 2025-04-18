@@ -7,6 +7,14 @@ type GetCampaignsByPlayerUuidError = {
   code: "NOT_FOUND";
 };
 
+export const getCampaigns = () => 
+  runQuery((supabase) =>
+    supabase
+      .from("campaigns")
+      .select("*"),
+    "getCampaigns"
+  );
+
 export const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string }) =>
   runQuery((supabase) =>
     supabase
@@ -27,4 +35,14 @@ export const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string })
     characterCampaigns.map((characterCampaign) => ({
       ...characterCampaign.campaigns,
     }))
-  )
+  );
+
+export const getCampaign = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("campaigns")
+      .select("*, character_campaigns(*, characters(*))")
+      .eq("shortened", shortened)
+      .single(),
+    "getCampaign"
+  );

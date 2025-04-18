@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
 import { TypographyH1 } from "@/components/typography/headings";
-import { getCampaigns } from "@/lib/campaigns/query-all";
-import { getCampaign } from "@/lib/campaigns/query-shortened";
+import { getCampaigns } from "@/lib/campaigns";
+import { getCampaign } from "@/lib/campaigns";
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { format } from "date-fns";
 

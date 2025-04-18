@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { getPlayerByUsername } from "@/lib/players/query-username";
-import { getUsers } from "@/lib/users/query-all";
-import { getRole } from "@/lib/roles/query";
+import { getUsers } from "@/lib/users";
+import { getRole } from "@/lib/roles";
 import { AdminRoleEditForm } from "./role-form";
 
 export const dynamicParams = false;

@@ -22,7 +22,7 @@ import { adminRoleEditSchema } from "@/config/admin-schema";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { updateRole } from "@/lib/roles/update";
+import { updateRole } from "@/server/roles";
 
 const roles = [
   {

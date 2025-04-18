@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { getUser } from "@/lib/auth/user";
-import { getRole } from "@/lib/roles/query";
+import { getRole } from "@/lib/roles";
 
 export const dynamic = 'force-dynamic';
 

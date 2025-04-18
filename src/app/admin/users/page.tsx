@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getUsers } from "@/lib/users/query-all";
+import { getUsers } from "@/lib/users";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

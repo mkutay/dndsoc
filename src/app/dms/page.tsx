@@ -1,7 +1,7 @@
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { getDMs } from "@/lib/dms/query-all";
+import { getDMs } from "@/lib/dms";
 
 export default async function Page() {
   const dms = await getDMs();

@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { getDMByUsername } from "@/lib/dms/query-username";
-import { getDMs } from "@/lib/dms/query-all";
+import { getDMByUsername } from "@/lib/dms";
+import { getDMs } from "@/lib/dms";
 
 export const dynamicParams = false;
 export const dynamic = 'force-dynamic';

@@ -13,4 +13,12 @@ export const insertRole = (role: RoleArgument) =>
     .insert(role)
     .select("*")
     .single()
-  )
+  );
+
+export const getRole = ({ authUuid }: { authUuid: string }) => 
+  runQuery((supabase) => supabase
+    .from("roles")
+    .select("*")
+    .eq("auth_user_uuid", authUuid)
+    .single()
+  );

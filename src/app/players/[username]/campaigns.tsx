@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getCampaignsByPlayerUuid } from "@/lib/campaigns/query-player-uuid";
+import { getCampaignsByPlayerUuid } from "@/lib/campaigns";
 import { TypographyH2 } from "@/components/typography/headings";
 import { CampaignCards } from "@/components/campaigns-cards";
 import { Player } from "@/types/full-database.types";
