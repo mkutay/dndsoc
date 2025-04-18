@@ -52,4 +52,5 @@ export const createClient = () =>
     (error) => ({
       message: "Failed to create Supabase client." + error,
       code: "SUPABASE_CLIENT_ERROR",
-    } as CreateClientError));
+    } as CreateClientError)
+  );

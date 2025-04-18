@@ -17,28 +17,20 @@ type ForgotPasswordError = {
 export const forgotPasswordAction = async (values: z.infer<typeof forgotPasswordFormSchema>) =>
   resultAsyncToActionResult(
     parseSchema(forgotPasswordFormSchema, values)
-    .asyncAndThen(() => {
-      const supabase = createClient();
-      const origin = getOrigin();
-      const combined = ResultAsync.combine([origin, supabase]);
-
-      return combined.andThen(([origin, supabase]) => {
-        const response = supabase.auth.resetPasswordForEmail(values.email, {
+    .asyncAndThen(() => ResultAsync.combine([getOrigin(), createClient()]))
+    .andThen(([origin, supabase]) => ResultAsync
+      .fromSafePromise(
+        supabase.auth.resetPasswordForEmail(values.email, {
           redirectTo: `${origin}/auth/callback?redirect_to=/reset-password`,
-        });
-
-        return ResultAsync.fromPromise(response, () => ({
-          message: "Failed to reset password.",
-          code: "DATABASE_ERROR",
-        } as ForgotPasswordError));
-      }).andThen((result) => {
-        if (result.error) {
-          return errAsync({
-            message: "Failed to reset password: " + result.error.message,
-            code: "DATABASE_ERROR",
-          } as ForgotPasswordError);
         }
-        return okAsync();
-      });
-    })
-  );
+      )
+    )
+    .andThen((result) => !result.error
+      ? okAsync(result.data)
+      : errAsync({
+          message: "Failed to reset password (in supabase): " + result.error.message,
+          code: "DATABASE_ERROR",
+        } as ForgotPasswordError)
+      )
+    )
+  )

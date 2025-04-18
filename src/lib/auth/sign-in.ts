@@ -1,13 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { errAsync, fromPromise, okAsync } from "neverthrow";
+import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { getPublicUser } from "@/lib/users/query-uuid";
+import { getUserByAuthUuid } from "@/lib/users/query-uuid";
 import { completeSignUp } from "./complete-sign-up";
 
 type SignInError = {
@@ -18,35 +18,26 @@ type SignInError = {
 export const signInAction = async (values: z.infer<typeof signInFormSchema>) => 
   resultAsyncToActionResult(
     parseSchema(signInFormSchema, values)
-      .asyncAndThen(() => 
-        createClient()
-        .andThen((supabase) => 
-          fromPromise(
-            supabase.auth.signInWithPassword({
-              email: values.email,
-              password: values.password,
-            }),
-            () => ({
-              message: "Failed to sign in.",
-              code: "DATABASE_ERROR",
-            } as SignInError)
-          )
+      .asyncAndThen(() => createClient())
+      .andThen((supabase) => 
+        fromSafePromise(
+          supabase.auth.signInWithPassword({
+            email: values.email,
+            password: values.password,
+          })
         )
-        .andThen((result) => 
-          !result.error
-            ? okAsync(result.data.user.id)
-            : errAsync({
-              message: "Failed to sign in.",
-              code: "DATABASE_ERROR",
-            } as SignInError)
-        )
-        .andThen((authUserUuid) =>
-          getPublicUser({ authUserUuid })
-            .orTee((userError) =>
-              userError.code === "PUBLIC_USER_NOT_FOUND"
-                ? completeSignUp()
-                : errAsync(userError)
-            )
-        )
+      )
+      .andThen((result) => 
+        !result.error
+          ? okAsync(result.data.user.id)
+          : errAsync({
+            message: "Failed to sign in.",
+            code: "DATABASE_ERROR",
+          } as SignInError)
+      )
+      .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
+      .orTee((userError) => userError.code === "NOT_FOUND"
+        ? completeSignUp()
+        : errAsync(userError)
       )
   );

@@ -38,7 +38,7 @@ export function SignInForm() {
     setPending(true);
     const result = await signInAction(values);
     setPending(false);
-    if (result.ok || result.error.code === "PUBLIC_USER_NOT_FOUND") {
+    if (result.ok || result.error.code === "NOT_FOUND") {
       redirect(`/players/${result.ok ? result.value.username : ""}`);
     } else {
       console.error(result.error.message + " " + result.error.code);

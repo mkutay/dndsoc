@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/auth/user";
-import { signOut } from "./action";
+import { signOut } from "@/lib/auth/sign-out";
 
 export default async function AuthButtons() {
   const user = await getUser();

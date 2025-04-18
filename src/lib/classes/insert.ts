@@ -1,10 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
-import { errAsync, fromPromise, okAsync } from "neverthrow";
-
-type InsertClassesError = {
-  message: string;
-  code: "DATABASE_ERROR";
-};
+import { runQuery } from "@/utils/supabase-run";
 
 export const insertClasses = ({
   classes,
@@ -13,27 +7,11 @@ export const insertClasses = ({
     name: string;
   }[];
 }) => 
-  createClient()
-  .andThen((supabase) =>
-    fromPromise(
-      supabase
-        .from("classes")
-        .upsert(
-          classes,
-          { ignoreDuplicates: false, onConflict: "name" },
-        )
-        .select("*"),
-      (error) => ({
-        message: `Failed to update classes table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        code: "DATABASE_ERROR",
-      } as InsertClassesError)
+  runQuery((supabase) => supabase
+    .from("classes")
+    .upsert(
+      classes,
+      { ignoreDuplicates: false, onConflict: "name" },
     )
-  )
-  .andThen((response) => 
-    !response.error
-      ? okAsync(response.data)
-      : errAsync({
-          message: "Failed to update classes table: " + response.error.message,
-          code: "DATABASE_ERROR",
-        } as InsertClassesError)
+    .select("*")
   )
