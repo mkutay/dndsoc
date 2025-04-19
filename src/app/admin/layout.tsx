@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-import { getUser } from "@/lib/auth/user";
-import { getRole } from "@/lib/roles";
+import { getUserRole } from "@/lib/roles";
+import { ErrorPage } from "@/components/error-page";
 
 export const dynamic = 'force-dynamic';
 
@@ -10,19 +10,10 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
-  if (user.isErr()) {
-    console.error(user.error);
-    redirect("/");
-  }
+  const role = await getUserRole();
+  if (role.isErr()) return <ErrorPage error={role.error} caller="/admin/layout.tsx" />;
 
-  const userRole = await getRole({ authUuid: user.value.id });
-  if (userRole.isErr()) {
-    console.error(userRole.error);
-    redirect("/");
-  }
-
-  if (userRole.value.role !== "admin") {
+  if (role.value.role !== "admin") {
     redirect("/");
   }
 

@@ -6,7 +6,7 @@ type GetCharacterByShortenedError = {
   code: "NOT_FOUND";
 };
 
-export const getCharacterByShortened =({ shortened }: { shortened: string }) =>
+export const getCharacterByShortened = ({ shortened }: { shortened: string }) =>
   runQuery<Character>((supabase) => supabase
     .from("characters")
     .select("*, races(*), classes(*), campaigns(*)")
@@ -19,4 +19,12 @@ export const getCharacterByShortened =({ shortened }: { shortened: string }) =>
         code: "NOT_FOUND",
       } as GetCharacterByShortenedError
     : error
-  )
+  );
+
+export const getCharacterPlayerByShortened = ({ shortened}: { shortened: string }) =>
+  runQuery((supabase) => supabase
+    .from("characters")
+    .select("*, races(*), classes(*), campaigns(*), players(*, users(*))")
+    .eq("shortened", shortened)
+    .single()
+  );

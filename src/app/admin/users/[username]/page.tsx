@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
-
 import { TypographyH1 } from "@/components/typography/headings";
 import { getPlayerByUsername } from "@/lib/players/query-username";
 import { getUsers } from "@/lib/users";
 import { getRole } from "@/lib/roles";
 import { AdminRoleEditForm } from "./role-form";
+import { TypographyLarge } from "@/components/typography/paragraph";
+import { ErrorPage } from "@/components/error-page";
 
 export const dynamicParams = false;
 export const dynamic = 'force-dynamic';
@@ -14,28 +14,20 @@ export default async function Page({ params }: { params: Promise<{ username: str
 
   const player = await getPlayerByUsername({ username });
   if (player.isErr()) {
-    console.error(player.error);
-    notFound();
+    return <ErrorPage error={player.error} isNotFound />;
   }
 
   const role = await getRole({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) {
-    console.error(role.error);
-    notFound();
+    return <ErrorPage error={role.error} isNotFound />;
   }
-
-  // if (role.value.role === "admin") {
-  //   return (
-  //     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-  //       <TypographyH1>{username}</TypographyH1>
-  //       <TypographyParagraph>You cannot edit an admin.</TypographyParagraph>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <TypographyH1>{username}</TypographyH1>
+      {role.value.role === "admin" && (
+        <TypographyLarge className="mt-2">NOTE: You cannot edit an admin.</TypographyLarge>
+      )}
       <AdminRoleEditForm role={role.value} />
     </div>
   );

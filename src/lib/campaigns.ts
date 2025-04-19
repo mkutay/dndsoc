@@ -23,13 +23,12 @@ export const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string })
       .eq("characters.player_uuid", playerUuid),
     "getCampaignsByPlayerUuid"
   )
-  .andThen((data) =>
-    data.length === 0
-      ? errAsync({
-          message: `No campaigns found for player with UUID ${playerUuid}`,
-          code: "NOT_FOUND",
-        } as GetCampaignsByPlayerUuidError)
-      : okAsync(data)
+  .andThen((data) => data.length === 0
+    ? errAsync({
+        message: `No campaigns found for player with UUID ${playerUuid}`,
+        code: "NOT_FOUND",
+      } as GetCampaignsByPlayerUuidError)
+    : okAsync(data)
   )
   .map((characterCampaigns) =>
     characterCampaigns.map((characterCampaign) => ({

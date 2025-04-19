@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/add-character-schema";
 import { insertCharacter } from "@/lib/characters/insert-character";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function AddCharacterForm() {
   const { toast } = useToast();
@@ -36,21 +37,20 @@ export function AddCharacterForm() {
     setPending(true);
     const result = await insertCharacter(values);
     setPending(false);
-    if (!result.ok) {
-      toast({
-        title: "Error: Could not add character.",
-        description: result.error.message,
-        variant: "destructive",
-      });
-      return;
-    }
 
-    toast({
-      title: "Success: Character added.",
-      description: "You can now edit the specifics of your character.",
-      variant: "default",
-    });
-    redirect(`/characters/${result.value.shortened}/edit`);
+    actionResultMatch(
+      result,
+      (value) => toast({
+        title: "Success: Character added.",
+        description: "You can now edit the specifics of your character.",
+        variant: "default",
+      }) && redirect(`/characters/${value.shortened}/edit`),
+      (error) => toast({
+        title: "Error: Could not add character.",
+        description: error.message,
+        variant: "destructive",
+      })
+    )
   };
 
   return (

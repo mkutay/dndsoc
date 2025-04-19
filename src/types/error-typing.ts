@@ -87,3 +87,14 @@ export const resultToActionResult = <
   }
   return actionErr(result.error);
 };
+
+/**
+ * Matches on the `ActionResult<T,E>` type and calls the appropriate callback.
+ * Similar to ResultAsync.match
+ */
+export const actionResultMatch = <T, E>(
+  result: ActionResult<T, E>,
+  onOk: (value: T) => void,
+  onErr: (error: E) => void,
+) =>
+  result.ok ? onOk(result.value) : onErr(result.error);

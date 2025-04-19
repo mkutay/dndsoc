@@ -1,13 +1,12 @@
-import { notFound } from "next/navigation";
-
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
+import { TypographyH1 } from "@/components/typography/headings";
 import { PlayerEditButton } from "@/components/player-edit-button";
-import { AchievementCards } from "@/components/achievements";
+import { ErrorPage } from "@/components/error-page";
 import { getPlayerByUsername } from "@/lib/players/query-username";
 import { getPlayers } from "@/lib/players/query-all";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
+import { Achievements } from "./achievements";
 
 export const dynamicParams = false;
 export const dynamic = 'force-dynamic';
@@ -18,9 +17,8 @@ export default async function Page({ params }:
   const { username } = await params;
 
   const playerData = await getPlayerByUsername({ username });
-  if (!playerData.isOk()) {
-    console.error(`Failed to get player data: ${playerData.error.message}`);
-    notFound();
+  if (playerData.isErr()) {
+    return <ErrorPage error={playerData.error} caller="/players/[username]" isNotFound />;
   }
   const player = playerData.value;
 
@@ -31,13 +29,10 @@ export default async function Page({ params }:
         <PlayerEditButton authUserUuid={player.auth_user_uuid}/>
       </div>
       <TypographyLarge>Level: {player.level}</TypographyLarge>
-      {player.about && player.about.length != 0 && <TypographyLead>{player.about}</TypographyLead>}
+      {player.about && player.about.length !== 0 && <TypographyLead>{player.about}</TypographyLead>}
       <Characters playerUuid={player.id} />
       <Campaigns player={player} />
-      {player.received_achievements && player.received_achievements.length != 0 && <>
-        <TypographyH2 className="mt-6">Achievements</TypographyH2>
-        <AchievementCards receivedAchievements={player.received_achievements} />
-      </>}
+      <Achievements receivedAchievements={player.received_achievements} />
     </div>
   );
 }

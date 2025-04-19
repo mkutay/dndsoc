@@ -14,3 +14,18 @@ export type Character = Tables<"characters"> & {
   classes: Tables<"classes">[];
   campaigns: Tables<"campaigns">[];
 };
+
+export const rolesLabel = [
+  {
+    value: "admin",
+    label: "Admin",
+  },
+  {
+    value: "player",
+    label: "Player",
+  },
+  {
+    value: "dm",
+    label: "DM",
+  },
+];

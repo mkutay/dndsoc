@@ -1,15 +1,15 @@
+import Link from "next/link";
+
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getUsers } from "@/lib/users";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { ErrorPage } from "@/components/error-page";
+import { rolesLabel } from "@/types/full-database.types";
 
 export default async function Page() {
   const users = await getUsers();
-  if (users.isErr()) {
-    console.error(users.error);
-    return;
-  }
+  if (users.isErr()) return <ErrorPage error={users.error} />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
@@ -19,7 +19,7 @@ export default async function Page() {
           <Card key={index}>
             <CardHeader>
               <CardTitle>{user.username}</CardTitle>
-              <CardDescription>{user.roles?.role}</CardDescription>
+              <CardDescription>{rolesLabel.find((val) => val.value === user.roles?.role)?.label}</CardDescription>
             </CardHeader>
             <CardFooter>
               <Button variant="outline" size="default" asChild>

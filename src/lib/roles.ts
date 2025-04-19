@@ -1,5 +1,6 @@
 import { Enums, Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
+import { getUser } from "./auth/user";
 
 type Role = Tables<"roles">;
 type RoleArgument = {
@@ -22,3 +23,7 @@ export const getRole = ({ authUuid }: { authUuid: string }) =>
     .eq("auth_user_uuid", authUuid)
     .single()
   );
+
+export const getUserRole = () =>
+  getUser()
+    .andThen((user) => getRole({ authUuid: user.id }))

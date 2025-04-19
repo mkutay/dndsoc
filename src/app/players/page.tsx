@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import { TypographyH1 } from "@/components/typography/headings";
@@ -6,10 +5,13 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getPlayers } from "@/lib/players/query-all";
 import { Button } from "@/components/ui/button";
+import { ErrorPage } from "@/components/error-page";
 
 export default async function Page() {
   const playersResult = await getPlayers();
-  if (playersResult.isErr()) return redirect("/error?error=" + playersResult.error.message);
+  if (playersResult.isErr()) {
+    return <ErrorPage error={playersResult.error} caller="/players page" />;
+  }
   const players = playersResult.value;
 
   return (
@@ -28,7 +30,7 @@ export default async function Page() {
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
-              <Button asChild size="sm" variant="outline">
+              <Button asChild size="sm" variant="default">
                 <Link href={`/players/${player.users.username}`}>
                   View Profile
                 </Link>

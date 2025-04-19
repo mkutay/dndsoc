@@ -25,6 +25,9 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
           "insertCharacter"
         )
       )
+      .map((result) => ({
+        shortened: result.shortened
+      }))
   );
 
 // No numbers, no spaces, no special characters
