@@ -1,20 +1,20 @@
 "use server";
 
-import { errAsync, fromPromise, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { z } from "zod";
 
 import { characterEditSchema } from "@/config/character-edit-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { upsertCharacterRace } from "@/lib/races/upsert-character-race";
-import { deleteCharacterRace } from "@/lib/races/delete-character-race";
-import { insertClasses } from "@/lib/classes/insert";
-import { upsertRace } from "@/lib/races/upsert";
+import { upsertCharacterRace } from "@/lib/races";
+import { deleteCharacterRace } from "@/lib/races";
+import { insertClasses } from "@/lib/classes";
+import { upsertRace } from "@/lib/races";
 import { getPlayerUser } from "@/lib/player-user";
 import { deleteCharacterClass } from "./delete-character-class";
 import { upsertCharacterClass } from "./upsert-character-class";
 import { getCharacterByShortened } from "./query-shortened";
+import { runQuery } from "@/utils/supabase-run";
 
 type UpdateCharacterError = {
   message: string;
@@ -34,30 +34,14 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
     )
 
   const charactersResult = parseSchema(characterEditSchema, values)
-    .asyncAndThen(() => createClient())
-    .andThen((supabase) => 
-      fromPromise(
-        supabase
-          .from("characters")
-          .update({
-            about: values.about,
-            level: values.level,
-          })
-          .eq("shortened", characterShortened),
-        (error) => ({
-          message: `Failed to update characters table: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          code: "DATABASE_ERROR",
-        } as UpdateCharacterError)
-      )
-    )
-    .andThen((response) => 
-      !response.error
-        ? okAsync()
-        : errAsync({
-            message: "Failed to update characters table: " + response.error.message,
-            code: "DATABASE_ERROR",
-          } as UpdateCharacterError)
-    );
+    .asyncAndThen(() => runQuery((supabase) => supabase
+      .from("characters")
+      .update({
+        about: values.about,
+        level: values.level,
+      })
+      .eq("shortened", characterShortened)
+  ))
 
   const characterClassResult = character
     .andThen((character) =>
@@ -75,14 +59,12 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
 
 const updateRace = ({ race, characterId }: { race: string; characterId: string; }) =>
   deleteCharacterRace({ characterId })
-    .andThen(() =>
-      upsertRace({ race })
-        .andThen((response) => 
-          upsertCharacterRace({
-            raceId: response.id,
-            characterId,
-          })
-        )
+    .andThen(() => upsertRace({ race }))
+    .andThen((response) => 
+      upsertCharacterRace({
+        raceId: response.id,
+        characterId,
+      })
     );
 
 const updateClasses = ({
@@ -93,14 +75,12 @@ const updateClasses = ({
   characterId: string;
 }) =>
   deleteCharacterClass({ characterId })
-    .andThen(() =>
-      insertClasses({ classes: classes.map((cls) => ({ name: cls.value })) })
-        .andThen((classes) =>
-          upsertCharacterClass({
-            classes: classes.map((cls) => ({
-              character_id: characterId,
-              class_id: cls.id,
-            }))
-          })
-        )
+    .andThen(() => insertClasses({ classes: classes.map((cls) => ({ name: cls.value })) }))
+    .andThen((classes) =>
+      upsertCharacterClass({
+        classes: classes.map((cls) => ({
+          character_id: characterId,
+          class_id: cls.id,
+        }))
+      })
     );

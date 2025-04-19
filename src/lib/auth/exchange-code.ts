@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { errAsync, fromPromise, okAsync } from "neverthrow";
+import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
 type ExchangeCodeError = {
   message: string;
@@ -9,13 +9,7 @@ type ExchangeCodeError = {
 // This function exchanges an auth code for the user's session.
 export const exchangeCodeForSession = (code: string) => 
   createClient()
-    .andThen((supabase) => fromPromise(
-      supabase.auth.exchangeCodeForSession(code),
-      (error) => ({
-        message: "Failed to exchange code for session: " + (error as Error).message,
-        code: "DATABASE_ERROR",
-      } as ExchangeCodeError)
-    ))
+    .andThen((supabase) => fromSafePromise(supabase.auth.exchangeCodeForSession(code)))
     .andThen((response) => 
       !response.error
         ? okAsync()

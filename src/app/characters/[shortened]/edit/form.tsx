@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
-import { redirect } from "next/navigation";
 import { useState } from "react";
 import { MinusIcon, PlusIcon, RefreshCcw } from "lucide-react";
 
@@ -23,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { characterEditSchema } from "@/config/character-edit-schema";
 import { updateCharacter } from "@/lib/characters/update";
 import { cn } from "@/lib/utils";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function CharacterEditForm({
   character
@@ -64,27 +64,22 @@ export function CharacterEditForm({
     const result = await updateCharacter(values, character.shortened);
     setPending(false);
 
-    if (result.ok) {
-      console.log("Update successful");
-      toast({
+    actionResultMatch(result,
+      () => toast({
         title: "Update Successful",
         description: "Your profile has been updated.",
-      });
-      redirect("/characters/" + character.shortened);
-    } else {
-      // Handle error
-      console.error(result.error.message);
-      toast({
+      }),
+      (error) => toast({
         title: "Update Failed",
-        description: "Please try again. " + result.error.message,
+        description: "Please try again. " + error.message,
         variant: "destructive",
-      });
-    }
+      })
+    )
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
         <FormField
           control={form.control}
           name="about"
@@ -183,7 +178,7 @@ export function CharacterEditForm({
                       </Button>
                     </div>
                   </FormControl>
-                  <FormDescription className={cn(index !== fields.length ? "hidden" : "flex")}>
+                  <FormDescription className={cn(index !== fields.length - 1 ? "hidden" : "flex")}>
                     These are your character&apos;s classes.
                   </FormDescription>
                   <FormMessage />

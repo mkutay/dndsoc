@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/auth/user";
-import { signOut } from "./action";
+import { signOut } from "@/server/sign-out";
+
+export const dynamic = 'force-dynamic';
 
 export default async function AuthButtons() {
   const user = await getUser();

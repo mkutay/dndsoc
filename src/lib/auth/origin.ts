@@ -14,11 +14,10 @@ export const getOrigin = () =>
       code: "GET_ORIGIN_ERROR",
     } as GetOriginError)
   )
-  .andThen((headers) => 
-    headers.get("origin")
-      ? okAsync(headers.get("origin"))
-      : errAsync({
-        message: "Origin header not found.",
-        code: "GET_ORIGIN_ERROR",
-      } as GetOriginError)
+  .andThen((headers) => headers.get("origin")
+    ? okAsync(headers.get("origin"))
+    : errAsync({
+      message: "Origin header not found.",
+      code: "GET_ORIGIN_ERROR",
+    } as GetOriginError)
   );

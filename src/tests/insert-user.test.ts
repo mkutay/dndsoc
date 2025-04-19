@@ -1,3 +1,5 @@
+// BAD TEST
+
 import { beforeAll, expect, test, describe } from 'vitest';
 import { createClient as supaCreateClient } from "@supabase/supabase-js";
 

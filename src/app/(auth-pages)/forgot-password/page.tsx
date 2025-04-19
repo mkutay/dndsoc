@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { ForgotPasswordForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
+import { ForgotPasswordForm } from "./form";
 
 export default function ForgotPassword() {
   return (

@@ -1,22 +1,17 @@
-import { notFound } from "next/navigation";
-
 import { TypographyH1 } from "@/components/typography/headings";
-import { getCampaigns } from "@/lib/campaigns/query-all";
-import { getCampaign } from "@/lib/campaigns/query-shortened";
+import { getCampaigns } from "@/lib/campaigns";
+import { getCampaign } from "@/lib/campaigns";
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { format } from "date-fns";
+import { ErrorPage } from "@/components/error-page";
 
 export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
   const campaigned = await getCampaign({ shortened });
-  if (campaigned.isErr()) {
-    console.error(campaigned.error);
-    notFound();
-  }
+  if (campaigned.isErr()) return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 
   return (

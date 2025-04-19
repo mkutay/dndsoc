@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import { useToast } from "@/hooks/use-toast";
 import { updatePlayer } from "@/lib/players/update";
 import { playersEditSchema } from "@/config/player-edit-schema";
 import { Player } from "@/types/full-database.types";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function PlayerEditForm({ player }: { player: Player }) {
   const { toast } = useToast();
@@ -38,24 +38,25 @@ export function PlayerEditForm({ player }: { player: Player }) {
     const result = await updatePlayer(values, player.id);
     setPending(false);
 
-    if (result.ok) {
-      toast({
-        title: "Update Successful",
-        description: "Your profile has been updated.",
-      });
-      redirect("/players/" + player.users.username);
-    } else {
-      toast({
-        title: "Update Failed",
-        description: "Please try again. " + result.error.message,
-        variant: "destructive",
-      });
-    }
+    actionResultMatch(
+      result,
+      () => 
+        toast({
+          title: "Update Successful",
+          description: "Your profile has been updated.",
+        }),
+      (error) => 
+        toast({
+          title: "Update Failed",
+          description: "Please try again. " + error.message,
+          variant: "destructive",
+        })
+    )
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
         <FormField
           control={form.control}
           name="about"

@@ -1,15 +1,11 @@
 import { TypographyH1 } from "@/components/typography/headings";
-import { getCampaigns } from "@/lib/campaigns/query-all";
+import { getCampaigns } from "@/lib/campaigns";
 import { CampaignCards } from "@/components/campaigns-cards";
-
-export const dynamic = 'force-dynamic';
+import { ErrorPage } from "@/components/error-page";
 
 export default async function Page() {
   const campaigns = await getCampaigns();
-  if (campaigns.isErr()) {
-    console.error(campaigns.error);
-    return;
-  }
+  if (campaigns.isErr()) return <ErrorPage error={campaigns.error} caller="/campaigns/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">

@@ -1,9 +1,11 @@
-import { redirect } from "next/navigation"
-;
+import { redirect } from "next/navigation";
+
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getUser } from "@/lib/auth/user";
 import { ResetPasswordForm } from "./form";
+
+export const dynamic = "force-dynamic";
 
 export default async function ResetPassword() {
   const user = await getUser();

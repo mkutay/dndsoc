@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
-import { signUpAction } from "../../../lib/auth/sign-up";
-import { signUpFormSchema } from "../../../config/auth-schemas";
+import { signUpAction } from "@/server/sign-up";
+import { signUpFormSchema } from "@/config/auth-schemas";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function SignUpForm() {
   const { toast } = useToast();
@@ -39,19 +40,18 @@ export function SignUpForm() {
     const result = await signUpAction(values);
     setPending(false);
 
-    if (result.ok) {
-      toast({
-        title: "Verification Email Sent",
+    actionResultMatch(result,
+      (value) => toast({
+        title: "Verification Email Sent to " + value.email,
         description: "Please check your email to verify your account.",
         variant: "default",
-      });
-    } else {
-      toast({
+      }),
+      (error) => toast({
         title: "Sign Up Failed",
-        description: "Please try again. " + result.error.message,
+        description: "Please try again. " + error.message,
         variant: "destructive",
-      });
-    }
+      }),
+    );
   };
 
   return (

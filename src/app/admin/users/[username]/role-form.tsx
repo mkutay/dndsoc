@@ -22,22 +22,9 @@ import { adminRoleEditSchema } from "@/config/admin-schema";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { updateRole } from "@/lib/roles/update";
-
-const roles = [
-  {
-    value: "admin",
-    label: "Admin",
-  },
-  {
-    value: "player",
-    label: "Player",
-  },
-  {
-    value: "dm",
-    label: "DM",
-  },
-];
+import { updateRole } from "@/server/roles";
+import { rolesLabel } from "@/types/full-database.types";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
   const { toast } = useToast();
@@ -55,18 +42,17 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
     const result = await updateRole(values, role.auth_user_uuid);
     setPending(false);
 
-    if (result.ok) {
-      toast({
+    actionResultMatch(result,
+      () => toast({
         title: "Update Successful",
         description: "Role has been updated.",
-      });
-    } else {
-      toast({
+      }),
+      (error) => toast({
         title: "Update Failed",
-        description: "Please try again. " + result.error.message,
+        description: "Please try again. " + error.message,
         variant: "destructive",
-      });
-    }
+      })
+    )
   };
 
   return (
@@ -92,7 +78,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
                       disabled={pending || field.value === 'admin'}
                     >
                       {field.value
-                        ? roles.find(
+                        ? rolesLabel.find(
                             (role) => role.value === field.value
                           )?.label
                         : "Select role"}
@@ -103,13 +89,13 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
                 <PopoverContent className="w-[250px] p-0">
                   <Command>
                     <CommandInput
-                      placeholder="Search framework..."
+                      placeholder="Search role..."
                       className="h-9"
                     />
                     <CommandList>
-                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandEmpty>No roles found.</CommandEmpty>
                       <CommandGroup>
-                        {roles.map((role) => {
+                        {rolesLabel.map((role) => {
                           return (
                             <CommandItem
                               value={role.label}

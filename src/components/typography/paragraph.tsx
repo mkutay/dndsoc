@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { ComponentProps } from "react";
 
 export function TypographyParagraph({
   children,
@@ -37,5 +39,26 @@ export function TypographySmall({ children, className }: { children: React.React
 export function TypographyMuted({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
     <p className={cn("text-sm text-muted-foreground", className)}>{children}</p>
+  )
+}
+
+const linkClasses = {
+  default: "text-foreground hover:text-foreground/80",
+  primary: "text-primary hover:text-primary/80",
+  muted: "text-muted-foreground hover:text-muted-foreground/80",
+};
+
+export function TypographyLink(props: ComponentProps<typeof Link> & { variant?: "primary" | "default" | "muted" }) {
+  return (
+    <Link
+      {...props}
+      className={cn(
+        "underline font-medium underline-offset-2 transition-colors",
+        linkClasses[props.variant || "primary"],
+        props.className
+      )}
+    >
+      {props.children}
+    </Link>
   )
 }

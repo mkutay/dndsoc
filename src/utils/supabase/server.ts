@@ -35,8 +35,8 @@ export const createAsyncClient = async () => {
 
 const createBasicClient = async () =>
   supaCreateClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_KEY!,
   );
 
 type CreateClientError = {
@@ -46,10 +46,11 @@ type CreateClientError = {
 
 export const createClient = () =>
   ResultAsync.fromPromise(
-    process.env.MODE === "test"
+    process.env.MODE === "test" || process.env.BUILDING === "true"
       ? createBasicClient() 
       : createAsyncClient(),
     (error) => ({
       message: "Failed to create Supabase client." + error,
       code: "SUPABASE_CLIENT_ERROR",
-    } as CreateClientError));
+    } as CreateClientError)
+  );

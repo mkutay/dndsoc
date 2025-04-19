@@ -9,12 +9,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { getUser } from "@/lib/auth/user";
 import { AddCharacterForm } from "@/app/players/[username]/add-character-form";
+import { getPlayerUser } from "@/lib/player-user";
+import { ErrorComponent } from "@/components/error-component";
 
-export async function AddCharacterButton() {
-  const user = await getUser();
-  if (user.isErr() || !user.value) return null;
+export async function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
+  const playerUser = await getPlayerUser();
+  if (playerUser.isErr()) return <ErrorComponent error={playerUser.error} caller="/components/add-character-button.tsx" returnNull silent />;
+  if (playerUser.value.id !== playerUuid) return null;
 
   return (
     <Dialog>

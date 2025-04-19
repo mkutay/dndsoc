@@ -1,10 +1,10 @@
 import { format } from "date-fns";
+import Link from "next/link";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph } from "./typography/paragraph";
 import { Tables } from "@/types/database.types";
 import { Button } from "./ui/button";
-import Link from "next/link";
 
 export function CampaignCards({
   campaigns,
@@ -13,7 +13,7 @@ export function CampaignCards({
   campaigns: Tables<"campaigns">[];
   link?: string;
 }) {
-  if (!campaigns || campaigns.length === 0) {
+  if (campaigns.length === 0) {
     return (
       <TypographyParagraph>
         No campaigns found.

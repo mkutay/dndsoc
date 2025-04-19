@@ -6,11 +6,7 @@ import { Button } from "./ui/button";
 
 export async function PlayerEditButton({ authUserUuid }: { authUserUuid: string }) {
   const userResult = await getUser();
-  if (userResult.isErr()) {
-    return null;
-  }
-  const user = userResult.value;
-  if (user.id !== authUserUuid) {
+  if (userResult.isErr() || userResult.value.id !== authUserUuid) {
     return null;
   }
 
