@@ -178,7 +178,7 @@ export function CharacterEditForm({
                       </Button>
                     </div>
                   </FormControl>
-                  <FormDescription className={cn(index !== fields.length ? "hidden" : "flex")}>
+                  <FormDescription className={cn(index !== fields.length - 1 ? "hidden" : "flex")}>
                     These are your character&apos;s classes.
                   </FormDescription>
                   <FormMessage />

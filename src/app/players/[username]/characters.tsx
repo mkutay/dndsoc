@@ -11,6 +11,8 @@ export async function Characters({ playerUuid }: { playerUuid: string }) {
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/players/[username]/characters.tsx" />;
   const characters = result.value;
 
+  if (characters.length === 0) return null;
+
   return (
     <div className="flex flex-col gap-1 mt-4">
       <TypographyH3>
