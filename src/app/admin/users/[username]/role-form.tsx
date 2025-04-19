@@ -43,7 +43,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
     setPending(false);
 
     actionResultMatch(result,
-      (value) => toast({
+      () => toast({
         title: "Update Successful",
         description: "Role has been updated.",
       }),

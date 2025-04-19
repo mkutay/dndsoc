@@ -65,7 +65,7 @@ export function CharacterEditForm({
     setPending(false);
 
     actionResultMatch(result,
-      (value) => toast({
+      () => toast({
         title: "Update Successful",
         description: "Your profile has been updated.",
       }),

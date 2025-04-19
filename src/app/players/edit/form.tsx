@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,7 @@ export function PlayerEditForm({ player }: { player: Player }) {
 
     actionResultMatch(
       result,
-      (value) => 
+      () => 
         toast({
           title: "Update Successful",
           description: "Your profile has been updated.",
