@@ -89,11 +89,11 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
                 <PopoverContent className="w-[250px] p-0">
                   <Command>
                     <CommandInput
-                      placeholder="Search framework..."
+                      placeholder="Search role..."
                       className="h-9"
                     />
                     <CommandList>
-                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandEmpty>No roles found.</CommandEmpty>
                       <CommandGroup>
                         {rolesLabel.map((role) => {
                           return (
