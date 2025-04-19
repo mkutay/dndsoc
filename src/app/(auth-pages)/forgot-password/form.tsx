@@ -16,9 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { forgotPasswordAction } from "../../../lib/auth/forgot-password";
-import { forgotPasswordFormSchema } from "../../../config/auth-schemas";
+import { forgotPasswordAction } from "@/server/forgot-password";
+import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { useToast } from "@/hooks/use-toast";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function ForgotPasswordForm() {
   const { toast } = useToast();
@@ -35,19 +36,19 @@ export function ForgotPasswordForm() {
     setPending(true);
     const result = await forgotPasswordAction(values);
     setPending(false);
-    if (result.ok) {
-      toast({
+
+    actionResultMatch(result,
+      () => toast({
         title: "Password Reset Email Sent",
         description: "Please check your email for further instructions.",
         variant: "default",
-      });
-    } else {
-      toast({
+      }),
+      (error) => toast({
         title: "Error Resetting Password",
-        description: result.error.message,
+        description: error.message,
         variant: "destructive",
-      });
-    }
+      }),
+    );
   };
 
   return (

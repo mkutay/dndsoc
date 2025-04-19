@@ -8,7 +8,7 @@ import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
 import { getUserByAuthUuid } from "@/lib/users";
-import { completeSignUp } from "./complete-sign-up";
+import { completeSignUp } from "../lib/auth/complete-sign-up";
 
 type SignInError = {
   message: string;
@@ -40,4 +40,5 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
         ? completeSignUp()
         : errAsync(userError)
       )
+      .map((user) => ({ username: user.username }))
   );

@@ -24,6 +24,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { cn } from "@/lib/utils";
 import { updateRole } from "@/server/roles";
 import { rolesLabel } from "@/types/full-database.types";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
   const { toast } = useToast();
@@ -41,18 +42,17 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
     const result = await updateRole(values, role.auth_user_uuid);
     setPending(false);
 
-    if (result.ok) {
-      toast({
+    actionResultMatch(result,
+      (value) => toast({
         title: "Update Successful",
         description: "Role has been updated.",
-      });
-    } else {
-      toast({
+      }),
+      (error) => toast({
         title: "Update Failed",
-        description: "Please try again. " + result.error.message,
+        description: "Please try again. " + error.message,
         variant: "destructive",
-      });
-    }
+      })
+    )
   };
 
   return (

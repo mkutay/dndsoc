@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { resetPasswordAction } from "@/lib/auth/reset-password";
+import { resetPasswordAction } from "@/server/reset-password";
 import { resetPasswordSchema } from "@/config/auth-schemas";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function ResetPasswordForm() {
   const { toast } = useToast();
@@ -37,19 +38,18 @@ export function ResetPasswordForm() {
     const result = await resetPasswordAction(values);
     setPending(false);
 
-    if (result.ok) {
-      toast({
+    actionResultMatch(result,
+      () => toast({
         title: "Password Updated",
         description: "Your password has been updated successfully.",
         variant: "default",
-      });
-    } else {
-      toast({
+      }),
+      (error) => toast({
         title: "Error Updating Password",
-        description: result.error.message,
+        description: error.message,
         variant: "destructive",
       })
-    }
+    );
   };
 
   return (

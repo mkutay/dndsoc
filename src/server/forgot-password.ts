@@ -7,7 +7,7 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { getOrigin } from "./origin";
+import { getOrigin } from "../lib/auth/origin";
 
 type ForgotPasswordError = {
   message: string;
@@ -26,7 +26,7 @@ export const forgotPasswordAction = async (values: z.infer<typeof forgotPassword
       )
     )
     .andThen((result) => !result.error
-      ? okAsync(result.data)
+      ? okAsync()
       : errAsync({
           message: "Failed to reset password (in supabase): " + result.error.message,
           code: "DATABASE_ERROR",

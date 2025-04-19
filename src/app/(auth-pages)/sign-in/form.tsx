@@ -19,8 +19,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { signInAction } from "@/lib/auth/sign-in";
+import { signInAction } from "@/server/sign-in";
 import { signInFormSchema } from "@/config/auth-schemas";
+import { actionResultMatch } from "@/types/error-typing";
 
 export function SignInForm() {
   const { toast } = useToast();
@@ -38,16 +39,17 @@ export function SignInForm() {
     setPending(true);
     const result = await signInAction(values);
     setPending(false);
-    if (result.ok || result.error.code === "NOT_FOUND") {
-      redirect(`/players/${result.ok ? result.value.username : ""}`);
-    } else {
-      console.error(result.error.message + " " + result.error.code);
-      toast({
-        title: "Sign In Failed",
-        description: "Please try again. " + result.error.message,
-        variant: "destructive",
-      })
-    }
+
+    actionResultMatch(result,
+      (value) => redirect(`/players/${value.username}`),
+      (error) => error.code === "NOT_FOUND"
+        ? redirect(`/players`)
+        : toast({
+          title: "Sign In Failed",
+          description: "Please try again. " + error.message,
+          variant: "destructive",
+        })
+    );
   };
 
   return (
