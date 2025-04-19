@@ -3,8 +3,6 @@ import { getCampaigns } from "@/lib/campaigns";
 import { CampaignCards } from "@/components/campaigns-cards";
 import { ErrorPage } from "@/components/error-page";
 
-export const dynamic = 'force-dynamic';
-
 export default async function Page() {
   const campaigns = await getCampaigns();
   if (campaigns.isErr()) return <ErrorPage error={campaigns.error} caller="/campaigns/page.tsx" />;

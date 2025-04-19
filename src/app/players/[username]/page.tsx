@@ -3,13 +3,11 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { PlayerEditButton } from "@/components/player-edit-button";
 import { ErrorPage } from "@/components/error-page";
 import { getPlayerByUsername } from "@/lib/players/query-username";
-import { getPlayers } from "@/lib/players/query-all";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
 import { Achievements } from "./achievements";
 
-export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: 
   { params: Promise<{ username: string }> }
@@ -18,7 +16,7 @@ export default async function Page({ params }:
 
   const playerData = await getPlayerByUsername({ username });
   if (playerData.isErr()) {
-    return <ErrorPage error={playerData.error} caller="/players/[username]" isNotFound />;
+    return <ErrorPage error={playerData.error} caller="/players/[username]" />;
   }
   const player = playerData.value;
 
@@ -35,12 +33,4 @@ export default async function Page({ params }:
       <Achievements receivedAchievements={player.received_achievements} />
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  const players = await getPlayers();
-  if (players.isErr()) return [];
-  return players.value.map((player) => ({
-    username: player.users.username,
-  }));
 }

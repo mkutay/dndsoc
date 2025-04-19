@@ -2,13 +2,11 @@ import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from
 import { TypographyH1 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
 import { getCharacterPlayerByShortened } from "@/lib/characters/query-shortened";
-import { getCharacters } from "@/lib/characters/query-all";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { Campaigns } from "./campaigns";
 
-export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: 
   { params: Promise<{ shortened: string }> }
@@ -40,12 +38,4 @@ export default async function Page({ params }:
       {/* Add achievements */}
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  const characters = await getCharacters();
-  if (characters.isErr()) return [];
-  return characters.value.map((character) => ({
-    shortened: character.shortened,
-  }));
 }

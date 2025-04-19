@@ -3,10 +3,8 @@ import { notFound } from "next/navigation";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { getDMByUsername } from "@/lib/dms";
-import { getDMs } from "@/lib/dms";
 
-export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: 
   { params: Promise<{ username: string }> }
@@ -26,12 +24,4 @@ export default async function Page({ params }:
       <TypographyParagraph>Placeholder for the DM page.</TypographyParagraph>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  const dms = await getDMs();
-  if (dms.isErr()) return [];
-  return dms.value.map((dm) => ({
-    username: dm.users.username,
-  }));
 }

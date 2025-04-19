@@ -3,6 +3,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { getDMs } from "@/lib/dms";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const dms = await getDMs();
   if (!dms.isOk()) return <ErrorPage error={dms.error.message} />;

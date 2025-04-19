@@ -5,6 +5,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { getUser } from "@/lib/auth/user";
 import { ResetPasswordForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function ResetPassword() {
   const user = await getUser();
   if (user.isErr() || !user.value) redirect("/sign-in");

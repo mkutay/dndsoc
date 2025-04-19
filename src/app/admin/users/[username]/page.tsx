@@ -1,13 +1,11 @@
 import { TypographyH1 } from "@/components/typography/headings";
-import { getPlayerByUsername } from "@/lib/players/query-username";
-import { getUsers } from "@/lib/users";
-import { getRole } from "@/lib/roles";
-import { AdminRoleEditForm } from "./role-form";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
+import { getPlayerByUsername } from "@/lib/players/query-username";
+import { getRole } from "@/lib/roles";
+import { AdminRoleEditForm } from "./role-form";
 
-export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -31,13 +29,4 @@ export default async function Page({ params }: { params: Promise<{ username: str
       <AdminRoleEditForm role={role.value} />
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  const users = await getUsers();
-  if (users.isErr()) return [];
-
-  return users.value.map((user) => ({
-    username: user.username,
-  }));
 }

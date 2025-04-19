@@ -7,6 +7,8 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { CharacterEditForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page(props: 
   { params: Promise<{ shortened: string }> }
 ) {

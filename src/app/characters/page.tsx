@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCharacters } from "@/lib/characters/query-all";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const characters = await getCharacters();
   if (!characters.isOk()) return <ErrorPage error={characters.error} />;

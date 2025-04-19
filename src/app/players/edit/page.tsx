@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -5,12 +7,15 @@ import { getPlayerAuthUserUuid } from "@/lib/players/query-auth-user-uuid";
 import { getUser } from "@/lib/auth/user";
 import { PlayerEditForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const result = await getUser().andThen((user) =>
     getPlayerAuthUserUuid({ authUserUuid: user.id })
   );
 
   if (result.isErr()) {
+    if (result.error.message.includes("Auth session missing!")) redirect("/sign-in");
     return <ErrorPage error={result.error} caller="/players/edit page" />;
   }
 

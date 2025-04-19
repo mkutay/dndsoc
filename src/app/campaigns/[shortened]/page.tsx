@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import { ErrorPage } from "@/components/error-page";
 
 export const dynamicParams = false;
-export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;

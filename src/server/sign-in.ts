@@ -1,14 +1,15 @@
 "use server";
 
-import { z } from "zod";
 import { errAsync, fromSafePromise, okAsync } from "neverthrow";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
 import { getUserByAuthUuid } from "@/lib/users";
-import { completeSignUp } from "../lib/auth/complete-sign-up";
+import { completeSignUp } from "@/lib/auth/complete-sign-up";
 
 type SignInError = {
   message: string;
@@ -41,4 +42,11 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
         : errAsync(userError)
       )
       .map((user) => ({ username: user.username }))
+      .andTee(({ username }) => {
+        revalidatePath(`/players/${username}`);
+        revalidatePath(`/players/edit`);
+        revalidatePath(`/characters/[shortened]`, 'page');
+        revalidatePath(`/characters/[shortened]/edit`, 'page');
+        revalidatePath(`/admin`, 'layout');
+      })
   );

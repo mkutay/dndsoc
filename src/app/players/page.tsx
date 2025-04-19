@@ -7,6 +7,8 @@ import { getPlayers } from "@/lib/players/query-all";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const playersResult = await getPlayers();
   if (playersResult.isErr()) {
