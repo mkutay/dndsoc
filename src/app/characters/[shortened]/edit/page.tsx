@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { getCharacterByShortened } from "@/lib/characters/query-shortened";
 import { getPlayerUser } from "@/lib/player-user";
+import { getCharacters } from "@/lib/characters/query-all";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -34,4 +35,12 @@ export default async function Page(props:
       <CharacterEditForm character={character} />
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const characters = await getCharacters();
+  if (characters.isErr()) return [];
+  return characters.value.map((character) => ({
+    shortened: character.shortened,
+  }));
 }
