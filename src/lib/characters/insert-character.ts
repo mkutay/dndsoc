@@ -7,6 +7,7 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { getPlayerUser } from "@/lib/player-user";
 import { runQuery } from "@/utils/supabase-run";
+import { convertToShortened } from "@/utils/formatting";
 
 export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>) =>
   resultAsyncToActionResult(
@@ -29,13 +30,3 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
         shortened: result.shortened
       }))
   );
-
-// No numbers, no spaces, no special characters
-// Only the first name
-const convertToShortened = (name: string) => {
-  const firstName = name.split(" ")[0];
-  const shortened = firstName
-    .replace(/[^a-zA-Z]/g, "")
-    .toLowerCase()
-  return shortened;
-}

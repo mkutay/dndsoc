@@ -1,8 +1,8 @@
 import { Edit } from "lucide-react";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/auth/user";
-import { Button } from "./ui/button";
 
 export async function PlayerEditButton({ authUserUuid }: { authUserUuid: string }) {
   const userResult = await getUser();

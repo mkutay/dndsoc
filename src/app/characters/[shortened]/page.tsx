@@ -35,7 +35,7 @@ export default async function Page({ params }:
         {character.races.length !== 0 ? " | " + formatRaces(character.races) : ""}
       </TypographyLarge>
       {character.about && character.about.length !== 0 && <TypographyLead className="mt-2">{character.about}</TypographyLead>}
-      <Campaigns campaigns={character.campaigns} />
+      <Campaigns characterUuid={character.id} />
       {/* Add achievements */}
     </div>
   );

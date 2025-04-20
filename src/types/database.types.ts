@@ -54,36 +54,6 @@ export type Database = {
         }
         Relationships: []
       }
-      character_campaigns: {
-        Row: {
-          campaign_id: string
-          character_id: string
-        }
-        Insert: {
-          campaign_id?: string
-          character_id?: string
-        }
-        Update: {
-          campaign_id?: string
-          character_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "character_campaigns_campaign_id_fkey"
-            columns: ["campaign_id"]
-            isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "character_campaigns_character_id_fkey"
-            columns: ["character_id"]
-            isOneToOne: false
-            referencedRelation: "characters"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       character_class: {
         Row: {
           character_id: string
@@ -110,6 +80,36 @@ export type Database = {
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      character_party: {
+        Row: {
+          character_id: string
+          party_id: string
+        }
+        Insert: {
+          character_id?: string
+          party_id?: string
+        }
+        Update: {
+          character_id?: string
+          party_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "character_party_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "character_party_party_id_fkey"
+            columns: ["party_id"]
+            isOneToOne: false
+            referencedRelation: "parties"
             referencedColumns: ["id"]
           },
         ]
@@ -194,32 +194,32 @@ export type Database = {
         }
         Relationships: []
       }
-      dm_campaigns: {
+      dm_party: {
         Row: {
-          campaign_id: string
           dm_id: string
+          party_id: string
         }
         Insert: {
-          campaign_id: string
-          dm_id: string
+          dm_id?: string
+          party_id?: string
         }
         Update: {
-          campaign_id?: string
           dm_id?: string
+          party_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "dm_campaigns_campaign_id_fkey"
-            columns: ["campaign_id"]
-            isOneToOne: false
-            referencedRelation: "campaigns"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dm_campaigns_dm_id_fkey"
+            foreignKeyName: "dm_party_dm_id_fkey"
             columns: ["dm_id"]
             isOneToOne: false
             referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dm_party_party_id_fkey"
+            columns: ["party_id"]
+            isOneToOne: false
+            referencedRelation: "parties"
             referencedColumns: ["id"]
           },
         ]
@@ -250,6 +250,60 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["auth_user_uuid"]
+          },
+        ]
+      }
+      parties: {
+        Row: {
+          id: string
+          name: string
+          shortened: string
+        }
+        Insert: {
+          id?: string
+          name?: string
+          shortened: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          shortened?: string
+        }
+        Relationships: []
+      }
+      party_campaigns: {
+        Row: {
+          campaign_id: string
+          end_date: string | null
+          party_id: string
+          start_date: string
+        }
+        Insert: {
+          campaign_id?: string
+          end_date?: string | null
+          party_id?: string
+          start_date: string
+        }
+        Update: {
+          campaign_id?: string
+          end_date?: string | null
+          party_id?: string
+          start_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "party_campaigns_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "party_campaigns_party_id_fkey"
+            columns: ["party_id"]
+            isOneToOne: false
+            referencedRelation: "parties"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -297,7 +351,53 @@ export type Database = {
         }
         Relationships: []
       }
-      received_achievements: {
+      received_achievements_dm: {
+        Row: {
+          achievement_uuid: string
+          count: number
+          dm_uuid: string
+          first_received_date: string
+          last_received_date: string
+        }
+        Insert: {
+          achievement_uuid: string
+          count?: number
+          dm_uuid: string
+          first_received_date: string
+          last_received_date: string
+        }
+        Update: {
+          achievement_uuid?: string
+          count?: number
+          dm_uuid?: string
+          first_received_date?: string
+          last_received_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "received_achievements_dm_achievement_uuid_fkey"
+            columns: ["achievement_uuid"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "received_achievements_dm_dm_uuid_fkey"
+            columns: ["dm_uuid"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "received_achievements_dm_player_uuid_fkey"
+            columns: ["dm_uuid"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      received_achievements_player: {
         Row: {
           achievement_uuid: string
           count: number

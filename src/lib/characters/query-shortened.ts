@@ -7,9 +7,9 @@ type GetCharacterByShortenedError = {
 };
 
 export const getCharacterByShortened = ({ shortened }: { shortened: string }) =>
-  runQuery<Character>((supabase) => supabase
+  runQuery((supabase) => supabase
     .from("characters")
-    .select("*, races(*), classes(*), campaigns(*)")
+    .select("*, races(*), classes(*)")
     .eq("shortened", shortened)
     .single()
   )
@@ -21,10 +21,10 @@ export const getCharacterByShortened = ({ shortened }: { shortened: string }) =>
     : error
   );
 
-export const getCharacterPlayerByShortened = ({ shortened}: { shortened: string }) =>
+export const getCharacterPlayerByShortened = ({ shortened }: { shortened: string }) =>
   runQuery((supabase) => supabase
     .from("characters")
-    .select("*, races(*), classes(*), campaigns(*), players(*, users(*))")
+    .select("*, races(*), classes(*), players(*, users(*))")
     .eq("shortened", shortened)
     .single()
   );

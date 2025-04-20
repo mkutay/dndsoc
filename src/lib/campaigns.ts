@@ -2,7 +2,7 @@ import { errAsync, okAsync } from "neverthrow";
 
 import { runQuery } from "@/utils/supabase-run";
 
-type GetCampaignsByPlayerUuidError = {
+type GetCampaignsByUuidError = {
   message: string;
   code: "NOT_FOUND";
 };
@@ -18,29 +18,77 @@ export const getCampaigns = () =>
 export const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string }) =>
   runQuery((supabase) =>
     supabase
-      .from("character_campaigns")
-      .select(`*, campaigns(*), characters!inner(*)`)
-      .eq("characters.player_uuid", playerUuid),
+      .from("parties")
+      .select(`*, party_campaigns!inner(*, campaigns(*)), character_party!inner(*, characters!inner(*))`)
+      .eq("character_party.characters.player_uuid", playerUuid),
     "getCampaignsByPlayerUuid"
   )
   .andThen((data) => data.length === 0
     ? errAsync({
         message: `No campaigns found for player with UUID ${playerUuid}`,
         code: "NOT_FOUND",
-      } as GetCampaignsByPlayerUuidError)
+      } as GetCampaignsByUuidError)
     : okAsync(data)
   )
-  .map((characterCampaigns) =>
-    characterCampaigns.map((characterCampaign) => ({
-      ...characterCampaign.campaigns,
-    }))
+  .map((parties) => 
+    parties.flatMap((party) =>
+      party.party_campaigns.map((partyCampaign) => ({
+        ...partyCampaign.campaigns,
+      }))
+    )
+  );
+
+export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("parties")
+      .select(`*, party_campaigns!inner(*, campaigns(*)), character_party!inner(*, characters!inner(*))`)
+      .eq("character_party.characters.id", characterUuid),
+    "getCampaignsByCharacterUuid"
+  )
+  .andThen((data) => data.length === 0
+    ? errAsync({
+        message: `No campaigns found for character with UUID ${characterUuid}`,
+        code: "NOT_FOUND",
+      } as GetCampaignsByUuidError)
+    : okAsync(data)
+  )
+  .map((parties) => 
+    parties.flatMap((party) =>
+      party.party_campaigns.map((partyCampaign) => ({
+        ...partyCampaign.campaigns,
+      }))
+    )
+  );
+
+export const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("parties")
+      .select(`*, party_campaigns!inner(*, campaigns(*)), dm_party(*, dms!inner(*))`)
+      .eq("dm_party.dms.id", DMUuid),
+    "getCampaignsByDMUuid"
+  )
+  .andThen((data) => data.length === 0
+    ? errAsync({
+        message: `No campaigns found for DM with UUID ${DMUuid}`,
+        code: "NOT_FOUND",
+      } as GetCampaignsByUuidError)
+    : okAsync(data)
+  )
+  .map((parties) => 
+    parties.flatMap((party) =>
+      party.party_campaigns.map((partyCampaign) => ({
+        ...partyCampaign.campaigns,
+      }))
+    )
   );
 
 export const getCampaign = ({ shortened }: { shortened: string }) =>
   runQuery((supabase) =>
     supabase
       .from("campaigns")
-      .select("*, character_campaigns(*, characters(*))")
+      .select("*, party_campaigns(*, parties!inner(*, character_party!inner(*)))")
       .eq("shortened", shortened)
       .single(),
     "getCampaign"

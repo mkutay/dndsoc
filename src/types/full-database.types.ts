@@ -2,10 +2,19 @@ import { Tables } from "./database.types";
 
 export type Player = Tables<"players"> & {
   users: Tables<"users">;
-  received_achievements: ReceivedAchievements[];
+  received_achievements_player: ReceivedAchievementsPlayer[];
 };
 
-export type ReceivedAchievements = Tables<"received_achievements"> & {
+export type DM = Tables<"dms"> & {
+  users: Tables<"users">;
+  received_achievements_dm: ReceivedAchievementsDM[];
+};
+
+export type ReceivedAchievementsPlayer = Tables<"received_achievements_player"> & {
+  achievements: Tables<"achievements">;
+};
+
+export type ReceivedAchievementsDM = Tables<"received_achievements_player"> & {
   achievements: Tables<"achievements">;
 };
 

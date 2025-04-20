@@ -6,6 +6,6 @@ export const getPlayers = () =>
     supabase => 
       supabase
         .from("players")
-        .select("*, users(*), received_achievements(*, achievements(*))"),
+        .select("*, users(*), received_achievements_player(*, achievements(*))"),
     "getPlayers" // Add the function name for error reporting
   );

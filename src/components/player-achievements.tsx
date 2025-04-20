@@ -2,12 +2,12 @@ import { format } from "date-fns";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { TypographyParagraph, TypographySmall } from "./typography/paragraph";
-import { ReceivedAchievements } from "@/types/full-database.types";
+import { ReceivedAchievementsPlayer } from "@/types/full-database.types";
 
-export async function AchievementCards({
+export async function PlayerAchievementCards({
   receivedAchievements,
 }: {
-  receivedAchievements: ReceivedAchievements[];
+  receivedAchievements: ReceivedAchievementsPlayer[];
 }) {
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">

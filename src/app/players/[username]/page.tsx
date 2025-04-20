@@ -1,12 +1,12 @@
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
-import { PlayerEditButton } from "@/components/player-edit-button";
 import { ErrorPage } from "@/components/error-page";
+import { PlayerAchievements } from "@/components/player-achievements-section";
 import { getPlayerByUsername } from "@/lib/players/query-username";
 import { getPlayers } from "@/lib/players/query-all";
+import { PlayerEditButton } from "./player-edit-button";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
-import { Achievements } from "./achievements";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export default async function Page({ params }:
       {player.about && player.about.length !== 0 && <TypographyLead>{player.about}</TypographyLead>}
       <Characters playerUuid={player.id} />
       <Campaigns player={player} />
-      <Achievements receivedAchievements={player.received_achievements} />
+      <PlayerAchievements receivedAchievements={player.received_achievements_player} />
     </div>
   );
 }

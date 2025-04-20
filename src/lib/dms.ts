@@ -1,8 +1,7 @@
 import { runQuery } from "@/utils/supabase-run";
-import { Tables } from "@/types/database.types";
-import { getUserByUsername } from "@/lib/users";
+import { DM } from "@/types/full-database.types";
+import { getUser } from "./auth/user";
 
-type DM = Tables<"dms">;
 type DMArgument = {
   auth_user_uuid: string;
   about?: string;
@@ -15,22 +14,29 @@ export const getDMs = () =>
     .select("*, users(*)")
   );
 
-export const getDMByUsername = (username: string) => 
-  getUserByUsername(username)
-    .andThen((user) => getDMByUuid(user.auth_user_uuid));
-
-export const getDMByUuid = (uuid: string) =>
+export const getDMByUsername = ({ username }: { username: string }) => 
   runQuery<DM>((supabase) => supabase
     .from("dms")
-    .select("*")
-    .eq("auth_user_uuid", uuid)
+    .select(`*, users!inner(*), received_achievements_dm(*, achievements(*))`)
+    .eq("users.username", username)
     .single()
   );
 
 export const insertDM = (dm: DMArgument) =>
-  runQuery<DM>((supabase) => supabase
+  runQuery((supabase) => supabase
     .from("dms")
     .upsert(dm, { onConflict: "auth_user_uuid", ignoreDuplicates: false })
     .select("*")
     .single()
   );
+
+export const getDMUser = () => 
+  getUser()
+  .andThen((user) => 
+    runQuery((supabase) => supabase
+      .from("dms")
+      .select(`*, users(*)`)
+      .eq("auth_user_uuid", user.id)
+      .single()
+    )
+  )

@@ -3,7 +3,7 @@ import { runQuery } from "@/utils/supabase-run";
 
 type Achievement = Tables<"achievements">;
 type CombinedAchievement = Achievement & {
-  received_achievements: Tables<"received_achievements">[];
+  received_achievements_player: Tables<"received_achievements_player">[];
 };
 
 export const getAchievementsFromIds = (ids: string[]) =>
@@ -18,6 +18,6 @@ export const getCombinedAchievements = (ids: string[]) =>
   runQuery<CombinedAchievement[]>((supabase) =>
     supabase
       .from("achievements")
-      .select("*, received_achievements(*)")
+      .select("*, received_achievements_player(*)")
       .in("id", ids)
   )
