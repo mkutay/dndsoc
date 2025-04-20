@@ -255,17 +255,23 @@ export type Database = {
       }
       parties: {
         Row: {
+          about: string
           id: string
+          level: number
           name: string
           shortened: string
         }
         Insert: {
+          about?: string
           id?: string
+          level?: number
           name?: string
           shortened: string
         }
         Update: {
+          about?: string
           id?: string
+          level?: number
           name?: string
           shortened?: string
         }
@@ -274,21 +280,15 @@ export type Database = {
       party_campaigns: {
         Row: {
           campaign_id: string
-          end_date: string | null
           party_id: string
-          start_date: string
         }
         Insert: {
           campaign_id?: string
-          end_date?: string | null
           party_id?: string
-          start_date: string
         }
         Update: {
           campaign_id?: string
-          end_date?: string | null
           party_id?: string
-          start_date?: string
         }
         Relationships: [
           {

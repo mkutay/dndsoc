@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorComponent } from "@/components/error-component";
-import { getPartyByDMUuid } from "@/lib/party";
+import { getPartyByDMUuid } from "@/lib/parties";
 import { AddPartyButton } from "./add-party-button";
 
 export async function Parties({ DMUuid }: { DMUuid: string }) {
