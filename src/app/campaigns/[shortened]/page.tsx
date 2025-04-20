@@ -1,9 +1,10 @@
+import { format } from "date-fns";
+
+import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
+import { ErrorPage } from "@/components/error-page";
 import { getCampaigns } from "@/lib/campaigns";
 import { getCampaign } from "@/lib/campaigns";
-import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
-import { format } from "date-fns";
-import { ErrorPage } from "@/components/error-page";
 
 export const dynamicParams = false;
 
