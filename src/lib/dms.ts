@@ -3,6 +3,11 @@ import { Tables } from "@/types/database.types";
 import { getUserByUsername } from "@/lib/users";
 
 type DM = Tables<"dms">;
+type DMArgument = {
+  auth_user_uuid: string;
+  about?: string;
+  level?: number;
+};
 
 export const getDMs = () =>
   runQuery((supabase) => supabase
@@ -19,5 +24,13 @@ export const getDMByUuid = (uuid: string) =>
     .from("dms")
     .select("*")
     .eq("auth_user_uuid", uuid)
+    .single()
+  );
+
+export const insertDM = (dm: DMArgument) =>
+  runQuery<DM>((supabase) => supabase
+    .from("dms")
+    .upsert(dm, { onConflict: "auth_user_uuid", ignoreDuplicates: false })
+    .select("*")
     .single()
   );

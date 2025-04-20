@@ -30,23 +30,23 @@ export type Database = {
       campaigns: {
         Row: {
           description: string
-          end_date: string
+          end_date: string | null
           id: string
           name: string
           shortened: string
           start_date: string
         }
         Insert: {
-          description: string
-          end_date: string
+          description?: string
+          end_date?: string | null
           id?: string
           name: string
           shortened?: string
-          start_date: string
+          start_date?: string
         }
         Update: {
           description?: string
-          end_date?: string
+          end_date?: string | null
           id?: string
           name?: string
           shortened?: string
@@ -129,7 +129,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "character_races_character_id_fkey"
+            foreignKeyName: "character_race_character_id_fkey"
             columns: ["character_id"]
             isOneToOne: false
             referencedRelation: "characters"
@@ -226,20 +226,20 @@ export type Database = {
       }
       dms: {
         Row: {
+          about: string
           auth_user_uuid: string
-          campaign_ids: string[] | null
           id: string
           level: number
         }
         Insert: {
+          about?: string
           auth_user_uuid: string
-          campaign_ids?: string[] | null
           id?: string
           level?: number
         }
         Update: {
+          about?: string
           auth_user_uuid?: string
-          campaign_ids?: string[] | null
           id?: string
           level?: number
         }
@@ -247,7 +247,7 @@ export type Database = {
           {
             foreignKeyName: "dms_auth_user_uuid_fkey1"
             columns: ["auth_user_uuid"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["auth_user_uuid"]
           },
@@ -276,7 +276,7 @@ export type Database = {
           {
             foreignKeyName: "players_auth_user_uuid_fkey1"
             columns: ["auth_user_uuid"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["auth_user_uuid"]
           },

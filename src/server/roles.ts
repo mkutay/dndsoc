@@ -3,37 +3,22 @@
 import { z } from "zod";
 
 import { adminRoleEditSchema } from "@/config/admin-schema";
-import { createClient } from "@/utils/supabase/server";
-import { errAsync, fromPromise, okAsync } from "neverthrow";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
-
-type UpdateRoleError = {
-  message: string;
-  code: "DATABASE_ERROR";
-};
+import { runQuery } from "@/utils/supabase-run";
+import { upsertPlayer } from "@/lib/players/insert";
+import { insertDM } from "@/lib/dms";
 
 export const updateRole = async (values: z.infer<typeof adminRoleEditSchema>, authUuid: string) => resultAsyncToActionResult(
   parseSchema(adminRoleEditSchema, values)
-    .asyncAndThen(() => createClient())
-    .andThen((supabase) =>
-      fromPromise(
-        supabase
-          .from("roles")
-          .update({ role: values.role })
-          .eq("auth_user_uuid", authUuid),
-        (error) => ({
-          message: `Failed to update role in table "roles": ${error instanceof Error ? error.message : 'Unknown error'}`,
-          code: "DATABASE_ERROR",
-        } as UpdateRoleError)
-      )
+    .asyncAndThen(() => runQuery((supabase) => supabase
+      .from("roles")
+      .update({ role: values.role })
+      .eq("auth_user_uuid", authUuid)
+    ))
+    .andThen(() => values.role === "dm"
+      ? insertDM({ auth_user_uuid: authUuid })
+      : upsertPlayer({ auth_user_uuid: authUuid })
     )
-    .andThen((response) => 
-      !response.error 
-        ? okAsync()
-        : errAsync({
-          message: `Failed to update role in table "roles": ${response.error.message}`,
-          code: "DATABASE_ERROR",
-        } as UpdateRoleError)
-    )
+    .map(() => undefined)
 )
