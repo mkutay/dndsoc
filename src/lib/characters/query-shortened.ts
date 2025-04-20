@@ -1,4 +1,3 @@
-import { Character } from "@/types/full-database.types";
 import { runQuery } from "@/utils/supabase-run";
 
 type GetCharacterByShortenedError = {
