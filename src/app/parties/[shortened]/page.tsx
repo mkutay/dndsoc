@@ -4,6 +4,7 @@ import { TypographyLarge, TypographyLead, TypographyLink } from "@/components/ty
 import { getParties, getPartyByShortened } from "@/lib/parties";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
+import { PartyEditButton } from "./party-edit-button";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       </TypographyLarge>
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{party.name}</TypographyH1>
-        {/* <PlayerEditButton authUserUuid={player.auth_user_uuid}/> */}
+        <PartyEditButton DMUuids={dmedBy.map((dm) => dm.id)} shortened={shortened} />
       </div>
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
