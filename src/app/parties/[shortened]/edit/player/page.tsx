@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 import { TypographyH1 } from "@/components/typography/headings";
+import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { getPartyByShortened } from "@/lib/parties";
 import { getUserRole } from "@/lib/roles";
-import { PlayerForm } from "./form";
 import { getPlayerUser } from "@/lib/player-user";
+import { PlayerForm } from "./form";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -26,6 +27,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+      <TypographyLink href={`/parties/${party.shortened}`} variant="muted">
+        Go back
+      </TypographyLink>
       <TypographyH1>Edit Your Party</TypographyH1>
       <PlayerForm about={party.about} partyUuid={party.id} />
     </div>

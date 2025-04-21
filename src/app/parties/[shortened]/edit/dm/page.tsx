@@ -2,13 +2,14 @@ import { redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 
 import { TypographyH1 } from "@/components/typography/headings";
+import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { getPartyByShortened } from "@/lib/parties";
 import { getUserRole } from "@/lib/roles";
 import { getDMs, getDMUser } from "@/lib/dms";
-import { DMForm } from "./form";
 import { getCampaigns } from "@/lib/campaigns";
 import { getCharacters } from "@/lib/characters/query-all";
+import { DMForm } from "./form";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -68,6 +69,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+      <TypographyLink href={`/parties/${party.shortened}`} variant="muted">
+        Go back
+      </TypographyLink>
       <TypographyH1>Edit Party <span className="text-primary">{party.name}</span></TypographyH1>
       <DMForm
         about={party.about}
