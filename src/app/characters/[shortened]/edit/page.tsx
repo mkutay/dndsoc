@@ -7,6 +7,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { CharacterEditForm } from "./form";
+import { getUserRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -14,16 +15,22 @@ export default async function Page(props:
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await props.params;
-  const playerUser = await getPlayerUser();
-  if (playerUser.isErr()) redirect("/sign-in");
+
+  const role = await getUserRole();
+  if (role.isErr()) redirect("/sign-in");
 
   const characterResult = await getCharacterByShortened({ shortened });
   if (characterResult.isErr()) return <ErrorPage error={characterResult.error} caller="/characters/[shortened]/edit/page.tsx" />;
   const character = characterResult.value;
 
-  // Check if the character belongs to the player
-  if (character.player_uuid !== playerUser.value.id) {
-    return redirect(`/characters/${shortened}`);
+  if (role.value.role !== "admin") {
+    const playerUser = await getPlayerUser();
+    if (playerUser.isErr()) redirect("/sign-in");
+
+    // Check if the character belongs to the player
+    if (character.player_uuid !== playerUser.value.id) {
+      return redirect(`/characters/${shortened}`);
+    }
   }
 
   return (

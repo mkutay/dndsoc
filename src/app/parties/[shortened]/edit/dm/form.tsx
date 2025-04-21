@@ -104,7 +104,7 @@ export function DMForm({
   campaigns: Campaign[];
   DMs: DM[];
   partyUuid: string;
-  thisDMUuid: string;
+  thisDMUuid: string | undefined; // undefined when admin
 }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);

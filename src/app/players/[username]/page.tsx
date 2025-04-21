@@ -25,7 +25,7 @@ export default async function Page({ params }:
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{username}</TypographyH1>
-        <PlayerEditButton authUserUuid={player.auth_user_uuid}/>
+        <PlayerEditButton authUserUuid={player.auth_user_uuid} username={username} />
       </div>
       <TypographyLarge>Level: {player.level}</TypographyLarge>
       {player.about && player.about.length !== 0 && <TypographyLead>{player.about}</TypographyLead>}

@@ -23,7 +23,7 @@ export default async function Page({ params }:
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{username}</TypographyH1>
-        <DMEditButton authUserUuid={dm.auth_user_uuid} />
+        <DMEditButton authUserUuid={dm.auth_user_uuid} username={username} />
       </div>
       <TypographyLarge>Level: {dm.level}</TypographyLarge>
       {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}

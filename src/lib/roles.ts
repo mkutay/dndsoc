@@ -19,7 +19,7 @@ export const insertRole = (role: RoleArgument) =>
 export const getRole = ({ authUuid }: { authUuid: string }) => 
   runQuery((supabase) => supabase
     .from("roles")
-    .select("*")
+    .select("*, users(*)")
     .eq("auth_user_uuid", authUuid)
     .single()
   );

@@ -3,11 +3,17 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { getDMUser } from "@/lib/dms";
+import { getUserRole } from "@/lib/roles";
 
 export async function PartyEditButton({ DMUuids, shortened }: { DMUuids: string[], shortened: string }) {
-  const userResult = await getDMUser();
-  if (userResult.isErr() || !DMUuids.includes(userResult.value.id)) {
-    return null;
+  const role = await getUserRole();
+  if (role.isErr()) return null;
+
+  if (role.value.role !== "admin") {
+    const userResult = await getDMUser();
+    if (userResult.isErr() || !DMUuids.includes(userResult.value.id)) {
+      return null;
+    }
   }
 
   return (

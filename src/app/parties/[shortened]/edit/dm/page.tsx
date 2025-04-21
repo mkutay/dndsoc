@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { ResultAsync } from "neverthrow";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
@@ -7,7 +8,6 @@ import { getUserRole } from "@/lib/roles";
 import { getDMs, getDMUser } from "@/lib/dms";
 import { DMForm } from "./form";
 import { getCampaigns } from "@/lib/campaigns";
-import { ResultAsync } from "neverthrow";
 import { getCharacters } from "@/lib/characters/query-all";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
@@ -18,6 +18,18 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const result = await getPartyByShortened({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
   const party = result.value;
+
+  if (role.value.role === "player") redirect(`/parties/${shortened}/edit/player`);
+
+  let dmUuid: undefined | string = undefined;
+  if (role.value.role !== "admin") {
+    const dm = await getDMUser();
+    if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
+
+    const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
+    if (!hasAccess) redirect(`/parties/${shortened}`);
+    dmUuid = dm.value.id;
+  }
 
   const currentCampaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const currentCharacters = party.character_party.map((characterParty) => characterParty.characters);
@@ -54,17 +66,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     }
   }));
 
-  if (role.value.role === "player") redirect(`/parties/${shortened}/edit/player`);
-
-  const dm = await getDMUser();
-  if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
-
-  const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
-  if (!hasAccess) redirect(`/parties/${shortened}`);
-
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyH1>Edit Your Party</TypographyH1>
+      <TypographyH1>Edit Party <span className="text-primary">{party.name}</span></TypographyH1>
       <DMForm
         about={party.about}
         name={party.name}
@@ -76,7 +80,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         characters={characters}
         campaigns={campaigns}
         DMs={dms}
-        thisDMUuid={dm.value.id}
+        thisDMUuid={dmUuid}
       />
     </div>
   )

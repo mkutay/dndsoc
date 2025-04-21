@@ -22,12 +22,14 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     const hasAccess = party.character_party.some((characterParty) => characterParty.characters.player_uuid === player.value.id);
     if (!hasAccess) redirect(`/parties/${shortened}`);
     redirect(`/parties/${shortened}/edit/player`);
-  } else {
+  } else if (role.value.role === "dm") {
     const dm = await getDMUser();
     if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
 
     const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
     if (!hasAccess) redirect(`/parties/${shortened}`);
+    redirect(`/parties/${shortened}/edit/dm`);
+  } else {
     redirect(`/parties/${shortened}/edit/dm`);
   }
 }
