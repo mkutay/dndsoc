@@ -2,8 +2,8 @@ import { TypographyLarge, TypographyLead } from "@/components/typography/paragra
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
-import { getPlayerByUsername } from "@/lib/players/query-username";
-import { getPlayers } from "@/lib/players/query-all";
+import { getPlayerByUsername } from "@/lib/players";
+import { getPlayers } from "@/lib/players";
 import { PlayerEditButton } from "./player-edit-button";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";

@@ -1,7 +1,7 @@
 import { Edit } from "lucide-react";
 import Link from "next/link";
 
-import { getPlayerAuthUserUuid } from "@/lib/players/query-auth-user-uuid";
+import { getPlayerAuthUserUuid } from "@/lib/players";
 import { Button } from "./ui/button";
 import { getUserRole } from "@/lib/roles";
 

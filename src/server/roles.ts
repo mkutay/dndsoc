@@ -6,7 +6,7 @@ import { adminRoleEditSchema } from "@/config/admin-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
-import { upsertPlayer } from "@/lib/players/insert";
+import { upsertPlayer } from "@/lib/players";
 import { insertDM } from "@/lib/dms";
 
 export const updateRole = async (values: z.infer<typeof adminRoleEditSchema>, authUuid: string) => resultAsyncToActionResult(

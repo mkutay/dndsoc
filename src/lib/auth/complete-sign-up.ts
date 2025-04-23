@@ -1,8 +1,8 @@
 import { ResultAsync } from "neverthrow";
 
-import { insertPlayer } from "../players/insert";
-import { insertUser } from "../users";
-import { insertRole } from "../roles";
+import { insertPlayer } from "@/lib/players";
+import { insertUser } from "@/lib/users";
+import { insertRole } from "@/lib/roles";
 import { getUser } from "./user";
 
 /**

@@ -1,7 +1,7 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername } from "@/lib/players/query-username";
+import { getPlayerByUsername } from "@/lib/players";
 import { getUserRole } from "@/lib/roles";
 import { PlayerEditForm } from "./form";
 

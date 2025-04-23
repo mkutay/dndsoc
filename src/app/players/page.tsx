@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { getPlayers } from "@/lib/players/query-all";
+import { getPlayers } from "@/lib/players";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 

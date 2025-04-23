@@ -1,7 +1,7 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername } from "@/lib/players/query-username";
+import { getPlayerByUsername } from "@/lib/players";
 import { getRole } from "@/lib/roles";
 import { AdminRoleEditForm } from "./role-form";
 

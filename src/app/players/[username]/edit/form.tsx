@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { updatePlayer } from "@/lib/players/update";
+import { updatePlayer } from "@/server/player";
 import { playersEditSchema } from "@/config/player-edit-schema";
 import { Player } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
