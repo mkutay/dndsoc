@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
@@ -22,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInAction } from "@/server/sign-in";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
+import { TypographyLink } from "@/components/typography/paragraph";
 
 export function SignInForm() {
   const { toast } = useToast();
@@ -80,9 +80,9 @@ export function SignInForm() {
             <FormItem>
               <FormLabel className="flex flex-row justify-between items-center">
                 Password
-                <Link className="text-xs font-normal text-muted-foreground underline hover:text-muted-foreground/80 transition-colors" href="/forgot-password">
+                <TypographyLink className="text-xs" variant="muted" href="/forgot-password" tabIndex={-1}>
                   Forgot your password?
-                </Link>
+                </TypographyLink>
               </FormLabel>
               <FormControl>
                 <Input

@@ -12,12 +12,12 @@ export default async function ResetPassword() {
   if (user.isErr() || !user.value) redirect("/sign-in");
 
   return (
-    <div className="flex flex-col w-full mx-auto max-w-prose my-12">
+    <div className="flex flex-col max-w-prose">
       <TypographyH1>Reset Password</TypographyH1>
       <TypographyParagraph>
         Please enter your new password below.
       </TypographyParagraph>
-      <div className="flex flex-col gap-2 mt-8">
+      <div className="flex flex-col gap-2 mt-4">
         <ResetPasswordForm />
       </div>
     </div>

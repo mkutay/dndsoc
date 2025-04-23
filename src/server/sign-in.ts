@@ -1,7 +1,6 @@
 "use server";
 
 import { errAsync, fromSafePromise, okAsync } from "neverthrow";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
@@ -42,11 +41,4 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
         : errAsync(userError)
       )
       .map((user) => ({ username: user.username }))
-      .andTee(({ username }) => {
-        revalidatePath(`/players/${username}`);
-        revalidatePath(`/players/edit`);
-        revalidatePath(`/characters/[shortened]`, 'page');
-        revalidatePath(`/characters/[shortened]/edit`, 'page');
-        revalidatePath(`/admin`, 'layout');
-      })
   );
