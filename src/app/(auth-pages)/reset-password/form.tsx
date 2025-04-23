@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { resetPasswordAction } from "@/server/reset-password";
 import { resetPasswordSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
+import Server from "@/server/server";
 
 export function ResetPasswordForm() {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function ResetPasswordForm() {
  
   const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
     setPending(true);
-    const result = await resetPasswordAction(values);
+    const result = await Server.Auth.ResetPassword(values);
     setPending(false);
 
     actionResultMatch(result,

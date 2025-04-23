@@ -22,9 +22,9 @@ import { adminRoleEditSchema } from "@/config/admin-schema";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { updateRole } from "@/server/roles";
 import { rolesLabel } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
+import Server from "@/server/server";
 
 export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
   const { toast } = useToast();
@@ -39,7 +39,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
  
   const onSubmit = async (values: z.infer<typeof adminRoleEditSchema>) => {
     setPending(true);
-    const result = await updateRole(values, role.auth_user_uuid);
+    const result = await Server.Roles.Update(values, role.auth_user_uuid);
     setPending(false);
 
     actionResultMatch(result,

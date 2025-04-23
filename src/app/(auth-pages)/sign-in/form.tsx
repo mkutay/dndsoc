@@ -18,10 +18,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { signInAction } from "@/server/sign-in";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
 import { TypographyLink } from "@/components/typography/paragraph";
+import Server from "@/server/server";
 
 export function SignInForm() {
   const { toast } = useToast();
@@ -37,7 +37,7 @@ export function SignInForm() {
  
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
-    const result = await signInAction(values);
+    const result = await Server.Auth.SignIn(values);
     setPending(false);
 
     actionResultMatch(result,

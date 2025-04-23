@@ -19,8 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/add-character-schema";
-import { insertCharacter } from "@/server/characters";
 import { actionResultMatch } from "@/types/error-typing";
+import Server from "@/server/server";
 
 export function AddCharacterForm() {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function AddCharacterForm() {
  
   const onSubmit = async (values: z.infer<typeof addCharacterSchema>) => {
     setPending(true);
-    const result = await insertCharacter(values);
+    const result = await Server.Characters.Insert(values);
     setPending(false);
 
     actionResultMatch(

@@ -1,17 +1,28 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { getUser } from "@/lib/auth";
-import { signOut } from "@/server/sign-out";
+import Server from "@/server/server";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AuthButtons() {
   const user = await getUser();
   
+  const onSubmit = async () => {
+    "use server";
+    const result = await Server.Auth.SignOut();
+    if (result.ok) {
+      redirect("/");
+    } else {
+      console.error("Error signing out:", result.error);
+    }
+  }
+
   return user.isOk() ? (
     <div className="flex items-center">
-      <form action={signOut}>
+      <form action={onSubmit}>
         <Button variant={"outline"} type="submit">
           Sign out
         </Button>

@@ -1,9 +1,10 @@
 "use client"
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Check, ChevronsUpDown, MinusIcon, PlusIcon } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,15 +38,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { TypographyLink } from "@/components/typography/paragraph";
+import { partyDMEditSchema } from "@/config/parties";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
-import { partyDMEditSchema } from "@/config/parties";
-import { updateDMParty } from "@/server/parties";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, MinusIcon, PlusIcon } from "lucide-react";
-import { TypographyLink } from "@/components/typography/paragraph";
+import Server from "@/server/server";
 
 type Campaign = {
   description: string;
@@ -150,7 +150,7 @@ export function DMForm({
  
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
     setPending(true);
-    const result = await updateDMParty(values, partyUuid);
+    const result = await Server.Parties.Update.Player(values, partyUuid);
     setPending(false);
 
     actionResultMatch(

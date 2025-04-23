@@ -7,7 +7,7 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { getOrigin } from "../lib/origin";
+import { getOrigin } from "@/lib/origin";
 
 type ForgotPasswordError = {
   message: string;
