@@ -10,17 +10,14 @@ import DB from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const playersResult = await DB.Players.Get.All();
-  if (playersResult.isErr()) {
-    return <ErrorPage error={playersResult.error} caller="/players page" />;
-  }
-  const players = playersResult.value;
+  const players = await DB.Players.Get.All();
+  if (players.isErr()) return <ErrorPage error={players.error} caller="/players page" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <TypographyH1>Players</TypographyH1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
-        {players.map((player) => (
+        {players.value.map((player) => (
           <Card key={player.id}>
             <CardHeader>
               <CardTitle>{player.users.username}</CardTitle>
