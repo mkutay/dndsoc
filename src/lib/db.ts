@@ -4,7 +4,7 @@ import { deleteCharacterClass, getCharacterByShortened, getCharacterPlayerByShor
 import { insertClasses } from "./classes";
 import { getDMByUsername, getDMs, getDMUser, insertDM } from "./dms";
 import { getParties, getPartyByDMUuid, getPartyByShortened } from "./parties";
-import { getPlayerAuthUserUuid, getPlayerByUsername, getPlayers, insertPlayer, upsertPlayer, getPlayerUser } from "./players";
+import { getPlayerAuthUserUuid, getPlayerByUsername, getPlayers, insertPlayer, upsertPlayer, getPlayerUser, getPlayerRoleUser } from "./players";
 import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "./races";
 import { getRole, getUserRole, insertRole } from "./roles";
 import { getUserByAuthUuid, getUsers, insertUser } from "./users";
@@ -107,6 +107,14 @@ const Achievements = {
   },
 };
 
+const Auth = {
+  Get: {
+    With: {
+      PlayerAndRole: getPlayerRoleUser,
+    },
+  },
+};
+
 const DB = {
   Users,
   Roles,
@@ -120,6 +128,7 @@ const DB = {
   CharacterClass,
   Campaigns,
   Achievements,
+  Auth,
 };
 
 export default DB;

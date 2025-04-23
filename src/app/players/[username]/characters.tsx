@@ -3,15 +3,22 @@ import Link from "next/link";
 import { AddCharacterButton } from "@/app/players/[username]/add-character-button";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
-import { ErrorComponent } from "@/components/error-component";
-import DB from "@/lib/db";
+import { Tables } from "@/types/database.types";
 
-export async function Characters({ playerUuid }: { playerUuid: string }) {
-  const result = await DB.Characters.Get.Player({ playerUuid });
-  if (result.isErr()) return <ErrorComponent error={result.error} caller="/players/[username]/characters.tsx" />;
-  const characters = result.value;
-
-  if (characters.length === 0) return null;
+export function Characters({
+  characters,
+  ownsPlayer,
+  playerUuid,
+}: {
+  characters: Tables<"characters">[];
+  ownsPlayer?: boolean;
+  playerUuid: string;
+}) {
+  if (characters.length === 0) return (
+    <>
+      {ownsPlayer && <AddCharacterButton playerUuid={playerUuid} />}
+    </>
+  );
 
   return (
     <div className="flex flex-col gap-1 mt-4">
@@ -26,7 +33,7 @@ export async function Characters({ playerUuid }: { playerUuid: string }) {
             </Link>
           </Button>
         ))}
-        <AddCharacterButton playerUuid={playerUuid} />
+        {ownsPlayer && <AddCharacterButton playerUuid={playerUuid} />}
       </div>
     </div>
   );

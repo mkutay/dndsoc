@@ -1,12 +1,22 @@
 import { Player } from "@/types/full-database.types";
 import { runQuery } from "@/utils/supabase-run";
 import { getUser } from "./auth";
+import { Tables } from "@/types/database.types";
 
 type PlayerArgument = {
   about?: string;
   id?: string;
   level?: number;
   auth_user_uuid: string;
+};
+
+type ExtendedPlayer = Player & {
+  characters: Tables<"characters">[];
+};
+
+type NotLoggedInError = {
+  message: string;
+  code: "NOT_LOGGED_IN";
 };
 
 export const insertPlayer = (player: PlayerArgument) =>
@@ -47,12 +57,13 @@ export const getPlayerAuthUserUuid = ({ authUserUuid }: { authUserUuid: string }
   );
 
 export const getPlayerByUsername = ({ username }: { username: string }) =>
-  runQuery<Player>((supabase) =>
+  runQuery<ExtendedPlayer>((supabase) =>
     supabase
       .from("players")
-      .select(`*, users!inner(*), received_achievements_player(*, achievements(*))`)
+      .select(`*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*)`)
       .eq("users.username", username)
-      .single()
+      .single(),
+    "getPlayerByUsername"
   );
 
 export const getPlayerUser = () => 
@@ -64,4 +75,31 @@ export const getPlayerUser = () =>
       .eq("auth_user_uuid", user.id)
       .single()
     )
+  )
+  .mapErr((error) => error.message.includes("Auth session missing") 
+    ? {
+        message: "User is not logged in",
+        code: "NOT_LOGGED_IN",
+      } as NotLoggedInError
+    : error
+  );
+
+// Some thing to consider: the admin might not have a player -- so the "!inner" might fail
+export const getPlayerRoleUser = () =>
+  getUser()
+  .andThen((user) =>
+    runQuery((supabase) => supabase
+      .from("users")
+      .select(`*, roles!inner(*), players!inner(*)`)
+      .eq("auth_user_uuid", user.id)
+      .single(),
+      "getPlayerRoleUser"
+    )
+  )
+  .mapErr((error) => error.message.includes("Auth session missing") 
+    ? {
+        message: "User is not logged in",
+        code: "NOT_LOGGED_IN",
+      } as NotLoggedInError
+    : error
   );

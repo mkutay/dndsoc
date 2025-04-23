@@ -11,16 +11,15 @@ import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
 import DB from "@/lib/db";
 
-export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>) =>
+export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>, playerUuid: string) =>
   resultAsyncToActionResult(
     parseSchema(addCharacterSchema, values)
-      .asyncAndThen(() => DB.Players.Get.With.User())
-      .andThen((playerUser) =>
+      .asyncAndThen(() =>
         runQuery((supabase) => supabase
           .from("characters")
           .insert({
             name: values.name,
-            player_uuid: playerUser.id,
+            player_uuid: playerUuid,
             shortened: convertToShortened(values.name),
           })
           .select()

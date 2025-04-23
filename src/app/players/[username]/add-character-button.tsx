@@ -10,14 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AddCharacterForm } from "@/app/players/[username]/add-character-form";
-import { ErrorComponent } from "@/components/error-component";
-import DB from "@/lib/db";
 
-export async function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
-  const playerUser = await DB.Players.Get.With.User();
-  if (playerUser.isErr()) return <ErrorComponent error={playerUser.error} caller="/components/add-character-button.tsx" returnNull silent />;
-  if (playerUser.value.id !== playerUuid) return null;
-
+export function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,7 +26,7 @@ export async function AddCharacterButton({ playerUuid }: { playerUuid: string })
             You can add a new character to your player.
           </DialogDescription>
         </DialogHeader>
-        <AddCharacterForm />
+        <AddCharacterForm playerUuid={playerUuid} />
       </DialogContent>
     </Dialog>
   );

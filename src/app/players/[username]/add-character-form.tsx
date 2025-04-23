@@ -22,7 +22,7 @@ import { addCharacterSchema } from "@/config/add-character-schema";
 import { actionResultMatch } from "@/types/error-typing";
 import Server from "@/server/server";
 
-export function AddCharacterForm() {
+export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
@@ -35,7 +35,7 @@ export function AddCharacterForm() {
  
   const onSubmit = async (values: z.infer<typeof addCharacterSchema>) => {
     setPending(true);
-    const result = await Server.Characters.Insert(values);
+    const result = await Server.Characters.Insert(values, playerUuid);
     setPending(false);
 
     actionResultMatch(

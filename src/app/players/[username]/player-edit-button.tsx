@@ -1,25 +1,13 @@
-import { Edit } from "lucide-react";
+import { TiPencil } from "react-icons/ti";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import DB from "@/lib/db";
 
-export async function PlayerEditButton({ authUserUuid, username }: { authUserUuid: string, username: string }) {
-  const role = await DB.Roles.Get.With.User();
-  if (role.isErr()) return null;
-
-  if (role.value.role !== "admin" && role.value.auth_user_uuid !== authUserUuid) {
-    return null;
-  }
-
-  if (role.value.role !== "admin" && role.value.users.username !== username) {
-    return null;
-  }
-
+export function PlayerEditButton({ username }: { username: string }) {
   return (
     <Button asChild variant="outline" size="icon">
       <Link href={`/players/${username}/edit`}>
-        <Edit />
+        <TiPencil size={24} />
       </Link>
     </Button>
   );
