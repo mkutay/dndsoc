@@ -2,10 +2,8 @@ import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
 import { runQueryUser } from "@/utils/supabase-run";
-import { insertUser } from "./users";
-import { insertRole } from "./roles";
-import { insertPlayer } from "./players";
 import { getOrigin } from "./origin";
+import DB from "./db";
 
 type ExchangeCodeError = {
   message: string;
@@ -39,18 +37,18 @@ export const getUser = () =>
 export const completeSignUp = () => {
   const user = getUser();
 
-  const insertedUser = user.andThen((user) => insertUser({
+  const insertedUser = user.andThen((user) => DB.Users.Insert({
     username: user.user_metadata.username,
     knumber: user.user_metadata.knumber,
     auth_user_uuid: user.id,
   }));
 
-  const insertedRole = user.andThen((user) => insertRole({
+  const insertedRole = user.andThen((user) => DB.Roles.Insert({
     role: "player",
     auth_user_uuid: user.id,
   }));
 
-  const insertedPlayer = user.andThen((user) => insertPlayer({
+  const insertedPlayer = user.andThen((user) => DB.Players.Insert({
     auth_user_uuid: user.id,
     level: 1,
   }));

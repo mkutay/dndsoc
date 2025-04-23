@@ -6,8 +6,7 @@ import { adminRoleEditSchema } from "@/config/admin-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
-import { upsertPlayer } from "@/lib/players";
-import { insertDM } from "@/lib/dms";
+import DB from "@/lib/db";
 
 export const updateRole = async (values: z.infer<typeof adminRoleEditSchema>, authUuid: string) => resultAsyncToActionResult(
   parseSchema(adminRoleEditSchema, values)
@@ -17,8 +16,8 @@ export const updateRole = async (values: z.infer<typeof adminRoleEditSchema>, au
       .eq("auth_user_uuid", authUuid)
     ))
     .andThen(() => values.role === "dm"
-      ? insertDM({ auth_user_uuid: authUuid })
-      : upsertPlayer({ auth_user_uuid: authUuid })
+      ? DB.DMs.Insert({ auth_user_uuid: authUuid })
+      : DB.Players.Upsert({ auth_user_uuid: authUuid })
     )
     .map(() => undefined)
 )

@@ -1,13 +1,13 @@
 import Link from "next/link";
 
-import { getCharactersByPlayerUuid } from "@/lib/characters";
 import { AddCharacterButton } from "@/app/players/[username]/add-character-button";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorComponent } from "@/components/error-component";
+import DB from "@/lib/db";
 
 export async function Characters({ playerUuid }: { playerUuid: string }) {
-  const result = await getCharactersByPlayerUuid({ playerUuid });
+  const result = await DB.Characters.Get.Player({ playerUuid });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/players/[username]/characters.tsx" />;
   const characters = result.value;
 

@@ -1,10 +1,10 @@
 import { TypographyH1 } from "@/components/typography/headings";
-import { getCampaigns } from "@/lib/campaigns";
 import { CampaignCards } from "@/components/campaigns-cards";
 import { ErrorPage } from "@/components/error-page";
+import DB from "@/lib/db";
 
 export default async function Page() {
-  const campaigns = await getCampaigns();
+  const campaigns = await DB.Campaigns.Get.All();
   if (campaigns.isErr()) return <ErrorPage error={campaigns.error} caller="/campaigns/page.tsx" />;
 
   return (

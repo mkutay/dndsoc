@@ -1,21 +1,20 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername } from "@/lib/players";
-import { getRole } from "@/lib/roles";
 import { AdminRoleEditForm } from "./role-form";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
 
-  const player = await getPlayerByUsername({ username });
+  const player = await DB.Players.Get.Username({ username });
   if (player.isErr()) {
     return <ErrorPage error={player.error} isNotFound />;
   }
 
-  const role = await getRole({ authUuid: player.value.auth_user_uuid });
+  const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) {
     return <ErrorPage error={role.error} isNotFound />;
   }

@@ -2,13 +2,13 @@ import Link from "next/link";
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getUsers } from "@/lib/users";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { rolesLabel } from "@/types/full-database.types";
+import DB from "@/lib/db";
 
 export default async function Page() {
-  const users = await getUsers();
+  const users = await DB.Users.Get.All();
   if (users.isErr()) return <ErrorPage error={users.error} />;
 
   return (

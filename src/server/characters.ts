@@ -9,16 +9,12 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
-import { getPlayerUser } from "@/lib/player-user";
-import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "@/lib/races";
-import { deleteCharacterClass, getCharacterByShortened } from "@/lib/characters";
-import { upsertCharacterClass } from "@/lib/characters";
-import { insertClasses } from "@/lib/classes";
+import DB from "@/lib/db";
 
 export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>) =>
   resultAsyncToActionResult(
     parseSchema(addCharacterSchema, values)
-      .asyncAndThen(() => getPlayerUser())
+      .asyncAndThen(() => DB.Players.Get.With.User())
       .andThen((playerUser) =>
         runQuery((supabase) => supabase
           .from("characters")
@@ -44,7 +40,7 @@ type UpdateCharacterError = {
 
 export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterShortened: string) {
   const character = ResultAsync
-    .combine([getCharacterByShortened({ shortened: characterShortened }), getPlayerUser()])
+    .combine([DB.Characters.Get.Shortened({ shortened: characterShortened }), DB.Players.Get.With.User()])
     .andThen(([character, playerUser]) => 
       character.player_uuid === playerUser.id
         ? okAsync(character)
@@ -79,10 +75,10 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
 }
 
 const updateRace = ({ race, characterId }: { race: string; characterId: string; }) =>
-  deleteCharacterRace({ characterId })
-    .andThen(() => upsertRace({ race }))
+  DB.CharacterRace.Delete({ characterId })
+    .andThen(() => DB.Races.Upsert({ race }))
     .andThen((response) => 
-      upsertCharacterRace({
+      DB.CharacterRace.Upsert({
         raceId: response.id,
         characterId,
       })
@@ -95,10 +91,10 @@ const updateClasses = ({
   classes: { value: string }[];
   characterId: string;
 }) =>
-  deleteCharacterClass({ characterId })
-    .andThen(() => insertClasses({ classes: classes.map((cls) => ({ name: cls.value })) }))
+  DB.CharacterClass.Delete({ characterId })
+    .andThen(() => DB.Classes.Insert({ classes: classes.map((cls) => ({ name: cls.value })) }))
     .andThen((classes) =>
-      upsertCharacterClass({
+      DB.CharacterClass.Upsert({
         classes: classes.map((cls) => ({
           character_id: characterId,
           class_id: cls.id,

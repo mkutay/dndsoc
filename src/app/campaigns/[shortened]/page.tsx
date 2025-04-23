@@ -3,15 +3,14 @@ import { format } from "date-fns";
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { getCampaigns } from "@/lib/campaigns";
-import { getCampaign } from "@/lib/campaigns";
+import DB from "@/lib/db";
 
 export const dynamicParams = false;
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const campaigned = await getCampaign({ shortened });
+  const campaigned = await DB.Campaigns.Get.Shortened({ shortened });
   if (campaigned.isErr()) return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 
@@ -25,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 }
 
 export async function generateStaticParams() {
-  const campaigns = await getCampaigns();
+  const campaigns = await DB.Campaigns.Get.All();
   if (campaigns.isErr()) return [];
 
   return campaigns.value.map((campaign) => ({

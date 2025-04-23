@@ -3,11 +3,11 @@ import Link from "next/link";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorComponent } from "@/components/error-component";
-import { getPartyByDMUuid } from "@/lib/parties";
 import { AddPartyButton } from "./add-party-button";
+import DB from "@/lib/db";
 
 export async function Parties({ DMUuid }: { DMUuid: string }) {
-  const result = await getPartyByDMUuid({ DMUuid });
+  const result = await DB.Parties.Get.DM({ DMUuid });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/players/[username]/characters.tsx" />;
   const parties = result.value;
 

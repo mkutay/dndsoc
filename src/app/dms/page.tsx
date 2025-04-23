@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { getDMs } from "@/lib/dms";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const dms = await getDMs();
+  const dms = await DB.DMs.Get.All();
   if (!dms.isOk()) return <ErrorPage error={dms.error.message} />;
 
   return (

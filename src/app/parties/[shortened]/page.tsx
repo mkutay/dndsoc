@@ -1,16 +1,16 @@
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge, TypographyLead, TypographyLink } from "@/components/typography/paragraph";
-import { getParties, getPartyByShortened } from "@/lib/parties";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
 import { PartyEditButton } from "./party-edit-button";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await getPartyByShortened({ shortened });
+  const result = await DB.Parties.Get.Shortened({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
   const party = result.value;
 
@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 }
 
 export async function generateStaticParams() {
-  const parties = await getParties();
+  const parties = await DB.Parties.Get.All();
   if (parties.isErr()) return [];
   return parties.value.map((party) => ({
     shortened: party.shortened,

@@ -7,8 +7,8 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { getUserByAuthUuid } from "@/lib/users";
 import { completeSignUp } from "@/lib/auth";
+import DB from "@/lib/db";
 
 type SignInError = {
   message: string;
@@ -35,7 +35,7 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
             code: "DATABASE_ERROR",
           } as SignInError)
       )
-      .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
+      .andThen((authUserUuid) => DB.Users.Get.Auth({ authUserUuid }))
       .orTee((userError) => userError.code === "NOT_FOUND"
         ? completeSignUp()
         : errAsync(userError)

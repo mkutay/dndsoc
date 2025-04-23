@@ -2,11 +2,10 @@ import { TypographyLarge, TypographyLead } from "@/components/typography/paragra
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
-import { getPlayerByUsername } from "@/lib/players";
-import { getPlayers } from "@/lib/players";
 import { PlayerEditButton } from "./player-edit-button";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +14,7 @@ export default async function Page({ params }:
 ) {
   const { username } = await params;
 
-  const playerData = await getPlayerByUsername({ username });
+  const playerData = await DB.Players.Get.Username({ username });
   if (playerData.isErr()) {
     return <ErrorPage error={playerData.error} caller="/players/[username]" />;
   }
@@ -37,7 +36,7 @@ export default async function Page({ params }:
 }
 
 export async function generateStaticParams() {
-  const players = await getPlayers();
+  const players = await DB.Players.Get.All();
   if (players.isErr()) return [];
   return players.value.map((player) => ({
     username: player.users.username,

@@ -1,10 +1,10 @@
 import { CampaignCards } from "@/components/campaigns-cards";
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH2 } from "@/components/typography/headings";
-import { getCampaignsByCharacterUuid } from "@/lib/campaigns";
+import DB from "@/lib/db";
 
 export async function Campaigns({ characterUuid }: { characterUuid: string }) {
-  const campaigns = await getCampaignsByCharacterUuid({ characterUuid });
+  const campaigns = await DB.Campaigns.Get.Character({ characterUuid });
   if (campaigns.isErr()) {
     if (campaigns.error.code === "NOT_FOUND") return null;
     return <ErrorPage error={campaigns.error} caller="/characters/[shortened]/campaigns.tsx" />;

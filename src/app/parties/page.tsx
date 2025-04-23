@@ -5,12 +5,12 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import { getParties } from "@/lib/parties";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const result = await getParties();
+  const result = await DB.Parties.Get.All();
   if (result.isErr()) {
     return <ErrorPage error={result.error} caller="/players page" />;
   }

@@ -4,19 +4,15 @@ import { ResultAsync } from "neverthrow";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPartyByShortened } from "@/lib/parties";
-import { getUserRole } from "@/lib/roles";
-import { getDMs, getDMUser } from "@/lib/dms";
-import { getCampaigns } from "@/lib/campaigns";
-import { getCharacters } from "@/lib/characters";
 import { DMForm } from "./form";
+import DB from "@/lib/db";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const role = await getUserRole();
+  const role = await DB.Roles.Get.With.User();
   if (role.isErr()) return <ErrorPage error={role.error} caller="/parties/[shortened]" isNotFound />;
 
-  const result = await getPartyByShortened({ shortened });
+  const result = await DB.Parties.Get.Shortened({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
   const party = result.value;
 
@@ -24,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   let dmUuid: undefined | string = undefined;
   if (role.value.role !== "admin") {
-    const dm = await getDMUser();
+    const dm = await DB.DMs.Get.With.User();
     if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
 
     const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
@@ -43,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       id: dm.id,
     }));
   
-  const all = await ResultAsync.combine([getCampaigns(), getCharacters(), getDMs()]);
+  const all = await ResultAsync.combine([DB.Campaigns.Get.All(), DB.Characters.Get.All(), DB.DMs.Get.All()]);
   if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]" isNotFound />;
   const dms = all.value[2].map((dm) => ({
     username: dm.users.username,

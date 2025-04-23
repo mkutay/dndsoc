@@ -1,5 +1,6 @@
 import { Player } from "@/types/full-database.types";
 import { runQuery } from "@/utils/supabase-run";
+import { getUser } from "./auth";
 
 type PlayerArgument = {
   about?: string;
@@ -52,4 +53,15 @@ export const getPlayerByUsername = ({ username }: { username: string }) =>
       .select(`*, users!inner(*), received_achievements_player(*, achievements(*))`)
       .eq("users.username", username)
       .single()
+  );
+
+export const getPlayerUser = () => 
+  getUser()
+  .andThen((user) => 
+    runQuery((supabase) => supabase
+      .from("players")
+      .select(`*, users(*)`)
+      .eq("auth_user_uuid", user.id)
+      .single()
+    )
   );

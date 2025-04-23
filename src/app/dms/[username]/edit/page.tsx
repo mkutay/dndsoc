@@ -1,18 +1,17 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getDMByUsername } from "@/lib/dms";
 import { DMEditForm } from "./form";
-import { getUserRole } from "@/lib/roles";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const role = await getUserRole();
+  const role = await DB.Roles.Get.With.User();
   if (role.isErr()) return <ErrorPage error={role.error} caller="/dms/[username]/edit page" />;
 
-  const dm = await getDMByUsername({ username });
+  const dm = await DB.DMs.Get.Username({ username });
   if (dm.isErr()) return <ErrorPage error={dm.error} caller="/dms/[username]/edit page" />;
 
   if (role.value.role !== "admin" && role.value.auth_user_uuid !== dm.value.auth_user_uuid) {

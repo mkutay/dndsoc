@@ -1,13 +1,10 @@
 import { redirect } from "next/navigation";
 
-import { getCharacterByShortened } from "@/lib/characters";
-import { getPlayerUser } from "@/lib/player-user";
-import { getCharacters } from "@/lib/characters";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { CharacterEditForm } from "./form";
-import { getUserRole } from "@/lib/roles";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -16,15 +13,15 @@ export default async function Page(props:
 ) {
   const { shortened } = await props.params;
 
-  const role = await getUserRole();
+  const role = await DB.Roles.Get.With.User();
   if (role.isErr()) redirect("/sign-in");
 
-  const characterResult = await getCharacterByShortened({ shortened });
+  const characterResult = await DB.Characters.Get.Shortened({ shortened });
   if (characterResult.isErr()) return <ErrorPage error={characterResult.error} caller="/characters/[shortened]/edit/page.tsx" />;
   const character = characterResult.value;
 
   if (role.value.role !== "admin") {
-    const playerUser = await getPlayerUser();
+    const playerUser = await DB.Players.Get.With.User();
     if (playerUser.isErr()) redirect("/sign-in");
 
     // Check if the character belongs to the player
@@ -45,7 +42,7 @@ export default async function Page(props:
 }
 
 export async function generateStaticParams() {
-  const characters = await getCharacters();
+  const characters = await DB.Characters.Get.All();
   if (characters.isErr()) return [];
   return characters.value.map((character) => ({
     shortened: character.shortened,

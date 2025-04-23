@@ -1,11 +1,11 @@
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { getDMByUsername, getDMs } from "@/lib/dms";
 import { ErrorPage } from "@/components/error-page";
 import { DMEditButton } from "./dm-edit-button";
 import { DMAchievements } from "@/components/dm-achievements-section";
 import { Campaigns } from "./campaigns";
 import { Parties } from "./parties";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ export default async function Page({ params }:
   { params: Promise<{ username: string }> }
 ) {
   const { username } = await params;
-  const result = await getDMByUsername({ username });
+  const result = await DB.DMs.Get.Username({ username });
   if (!result.isOk()) {
     return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
   }
@@ -35,7 +35,7 @@ export default async function Page({ params }:
 }
 
 export async function generateStaticParams() {
-  const dms = await getDMs();
+  const dms = await DB.DMs.Get.All();
   if (dms.isErr()) return [];
   return dms.value.map((dm) => ({
     username: dm.users.username,

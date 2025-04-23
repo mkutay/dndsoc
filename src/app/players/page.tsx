@@ -3,14 +3,14 @@ import Link from "next/link";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { getPlayers } from "@/lib/players";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const playersResult = await getPlayers();
+  const playersResult = await DB.Players.Get.All();
   if (playersResult.isErr()) {
     return <ErrorPage error={playersResult.error} caller="/players page" />;
   }

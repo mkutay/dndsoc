@@ -1,11 +1,10 @@
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
-import { getCharacterPlayerByShortened } from "@/lib/characters";
-import { getCharacters } from "@/lib/characters";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { Campaigns } from "./campaigns";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +12,7 @@ export default async function Page({ params }:
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await params;
-  const result = await getCharacterPlayerByShortened({ shortened });
+  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
 
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
@@ -42,7 +41,7 @@ export default async function Page({ params }:
 }
 
 export async function generateStaticParams() {
-  const characters = await getCharacters();
+  const characters = await DB.Characters.Get.All();
   if (characters.isErr()) return [];
   return characters.value.map((character) => ({
     shortened: character.shortened,

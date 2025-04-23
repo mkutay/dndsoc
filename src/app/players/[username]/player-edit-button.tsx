@@ -2,10 +2,10 @@ import { Edit } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { getUserRole } from "@/lib/roles";
+import DB from "@/lib/db";
 
 export async function PlayerEditButton({ authUserUuid, username }: { authUserUuid: string, username: string }) {
-  const role = await getUserRole();
+  const role = await DB.Roles.Get.With.User();
   if (role.isErr()) return null;
 
   if (role.value.role !== "admin" && role.value.auth_user_uuid !== authUserUuid) {
