@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { characterEditSchema } from "@/config/character-edit-schema";
-import { updateCharacter } from "@/lib/characters/update";
+import { updateCharacter } from "@/server/characters";
 import { cn } from "@/lib/utils";
 import { actionResultMatch } from "@/types/error-typing";
 

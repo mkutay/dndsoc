@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { exchangeCodeForSession } from "@/lib/auth/exchange-code";
-import { completeSignUp } from "@/lib/auth/complete-sign-up";
+import { exchangeCodeForSession } from "@/lib/auth";
+import { completeSignUp } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);

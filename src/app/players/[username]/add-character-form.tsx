@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/add-character-schema";
-import { insertCharacter } from "@/lib/characters/insert-character";
+import { insertCharacter } from "@/server/characters";
 import { actionResultMatch } from "@/types/error-typing";
 
 export function AddCharacterForm() {

@@ -1,6 +1,6 @@
 import { runQuery } from "@/utils/supabase-run";
 import { DM } from "@/types/full-database.types";
-import { getUser } from "./auth/user";
+import { getUser } from "./auth";
 
 type DMArgument = {
   auth_user_uuid: string;

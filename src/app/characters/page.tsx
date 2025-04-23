@@ -5,7 +5,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCharacters } from "@/lib/characters/query-all";
+import { getCharacters } from "@/lib/characters";
 
 export const dynamic = "force-dynamic";
 

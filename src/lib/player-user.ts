@@ -1,4 +1,4 @@
-import { getUser } from "./auth/user";
+import { getUser } from "./auth";
 import { runQuery } from "@/utils/supabase-run";
 
 export const getPlayerUser = () => 

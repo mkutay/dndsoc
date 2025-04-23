@@ -8,7 +8,7 @@ import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
 import { getUserByAuthUuid } from "@/lib/users";
-import { completeSignUp } from "@/lib/auth/complete-sign-up";
+import { completeSignUp } from "@/lib/auth";
 
 type SignInError = {
   message: string;

@@ -1,8 +1,8 @@
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
-import { getCharacterPlayerByShortened } from "@/lib/characters/query-shortened";
-import { getCharacters } from "@/lib/characters/query-all";
+import { getCharacterPlayerByShortened } from "@/lib/characters";
+import { getCharacters } from "@/lib/characters";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { Campaigns } from "./campaigns";

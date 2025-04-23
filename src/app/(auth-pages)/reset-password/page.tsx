@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getUser } from "@/lib/auth/user";
+import { getUser } from "@/lib/auth";
 import { ResetPasswordForm } from "./form";
 
 export const dynamic = "force-dynamic";

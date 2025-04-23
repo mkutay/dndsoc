@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { getCharacterByShortened } from "@/lib/characters/query-shortened";
+import { getCharacterByShortened } from "@/lib/characters";
 import { getPlayerUser } from "@/lib/player-user";
-import { getCharacters } from "@/lib/characters/query-all";
+import { getCharacters } from "@/lib/characters";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";

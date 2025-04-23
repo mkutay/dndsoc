@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { getUser } from "@/lib/auth/user";
+import { getUser } from "@/lib/auth";
 import { signOut } from "@/server/sign-out";
 
 export const dynamic = 'force-dynamic';

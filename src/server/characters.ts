@@ -3,18 +3,39 @@
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { z } from "zod";
 
+import { addCharacterSchema } from "@/config/add-character-schema";
 import { characterEditSchema } from "@/config/character-edit-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
-import { upsertCharacterRace } from "@/lib/races";
-import { deleteCharacterRace } from "@/lib/races";
-import { insertClasses } from "@/lib/classes";
-import { upsertRace } from "@/lib/races";
-import { getPlayerUser } from "@/lib/player-user";
-import { deleteCharacterClass } from "./delete-character-class";
-import { upsertCharacterClass } from "./upsert-character-class";
-import { getCharacterByShortened } from "./query-shortened";
 import { runQuery } from "@/utils/supabase-run";
+import { convertToShortened } from "@/utils/formatting";
+import { getPlayerUser } from "@/lib/player-user";
+import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "@/lib/races";
+import { deleteCharacterClass, getCharacterByShortened } from "@/lib/characters";
+import { upsertCharacterClass } from "@/lib/characters";
+import { insertClasses } from "@/lib/classes";
+
+export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>) =>
+  resultAsyncToActionResult(
+    parseSchema(addCharacterSchema, values)
+      .asyncAndThen(() => getPlayerUser())
+      .andThen((playerUser) =>
+        runQuery((supabase) => supabase
+          .from("characters")
+          .insert({
+            name: values.name,
+            player_uuid: playerUser.id,
+            shortened: convertToShortened(values.name),
+          })
+          .select()
+          .single(),
+          "insertCharacter"
+        )
+      )
+      .map((result) => ({
+        shortened: result.shortened
+      }))
+  );
 
 type UpdateCharacterError = {
   message: string;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getCharactersByPlayerUuid } from "@/lib/characters/query-player-uuid";
+import { getCharactersByPlayerUuid } from "@/lib/characters";
 import { AddCharacterButton } from "@/app/players/[username]/add-character-button";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";

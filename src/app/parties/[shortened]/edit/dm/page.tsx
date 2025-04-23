@@ -8,7 +8,7 @@ import { getPartyByShortened } from "@/lib/parties";
 import { getUserRole } from "@/lib/roles";
 import { getDMs, getDMUser } from "@/lib/dms";
 import { getCampaigns } from "@/lib/campaigns";
-import { getCharacters } from "@/lib/characters/query-all";
+import { getCharacters } from "@/lib/characters";
 import { DMForm } from "./form";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {

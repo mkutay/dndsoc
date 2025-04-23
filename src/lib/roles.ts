@@ -1,6 +1,6 @@
 import { Enums, Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
-import { getUser } from "./auth/user";
+import { getUser } from "./auth";
 
 type Role = Tables<"roles">;
 type RoleArgument = {
