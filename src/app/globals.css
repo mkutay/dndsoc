@@ -35,9 +35,6 @@
   --sidebar-accent-foreground: 28.57 16.54% 24.90%;
   --sidebar-border: 40.00 31.43% 79.41%;
   --sidebar-ring: 30.00 33.87% 48.63%;
-  --font-sans: Libre Baskerville, serif;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
   --radius: 0.25rem;
   --shadow-2xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
   --shadow-xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
@@ -82,9 +79,6 @@
   --sidebar-accent-foreground: 39 34.48% 88.63%;
   --sidebar-border: 24.71 12.98% 25.69%;
   --sidebar-ring: 30 33.68% 62.75%;
-  --font-sans: Libre Baskerville, serif;
-  --font-serif: Lora, serif;
-  --font-mono: IBM Plex Mono, monospace;
   --radius: 0.25rem;
   --shadow-2xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);
   --shadow-xs: 2px 3px 5px 0px hsl(28 13% 20% / 0.06);

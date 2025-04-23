@@ -73,9 +73,16 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
+        body: ["var(--font-bookinsanity)"],
+        headings: ["var(--font-mr-eaves)"],
+        "book-card-titles": ["var(--font-nodesto-caps)"],
+        tables: ["var(--font-scaly-sans)"],
+        "titles-of-tables": ["var(--font-scaly-sans-caps)"],
+        "drop-caps": ["var(--font-solbera-imitation)"],
+        quotes: ["var(--font-zatanna-misdirection)"],
         sans: ["var(--font-sans)"],
-        mono: ["var(--font-mono)"],
         serif: ["var(--font-serif)"],
+        mono: ["var(--font-mono)"],
       },
       boxShadow: {
         "2xs": "var(--shadow-2xs)",

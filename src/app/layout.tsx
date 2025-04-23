@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/toaster";
 import "@/app/globals.css";
 import { cn } from "@/lib/utils";
+import { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection } from "@/fonts/fonts";
 
 const defaultUrl = process.env.PRODUCTION_SITE_URL
   ? `https://${process.env.PRODUCTION_SITE_URL}`
@@ -17,25 +18,28 @@ export const metadata = {
   description: "Everything you need to play Dungeons and Dragons with us!",
 };
 
-const sansSerif = Libre_Baskerville({
-  weight: "400",
-  display: "swap",
+const sans = Libre_Baskerville({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+  weight: "400",
 });
 
 const serif = Lora({
-  display: "swap",
   subsets: ["latin"],
   variable: "--font-serif",
+  display: "swap",
+  weight: "400",
 });
 
 const mono = IBM_Plex_Mono({
-  weight: "400",
-  display: "swap",
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+  weight: "400",
 });
+
+export { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection };
 
 export default function RootLayout({
   children,
@@ -43,7 +47,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn(sansSerif.variable, serif.variable, mono.variable, "font-sans")} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(sans.variable, serif.variable, mono.variable, BookInsanity.variable, MrEaves.variable, NodestoCapsCondensed.variable, ScalySans.variable, ScalySansCaps.variable, SolberaImitation.variable, ZatannaMisdirection.variable, "font-body")}
+      suppressHydrationWarning
+    >
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
