@@ -1,6 +1,17 @@
+import { Metadata } from "next";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { SignInForm } from "./form";
+
+export const metadata: Metadata = {
+  title: "Sign In To Your Account",
+  description: "Sign in to your account to access your profile and settings.",
+  openGraph: {
+    title: "Sign In To Your Account",
+    description: "Sign in to your account to access your profile and settings.",
+  },
+};
 
 export default function Login() {
   return (

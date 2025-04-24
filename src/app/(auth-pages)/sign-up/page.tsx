@@ -1,6 +1,17 @@
+import { Metadata } from "next";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { SignUpForm } from "./form";
+
+export const metadata: Metadata = {
+  title: "Sign Up To Our Society!",
+  description: "Join our Dungeons and Dragons society and start your journey with us today.",
+  openGraph: {
+    title: "Sign Up To Our Society!",
+    description: "Join our Dungeons and Dragons society and start your journey with us today.",
+  },
+};
 
 export default function SignUp() {
   return (

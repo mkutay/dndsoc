@@ -9,6 +9,27 @@ import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
+  const result = await DB.Players.Get.Username({ username });
+  if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
+  const player = result.value;
+
+  const level = player.level;
+  const ach = player.received_achievements_player.length;
+  const description = `Some statistics about our player ${username}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
+  const title = `Our Player ${username}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
 export default async function Page({ params }: 
   { params: Promise<{ username: string }> }
 ) {

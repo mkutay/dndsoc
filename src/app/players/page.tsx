@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { TypographyH1 } from "@/components/typography/headings";
@@ -8,6 +9,15 @@ import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "All of Our Players",
+  description: "List of all of our players in the KCL Dungeons and Dragons app.",
+  openGraph: {
+    title: "All of Our Players",
+    description: "List of all of our players in the KCL Dungeons and Dragons app.",
+  },
+};
 
 export default async function Page() {
   const players = await DB.Players.Get.All();

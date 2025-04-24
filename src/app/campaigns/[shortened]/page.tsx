@@ -7,6 +7,28 @@ import DB from "@/lib/db";
 
 export const dynamicParams = false;
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+  const campaigned = await DB.Campaigns.Get.Shortened({ shortened });
+  if (campaigned.isErr()) return { title: "Campaign Not Found", description: "This campaign does not exist." };
+  const campaign = campaigned.value;
+
+  const dateMessage = campaign.end_date
+    ? `Started on ${format(campaign.start_date, "PP")} and ended on ${format(campaign.end_date, "PP")}.`
+    : `Started on ${format(campaign.start_date, "PP")} and is ongoing.`;
+  const description = `${campaign.description}. ${dateMessage}`;
+  const title = `Campaign ${campaign.name}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 

@@ -3,6 +3,28 @@ import { forbidden, redirect } from "next/navigation";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+  const result = await DB.Parties.Get.Shortened({ shortened });
+  if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
+  const party = result.value;
+
+  const level = party.level;
+  const about = party.about;
+  const char = party.character_party.length;
+  const description = `${about}${about && ". "}Level ${level} · Has ${char} Character${char === 1 ? "" : "s"}`;
+  const title = `Edit Party ${party.name}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   const result = await DB.Parties.Get.Shortened({ shortened });

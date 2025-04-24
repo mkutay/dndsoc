@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,15 @@ import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "All of Our Awesome DMs",
+  description: "List of all of our DMs in the KCL Dungeons and Dragons society.",
+  openGraph: {
+    title: "All of Our Awesome DMs",
+    description: "List of all of our DMs in the KCL Dungeons and Dragons society.",
+  },
+};
 
 export default async function Page() {
   const dms = await DB.DMs.Get.All();

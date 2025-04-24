@@ -1,7 +1,18 @@
+import { Metadata } from "next";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { CampaignCards } from "@/components/campaigns-cards";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
+
+export const metadata: Metadata = {
+  title: "Campaigns Being Played In Our Society",
+  description: "A list of campaigns being played in our society.",
+  openGraph: {
+    title: "Campaigns Being Played In Our Society",
+    description: "A list of campaigns being played in our society.",
+  },
+};
 
 export default async function Page() {
   const campaigns = await DB.Campaigns.Get.All();

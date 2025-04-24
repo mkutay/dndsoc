@@ -9,6 +9,27 @@ import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
+  const result = await DB.DMs.Get.Username({ username });
+  if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
+  const dm = result.value;
+
+  const level = dm.level;
+  const ach = dm.received_achievements_dm.length;
+  const description = `Some statistics about our DM ${username}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
+  const title = `Our Awesome DM ${username}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
 export default async function Page({ params }: 
   { params: Promise<{ username: string }> }
 ) {

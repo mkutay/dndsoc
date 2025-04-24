@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,15 @@ import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Parties Created in Our Society",
+  description: "List of all the parties formed by our players and DMs in our society.",
+  openGraph: {
+    title: "Parties Created by Players in Our Society",
+    description: "List of all the parties formed by our players and DMs in our society.",
+  },
+};
 
 export default async function Page() {
   const result = await DB.Parties.Get.All();

@@ -1,22 +1,17 @@
 import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Metadata } from "next";
 
-import { NavBar } from "@/components/nav-bar/nav-bar";
-import { Footer } from "@/components/footer";
-import { Toaster } from "@/components/ui/toaster";
-import "@/app/globals.css";
-import { cn } from "@/lib/utils";
 import { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection } from "@/fonts/fonts";
+import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Toaster } from "@/components/ui/toaster";
+import { Footer } from "@/components/footer";
+import { cn } from "@/lib/utils";
+import "@/app/globals.css";
 
 const defaultUrl = process.env.PRODUCTION_SITE_URL
   ? `https://${process.env.PRODUCTION_SITE_URL}`
   : "http://localhost:3000";
-
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "KCL Dungeons and Dragons App",
-  description: "Everything you need to play Dungeons and Dragons with us!",
-};
 
 const sans = Libre_Baskerville({
   subsets: ["latin"],
@@ -40,6 +35,42 @@ const mono = IBM_Plex_Mono({
 });
 
 export { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection };
+
+export const metadata: Metadata = {
+  metadataBase: new URL(defaultUrl),
+  title: {
+    template: "%s | KCL Dungeons and Dragons App",
+    default: "KCL Dungeons and Dragons Web App",
+  },
+  description: "Everything you need to play Dungeons and Dragons with us!",
+  generator: "Next.js",
+  applicationName: "KCL DnD",
+  referrer: "origin-when-cross-origin",
+  authors: [{ name: "Kutay", url: "https://www.mkutay.dev" }, { name: "Kai" }],
+  creator: "Kutay",
+  publisher: "Kutay",
+  keywords: ["dnd", "dungeons and dragons", "kcl", "kings college london", "society", "role playing", "ttrpg"],
+  openGraph: {
+    title: {
+      template: "%s | KCL Dungeons and Dragons App",
+      default: "KCL Dungeons and Dragons App",
+    },
+    description: "Everything you need to play Dungeons and Dragons with us!",
+    url: new URL(defaultUrl),
+    siteName: "KCL DnD",
+    locale: "en_UK",
+    type: "website",
+    images: ["/logo-light.png"],
+  },
+  alternates: {
+    canonical: './',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
+};
 
 export default function RootLayout({
   children,

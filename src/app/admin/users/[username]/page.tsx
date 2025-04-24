@@ -6,6 +6,24 @@ import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
+  const player = await DB.Players.Get.Username({ username });
+  if (player.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
+  const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
+  if (role.isErr()) return { title: "Role Not Found", description: "This role does not exist." };
+  const title = `Admin View: ${username}`;
+  const description = `Admin view of ${username}'s role.`;
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
 

@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { ErrorPage } from "@/components/error-page";
@@ -8,6 +9,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "All of Characters In Our Society",
+  description: "List of all of the characters that are in the world of our campaigns.",
+  openGraph: {
+    title: "All of Characters In Our Society",
+    description: "List of all of the characters that are in the world of our campaigns.",
+  },
+};
 
 export default async function Page() {
   const characters = await DB.Characters.Get.All();

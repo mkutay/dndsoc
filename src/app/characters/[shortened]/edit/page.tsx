@@ -5,8 +5,32 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { CharacterEditForm } from "./form";
 import DB from "@/lib/db";
+import { formatClasses, formatRaces } from "@/utils/formatting";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
+  if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
+  const character = result.value;
+
+  const level = character.level;
+  const classes = character.classes;
+  const races = character.races;
+  const name = character.name;
+  const description = `Some statistics about character ${name}: Level ${level} · ${formatClasses(classes)} · ${formatRaces(races)}`;
+  const title = `Edit Character ${name}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function Page({ params }: 
   { params: Promise<{ shortened: string }> }

@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,15 @@ import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { rolesLabel } from "@/types/full-database.types";
 import DB from "@/lib/db";
+
+export const metadata: Metadata = {
+  title: "Admin View: All of Our Users",
+  description: "List of all of our users in the KCL Dungeons and Dragons app.",
+  openGraph: {
+    title: "Admin View: All of Our Users",
+    description: "List of all of our users in the KCL Dungeons and Dragons app.",
+  },
+};
 
 export default async function Page() {
   const users = await DB.Users.Get.All();

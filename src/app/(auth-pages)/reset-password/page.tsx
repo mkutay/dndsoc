@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
@@ -6,6 +7,15 @@ import { getUser } from "@/lib/auth";
 import { ResetPasswordForm } from "./form";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Reset Password",
+  description: "Reset your password to access your account.",
+  openGraph: {
+    title: "Reset Password",
+    description: "Reset your password to access your account.",
+  },
+};
 
 export default async function ResetPassword() {
   const user = await getUser();
