@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "KCL DnD",
     locale: "en_UK",
     type: "website",
-    images: ["/logo-light.png"],
+    images: [`${defaultUrl}/logo-light.png`],
   },
   alternates: {
     canonical: './',
