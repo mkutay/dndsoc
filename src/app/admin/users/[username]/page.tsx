@@ -10,14 +10,10 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const { username } = await params;
 
   const player = await DB.Players.Get.Username({ username });
-  if (player.isErr()) {
-    return <ErrorPage error={player.error} isNotFound />;
-  }
+  if (player.isErr()) return <ErrorPage error={player.error} isNotFound />;
 
   const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
-  if (role.isErr()) {
-    return <ErrorPage error={role.error} isNotFound />;
-  }
+  if (role.isErr()) return <ErrorPage error={role.error} />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -28,4 +24,10 @@ export default async function Page({ params }: { params: Promise<{ username: str
       <AdminRoleEditForm role={role.value} />
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const users = await DB.Users.Get.All();
+  if (users.isErr()) return [];
+  return users.value.map((user) => ({ username: user.username }));
 }
