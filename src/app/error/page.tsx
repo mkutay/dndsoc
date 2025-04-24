@@ -10,5 +10,5 @@ export default async function Page({
   const { error } = await searchParams;
   if (!error) return redirect("/");
   if (Array.isArray(error)) return redirect("/error?error=" + error[0]);
-  return <ErrorPage error={error}/>;
+  return <ErrorPage error={error} caller="/error/page.tsx" />;
 }

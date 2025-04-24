@@ -7,14 +7,11 @@ type UserArgument = {
   knumber: string;
   auth_user_uuid: string;
 };
+
 type GetUserByAuthUuidError = {
   message: string;
   code: "NOT_FOUND";
 };
-type GetUserByUsernameError = {
-  message: string;
-  code: "NOT_FOUND";
-}
 
 export const insertUser = (user: UserArgument) =>
   runQuery<User>((supabase) => supabase
@@ -29,21 +26,6 @@ export const getUsers = () =>
     .from("users")
     .select("*, roles(*)")
   );
-
-export const getUserByUsername = (username: string) =>
-  runQuery<User>((supabase) => supabase
-    .from("users")
-    .select("*")
-    .eq("username", username)
-    .single()
-  )
-  .mapErr((error) => error.message.includes("PGRST116")
-    ? {
-        message: `User not found: ${username}`,
-        code: "NOT_FOUND",
-      } as GetUserByUsernameError
-    : error
-  )
 
 export const getUserByAuthUuid = ({ authUserUuid }: { authUserUuid: string }) => 
   runQuery((supabase) => supabase

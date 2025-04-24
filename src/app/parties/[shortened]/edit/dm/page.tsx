@@ -1,36 +1,38 @@
-import { redirect } from "next/navigation";
+import { forbidden, redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { getPartyByShortened } from "@/lib/parties";
-import { getUserRole } from "@/lib/roles";
-import { getDMs, getDMUser } from "@/lib/dms";
-import { getCampaigns } from "@/lib/campaigns";
-import { getCharacters } from "@/lib/characters/query-all";
 import { DMForm } from "./form";
+import DB from "@/lib/db";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const role = await getUserRole();
-  if (role.isErr()) return <ErrorPage error={role.error} caller="/parties/[shortened]" isNotFound />;
-
-  const result = await getPartyByShortened({ shortened });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
+  const result = await DB.Parties.Get.Shortened({ shortened });
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/dm/page.tsx" isNotFound />;
   const party = result.value;
 
-  if (role.value.role === "player") redirect(`/parties/${shortened}/edit/player`);
+  const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
+  const characteredBy = party.character_party.map((characterParty) => characterParty.characters);
 
-  let dmUuid: undefined | string = undefined;
-  if (role.value.role !== "admin") {
-    const dm = await getDMUser();
-    if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
 
-    const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
-    if (!hasAccess) redirect(`/parties/${shortened}`);
-    dmUuid = dm.value.id;
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
+    ? "dm"
+    : ((characteredBy.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+
+  if (ownsAs === "player") {
+    redirect(`/parties/${shortened}/edit/player`);
+  } else if (ownsAs === null) {
+    redirect(`/parties/${shortened}`);
   }
+
+  const dmUuid = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
+  if (!dmUuid) forbidden();
 
   const currentCampaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const currentCharacters = party.character_party.map((characterParty) => characterParty.characters);
@@ -43,8 +45,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       id: dm.id,
     }));
   
-  const all = await ResultAsync.combine([getCampaigns(), getCharacters(), getDMs()]);
-  if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]" isNotFound />;
+  const all = await ResultAsync.combine([DB.Campaigns.Get.All(), DB.Characters.Get.All(), DB.DMs.Get.All()]);
+  if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
   const dms = all.value[2].map((dm) => ({
     username: dm.users.username,
     about: dm.about,
@@ -68,9 +70,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   }));
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyLink href={`/parties/${party.shortened}`} variant="muted">
-        Go back
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+      <TypographyLink href={`/parties/${party.shortened}`} variant="muted" className="tracking-wide font-quotes">
+        Go Back
       </TypographyLink>
       <TypographyH1>Edit Party <span className="text-primary">{party.name}</span></TypographyH1>
       <DMForm

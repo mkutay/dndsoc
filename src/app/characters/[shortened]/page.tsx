@@ -1,11 +1,12 @@
+import { Dot } from "lucide-react";
+
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
-import { getCharacterPlayerByShortened } from "@/lib/characters/query-shortened";
-import { getCharacters } from "@/lib/characters/query-all";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { Campaigns } from "./campaigns";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -13,28 +14,41 @@ export default async function Page({ params }:
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await params;
-  const result = await getCharacterPlayerByShortened({ shortened });
-
+  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
 
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/page.tsx" />;
+
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
+
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-col gap-1 items-baseline">
-          {character.players && <TypographySmall className="text-muted-foreground">
-            Played by <TypographyLink href={`/players/${character.players.users.username}`} variant="muted">{character.players.users.username}</TypographyLink>
-          </TypographySmall>}
-          <TypographyH1 className="text-primary">{character.name}</TypographyH1>
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+      <div className="flex flex-col gap-1">
+        {character.players && <TypographySmall className="text-muted-foreground">
+          Played By <TypographyLink href={`/players/${character.players.users.username}`} variant="muted">
+            {character.players.users.username}
+          </TypographyLink>
+        </TypographySmall>}
+        <div className="flex flex-row justify-between items-center w-full">
+          <TypographyH1 className="text-primary">
+            <span className="font-drop-caps mr-0.5">{character.name.charAt(0)}</span><span>{character.name.slice(1)}</span>
+          </TypographyH1>
+          {ownsCharacter && <CharacterEditButton shortened={shortened} />}
         </div>
-        <CharacterEditButton playerUuid={character.player_uuid} shortened={shortened} />
       </div>
-      <TypographyLarge>
-        Level {character.level}
-        {character.classes.length !== 0 ? " | " + formatClasses(character.classes) : ""}
-        {character.races.length !== 0 ? " | " + formatRaces(character.races) : ""}
-      </TypographyLarge>
-      {character.about && character.about.length !== 0 && <TypographyLead className="mt-2">{character.about}</TypographyLead>}
+      <div className="flex flex-row">
+        <TypographyLarge>Level {character.level}</TypographyLarge>
+        {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-[1px]" />}
+        {character.classes.length !== 0 && <TypographyLarge>{formatClasses(character.classes)}</TypographyLarge>}
+        {(character.classes.length !== 0 && character.races.length !== 0) && <Dot className="mt-[1px]" />}
+        {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
+      </div>
+
+      {character.about && character.about.length !== 0 && <TypographyLead>{character.about}</TypographyLead>}
       <Campaigns characterUuid={character.id} />
       {/* Add achievements */}
     </div>
@@ -42,7 +56,7 @@ export default async function Page({ params }:
 }
 
 export async function generateStaticParams() {
-  const characters = await getCharacters();
+  const characters = await DB.Characters.Get.All();
   if (characters.isErr()) return [];
   return characters.value.map((character) => ({
     shortened: character.shortened,

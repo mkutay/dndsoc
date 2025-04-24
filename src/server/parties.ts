@@ -7,12 +7,12 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { convertToShortened } from "@/utils/formatting";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
-import { getDMUser } from "@/lib/dms";
 import { partyDMEditSchema, partyPlayerEditSchema } from "@/config/parties";
+import DB from "@/lib/db";
 
 export const insertParty = async (values: z.infer<typeof createPartySchema>) => resultAsyncToActionResult(
   parseSchema(createPartySchema, values)
-    .asyncAndThen(() => getDMUser())
+    .asyncAndThen(() => DB.DMs.Get.With.User())
     .andThen((DMUser) =>
       runQuery((supabase) => supabase
         .from("parties")

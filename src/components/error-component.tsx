@@ -25,7 +25,7 @@ export function ErrorComponent({ error, caller, returnNull, silent }: {
   if (returnNull) return null;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyLarge>{heading}</TypographyLarge>
       <TypographyParagraph>{paragraph}</TypographyParagraph>
     </div>

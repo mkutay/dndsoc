@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ErrorComponent } from "@/components/error-component";
-import { getDMUser } from "@/lib/dms";
 import { AddPartyForm } from "./add-party-form";
+import DB from "@/lib/db";
 
 export async function AddPartyButton({ DMUuid }: { DMUuid: string }) {
-  const result = await getDMUser();
+  const result = await DB.DMs.Get.With.User();
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/components/add-character-button.tsx" returnNull silent />;
   if (result.value.id !== DMUuid) return null;
 

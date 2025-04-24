@@ -1,31 +1,35 @@
-import { TypographyH1 } from "@/components/typography/headings";
+import { forbidden } from "next/navigation";
+
 import { TypographyLink } from "@/components/typography/paragraph";
+import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername } from "@/lib/players/query-username";
-import { getUserRole } from "@/lib/roles";
 import { PlayerEditForm } from "./form";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
+  const result = await DB.Players.Get.Username({ username });
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/edit/page.tsx" />;
+  const player = result.value;
 
-  const role = await getUserRole();
-  if (role.isErr()) return <ErrorPage error={role.error} caller="/players/[username]/edit page" />;
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/edit/page.tsx" />;
 
-  const player = await getPlayerByUsername({ username });
-  if (player.isErr()) return <ErrorPage error={player.error} caller="/players/edit page" />;
-  if (role.value.role !== "admin" && player.value.auth_user_uuid !== role.value.auth_user_uuid) {
-    return <ErrorPage error="You are not authorized to edit this player." caller="/players/[username]/edit page" />;
-  }
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsPlayer = (auth && player.auth_user_uuid === auth.auth_user_uuid) || false || role === "admin";
+
+  if (!ownsPlayer) forbidden();
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyLink href={`/players/${player.value.users.username}`}>
-        Go back
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+      <TypographyLink href={`/players/${player.users.username}`} className="tracking-wide font-quotes">
+        Go Back
       </TypographyLink>
-      <TypographyH1 className="mt-2">Edit Your Public Player Page</TypographyH1>
-      <PlayerEditForm player={player.value} />
+      <TypographyH1 className="mt-0.5">Edit Your Public Player Page</TypographyH1>
+      <PlayerEditForm player={player} />
     </div>
   );
 }

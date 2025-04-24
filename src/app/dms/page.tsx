@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { getDMs } from "@/lib/dms";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const dms = await getDMs();
-  if (!dms.isOk()) return <ErrorPage error={dms.error.message} />;
+  const dms = await DB.DMs.Get.All();
+  if (dms.isErr()) return <ErrorPage error={dms.error.message} caller="/dms/page.tsx" />;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyH1>DMs — the GOATs</TypographyH1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+      <TypographyH1>DMs, the GOATs</TypographyH1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {dms.value.map((dm, index) => (
           <Card key={index}>
             <CardHeader>

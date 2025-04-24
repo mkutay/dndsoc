@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { createPartySchema } from "@/config/create-party-schema";
-import { insertParty } from "@/server/parties";
+import Server from "@/server/server";
 
 export function AddPartyForm() {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function AddPartyForm() {
  
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     setPending(true);
-    const result = await insertParty(values);
+    const result = await Server.Parties.Insert(values);
     setPending(false);
 
     actionResultMatch(

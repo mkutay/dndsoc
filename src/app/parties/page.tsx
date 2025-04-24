@@ -5,21 +5,19 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import { getParties } from "@/lib/parties";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const result = await getParties();
-  if (result.isErr()) {
-    return <ErrorPage error={result.error} caller="/players page" />;
-  }
+  const result = await DB.Parties.Get.All();
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/page.tsx" />;
   const parties = result.value;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Parties</TypographyH1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {parties.map((party, index) => (
           <Card key={index}>
             <CardHeader>

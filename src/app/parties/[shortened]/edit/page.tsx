@@ -1,35 +1,31 @@
-import { redirect } from "next/navigation";
+import { forbidden, redirect } from "next/navigation";
 
 import { ErrorPage } from "@/components/error-page";
-import { getPartyByShortened } from "@/lib/parties";
-import { getPlayerUser } from "@/lib/player-user";
-import { getUserRole } from "@/lib/roles";
-import { getDMUser } from "@/lib/dms";
+import DB from "@/lib/db";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const role = await getUserRole();
-  if (role.isErr()) return <ErrorPage error={role.error} caller="/parties/[shortened]" isNotFound />;
-
-  const result = await getPartyByShortened({ shortened });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
+  const result = await DB.Parties.Get.Shortened({ shortened });
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/page.tsx" isNotFound />;
   const party = result.value;
 
-  if (role.value.role === "player") {
-    const player = await getPlayerUser();
-    if (player.isErr()) return <ErrorPage error={player.error} caller="/parties/[shortened]" isNotFound />;
+  const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
+  const characters = party.character_party.map((characterParty) => characterParty.characters);
 
-    const hasAccess = party.character_party.some((characterParty) => characterParty.characters.player_uuid === player.value.id);
-    if (!hasAccess) redirect(`/parties/${shortened}`);
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/page.tsx" />;
+
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
+    ? "dm"
+    : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+
+  if (ownsAs === "dm") {
+    redirect(`/parties/${shortened}/edit/dm`);
+  } else if (ownsAs === "player") {
     redirect(`/parties/${shortened}/edit/player`);
-  } else if (role.value.role === "dm") {
-    const dm = await getDMUser();
-    if (dm.isErr()) return <ErrorPage error={dm.error} caller="/parties/[shortened]" isNotFound />;
-
-    const hasAccess = party.dm_party.some((dmParty) => dmParty.dms.id === dm.value.id);
-    if (!hasAccess) redirect(`/parties/${shortened}`);
-    redirect(`/parties/${shortened}/edit/dm`);
-  } else {
-    redirect(`/parties/${shortened}/edit/dm`);
   }
+
+  forbidden();
 }

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getUser } from "@/lib/auth/user";
+import { getUser } from "@/lib/auth";
 import { ResetPasswordForm } from "./form";
 
 export const dynamic = "force-dynamic";
@@ -12,12 +12,12 @@ export default async function ResetPassword() {
   if (user.isErr() || !user.value) redirect("/sign-in");
 
   return (
-    <div className="flex flex-col w-full mx-auto max-w-prose my-12">
+    <div className="flex flex-col max-w-prose">
       <TypographyH1>Reset Password</TypographyH1>
       <TypographyParagraph>
         Please enter your new password below.
       </TypographyParagraph>
-      <div className="flex flex-col gap-2 mt-8">
+      <div className="flex flex-col gap-2 mt-4">
         <ResetPasswordForm />
       </div>
     </div>

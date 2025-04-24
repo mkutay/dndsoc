@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { updatePlayer } from "@/lib/players/update";
 import { playersEditSchema } from "@/config/player-edit-schema";
 import { Player } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
+import Server from "@/server/server";
 
 export function PlayerEditForm({ player }: { player: Player }) {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function PlayerEditForm({ player }: { player: Player }) {
  
   const onSubmit = async (values: z.infer<typeof playersEditSchema>) => {
     setPending(true);
-    const result = await updatePlayer(values, player.id);
+    const result = await Server.Players.Update(values, player.id);
     setPending(false);
 
     actionResultMatch(

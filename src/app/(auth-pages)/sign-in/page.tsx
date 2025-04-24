@@ -1,20 +1,18 @@
-import Link from "next/link";
-
 import { TypographyH1 } from "@/components/typography/headings";
-import { TypographyParagraph } from "@/components/typography/paragraph";
+import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { SignInForm } from "./form";
 
 export default function Login() {
   return (
-    <div className="flex flex-col w-full mx-auto max-w-prose my-12">
-      <TypographyH1>Sign In!</TypographyH1>
+    <div className="flex flex-col max-w-prose">
+      <TypographyH1>Sign In</TypographyH1>
       <TypographyParagraph>
         Don&apos;t have an account?{" "}
-        <Link className="text-foreground font-medium underline hover:text-foreground/80 transition-colors" href="/sign-up">
+        <TypographyLink variant="primary" href="/sign-up">
           Sign Up
-        </Link>
+        </TypographyLink>
       </TypographyParagraph>
-      <div className="flex flex-col gap-2 mt-8">
+      <div className="flex flex-col gap-2 mt-4">
         <SignInForm />
       </div>
     </div>

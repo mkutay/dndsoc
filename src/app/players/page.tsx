@@ -3,28 +3,27 @@ import Link from "next/link";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { getPlayers } from "@/lib/players/query-all";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const playersResult = await getPlayers();
-  if (playersResult.isErr()) {
-    return <ErrorPage error={playersResult.error} caller="/players page" />;
-  }
-  const players = playersResult.value;
+  const players = await DB.Players.Get.All();
+  if (players.isErr()) return <ErrorPage error={players.error} caller="/players/page.tsx" />;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Players</TypographyH1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
-        {players.map((player) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        {players.value.map((player) => (
           <Card key={player.id}>
             <CardHeader>
-              <CardTitle>{player.users.username}</CardTitle>
-              <CardDescription>Level {player.level}</CardDescription>
+              <CardTitle>{player.users.username.toUpperCase()}</CardTitle>
+              <CardDescription>
+                Level {player.level} | Received {player.received_achievements_player.length} Achievement{player.received_achievements_player.length === 1 ? "" : "s"}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <TypographyParagraph>

@@ -25,14 +25,14 @@ export function TypographyLead({ children, className }: { children: React.ReactN
 }
 
 export function TypographyLarge({ children, className }: { children: React.ReactNode, className?: string }) {
-  return <div className={cn("text-lg font-semibold", className)}>
+  return <div className={cn("text-lg font-semibold tracking-wider", className)}>
     {children}
   </div>
 }
 
 export function TypographySmall({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <small className={cn("text-sm font-medium leading-none", className)}>{children}</small>
+    <small className={cn("text-md font-medium leading-none tracking-wide font-quotes", className)}>{children}</small>
   )
 }
 

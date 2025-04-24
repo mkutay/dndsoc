@@ -1,18 +1,13 @@
-import { Edit } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { getUserRole } from "@/lib/roles";
+import { TiPencil } from "react-icons/ti";
 
-export async function DMEditButton({ authUserUuid, username }: { authUserUuid: string, username: string }) {
-  const role = await getUserRole();
-  if (role.isErr()) return null;
-  if (role.value.role !== "admin" && role.value.auth_user_uuid !== authUserUuid) return null;
-
+export function DMEditButton({ username }: { username: string }) {
   return (
     <Button asChild variant="outline" size="icon">
       <Link href={`/dms/${username}/edit`}>
-        <Edit />
+        <TiPencil size={24} />
       </Link>
     </Button>
   );
