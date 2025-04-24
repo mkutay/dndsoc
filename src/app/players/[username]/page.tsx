@@ -22,12 +22,14 @@ export default async function Page({ params }:
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsPlayer = (auth && player.auth_user_uuid === auth.auth_user_uuid) || false || role === "admin";
+  const ownsPlayer = (player.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-row justify-between items-center">
-        <TypographyH1 className="text-primary">{username.toUpperCase()}</TypographyH1>
+        <TypographyH1 className="text-primary">
+          <span className="font-drop-caps mr-0.5">{username.charAt(0)}</span><span>{username.slice(1)}</span>
+        </TypographyH1>
         {ownsPlayer && <PlayerEditButton username={username} />}
       </div>
       <TypographyLarge>Level: {player.level}</TypographyLarge>

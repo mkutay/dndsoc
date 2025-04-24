@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -8,34 +6,32 @@ import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page(props: 
+export default async function Page({ params }: 
   { params: Promise<{ shortened: string }> }
 ) {
-  const { shortened } = await props.params;
+  const { shortened } = await params;
+  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
 
-  const role = await DB.Roles.Get.With.User();
-  if (role.isErr()) redirect("/sign-in");
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
+  const character = result.value;
 
-  const characterResult = await DB.Characters.Get.Shortened({ shortened });
-  if (characterResult.isErr()) return <ErrorPage error={characterResult.error} caller="/characters/[shortened]/edit/page.tsx" />;
-  const character = characterResult.value;
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" isForbidden />;
 
-  if (role.value.role !== "admin") {
-    const playerUser = await DB.Players.Get.With.User();
-    if (playerUser.isErr()) redirect("/sign-in");
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
 
-    // Check if the character belongs to the player
-    if (character.player_uuid !== playerUser.value.id) {
-      return redirect(`/characters/${shortened}`);
-    }
+  if (!ownsCharacter) {
+    return <ErrorPage error={{ code: "FORBIDDEN", message: "You do not have permission to edit this character." }} caller="/characters/[shortened]/edit/page.tsx" isForbidden />;
   }
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyLink href={`/characters/${shortened}`}>
-        Go back
+      <TypographyLink href={`/characters/${shortened}`} className="tracking-wide font-quotes">
+        Go Back
       </TypographyLink>
-      <TypographyH1 className="mt-2">Edit <span className="text-primary">{character.name}</span>&apos;s Page</TypographyH1>
+      <TypographyH1 className="mt-0.5">Edit <span className="text-primary">{character.name}</span>&apos;s Page</TypographyH1>
       <CharacterEditForm character={character} />
     </div>
   );

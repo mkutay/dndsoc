@@ -7,10 +7,12 @@ import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 
 export function Characters({ characters }: { characters: Tables<"characters">[] }) {
+  if (characters.length === 0) return null;
+
   return (
     <div className="mt-8">
       <TypographyH2>Characters</TypographyH2>
-      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-4">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mt-6">
         {characters.map((character, index) => (
           <Card key={index}>
             <CardHeader>

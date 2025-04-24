@@ -14,7 +14,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <TypographyH1>Users</TypographyH1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {users.value.map((user, index) => (
           <Card key={index}>
             <CardHeader>

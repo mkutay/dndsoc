@@ -2,23 +2,33 @@ import Link from "next/link";
 
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
-import { ErrorComponent } from "@/components/error-component";
 import { AddPartyButton } from "./add-party-button";
-import DB from "@/lib/db";
 
-export async function Parties({ DMUuid }: { DMUuid: string }) {
-  const result = await DB.Parties.Get.DM({ DMUuid });
-  if (result.isErr()) return <ErrorComponent error={result.error} caller="/players/[username]/characters.tsx" />;
-  const parties = result.value;
-
-  if (parties.length === 0) return null;
+export function Parties({
+  DMUuid,
+  parties,
+  ownsDM,
+}: {
+  DMUuid: string;
+  parties: {
+    about: string;
+    id: string;
+    level: number;
+    name: string;
+    shortened: string;
+  }[];
+  ownsDM: boolean;
+}) {
+  if (parties.length === 0) return <div className="mt-4">
+    {ownsDM && <AddPartyButton DMUuid={DMUuid} />}
+  </div>;
 
   return (
     <div className="flex flex-col gap-1 mt-4">
       <TypographyH3>
         Parties:
       </TypographyH3>
-      <div className="flex flex-row gap-2 w-full items-center flex-wrap sm:flex-nowrap">
+      <div className="flex flex-row gap-2 w-full items-center flex-wrap">
         {parties.map((party, index) => (
           <Button asChild variant="secondary" className="w-fit" key={index}>
             <Link href={`/parties/${party.shortened}`}>
@@ -26,7 +36,7 @@ export async function Parties({ DMUuid }: { DMUuid: string }) {
             </Link>
           </Button>
         ))}
-        <AddPartyButton DMUuid={DMUuid} />
+        {ownsDM && <AddPartyButton DMUuid={DMUuid} />}
       </div>
     </div>
   );

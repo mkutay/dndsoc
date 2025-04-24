@@ -150,7 +150,7 @@ export function DMForm({
  
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
     setPending(true);
-    const result = await Server.Parties.Update.Player(values, partyUuid);
+    const result = await Server.Parties.Update.DM(values, partyUuid);
     setPending(false);
 
     actionResultMatch(

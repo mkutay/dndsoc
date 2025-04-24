@@ -5,7 +5,7 @@ import { SignUpForm } from "./form";
 export default function SignUp() {
   return (
     <div className="flex flex-col max-w-prose">
-      <TypographyH1>Sign Up!</TypographyH1>
+      <TypographyH1>Sign Up</TypographyH1>
       <TypographyParagraph>
         Already have an account?{" "}
         <TypographyLink variant="primary" href="/sign-in">

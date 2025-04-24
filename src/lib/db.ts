@@ -4,7 +4,7 @@ import { deleteCharacterClass, getCharacterByShortened, getCharacterPlayerByShor
 import { insertClasses } from "./classes";
 import { getDMByUsername, getDMs, getDMUser, insertDM } from "./dms";
 import { getParties, getPartyByDMUuid, getPartyByShortened } from "./parties";
-import { getPlayerAuthUserUuid, getPlayerByUsername, getPlayers, insertPlayer, upsertPlayer, getPlayerUser, getPlayerRoleUser } from "./players";
+import { getPlayerAuthUserUuid, getPlayerByUsername, getPlayers, insertPlayer, upsertPlayer, getPlayerUser, getPlayerRoleUser, getDMRoleUser } from "./players";
 import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "./races";
 import { getRole, getUserRole, insertRole } from "./roles";
 import { getUserByAuthUuid, getUsers, insertUser } from "./users";
@@ -111,6 +111,7 @@ const Auth = {
   Get: {
     With: {
       PlayerAndRole: getPlayerRoleUser,
+      DMAndRole: getDMRoleUser,
     },
   },
 };

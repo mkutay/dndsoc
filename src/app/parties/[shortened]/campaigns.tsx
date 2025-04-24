@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tables } from "@/types/database.types";
 
 export function Campaigns({ campaigns }: { campaigns: Tables<"campaigns">[] }) {
+  if (campaigns.length === 0) return null;
   const currentCampaign = campaigns.find((campaign) => campaign.end_date === null);
 
   return (

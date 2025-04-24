@@ -15,9 +15,9 @@ export function Characters({
   playerUuid: string;
 }) {
   if (characters.length === 0) return (
-    <>
+    <div className="w-fit mt-4">
       {ownsPlayer && <AddCharacterButton playerUuid={playerUuid} />}
-    </>
+    </div>
   );
 
   return (
@@ -25,7 +25,7 @@ export function Characters({
       <TypographyH3>
         Plays:
       </TypographyH3>
-      <div className="flex flex-row gap-2 w-full items-center flex-wrap sm:flex-nowrap">
+      <div className="flex flex-row gap-2 w-full items-center flex-wrap">
         {characters.map((character) => (
           <Button asChild variant="secondary" className="w-fit" key={character.id}>
             <Link href={`/characters/${character.shortened}`}>

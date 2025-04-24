@@ -1,6 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { TypographyH2 } from "@/components/typography/headings";
 
 export default function Loading() {
   return (
@@ -32,21 +30,10 @@ export default function Loading() {
 
       {/* Characters section */}
       <div className="mt-8">
-      <TypographyH2><Skeleton className="h-8 w-36" /></TypographyH2> {/* Characters heading */}
-        <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-4">
+        <Skeleton className="h-8 w-36" />
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mt-4">
           {[1, 2, 3].map((i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-6 w-40 mb-2" />
-                <Skeleton className="h-4 w-24" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-12 w-full" />
-              </CardContent>
-              <CardFooter>
-                <Skeleton className="h-9 w-32" />
-              </CardFooter>
-            </Card>
+            <Skeleton key={i} className="h-52 w-full" />
           ))}
         </div>
       </div>

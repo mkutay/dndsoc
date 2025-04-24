@@ -14,20 +14,27 @@ export default async function Page({ params }:
 ) {
   const { username } = await params;
   const result = await DB.DMs.Get.Username({ username });
-  if (!result.isOk()) {
-    return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
-  }
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
   const dm = result.value;
+
+  const roled = await DB.Roles.Get.With.User();
+  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/players/[username]" />;
+
+  const auth = roled.isOk() ? roled.value : null;
+  const role = auth ? auth.role : null;
+  const ownsDM = (dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
       <div className="flex flex-row justify-between items-center">
-        <TypographyH1 className="text-primary">{username}</TypographyH1>
-        <DMEditButton authUserUuid={dm.auth_user_uuid} username={username} />
+        <TypographyH1 className="text-primary">
+          <span className="font-drop-caps mr-0.5">{username.charAt(0)}</span>{username.slice(1)}
+        </TypographyH1>
+        {ownsDM && <DMEditButton username={username} />}
       </div>
       <TypographyLarge>Level: {dm.level}</TypographyLarge>
       {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}
-      <Parties DMUuid={dm.id} />
+      <Parties DMUuid={dm.id} ownsDM={ownsDM} parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))} />
       <Campaigns DMUuid={dm.id} />
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
     </div>

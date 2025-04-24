@@ -1,5 +1,4 @@
 import { runQuery } from "@/utils/supabase-run";
-import { DM } from "@/types/full-database.types";
 import { getUser } from "./auth";
 
 type DMArgument = {
@@ -15,9 +14,9 @@ export const getDMs = () =>
   );
 
 export const getDMByUsername = ({ username }: { username: string }) => 
-  runQuery<DM>((supabase) => supabase
+  runQuery((supabase) => supabase
     .from("dms")
-    .select(`*, users!inner(*), received_achievements_dm(*, achievements(*))`)
+    .select(`*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*))`)
     .eq("users.username", username)
     .single()
   );

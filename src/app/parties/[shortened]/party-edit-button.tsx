@@ -1,24 +1,15 @@
-import { Edit } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import DB from "@/lib/db";
+import { TiPencil } from "react-icons/ti";
 
-export async function PartyEditButton({ DMUuids, shortened }: { DMUuids: string[], shortened: string }) {
-  const role = await DB.Roles.Get.With.User();
-  if (role.isErr()) return null;
-
-  if (role.value.role !== "admin") {
-    const userResult = await DB.DMs.Get.With.User();
-    if (userResult.isErr() || !DMUuids.includes(userResult.value.id)) {
-      return null;
-    }
-  }
+export function PartyEditButton({ ownsAs, shortened }: { ownsAs: "dm" | "player" | null, shortened: string }) {
+  if (!ownsAs) return null;
 
   return (
     <Button asChild variant="outline" size="icon">
-      <Link href={`/parties/${shortened}/edit`}>
-        <Edit />
+      <Link href={`/parties/${shortened}/edit/${ownsAs}`}>
+        <TiPencil size={24} />
       </Link>
     </Button>
   );

@@ -1,18 +1,13 @@
 import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
-import { runQuery, runQueryUser } from "@/utils/supabase-run";
+import { runQueryUser } from "@/utils/supabase-run";
 import { getOrigin } from "./origin";
 import DB from "./db";
 
 type ExchangeCodeError = {
   message: string;
   code: "DATABASE_ERROR";
-};
-
-type NotLoggedInError = {
-  message: string;
-  code: "NOT_LOGGED_IN";
 };
 
 // This function exchanges an auth code for the user's session.

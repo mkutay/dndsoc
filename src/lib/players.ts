@@ -43,9 +43,8 @@ export const getPlayers = () =>
       supabase
         .from("players")
         .select("*, users(*), received_achievements_player(*, achievements(*))"),
-    "getPlayers" // Add the function name for error reporting
+    "getPlayers"
   );
-
 
 export const getPlayerAuthUserUuid = ({ authUserUuid }: { authUserUuid: string }) => 
   runQuery<Player>((supabase) =>
@@ -94,6 +93,25 @@ export const getPlayerRoleUser = () =>
       .eq("auth_user_uuid", user.id)
       .single(),
       "getPlayerRoleUser"
+    )
+  )
+  .mapErr((error) => error.message.includes("Auth session missing") 
+    ? {
+        message: "User is not logged in",
+        code: "NOT_LOGGED_IN",
+      } as NotLoggedInError
+    : error
+  );
+
+export const getDMRoleUser = () =>
+  getUser()
+  .andThen((user) =>
+    runQuery((supabase) => supabase
+      .from("users")
+      .select(`*, roles!inner(*), dms!inner(*)`)
+      .eq("auth_user_uuid", user.id)
+      .single(),
+      "getDMRoleUser"
     )
   )
   .mapErr((error) => error.message.includes("Auth session missing") 

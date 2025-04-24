@@ -14,7 +14,7 @@ export type ReceivedAchievementsPlayer = Tables<"received_achievements_player"> 
   achievements: Tables<"achievements">;
 };
 
-export type ReceivedAchievementsDM = Tables<"received_achievements_player"> & {
+export type ReceivedAchievementsDM = Tables<"received_achievements_dm"> & {
   achievements: Tables<"achievements">;
 };
 

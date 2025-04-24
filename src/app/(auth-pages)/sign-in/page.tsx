@@ -5,7 +5,7 @@ import { SignInForm } from "./form";
 export default function Login() {
   return (
     <div className="flex flex-col max-w-prose">
-      <TypographyH1>Sign In!</TypographyH1>
+      <TypographyH1>Sign In</TypographyH1>
       <TypographyParagraph>
         Don&apos;t have an account?{" "}
         <TypographyLink variant="primary" href="/sign-up">

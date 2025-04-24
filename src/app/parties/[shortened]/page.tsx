@@ -1,6 +1,6 @@
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
-import { TypographyLarge, TypographyLead, TypographyLink } from "@/components/typography/paragraph";
+import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
 import { PartyEditButton } from "./party-edit-button";
@@ -18,18 +18,27 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const campaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const characters = party.character_party.map((characterParty) => characterParty.characters);
 
+  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" />;
+
+  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
+  const role = auth ? auth.roles?.role : null;
+  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
+    ? "dm"
+    : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
-      <TypographyLarge className="text-muted-foreground">
-        DM&apos;ed by {dmedBy.map((dm, index) => (
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+      <TypographySmall className="text-muted-foreground">
+        DM&apos;ed By {dmedBy.map((dm, index) => (
           <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
             {dm.users.username}{index + 1 < dmedBy.length ? ", " : ""}
           </TypographyLink>
         ))}
-      </TypographyLarge>
+      </TypographySmall>
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{party.name}</TypographyH1>
-        <PartyEditButton DMUuids={dmedBy.map((dm) => dm.id)} shortened={shortened} />
+        <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
       </div>
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}

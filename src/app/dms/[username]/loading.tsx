@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
+import { TypographyH3 } from "@/components/typography/headings";
 
 export default function Loading() {
   return (
@@ -22,9 +22,7 @@ export default function Loading() {
       </div>
       
       {/* Campaigns section */}
-      <TypographyH2 className="mt-8">
-        <Skeleton className="h-10 w-60" />
-      </TypographyH2>
+      <Skeleton className="h-10 w-60 mt-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         <Skeleton className="h-60 w-full rounded-md" />
         <Skeleton className="h-60 w-full rounded-md" />
