@@ -4,6 +4,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { SignUpForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Sign Up To Our Society!",
   description: "Join our Dungeons and Dragons society and start your journey with us today.",

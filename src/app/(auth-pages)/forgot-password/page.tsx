@@ -4,6 +4,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { ForgotPasswordForm } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Forgot Your Password?",
   description: "Forgot your password? Enter your email to reset it.",
