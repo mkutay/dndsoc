@@ -14,7 +14,7 @@ export default async function Page() {
   if (players.isErr()) return <ErrorPage error={players.error} caller="/players page" />;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Players</TypographyH1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {players.value.map((player) => (

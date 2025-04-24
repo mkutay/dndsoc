@@ -25,7 +25,7 @@ export default async function Page({ params }:
   const ownsDM = (dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">
           <span className="font-drop-caps mr-0.5">{username.charAt(0)}</span>{username.slice(1)}

@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   if (!ownsPlayer) return <ErrorPage error={{ code: "NOT_AUTHORIZED", message: "You do not have permission to edit this player." }} caller="/players/[username]" isForbidden />;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyLink href={`/players/${player.users.username}`} className="tracking-wide font-quotes">
         Go Back
       </TypographyLink>

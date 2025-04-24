@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   }
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>{username}</TypographyH1>
       {role.value.role === "admin" && (
         <TypographyLarge className="mt-2">NOTE: You cannot edit an admin.</TypographyLarge>

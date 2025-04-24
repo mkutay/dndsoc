@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   }));
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose my-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyLink href={`/parties/${party.shortened}`} variant="muted" className="tracking-wide font-quotes">
         Go Back
       </TypographyLink>
