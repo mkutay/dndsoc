@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { forbidden, redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 
 import { TypographyH1 } from "@/components/typography/headings";
@@ -10,14 +10,14 @@ import DB from "@/lib/db";
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   const result = await DB.Parties.Get.Shortened({ shortened });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]" isNotFound />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/dm/page.tsx" isNotFound />;
   const party = result.value;
 
   const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
   const characteredBy = party.character_party.map((characterParty) => characterParty.characters);
 
   const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   }
 
   const dmUuid = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
-  if (!dmUuid) return <ErrorPage error={{ code: "NOT_LOGGED_IN", message: "You are not a DM for this party. (You shouldn't get this message)" }} caller="/parties/[shortened]" />;
+  if (!dmUuid) forbidden();
 
   const currentCampaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const currentCharacters = party.character_party.map((characterParty) => characterParty.characters);
@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     }));
   
   const all = await ResultAsync.combine([DB.Campaigns.Get.All(), DB.Characters.Get.All(), DB.DMs.Get.All()]);
-  if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]" isNotFound />;
+  if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
   const dms = all.value[2].map((dm) => ({
     username: dm.users.username,
     about: dm.about,

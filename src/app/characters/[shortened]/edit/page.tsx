@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -12,19 +14,17 @@ export default async function Page({ params }:
   const { shortened } = await params;
   const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
 
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/edit/page.tsx" isNotFound />;
   const character = result.value;
 
   const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" isForbidden />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
   const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
 
-  if (!ownsCharacter) {
-    return <ErrorPage error={{ code: "FORBIDDEN", message: "You do not have permission to edit this character." }} caller="/characters/[shortened]/edit/page.tsx" isForbidden />;
-  }
+  if (!ownsCharacter) redirect(`/characters/${shortened}`);
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

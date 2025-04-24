@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const dms = await DB.DMs.Get.All();
-  if (dms.isErr()) return <ErrorPage error={dms.error.message} />;
+  if (dms.isErr()) return <ErrorPage error={dms.error.message} caller="/dms/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

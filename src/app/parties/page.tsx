@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const result = await DB.Parties.Get.All();
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/players page" />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/page.tsx" />;
   const parties = result.value;
 
   return (

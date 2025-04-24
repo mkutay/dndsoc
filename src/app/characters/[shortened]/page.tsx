@@ -15,12 +15,11 @@ export default async function Page({ params }:
 ) {
   const { shortened } = await params;
   const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
-
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
 
   const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" isForbidden />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;

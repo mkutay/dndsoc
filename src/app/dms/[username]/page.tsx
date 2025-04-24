@@ -18,7 +18,7 @@ export default async function Page({ params }:
   const dm = result.value;
 
   const roled = await DB.Roles.Get.With.User();
-  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/players/[username]" />;
+  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/dms/[username]" />;
 
   const auth = roled.isOk() ? roled.value : null;
   const role = auth ? auth.role : null;

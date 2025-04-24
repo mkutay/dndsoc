@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const characters = await DB.Characters.Get.All();
-  if (characters.isErr()) return <ErrorPage error={characters.error} />;
+  if (characters.isErr()) return <ErrorPage error={characters.error} caller="/characters/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

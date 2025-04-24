@@ -9,7 +9,7 @@ import DB from "@/lib/db";
 
 export default async function Page() {
   const users = await DB.Users.Get.All();
-  if (users.isErr()) return <ErrorPage error={users.error} />;
+  if (users.isErr()) return <ErrorPage error={users.error} caller="/admin/users/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

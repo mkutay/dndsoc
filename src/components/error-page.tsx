@@ -6,12 +6,7 @@ import { TypographyParagraph } from "./typography/paragraph";
 import { Button } from "./ui/button";
 
 export function ErrorPage({ error, caller, isNotFound, isForbidden }: {
-  error: string;
-  caller?: string;
-  isNotFound?: boolean;
-  isForbidden?: boolean;
-} | {
-  error: {
+  error: string | {
     message: string;
     code: string;
   };

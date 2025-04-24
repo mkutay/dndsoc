@@ -1,5 +1,7 @@
-import { TypographyH1 } from "@/components/typography/headings";
+import { forbidden } from "next/navigation";
+
 import { TypographyLink } from "@/components/typography/paragraph";
+import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerEditForm } from "./form";
 import DB from "@/lib/db";
@@ -9,17 +11,17 @@ export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
   const result = await DB.Players.Get.Username({ username });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]" />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/edit/page.tsx" />;
   const player = result.value;
 
   const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
   const ownsPlayer = (auth && player.auth_user_uuid === auth.auth_user_uuid) || false || role === "admin";
 
-  if (!ownsPlayer) return <ErrorPage error={{ code: "NOT_AUTHORIZED", message: "You do not have permission to edit this player." }} caller="/players/[username]" isForbidden />;
+  if (!ownsPlayer) forbidden();
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

@@ -10,10 +10,10 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const { username } = await params;
 
   const player = await DB.Players.Get.Username({ username });
-  if (player.isErr()) return <ErrorPage error={player.error} isNotFound />;
+  if (player.isErr()) return <ErrorPage error={player.error} caller="/admin/users/[username]/page.tsx" isNotFound />;
 
   const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
-  if (role.isErr()) return <ErrorPage error={role.error} />;
+  if (role.isErr()) return <ErrorPage error={role.error} caller="/admin/users/[username]/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
