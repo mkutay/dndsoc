@@ -32,6 +32,7 @@ export function SignUpForm() {
       knumber: "",
       email: "",
       password: "",
+      name: "",
     },
   });
  
@@ -59,6 +60,23 @@ export function SignUpForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
+          name="name"
+          disabled={pending}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Kutay" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name. You can change it later.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="username"
           disabled={pending}
           render={({ field }) => (
@@ -68,7 +86,7 @@ export function SignUpForm() {
                 <Input placeholder="awesome" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                This is your username. It can only contain letters, numbers, and underscores. You cannot change it later.
               </FormDescription>
               <FormMessage />
             </FormItem>

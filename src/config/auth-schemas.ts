@@ -10,8 +10,9 @@ export const signInFormSchema = z.object({
 });
 
 export const signUpFormSchema = z.object({
-  knumber: z.string().min(9).max(9).startsWith("K", "K-number must start with 'K'"),
-  username: z.string().min(2).max(50),
+  knumber: z.string().min(9).max(9).startsWith("K", "K-number must start with 'K'."),
+  username: z.string().min(2).max(50).regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores."),
+  name: z.string().min(2).max(60),
   email: z.string().email(),
   password: z.string().min(6).max(100),
 });

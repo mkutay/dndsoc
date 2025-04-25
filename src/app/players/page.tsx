@@ -30,7 +30,7 @@ export default async function Page() {
         {players.value.map((player) => (
           <Card key={player.id}>
             <CardHeader>
-              <CardTitle>{player.users.username.toUpperCase()}</CardTitle>
+              <CardTitle>{player.users.name.toUpperCase()}</CardTitle>
               <CardDescription>
                 Level {player.level} | Received {player.received_achievements_player.length} Achievement{player.received_achievements_player.length === 1 ? "" : "s"}
               </CardDescription>

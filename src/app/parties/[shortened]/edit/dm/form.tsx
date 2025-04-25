@@ -71,6 +71,7 @@ type CharacterPlayer = Character & {
     id: string;
     level: number;
     username: string;
+    name: string;
   };
 };
 
@@ -79,6 +80,7 @@ type DM = {
   username: string;
   about: string;
   level: number;
+  name: string;
 };
 
 export function DMForm({
@@ -255,7 +257,7 @@ export function DMForm({
                                 href={`/players/${character.players.username}`} 
                                 target="_blank"
                                 variant="default">
-                                {character.players.username}
+                                {character.players.name}
                               </TypographyLink>)
                             </span>
                           ) : null;
@@ -324,7 +326,7 @@ export function DMForm({
                                     href={`/players/${character.players.username}`} 
                                     target="_blank"
                                     variant="default">
-                                    {character.players.username}
+                                    {character.players.name}
                                   </TypographyLink>)
                                 </span>
                               ) : null;
@@ -357,7 +359,7 @@ export function DMForm({
                                       href={`/players/${character.players.username}`}
                                       target="_blank"
                                       variant="default">
-                                        {character.players.username}</TypographyLink>)
+                                        {character.players.name}</TypographyLink>)
                                   </span>
                                   <Check
                                     className={cn(
@@ -563,7 +565,7 @@ export function DMForm({
                           const dm = DMs.find((dm) => field.value.id === dm.id);
                           return dm ? (
                             <span>
-                              <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.username}</TypographyLink>
+                              <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
                             </span>
                           ) : null;
                         })()}
@@ -627,7 +629,7 @@ export function DMForm({
                               const dm = DMs.find((dm) => field.value === dm.id);
                               return dm ? (
                                 <span>
-                                  <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.username}</TypographyLink>
+                                  <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
                                 </span>
                               ) : null;
                             })()}
@@ -655,7 +657,7 @@ export function DMForm({
                                   }}
                                 >
                                   <span>
-                                    <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.username}</TypographyLink>
+                                    <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
                                   </span>
                                   <Check
                                     className={cn(

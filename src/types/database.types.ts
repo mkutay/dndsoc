@@ -463,16 +463,19 @@ export type Database = {
         Row: {
           auth_user_uuid: string
           knumber: string
+          name: string
           username: string
         }
         Insert: {
           auth_user_uuid?: string
           knumber: string
+          name?: string
           username: string
         }
         Update: {
           auth_user_uuid?: string
           knumber?: string
+          name?: string
           username?: string
         }
         Relationships: []

@@ -12,8 +12,10 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   if (player.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
   const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) return { title: "Role Not Found", description: "This role does not exist." };
-  const title = `Admin View: ${username}`;
-  const description = `Admin view of ${username}'s role.`;
+
+  const name = player.value.users.name;
+  const title = `Admin View: ${name} (${username})`;
+  const description = `Admin view of ${name}'s role.`;
   return {
     title,
     description,
@@ -33,9 +35,11 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) return <ErrorPage error={role.error} caller="/admin/users/[username]/page.tsx" />;
 
+  const name = player.value.users.name;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <TypographyH1>{username}</TypographyH1>
+      <TypographyH1>{name} ({username})</TypographyH1>
       {role.value.role === "admin" && (
         <TypographyLarge className="mt-2">NOTE: You cannot edit an admin.</TypographyLarge>
       )}

@@ -62,6 +62,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     .map((dmParty) => dmParty.dms)
     .map((dm) => ({
       username: dm.users.username,
+      name: dm.users.name,
       about: dm.about,
       level: dm.level,
       id: dm.id,
@@ -71,6 +72,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
   const dms = all.value[2].map((dm) => ({
     username: dm.users.username,
+    name: dm.users.name,
     about: dm.about,
     level: dm.level,
     id: dm.id,
@@ -88,6 +90,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       id: character.players.id,
       level: character.players.level,
       username: character.players.users.username,
+      name: character.players.users.name,
     }
   }));
 

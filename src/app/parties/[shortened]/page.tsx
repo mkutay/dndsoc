@@ -54,7 +54,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographySmall className="text-muted-foreground">
         DM&apos;ed By {dmedBy.map((dm, index) => (
           <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
-            {dm.users.username}{index + 1 < dmedBy.length ? ", " : ""}
+            {dm.users.name}{index + 1 < dmedBy.length ? ", " : ""}
           </TypographyLink>
         ))}
       </TypographySmall>

@@ -5,6 +5,7 @@ type User = Tables<"users">;
 type UserArgument = {
   username: string;
   knumber: string;
+  name: string;
   auth_user_uuid: string;
 };
 
