@@ -1,4 +1,4 @@
-import { forbidden, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 
 import { TypographyH1 } from "@/components/typography/headings";
