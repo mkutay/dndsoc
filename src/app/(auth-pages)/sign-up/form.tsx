@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
+import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { useState } from "react";
 
@@ -42,15 +43,20 @@ export function SignUpForm() {
     setPending(false);
 
     actionResultMatch(result,
-      (value) => toast({
-        title: "Verification Email Sent to " + value.email,
-        description: "Please check your email to verify your account.",
-        variant: "default",
-      }),
+      (value) => {
+        toast({
+          title: "Verification Email Sent to " + value.email,
+          description: "Please check your email to verify your account.",
+          variant: "default",
+        });
+        setTimeout(() => {
+          redirect("/sign-in");
+        }, 3000);
+      },
       (error) => toast({
-        title: "Sign Up Failed",
-        description: "Please try again. " + error.message,
-        variant: "destructive",
+      title: "Sign Up Failed",
+      description: "Please try again. " + error.message,
+      variant: "destructive",
       }),
     );
   };
