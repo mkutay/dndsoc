@@ -43,18 +43,16 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
-    ? "dm"
-    : ((characteredBy.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
-
+  const dmUuid = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
+  const ownsAs = (dmUuid || role === "admin")
+  ? "dm"
+  : ((characteredBy.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+  
   if (ownsAs === "player") {
     redirect(`/parties/${shortened}/edit/player`);
   } else if (ownsAs === null) {
     redirect(`/parties/${shortened}`);
   }
-
-  const dmUuid = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
-  if (!dmUuid) forbidden();
 
   const currentCampaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const currentCharacters = party.character_party.map((characterParty) => characterParty.characters);
