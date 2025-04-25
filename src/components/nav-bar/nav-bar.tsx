@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { siteConfig } from "@/config/site";
-import AuthButtons from "@/components/nav-bar/auth-buttons";
-import { NavigationDropdown } from "@/components/nav-bar/navigation-dropdown";
 import lightLogo from "@/public/logo-light.png";
 import darkLogo from "@/public/logo-dark.png";
+import { AuthButtons } from "@/components/nav-bar/auth-buttons";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { siteConfig } from "@/config/site";
+import { getUser } from "@/lib/auth";
+import { NavBarSheet } from "./nav-bar-sheet";
 
-export function NavBar() {
+export async function NavBar() {
+  const user = await getUser();
+  const ok = user.isOk();
+
   return (
     <nav className="bg-background/80 backdrop-blur-sm lg:sticky top-0 h-fit z-50">
       <div className="my-4 max-w-prose lg:max-w-6xl mx-auto flex flex-row items-center justify-between px-4">
@@ -38,12 +42,13 @@ export function NavBar() {
             ))}
           </div>
         </div>
-        <div className="flex flex-row place-items-center gap-4">
+        <div className="flex-row place-items-center gap-4 lg:flex hidden">
           <ThemeSwitcher />
-          <div className="flex lg:hidden">
-            <NavigationDropdown />
-          </div>
-          <AuthButtons />
+          <AuthButtons user={ok} />
+        </div>
+        <div className="flex-row place-items-center gap-4 flex lg:hidden">
+          <ThemeSwitcher />
+          <NavBarSheet user={ok} />
         </div>
       </div>
     </nav>
