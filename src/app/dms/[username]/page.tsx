@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const level = dm.level;
   const ach = dm.received_achievements_dm.length;
   const name = dm.users.name;
-  const description = `Some statistics about our DM ${username}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
+  const description = `Some statistics about our DM ${name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Our Awesome DM ${name}`;
 
   return {
