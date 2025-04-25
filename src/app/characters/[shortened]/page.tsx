@@ -53,7 +53,7 @@ export default async function Page({ params }:
       <div className="flex flex-col gap-1">
         {character.players && <TypographySmall className="text-muted-foreground">
           Played By <TypographyLink href={`/players/${character.players.users.username}`} variant="muted">
-            {character.players.users.username}
+            {character.players.users.name}
           </TypographyLink>
         </TypographySmall>}
         <div className="flex flex-row justify-between items-center w-full">

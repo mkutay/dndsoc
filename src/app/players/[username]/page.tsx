@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
   const level = player.level;
   const ach = player.received_achievements_player.length;
-  const description = `Some statistics about our player ${username}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
-  const title = `Our Player ${username}`;
+  const description = `Some statistics about our player ${player.users.name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
+  const title = `Our Player ${player.users.name}`;
 
   return {
     title,
@@ -44,12 +44,13 @@ export default async function Page({ params }:
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
   const ownsPlayer = (player.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
+  const name = player.users.name;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">
-          <span className="font-drop-caps mr-0.5">{username.charAt(0)}</span><span>{username.slice(1)}</span>
+          <span className="font-drop-caps mr-0.5">{name.charAt(0)}</span><span>{name.slice(1)}</span>
         </TypographyH1>
         {ownsPlayer && <PlayerEditButton username={username} />}
       </div>

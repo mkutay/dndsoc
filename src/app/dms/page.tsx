@@ -30,7 +30,7 @@ export default async function Page() {
         {dms.value.map((dm, index) => (
           <Card key={index}>
             <CardHeader>
-              <CardTitle>{dm.users.username}</CardTitle>
+              <CardTitle>{dm.users.name}</CardTitle>
               <CardDescription>Level {dm.level}</CardDescription>
             </CardHeader>
             <CardContent>

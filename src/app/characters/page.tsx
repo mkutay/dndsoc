@@ -43,7 +43,7 @@ export default async function Page() {
             <CardFooter className="flex flex-row justify-end gap-2 flex-wrap">
               <Button asChild size="sm" variant="outline">
                 <Link href={`/players/${character.players.users.username}`} className="text-sm tracking-wide">
-                  Played By {firstUp(character.players.users.username)}
+                  Played By {firstUp(character.players.users.name)}
                 </Link>
               </Button>
               <Button asChild size="sm">

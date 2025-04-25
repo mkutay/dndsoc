@@ -40,6 +40,7 @@ export const completeSignUp = () => {
   const insertedUser = user.andThen((user) => DB.Users.Insert({
     username: user.user_metadata.username,
     knumber: user.user_metadata.knumber,
+    name: user.user_metadata.name,
     auth_user_uuid: user.id,
   }));
 
@@ -61,7 +62,11 @@ type SignUpUserError = {
   code: "DATABASE_ERROR" | "USER_NOT_FOUND";
 };
 
-export const signUpUser = ({ email, password, username, knumber }: { email: string; password: string; username: string; knumber: string; }) => ResultAsync
+export const signUpUser = ({
+  email, password, username, knumber, name,
+}: {
+  email: string; password: string; username: string; knumber: string; name: string;
+}) => ResultAsync
   .combine([getOrigin(), createClient()])
   .andThen(([origin, supabase]) => 
     fromSafePromise(
@@ -73,6 +78,7 @@ export const signUpUser = ({ email, password, username, knumber }: { email: stri
           data: {
             username,
             knumber,
+            name,
           },
         },
       })

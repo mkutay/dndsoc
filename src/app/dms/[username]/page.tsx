@@ -17,8 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
   const level = dm.level;
   const ach = dm.received_achievements_dm.length;
+  const name = dm.users.name;
   const description = `Some statistics about our DM ${username}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
-  const title = `Our Awesome DM ${username}`;
+  const title = `Our Awesome DM ${name}`;
 
   return {
     title,
@@ -44,12 +45,13 @@ export default async function Page({ params }:
   const auth = roled.isOk() ? roled.value : null;
   const role = auth ? auth.role : null;
   const ownsDM = (dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
+  const name = dm.users.name;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">
-          <span className="font-drop-caps mr-0.5">{username.charAt(0)}</span>{username.slice(1)}
+          <span className="font-drop-caps mr-0.5">{name.charAt(0)}</span>{name.slice(1)}
         </TypographyH1>
         {ownsDM && <DMEditButton username={username} />}
       </div>

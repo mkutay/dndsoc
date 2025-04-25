@@ -28,7 +28,7 @@ export default async function Page() {
         {users.value.map((user, index) => (
           <Card key={index}>
             <CardHeader>
-              <CardTitle>{user.username}</CardTitle>
+              <CardTitle>{user.name} ({user.username})</CardTitle>
               <CardDescription>{rolesLabel.find((val) => val.value === user.roles?.role)?.label}</CardDescription>
             </CardHeader>
             <CardFooter>
