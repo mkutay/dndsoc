@@ -334,6 +334,13 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["auth_user_uuid"]
           },
+          {
+            foreignKeyName: "players_auth_user_uuid_fkey2"
+            columns: ["auth_user_uuid"]
+            isOneToOne: true
+            referencedRelation: "roles"
+            referencedColumns: ["auth_user_uuid"]
+          },
         ]
       }
       races: {
