@@ -5,7 +5,9 @@ import { completeSignUp } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  const origin = process.env.PRODUCTION_SITE_URL ? process.env.PRODUCTION_SITE_URL : "http://localhost:3000";
+  
+  // PRODUCTION_SITE_URL is only a FDQN (only a absolute domain name)
+  const origin = process.env.PRODUCTION_SITE_URL ? "https://" + process.env.PRODUCTION_SITE_URL : "http://localhost:3000";
   const code = requestUrl.searchParams.get("code");
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
   const type = requestUrl.searchParams.get("type")?.toString();
@@ -25,6 +27,8 @@ export async function GET(request: Request) {
     if (completed.isErr()) {
       console.error("Error completing sign up: " + completed.error.message);
       return NextResponse.redirect(`${origin}/sign-in`);
+    } else {
+      return NextResponse.redirect(`${origin}/players`);
     }
   }
 
