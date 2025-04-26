@@ -111,7 +111,7 @@ export function Parties({
             </CardFooter>
           </Card>
         ))}
-        {ownsDM && <CreatePartyButton DMUuid={DMUuid} />}
+        {ownsDM && <CreatePartyButton />}
         {ownsDM && allParties && <AddPartyButton
           DMUuid={DMUuid}
           parties={allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id))}

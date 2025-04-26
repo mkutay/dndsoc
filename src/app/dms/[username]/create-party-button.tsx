@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { CreatePartyForm } from "./create-party-form";
 import { Card } from "@/components/ui/card";
 
-export function CreatePartyButton({ DMUuid }: { DMUuid: string }) {
+export function CreatePartyButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
