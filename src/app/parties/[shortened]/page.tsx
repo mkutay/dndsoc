@@ -51,6 +51,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
 
   const allCampaigns = ownsAs === "dm" ? await getAllCampaigns() : undefined;
+  const allCharacters = ownsAs === "dm" ? await getAllCharacters() : undefined;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -68,15 +69,21 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
       <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
-      <Characters characters={characters} />
+      <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
 }
 
+async function getAllCharacters() {
+  const allCharacters = await DB.Characters.Get.All();
+  if (allCharacters.isErr()) redirect("/error?error=" + allCharacters.error.message);
+  return allCharacters.value;
+}
+
 async function getAllCampaigns() {
   const allCampaigns = await DB.Campaigns.Get.All();
-  if (allCampaigns.isErr()) redirect("/error");
+  if (allCampaigns.isErr()) redirect("/error?error=" + allCampaigns.error.message);
   return allCampaigns.value;
 }
 

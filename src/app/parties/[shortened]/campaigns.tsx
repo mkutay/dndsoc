@@ -148,17 +148,18 @@ function AddCampaign({
     campaignId: string;
   }) => void;
 }) {
-  if (campaigns.length === 0) return null;
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const [open, setOpen] = useState(false);
-
+  
   const form = useForm<z.infer<typeof addCampaignForPartySchema>>({
     resolver: zodResolver(addCampaignForPartySchema),
     defaultValues: {
       campaign: "",
     },
   });
+
+  if (campaigns.length === 0) return null;
  
   const onSubmit = async (values: z.infer<typeof addCampaignForPartySchema>) => {
     if (!values.campaign) return;
@@ -190,6 +191,8 @@ function AddCampaign({
         })
       );
       setOpen(true);
+    } else {
+      form.reset();
     }
   };
 
