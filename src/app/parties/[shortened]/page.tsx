@@ -1,10 +1,11 @@
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
-import { Campaigns } from "./campaigns";
 import { Characters } from "./characters";
 import { PartyEditButton } from "./party-edit-button";
 import DB from "@/lib/db";
+import { Campaigns } from "./campaigns";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +50,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     ? "dm"
     : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
 
+  const allCampaigns = ownsAs === "dm" ? await getAllCampaigns() : undefined;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographySmall className="text-muted-foreground">
@@ -64,11 +67,17 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       </div>
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
-      <Campaigns campaigns={campaigns} />
+      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
       <Characters characters={characters} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
+}
+
+async function getAllCampaigns() {
+  const allCampaigns = await DB.Campaigns.Get.All();
+  if (allCampaigns.isErr()) redirect("/error");
+  return allCampaigns.value;
 }
 
 export async function generateStaticParams() {
