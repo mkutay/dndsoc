@@ -5,7 +5,7 @@ import { signOutAction } from "./auth/sign-out";
 import { signUpAction } from "./auth/sign-up";
 import { addCampaignToParty, removeCampaignFromParty } from "./campaigns";
 import { addCharacterToParty, insertCharacter, removeCharacterFromParty, updateCharacter } from "./characters";
-import { removePartyFromDM, updateDM } from "./dms";
+import { addPartyToDM, removePartyFromDM, updateDM } from "./dms";
 import { insertParty, updateDMParty, updatePlayerParty } from "./parties";
 import { updatePlayer } from "./players";
 import { updateRole } from "./roles";
@@ -30,6 +30,9 @@ const DMs = {
   Update: updateDM,
   Remove: {
     Party: removePartyFromDM,
+  },
+  Add: {
+    Party: addPartyToDM,
   }
 };
 

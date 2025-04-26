@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -9,10 +11,29 @@ import {
 import { Button } from "@/components/ui/button";
 import { AddPartyForm } from "./add-party-form";
 import { Card } from "@/components/ui/card";
+import { Tables } from "@/types/database.types";
+import { useState } from "react";
 
-export function AddPartyButton({ DMUuid }: { DMUuid: string }) {
+type Party = Tables<"parties">;
+
+export function AddPartyButton({
+  DMUuid,
+  parties,
+  setOptimisticParties,
+}: {
+  DMUuid: string,
+  parties: Party[],
+  setOptimisticParties: (action: {
+    type: "add";
+    party: Party;
+  } | {
+    type: "remove";
+    partyId: string;
+  }) => void;
+}) {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="nothing"
@@ -21,18 +42,23 @@ export function AddPartyButton({ DMUuid }: { DMUuid: string }) {
           asChild
         >
           <Card className="text-3xl font-book-card-titles tracking-widest">
-            Create a New Party
+            Add Party
           </Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New Party</DialogTitle>
+          <DialogTitle>Add Party</DialogTitle>
           <DialogDescription>
-            You can create a new party to be a DM for!
+            You can be a DM for any of the existing parties.
           </DialogDescription>
         </DialogHeader>
-        <AddPartyForm />
+        <AddPartyForm
+          DMUuid={DMUuid}
+          parties={parties}
+          setOptimisticParties={setOptimisticParties}
+          setOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );

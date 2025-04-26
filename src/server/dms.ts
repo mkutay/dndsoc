@@ -37,3 +37,19 @@ export const removePartyFromDM = async ({ partyId, dmUuid, revalidate }: { party
       return okAsync();
     })
   );
+
+export const addPartyToDM = async ({ partyId, dmUuid, revalidate }: { partyId: string, dmUuid: string, revalidate: string; }) =>
+  resultAsyncToActionResult(
+    runQuery((supabase) => supabase
+      .from("dm_party")
+      .insert({
+        party_id: partyId,
+        dm_id: dmUuid,
+      })
+      .select()
+    )
+    .andThen(() => {
+      revalidatePath(revalidate, "page");
+      return okAsync();
+    })
+  );

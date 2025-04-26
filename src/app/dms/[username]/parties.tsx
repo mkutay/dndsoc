@@ -12,6 +12,7 @@ import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
+import { CreatePartyButton } from "./create-party-button";
 import { AddPartyButton } from "./add-party-button";
 
 type Party = Tables<"parties">;
@@ -20,10 +21,12 @@ export function Parties({
   DMUuid,
   parties,
   ownsDM,
+  allParties
 }: {
   DMUuid: string;
   parties: Party[];
   ownsDM: boolean;
+  allParties: Party[] | undefined;
 }) {
   const { toast } = useToast();
 
@@ -108,7 +111,12 @@ export function Parties({
             </CardFooter>
           </Card>
         ))}
-        {ownsDM && <AddPartyButton DMUuid={DMUuid} />}
+        {ownsDM && <CreatePartyButton DMUuid={DMUuid} />}
+        {ownsDM && allParties && <AddPartyButton
+          DMUuid={DMUuid}
+          parties={allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id))}
+          setOptimisticParties={setOptimisticParties}
+        />}
       </div>
     </div>
   );
