@@ -44,7 +44,7 @@ export function AddPartyForm() {
         title: "Success: Party created.",
         description: "You can now edit the specifics of your party.",
         variant: "default",
-      }) && redirect(`/parties/${value.shortened}/edit`),
+      }) && redirect(`/parties/${value.shortened}/edit/dm`),
       (error) => toast({
         title: "Error: Could not create party.",
         description: error.message,

@@ -1,8 +1,20 @@
+"use client";
+
+import { MinusCircle } from "lucide-react";
+import { useOptimistic } from "react";
 import Link from "next/link";
 
-import { TypographyH3 } from "@/components/typography/headings";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { TypographyParagraph } from "@/components/typography/paragraph";
+import { TypographyH2 } from "@/components/typography/headings";
+import { Tables } from "@/types/database.types";
+import Server from "@/server/server";
+import { useToast } from "@/hooks/use-toast";
 import { AddPartyButton } from "./add-party-button";
+
+type Party = Tables<"parties">;
 
 export function Parties({
   DMUuid,
@@ -10,31 +22,91 @@ export function Parties({
   ownsDM,
 }: {
   DMUuid: string;
-  parties: {
-    about: string;
-    id: string;
-    level: number;
-    name: string;
-    shortened: string;
-  }[];
+  parties: Party[];
   ownsDM: boolean;
 }) {
-  if (parties.length === 0) return <div className="mt-4">
-    {ownsDM && <AddPartyButton DMUuid={DMUuid} />}
-  </div>;
+  const { toast } = useToast();
+
+  const [optimisticParties, setOptimisticParties] = useOptimistic(
+    parties,
+    (currentState, action: {
+      type: "add"; party: Party;
+    } | {
+      type: "remove"; partyId: string;
+    }) => action.type === "add"
+      ? [...currentState, action.party]
+      : currentState.filter((party) => party.id !== action.partyId),
+  );
+
+  // sort by name
+  optimisticParties.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
+
+  const onSubmit = async (party: Party) => {
+    setOptimisticParties({
+      type: "remove",
+      partyId: party.id,
+    });
+    const result = await Server.DMs.Remove.Party({ partyId: party.id, dmUuid: DMUuid, revalidate: "/dms/[username]" });
+    if (!result.ok) {
+      toast({
+        title: "Could Not Remove Party",
+        description: result.error.message,
+        variant: "destructive",
+      });
+      setOptimisticParties({
+        type: "add",
+        party,
+      });
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-1 mt-4">
-      <TypographyH3>
-        Parties:
-      </TypographyH3>
-      <div className="flex flex-row gap-2 w-full items-center flex-wrap">
-        {parties.map((party, index) => (
-          <Button asChild variant="secondary" className="w-fit" key={index}>
-            <Link href={`/parties/${party.shortened}`}>
-              {party.name}
-            </Link>
-          </Button>
+    <div className="mt-6 flex flex-col">
+      <TypographyH2>Parties</TypographyH2>
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
+        {optimisticParties.map((party, index) => (
+          <Card key={index} className="w-full">
+            <CardHeader>
+              <CardTitle>{party.name}</CardTitle>
+              <CardDescription>
+                Level {party.level}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TypographyParagraph>
+                {party.about}
+              </TypographyParagraph>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="outline" asChild>
+                <Link href={`/parties/${party.shortened}`}>
+                  View {party.name}
+                </Link>
+              </Button>
+                {ownsDM && (
+                  <form
+                    action={async () => { await onSubmit(party); }}
+                  >
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="destructive" size="icon" type="submit">
+                            <MinusCircle size="18px" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <TypographyParagraph>Don&apos;t DM this party anymore.</TypographyParagraph>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </form>
+                )}
+            </CardFooter>
+          </Card>
         ))}
         {ownsDM && <AddPartyButton DMUuid={DMUuid} />}
       </div>

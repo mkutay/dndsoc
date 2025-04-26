@@ -1,5 +1,3 @@
-import { Plus } from "lucide-react";
-
 import {
   Dialog,
   DialogContent,
@@ -9,20 +7,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ErrorComponent } from "@/components/error-component";
 import { AddPartyForm } from "./add-party-form";
-import DB from "@/lib/db";
+import { Card } from "@/components/ui/card";
 
-export async function AddPartyButton({ DMUuid }: { DMUuid: string }) {
-  const result = await DB.DMs.Get.With.User();
-  if (result.isErr()) return <ErrorComponent error={result.error} caller="/components/add-character-button.tsx" returnNull silent />;
-  if (result.value.id !== DMUuid) return null;
-
+export function AddPartyButton({ DMUuid }: { DMUuid: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
-          <Plus className="mr-1" /> Create Party
+        <Button
+          variant="nothing"
+          type="button"
+          className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
+          asChild
+        >
+          <Card className="text-3xl font-book-card-titles tracking-widest">
+            Create a New Party
+          </Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
