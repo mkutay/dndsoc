@@ -88,7 +88,7 @@ export const getCampaign = ({ shortened }: { shortened: string }) =>
   runQuery((supabase) =>
     supabase
       .from("campaigns")
-      .select("*, party_campaigns(*, parties!inner(*, character_party!inner(*)))")
+      .select("*, party_campaigns(*, parties!inner(*))")
       .eq("shortened", shortened)
       .single(),
     "getCampaign"
