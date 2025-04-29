@@ -69,8 +69,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       </div>
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
-      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
       <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />
+      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
