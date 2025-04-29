@@ -19,14 +19,14 @@ export default function Home() {
         This is going to be an amazing tool for our society, and I am really excited.
       </TypographyParagraph>
       <TypographyParagraph className="max-w-prose">
-        And, it's all open source, for all you CompSci majors in our society.
+        And, it&apos;s all open source, for all you CompSci majors in our society.
       </TypographyParagraph>
       <div className="flex flex-col justify-center items-center mt-6 text-4xl font-quotes">
         <TypographyLink href="https://github.com/mkutay/dndsoc">Woo magic stuff</TypographyLink>
       </div>
       <TypographyHr className="mt-12" />
       <TypographyParagraph className="max-w-prose">
-        You can sign up from the nav bar, or just browse the site throught these cool things I've been working on
+        You can sign up from the nav bar, or just browse the site throught these cool things I&apos;ve been working on
         (the data showcased are just placeholders):
       </TypographyParagraph>
       <TypographyList className="text-lg">

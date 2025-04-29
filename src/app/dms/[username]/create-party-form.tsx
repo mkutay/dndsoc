@@ -35,7 +35,7 @@ export function CreatePartyForm() {
  
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     setPending(true);
-    const result = await Server.Parties.Insert(values);
+    const result = await Server.Parties.Insert.DM(values);
     setPending(false);
 
     actionResultMatch(

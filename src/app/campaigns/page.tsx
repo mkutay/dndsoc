@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const campaigns = await DB.Campaigns.Get.All();
   if (campaigns.isErr()) return <ErrorPage error={campaigns.error} caller="/campaigns/page.tsx" />;
