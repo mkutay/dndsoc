@@ -31,7 +31,7 @@ export function Campaigns({
   allCampaigns
 }: {
   campaigns: Campaign[]; // campaigns that are already in the party
-  ownsAs: "dm" | "player" | null;
+  ownsAs: "dm" | "player" | "admin" | null;
   partyId: string;
   allCampaigns?: Campaign[]; // all campaigns, including those not in the party
 }) {
@@ -98,7 +98,7 @@ export function Campaigns({
                   View {campaign.name}
                 </Link>
               </Button>
-                {ownsAs === "dm" && (
+                {ownsAs === "admin" && (
                   <form
                     action={async () => { await onSubmit(campaign); }}
                   >
@@ -119,7 +119,7 @@ export function Campaigns({
             </CardFooter>
           </Card>
         ))}
-        {ownsAs === "dm" && allCampaigns && <AddCampaign
+        {ownsAs === "admin" && allCampaigns && <AddCampaign
           campaigns={allCampaigns.filter((campaign) => !optimisticCampaigns.some((c) => c.id === campaign.id))}
           partyUuid={partyId}
           setOptimisticCampaigns={setOptimisticCampaigns}

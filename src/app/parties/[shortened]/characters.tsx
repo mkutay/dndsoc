@@ -30,7 +30,7 @@ export function Characters({
   allCharacters
 }: {
   characters: Character[]; // characters that are already in the party
-  ownsAs: "dm" | "player" | null;
+  ownsAs: "dm" | "player" | "admin" | null;
   partyId: string;
   allCharacters?: Character[]; // all characters, including those not in the party
 }) {
@@ -96,7 +96,7 @@ export function Characters({
                   View {character.name}
                 </Link>
               </Button>
-                {ownsAs === "dm" && (
+                {(ownsAs === "dm" || ownsAs === "admin") && (
                   <form
                     action={async () => { await onSubmit(character); }}
                   >
@@ -117,7 +117,7 @@ export function Characters({
             </CardFooter>
           </Card>
         ))}
-        {ownsAs === "dm" && allCharacters && <AddCharacter
+        {(ownsAs === "dm" || ownsAs === "admin") && allCharacters && <AddCharacter
           characters={allCharacters.filter((character) => !optimisticCharacters.some((c) => c.id === character.id))}
           partyUuid={partyId}
           setOptimisticCharacters={setOptimisticCharacters}
