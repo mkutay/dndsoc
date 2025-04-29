@@ -1,10 +1,12 @@
-import { ErrorPage } from "@/components/error-page";
-import { TypographyH1 } from "@/components/typography/headings";
+import { redirect } from "next/navigation";
+
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
-import { Campaigns } from "./campaigns";
+import { TypographyH1 } from "@/components/typography/headings";
+import { ErrorPage } from "@/components/error-page";
 import { Characters } from "./characters";
 import { PartyEditButton } from "./party-edit-button";
 import DB from "@/lib/db";
+import { Campaigns } from "./campaigns";
 
 export const dynamic = "force-dynamic";
 
@@ -45,30 +47,44 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
-    ? "dm"
-    : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+  const ownsAs = role === "admin"
+    ? "admin" : (dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) ? "dm" : (characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null;
+
+  const allCampaigns = ownsAs === "dm" ? await getAllCampaigns() : undefined;
+  const allCharacters = ownsAs === "dm" ? await getAllCharacters() : undefined;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <TypographySmall className="text-muted-foreground">
+      {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">
         DM&apos;ed By {dmedBy.map((dm, index) => (
           <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
             {dm.users.name}{index + 1 < dmedBy.length ? ", " : ""}
           </TypographyLink>
         ))}
-      </TypographySmall>
+      </TypographySmall>}
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{party.name}</TypographyH1>
         <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
       </div>
       <TypographyLarge>Level: {party.level}</TypographyLarge>
       {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
-      <Campaigns campaigns={campaigns} />
-      <Characters characters={characters} />
+      <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />
+      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
+}
+
+async function getAllCharacters() {
+  const allCharacters = await DB.Characters.Get.All();
+  if (allCharacters.isErr()) redirect("/error?error=" + allCharacters.error.message);
+  return allCharacters.value;
+}
+
+async function getAllCampaigns() {
+  const allCampaigns = await DB.Campaigns.Get.All();
+  if (allCampaigns.isErr()) redirect("/error?error=" + allCampaigns.error.message);
+  return allCampaigns.value;
 }
 
 export async function generateStaticParams() {

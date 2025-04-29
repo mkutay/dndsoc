@@ -25,17 +25,18 @@ import { DialogFooter } from "@/components/ui/dialog";
 
 type Party = Tables<"parties">;
 
-const addPartyForDM = z.object({
+const addPartyToCampaignSchema = z.object({
   party: z.string().optional(),
 });
 
 export function AddPartyForm({
-  DMUuid,
+  campaignUuid,
   parties,
   setOptimisticParties,
   setOpen,
+  shortened,
 }: {
-  DMUuid: string,
+  campaignUuid: string,
   parties: Party[],
   setOptimisticParties: (action: {
     type: "add";
@@ -45,12 +46,13 @@ export function AddPartyForm({
     partyId: string;
   }) => void;
   setOpen: (open: boolean) => void;
+  shortened: string;
 }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   
-  const form = useForm<z.infer<typeof addPartyForDM>>({
-    resolver: zodResolver(addPartyForDM),
+  const form = useForm<z.infer<typeof addPartyToCampaignSchema>>({
+    resolver: zodResolver(addPartyToCampaignSchema),
     defaultValues: {
       party: "",
     },
@@ -58,7 +60,7 @@ export function AddPartyForm({
 
   if (parties.length === 0) return null;
  
-  const onSubmit = async (values: z.infer<typeof addPartyForDM>) => {
+  const onSubmit = async (values: z.infer<typeof addPartyToCampaignSchema>) => {
     if (!values.party) return;
 
     const partyToAdd = parties.find((party) => party.id === values.party)!;
@@ -71,13 +73,13 @@ export function AddPartyForm({
     setPending(true);
     setOpen(false);
 
-    const result = await Server.DMs.Add.Party({ dmUuid: DMUuid, partyId: values.party, revalidate: `/dms/[username]` });
+    const result = await Server.Parties.Add.Campaign({ campaignId: campaignUuid, partyId: values.party, shortened });
 
     setPending(false);
 
     if (!result.ok) {
       toast({
-        title: "Add Party Failed",
+        title: "Add Campaign Failed",
         description: "Please try again. " + result.error.message,
         variant: "destructive",
       });

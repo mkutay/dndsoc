@@ -11,7 +11,7 @@ export function CampaignCards({
   link,
 }: {
   campaigns: Tables<"campaigns">[];
-  link?: string;
+  link: string;
 }) {
   if (campaigns.length === 0) {
     return (
@@ -36,7 +36,7 @@ export function CampaignCards({
           <CardHeader>
             <CardTitle>{campaign.name}</CardTitle>
             <CardDescription>
-              {format(campaign.start_date, "PP")} - {format(campaign.start_date, "PP")}
+              {format(campaign.start_date, "PP")} - {campaign.end_date ? format(campaign.end_date, "PP") : "Ongoing"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -44,13 +44,13 @@ export function CampaignCards({
               {campaign.description}
             </TypographyParagraph>
           </CardContent>
-          {link && <CardFooter>
+          <CardFooter>
             <Button variant="outline" asChild>
               <Link href={`${link}/${campaign.shortened}`}>
                 View {campaign.name}
               </Link>
             </Button>
-          </CardFooter>}
+          </CardFooter>
         </Card>
       ))}
     </div>

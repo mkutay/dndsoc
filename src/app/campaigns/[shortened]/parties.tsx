@@ -12,21 +12,23 @@ import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
-import { CreatePartyButton } from "./create-party-button";
 import { AddPartyButton } from "./add-party-button";
+import { CreatePartyButton } from "./create-party-button";
 
 type Party = Tables<"parties">;
 
 export function Parties({
-  DMUuid,
+  campaignUuid,
   parties,
-  ownsDM,
-  allParties
+  isAdmin,
+  allParties,
+  shortened,
 }: {
-  DMUuid: string;
+  campaignUuid: string;
   parties: Party[];
-  ownsDM: boolean;
+  isAdmin: boolean;
   allParties: Party[] | undefined;
+  shortened: string;
 }) {
   const { toast } = useToast();
 
@@ -53,7 +55,7 @@ export function Parties({
       type: "remove",
       partyId: party.id,
     });
-    const result = await Server.DMs.Remove.Party({ partyId: party.id, dmUuid: DMUuid, revalidate: "/dms/[username]" });
+    const result = await Server.Campaigns.Remove.Party({ partyId: party.id, campaignId: campaignUuid, shortened });
     if (!result.ok) {
       toast({
         title: "Could Not Remove Party",
@@ -84,13 +86,13 @@ export function Parties({
                 {party.about}
               </TypographyParagraph>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-between flex-wrap gap-2">
               <Button variant="outline" asChild>
                 <Link href={`/parties/${party.shortened}`}>
                   View {party.name}
                 </Link>
               </Button>
-                {ownsDM && (
+                {isAdmin && (
                   <form
                     action={async () => { await onSubmit(party); }}
                   >
@@ -102,7 +104,7 @@ export function Parties({
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <TypographyParagraph>Don&apos;t DM this party anymore.</TypographyParagraph>
+                          <TypographyParagraph>Remove this party from the campaign.</TypographyParagraph>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -111,12 +113,13 @@ export function Parties({
             </CardFooter>
           </Card>
         ))}
-        {ownsDM && <CreatePartyButton />}
-        {ownsDM && <AddPartyButtonWrapper
-          DMUuid={DMUuid}
+        {isAdmin && <CreatePartyButton campaignUuid={campaignUuid} />}
+        {isAdmin && <AddPartyButtonWrapper
+          campaignUuid={campaignUuid}
           allParties={allParties}
           setOptimisticParties={setOptimisticParties}
           optimisticParties={optimisticParties}
+          shortened={shortened}
         />}
       </div>
     </div>
@@ -124,12 +127,13 @@ export function Parties({
 }
 
 function AddPartyButtonWrapper({
-  DMUuid,
+  campaignUuid,
   allParties,
   setOptimisticParties,
   optimisticParties,
+  shortened,
 }: {
-  DMUuid: string;
+  campaignUuid: string;
   allParties: Party[] | undefined;
   setOptimisticParties: (action: {
     type: "add"; party: Party;
@@ -137,13 +141,15 @@ function AddPartyButtonWrapper({
     type: "remove"; partyId: string;
   }) => void;
   optimisticParties: Party[];
+  shortened: string;
 }) {
   if (!allParties || allParties.length === 0) return null;
   const parties = allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id));
   if (parties.length === 0) return null;
   return (
     <AddPartyButton
-      DMUuid={DMUuid}
+      shortened={shortened}
+      campaignUuid={campaignUuid}
       parties={parties}
       setOptimisticParties={setOptimisticParties}
     />

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TiPencil } from "react-icons/ti";
 
-export function PartyEditButton({ ownsAs, shortened }: { ownsAs: "dm" | "player" | null, shortened: string }) {
+export function PartyEditButton({ ownsAs, shortened }: { ownsAs: "dm" | "player" | "admin" | null, shortened: string }) {
   if (!ownsAs) return null;
 
   return (

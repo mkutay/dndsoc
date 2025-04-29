@@ -3,9 +3,10 @@ import { resetPasswordAction } from "./auth/reset-password";
 import { signInAction } from "./auth/sign-in";
 import { signOutAction } from "./auth/sign-out";
 import { signUpAction } from "./auth/sign-up";
-import { insertCharacter, updateCharacter } from "./characters";
-import { updateDM } from "./dms";
-import { insertParty, updateDMParty, updatePlayerParty } from "./parties";
+import { addCampaignToParty, removeCampaignFromParty } from "./campaigns";
+import { addCharacterToParty, insertCharacter, removeCharacterFromParty, updateCharacter } from "./characters";
+import { addPartyToDM, removePartyFromDM, updateDM } from "./dms";
+import { addPartyToCampaign, insertParty, insertPartyWithCampaign, updateDMParty, updatePlayerParty } from "./parties";
 import { updatePlayer } from "./players";
 import { updateRole } from "./roles";
 
@@ -20,17 +21,33 @@ const Auth = {
 const Characters = {
   Insert: insertCharacter,
   Update: updateCharacter,
+  Remove: {
+    Party: removeCharacterFromParty,
+  }
 };
 
 const DMs = {
   Update: updateDM,
+  Remove: {
+    Party: removePartyFromDM,
+  },
+  Add: {
+    Party: addPartyToDM,
+  }
 };
 
 const Parties = {
-  Insert: insertParty,
+  Insert: {
+    DM: insertParty,
+    Campaign: insertPartyWithCampaign,
+  },
   Update: {
     Player: updatePlayerParty,
     DM: updateDMParty,
+  },
+  Add: {
+    Campaign: addCampaignToParty,
+    Character: addCharacterToParty,
   }
 };
 
@@ -40,7 +57,16 @@ const Players = {
 
 const Roles = {
   Update: updateRole,
-}
+};
+
+const Campaigns = {
+  Remove: {
+    Party: removeCampaignFromParty,
+  },
+  Add: {
+    Party: addPartyToCampaign,
+  }
+};
 
 const Server = {
   Auth,
@@ -49,6 +75,7 @@ const Server = {
   Parties,
   Players,
   Roles,
+  Campaigns,
 };
 
 export default Server;

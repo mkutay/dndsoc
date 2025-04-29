@@ -1,6 +1,7 @@
 "use server";
 
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { addCharacterSchema } from "@/config/add-character-schema";
@@ -100,3 +101,52 @@ const updateClasses = ({
         }))
       })
     );
+
+export const removeCharacterFromParty = async ({
+  characterId,
+  partyId,
+  shortened,
+}: {
+  characterId: string;
+  partyId: string;
+  shortened: string;
+}) =>
+  resultAsyncToActionResult(
+    runQuery((supabase) =>
+      supabase
+        .from("character_party")
+        .delete()
+        .eq("party_id", partyId)
+        .eq("character_id", characterId),
+      "removeCharacterFromParty"
+    )
+    .andThen(() => {
+      revalidatePath(`/parties/${shortened}`, "page");
+      return okAsync();
+    })
+  );
+
+export const addCharacterToParty = async ({
+  characterId,
+  partyId,
+  shortened,
+}: {
+  characterId: string;
+  partyId: string;
+  shortened: string;
+}) =>
+  resultAsyncToActionResult(
+    runQuery((supabase) =>
+      supabase
+        .from("character_party")
+        .insert({
+          party_id: partyId,
+          character_id: characterId,
+        }),
+      "addCharacterToParty"
+    )
+    .andThen(() => {
+      revalidatePath(`/parties/${shortened}`, "page");
+      return okAsync();
+    })
+  );

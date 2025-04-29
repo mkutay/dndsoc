@@ -9,6 +9,8 @@ import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { partyDMEditSchema, partyPlayerEditSchema } from "@/config/parties";
 import DB from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { okAsync } from "neverthrow";
 
 export const insertParty = async (values: z.infer<typeof createPartySchema>) => resultAsyncToActionResult(
   parseSchema(createPartySchema, values)
@@ -53,6 +55,36 @@ export const updatePlayerParty = async (values: z.infer<typeof partyPlayerEditSc
           "updatePlayerParty"
         )
       )
+  );
+
+export const insertPartyWithCampaign = async (values: z.infer<typeof createPartySchema>, campaignUuid: string) =>
+  resultAsyncToActionResult(
+    parseSchema(createPartySchema, values)
+      .asyncAndThen(() =>
+        runQuery((supabase) => supabase
+          .from("parties")
+          .insert({
+            name: values.name,
+            shortened: convertToShortened(values.name),
+          })
+          .select()
+          .single(),
+          "insertPartyWithCampaign"
+        )
+        .andThen((party) =>
+          runQuery((supabase) => supabase
+            .from("party_campaigns")
+            .insert({
+              party_id: party.id,
+              campaign_id: campaignUuid,
+            })
+            .select()
+            .single(),
+            "insertPartyWithCampaign (party_campaigns)"
+          )
+        )
+      )
+      .map(() => ({ shortened: convertToShortened(values.name) }))
   );
 
 export const updateDMParty = async (values: z.infer<typeof partyDMEditSchema>, partyUuid: string) =>
@@ -134,4 +166,28 @@ export const updateDMParty = async (values: z.infer<typeof partyDMEditSchema>, p
           "updateDMParty (party_campaigns upsert)"
         )
       )
+  );
+
+export const addPartyToCampaign = async ({
+  partyId,
+  campaignId,
+  shortened,
+}: {
+  partyId: string;
+  campaignId: string;
+  shortened: string;
+}) => resultAsyncToActionResult(
+  runQuery((supabase) =>
+    supabase
+      .from("party_campaigns")
+      .insert({
+        party_id: partyId,
+        campaign_id: campaignId,
+      }),
+    "addPartyToCampaign"
   )
+  .andThen(() => {
+    revalidatePath(`/campaigns/${shortened}`, "page");
+    return okAsync();
+  })
+);

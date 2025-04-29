@@ -9,19 +9,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AddPartyForm } from "./add-party-form";
 import { Card } from "@/components/ui/card";
 import { Tables } from "@/types/database.types";
 import { useState } from "react";
+import { AddPartyForm } from "./add-party-form";
 
 type Party = Tables<"parties">;
 
 export function AddPartyButton({
-  DMUuid,
+  campaignUuid,
   parties,
   setOptimisticParties,
+  shortened,
 }: {
-  DMUuid: string,
+  campaignUuid: string,
   parties: Party[],
   setOptimisticParties: (action: {
     type: "add";
@@ -30,6 +31,7 @@ export function AddPartyButton({
     type: "remove";
     partyId: string;
   }) => void;
+  shortened: string;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -50,14 +52,15 @@ export function AddPartyButton({
         <DialogHeader>
           <DialogTitle>Add Party</DialogTitle>
           <DialogDescription>
-            You can be a DM for any of the existing parties.
+            You can add any existing party to this campaign.
           </DialogDescription>
         </DialogHeader>
         <AddPartyForm
-          DMUuid={DMUuid}
+          campaignUuid={campaignUuid}
           parties={parties}
           setOptimisticParties={setOptimisticParties}
           setOpen={setOpen}
+          shortened={shortened}
         />
       </DialogContent>
     </Dialog>

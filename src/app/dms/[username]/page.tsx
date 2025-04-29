@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -47,6 +49,8 @@ export default async function Page({ params }:
   const ownsDM = (dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
   const name = dm.users.name;
 
+  const parties = ownsDM ? await getAllParties() : undefined;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-row justify-between items-center">
@@ -57,11 +61,22 @@ export default async function Page({ params }:
       </div>
       <TypographyLarge>Level: {dm.level}</TypographyLarge>
       {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}
-      <Parties DMUuid={dm.id} ownsDM={ownsDM} parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))} />
+      <Parties
+        DMUuid={dm.id}
+        ownsDM={ownsDM}
+        parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
+        allParties={parties}
+      />
       <Campaigns DMUuid={dm.id} />
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
     </div>
   );
+}
+
+async function getAllParties() {
+  const result = await DB.Parties.Get.All();
+  if (result.isErr()) redirect("/error?error=" + result.error.message);
+  return result.value;
 }
 
 export async function generateStaticParams() {
