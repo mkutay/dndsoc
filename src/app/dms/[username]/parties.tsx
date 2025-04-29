@@ -112,12 +112,40 @@ export function Parties({
           </Card>
         ))}
         {ownsDM && <CreatePartyButton />}
-        {ownsDM && allParties && <AddPartyButton
+        {ownsDM && <AddPartyButtonWrapper
           DMUuid={DMUuid}
-          parties={allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id))}
+          allParties={allParties}
           setOptimisticParties={setOptimisticParties}
+          optimisticParties={optimisticParties}
         />}
       </div>
     </div>
   );
+}
+
+function AddPartyButtonWrapper({
+  DMUuid,
+  allParties,
+  setOptimisticParties,
+  optimisticParties,
+}: {
+  DMUuid: string;
+  allParties: Party[] | undefined;
+  setOptimisticParties: (action: {
+    type: "add"; party: Party;
+  } | {
+    type: "remove"; partyId: string;
+  }) => void;
+  optimisticParties: Party[];
+}) {
+  if (!allParties || allParties.length === 0) return null;
+  const parties = allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id));
+  if (parties.length === 0) return null;
+  return (
+    <AddPartyButton
+      DMUuid={DMUuid}
+      parties={parties}
+      setOptimisticParties={setOptimisticParties}
+    />
+  )
 }
