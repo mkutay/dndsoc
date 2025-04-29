@@ -1,11 +1,12 @@
-import { ErrorPage } from "@/components/error-page";
-import { TypographyH1 } from "@/components/typography/headings";
+import { redirect } from "next/navigation";
+
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
+import { TypographyH1 } from "@/components/typography/headings";
+import { ErrorPage } from "@/components/error-page";
 import { Characters } from "./characters";
 import { PartyEditButton } from "./party-edit-button";
 import DB from "@/lib/db";
 import { Campaigns } from "./campaigns";
-import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -55,13 +56,13 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <TypographySmall className="text-muted-foreground">
+      {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">
         DM&apos;ed By {dmedBy.map((dm, index) => (
           <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
             {dm.users.name}{index + 1 < dmedBy.length ? ", " : ""}
           </TypographyLink>
         ))}
-      </TypographySmall>
+      </TypographySmall>}
       <div className="flex flex-row justify-between items-center">
         <TypographyH1 className="text-primary">{party.name}</TypographyH1>
         <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
