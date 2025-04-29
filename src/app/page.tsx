@@ -22,7 +22,7 @@ export default function Home() {
         And, it&apos;s all open source, for all you CompSci majors in our society.
       </TypographyParagraph>
       <div className="flex flex-col justify-center items-center mt-6 text-4xl font-quotes">
-        <TypographyLink href="https://github.com/mkutay/dndsoc">Woo magic stuff</TypographyLink>
+        <TypographyLink target="_blank" href="https://github.com/mkutay/dndsoc">Woo magic stuff</TypographyLink>
       </div>
       <TypographyHr className="mt-12" />
       <TypographyParagraph className="max-w-prose">
@@ -46,9 +46,9 @@ export default function Home() {
           <TypographyLink href="/parties">Parties</TypographyLink>
         </li>
       </TypographyList>
-      <div className="flex flex-row w-full items-center justify-end mt-6 text-4xl font-headings leading-none group">
+      <div className="flex flex-row w-full items-center justify-end mt-6 text-4xl font-headings leading-none">
         {/* <div className="font-serif text-primary group-hover:text-primary/80 transition-all text-2xl mb-3">§</div> */}
-        <Link href="https://www.mkutay.dev" className="flex flex-row items-baseline text-primary group-hover:text-primary/80 transition-all">
+        <Link href="https://www.mkutay.dev" target="_blank" className="flex flex-row items-baseline text-primary hover:text-primary/80 transition-all">
           <span className="font-drop-caps mr-1 text-5xl">K</span>
           <span>utay, the President</span>
         </Link>
