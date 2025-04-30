@@ -73,9 +73,6 @@ export function Characters({
     }
   };
 
-  console.log(ownsAs)
-  console.log(allCharacters)
-
   return (
     <div className="mt-6 flex flex-col">
       <TypographyH2>Characters</TypographyH2>
