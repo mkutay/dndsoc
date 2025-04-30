@@ -50,8 +50,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const ownsAs = role === "admin"
     ? "admin" : (dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) ? "dm" : (characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null;
 
-  const allCampaigns = ownsAs === "dm" ? await getAllCampaigns() : undefined;
-  const allCharacters = ownsAs === "dm" ? await getAllCharacters() : undefined;
+  const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCampaigns() : undefined;
+  const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCharacters() : undefined;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
