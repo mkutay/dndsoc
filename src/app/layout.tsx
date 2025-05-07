@@ -1,4 +1,5 @@
 import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
+import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 import { Metadata } from "next";
 
@@ -83,6 +84,16 @@ export default function RootLayout({
       className={cn(sans.variable, serif.variable, mono.variable, BookInsanity.variable, MrEaves.variable, NodestoCapsCondensed.variable, ScalySans.variable, ScalySansCaps.variable, SolberaImitation.variable, ZatannaMisdirection.variable, "font-body")}
       suppressHydrationWarning
     >
+      <head>
+        <PlausibleProvider
+          domain="kcldnd.uk"
+          customDomain="https://pl.mkutay.dev"
+          selfHosted={true}
+          trackOutboundLinks={true}
+          trackFileDownloads={true}
+          taggedEvents={true}
+        />
+      </head>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
