@@ -3,10 +3,10 @@ import { redirect } from "next/navigation";
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { Characters } from "./characters";
-import { PartyEditButton } from "./party-edit-button";
+import { Characters } from "@/components/parties/characters";
+import { PartyEditButton } from "@/components/parties/party-edit-button";
+import { Campaigns } from "@/components/parties/campaigns";
 import DB from "@/lib/db";
-import { Campaigns } from "./campaigns";
 
 export const dynamic = "force-dynamic";
 

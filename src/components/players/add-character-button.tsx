@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AddCharacterForm } from "@/app/players/[username]/add-character-form";
+import { AddCharacterForm } from "./add-character-form";
 
 export function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
   return (

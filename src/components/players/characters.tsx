@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AddCharacterButton } from "@/app/players/[username]/add-character-button";
+import { AddCharacterButton } from "./add-character-button";
 import { TypographyH3 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { Tables } from "@/types/database.types";

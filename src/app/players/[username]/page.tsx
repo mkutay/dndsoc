@@ -2,9 +2,9 @@ import { TypographyLarge, TypographyLead } from "@/components/typography/paragra
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
-import { PlayerEditButton } from "./player-edit-button";
-import { Campaigns } from "./campaigns";
-import { Characters } from "./characters";
+import { PlayerEditButton } from "@/components/players/player-edit-button";
+import { Campaigns } from "@/components/players/campaigns";
+import { Characters } from "@/components/players/characters";
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";

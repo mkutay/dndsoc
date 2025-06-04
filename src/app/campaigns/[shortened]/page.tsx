@@ -5,7 +5,7 @@ import { TypographyLead, TypographyParagraph } from "@/components/typography/par
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
-import { Parties } from "./parties";
+import { Parties } from "@/components/campaigns/parties";
 
 export const dynamicParams = false;
 
