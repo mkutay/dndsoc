@@ -1,12 +1,13 @@
 import { Dot } from "lucide-react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
-import { TypographyH1 } from "@/components/typography/headings";
+import { TypographyH2 } from "@/components/typography/headings";
 import { CharacterEditButton } from "@/components/character-edit-button";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
-import { Campaigns } from "./campaigns";
 import DB from "@/lib/db";
+import { ErrorComponent } from "@/components/error-component";
+import { CampaignCards } from "@/components/campaigns-cards";
 
 export const dynamic = "force-dynamic";
 
@@ -50,39 +51,55 @@ export default async function Page({ params }:
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <div className="flex flex-col gap-1">
-        {character.players && <TypographySmall className="text-muted-foreground">
-          Played By <TypographyLink href={`/players/${character.players.users.username}`} variant="muted">
-            {character.players.users.name}
-          </TypographyLink>
-        </TypographySmall>}
-        <div className="flex flex-row justify-between items-center w-full">
-          <h1 className="text-primary text-5xl font-extrabold font-headings tracking-wide flex flex-row items-start">
-            <div className="font-drop-caps text-7xl">{character.name.charAt(0)}</div>
-            <div>{character.name.slice(1)}</div>
-          </h1>
+      <div className="flex lg:flex-row flex-col gap-6">
+        <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-primary rounded-full"></div>
+        <div className="flex flex-col max-w-prose gap-1.5 mt-3">
+          <div className="flex flex-col gap-1">
+            {character.players && <TypographySmall className="text-muted-foreground">
+              Played By <TypographyLink href={`/players/${character.players.users.username}`} variant="muted">
+                {character.players.users.name}
+              </TypographyLink>
+            </TypographySmall>}
+            <h1 className="text-primary text-5xl font-extrabold font-headings tracking-wide flex flex-row items-start">
+              <div className="font-drop-caps text-7xl">{character.name.charAt(0)}</div>
+              <div>{character.name.slice(1)}</div>
+            </h1>
+          </div>
+          <div className="flex flex-row">
+            <TypographyLarge>Level {character.level}</TypographyLarge>
+            {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-[1px]" />}
+            {character.classes.length !== 0 && <TypographyLarge>{formatClasses(character.classes)}</TypographyLarge>}
+            {(character.classes.length !== 0 && character.races.length !== 0) && <Dot className="mt-[1px]" />}
+            {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
+          </div>
+          {character.about && character.about.length !== 0 && <TypographyLead className="indent-6">{character.about}</TypographyLead>}
           {ownsCharacter && <CharacterEditButton shortened={shortened} />}
         </div>
       </div>
-      <div className="flex flex-row">
-        <TypographyLarge>Level {character.level}</TypographyLarge>
-        {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-[1px]" />}
-        {character.classes.length !== 0 && <TypographyLarge>{formatClasses(character.classes)}</TypographyLarge>}
-        {(character.classes.length !== 0 && character.races.length !== 0) && <Dot className="mt-[1px]" />}
-        {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
-      </div>
 
-      {character.about && character.about.length !== 0 && <TypographyLead>{character.about}</TypographyLead>}
       <Campaigns characterUuid={character.id} />
       {/* Add achievements */}
     </div>
   );
 }
 
-export async function generateStaticParams() {
-  const characters = await DB.Characters.Get.All();
-  if (characters.isErr()) return [];
-  return characters.value.map((character) => ({
-    shortened: character.shortened,
-  }));
+async function Campaigns({ characterUuid }: { characterUuid: string }) {
+  const notFound = <TypographyH2 className="mt-6">No campaigns found</TypographyH2>;
+
+  const campaigns = await DB.Campaigns.Get.Character({ characterUuid });
+  if (campaigns.isErr()) {
+    return campaigns.error.code === "NOT_FOUND"
+      ? notFound
+      : <ErrorComponent error={campaigns.error} caller="/characters/[username]/campaigns.tsx" />;
+  }
+  if (campaigns.value.length === 0) {
+    return notFound;
+  }
+
+  return (
+    <>
+      <TypographyH2 className="mt-6">Campaigns</TypographyH2>
+      <CampaignCards campaigns={campaigns.value} link="/campaigns" />
+    </>
+  );
 }

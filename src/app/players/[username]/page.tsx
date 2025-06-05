@@ -56,7 +56,7 @@ export default async function Page({ params }:
             <div>{name.slice(1)}</div>
           </h1>
           <TypographyLarge>Level: {player.level}</TypographyLarge>
-          {player.about && player.about.length !== 0 && <TypographyLead>{player.about}</TypographyLead>}
+          {player.about && player.about.length !== 0 && <TypographyLead className="indent-6">{player.about}</TypographyLead>}
           {ownsPlayer && <PlayerEditButton username={username} />}
         </div>
       </div>

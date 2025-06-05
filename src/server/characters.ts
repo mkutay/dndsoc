@@ -33,22 +33,8 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
       }))
   );
 
-type UpdateCharacterError = {
-  message: string;
-  code: "DATABASE_ERROR" | "NOT_AUTHORISED";
-};
-
 export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterShortened: string) {
-  const character = ResultAsync
-    .combine([DB.Characters.Get.Shortened({ shortened: characterShortened }), DB.Players.Get.With.User()])
-    .andThen(([character, playerUser]) => 
-      character.player_uuid === playerUser.id
-        ? okAsync(character)
-        : errAsync({
-            message: "You do not have permission to edit this character.",
-            code: "NOT_AUTHORISED",
-          } as UpdateCharacterError)
-    )
+  const character = DB.Characters.Get.Shortened({ shortened: characterShortened });
 
   const charactersResult = parseSchema(characterEditSchema, values)
     .asyncAndThen(() => runQuery((supabase) => supabase
@@ -57,7 +43,8 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
         about: values.about,
         level: values.level,
       })
-      .eq("shortened", characterShortened)
+      .eq("shortened", characterShortened),
+      "updateCharacterCharactersResult"
   ))
 
   const characterClassResult = character
