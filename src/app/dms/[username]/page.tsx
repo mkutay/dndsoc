@@ -24,12 +24,16 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const description = `Some statistics about our DM ${name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Our Awesome DM ${name}`;
 
+  const imageUrlResult = dm.image_uuid ? await getPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      images: [imageUrl || "/logo-light.png"],
     },
   };
 }

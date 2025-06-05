@@ -6,8 +6,8 @@ import { ErrorPage } from "@/components/error-page";
 import { Characters } from "@/components/parties/characters";
 import { PartyEditButton } from "@/components/parties/party-edit-button";
 import { Campaigns } from "@/components/parties/campaigns";
-import DB from "@/lib/db";
 import { getPublicUrlByUuid } from "@/lib/storage";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -23,12 +23,16 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const description = `${about}${about && ". "}Level ${level} · Has ${char} Character${char === 1 ? "" : "s"}`;
   const title = `Party ${party.name}`;
 
+  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      images: [imageUrl || "/logo-light.png"],
     },
   };
 }

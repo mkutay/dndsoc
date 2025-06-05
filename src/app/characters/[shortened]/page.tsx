@@ -26,12 +26,16 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const description = `Some statistics about character ${name}: Level ${level} · ${formatClasses(classes)} · ${formatRaces(races)}`;
   const title = `Character ${name}`;
 
+  const imageUrlResult = character.image_uuid ? await getPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return {
     title,
     description,
     openGraph: {
       title,
       description,
+      images: [imageUrl || "/logo-light.png"],
     },
   };
 }
