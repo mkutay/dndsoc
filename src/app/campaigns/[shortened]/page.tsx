@@ -2,10 +2,9 @@ import { redirect } from "next/navigation";
 import { format } from "date-fns";
 
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
-import { TypographyH1 } from "@/components/typography/headings";
+import { Parties } from "@/components/campaigns/parties";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
-import { Parties } from "@/components/campaigns/parties";
 
 export const dynamicParams = false;
 

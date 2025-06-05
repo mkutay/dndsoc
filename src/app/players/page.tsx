@@ -1,3 +1,4 @@
+import { Dot } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,10 +7,8 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
 import { Player } from "@/types/full-database.types";
-import { Play } from "next/font/google";
-import { Dot } from "lucide-react";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 

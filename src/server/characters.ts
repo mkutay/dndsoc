@@ -1,6 +1,6 @@
 "use server";
 
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { okAsync, ResultAsync } from "neverthrow";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 

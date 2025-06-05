@@ -4,7 +4,7 @@ import { getUser } from "./auth";
 
 type Role = Tables<"roles">;
 type RoleArgument = {
-  role?: Enums<"role">;
+  role: Enums<"role">;
   auth_user_uuid: string;
 };
 
