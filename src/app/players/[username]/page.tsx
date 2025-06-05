@@ -52,7 +52,7 @@ export default async function Page({ params }:
         <div className="lg:w-36 lg:h-36 w-48 h-48 rounded-full bg-primary lg:mx-0 mx-auto"></div>
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
-            <div className="font-drop-caps text-7xl">{name.charAt(0)}</div>
+            <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>
             <div>{name.slice(1)}</div>
           </h1>
           <TypographyLarge>Level: {player.level}</TypographyLarge>

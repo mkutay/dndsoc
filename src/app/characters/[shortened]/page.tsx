@@ -61,7 +61,7 @@ export default async function Page({ params }:
               </TypographyLink>
             </TypographySmall>}
             <h1 className="text-primary text-5xl font-extrabold font-headings tracking-wide flex flex-row items-start">
-              <div className="font-drop-caps text-7xl">{character.name.charAt(0)}</div>
+              <div className="font-drop-caps text-7xl font-medium">{character.name.charAt(0)}</div>
               <div>{character.name.slice(1)}</div>
             </h1>
           </div>

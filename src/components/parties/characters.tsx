@@ -87,7 +87,9 @@ export function Characters({
             </CardHeader>
             <CardContent>
               <TypographyParagraph>
-                {character.about}
+                {character.about && character.about.length > 100 
+                  ? character.about.substring(0, 100) + "..."
+                  : character.about}
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex justify-between">

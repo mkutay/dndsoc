@@ -491,7 +491,7 @@ export function DMForm({
                       <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                         <Command>
                           <CommandInput
-                            placeholder="Search a campaign..."
+                            placeholder="Search a DM..."
                             className="h-9"
                           />
                           <CommandList>
@@ -624,7 +624,7 @@ export function DMForm({
                               !field.value && "text-muted-foreground"
                             )}
                           >
-                            {!field.value && "Select a campaign..."}
+                            {!field.value && "Select a DM..."}
                             {field.value && (() => {
                               const dm = DMs.find((dm) => field.value === dm.id);
                               return dm ? (
@@ -650,10 +650,10 @@ export function DMForm({
                                   (selectedDM) => selectedDM.id === dm.id
                                 ) && (
                                 <CommandItem
-                                  value={dm.username}
-                                  key={dm.username}
+                                  value={dm.name}
+                                  key={dm.id}
                                   onSelect={() => {
-                                    form.setValue("selectedDM", dm.username)
+                                    form.setValue("selectedDM", dm.id)
                                   }}
                                 >
                                   <span>

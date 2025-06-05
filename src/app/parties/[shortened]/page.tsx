@@ -55,19 +55,25 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">
-        DM&apos;ed By {dmedBy.map((dm, index) => (
-          <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
-            {dm.users.name}{index + 1 < dmedBy.length ? ", " : ""}
-          </TypographyLink>
-        ))}
-      </TypographySmall>}
-      <div className="flex flex-row justify-between items-center">
-        <TypographyH1 className="text-primary">{party.name}</TypographyH1>
-        <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
+      <div className="flex lg:flex-row flex-col gap-6">
+        <div className="lg:w-36 lg:h-36 w-48 h-48 rounded-full bg-primary lg:mx-0 mx-auto"></div>
+        <div className="flex flex-col mt-3 max-w-prose gap-1.5">
+          {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">
+            DM&apos;ed By {dmedBy.map((dm, index) => (
+              <TypographyLink key={index} href={`/dms/${dm.users.username}`} variant="muted">
+                {dm.users.name}{index + 1 < dmedBy.length ? ", " : ""}
+              </TypographyLink>
+            ))}
+          </TypographySmall>}
+          <h1 className="text-primary font-extrabold text-5xl font-headings tracking-wide flex flex-row items-start">
+            <div className="font-drop-caps text-7xl font-medium">{party.name[0]}</div>
+            <div>{party.name.slice(1)}</div>
+          </h1>
+          <TypographyLarge>Level: {party.level}</TypographyLarge>
+          {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
+          <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
+        </div>
       </div>
-      <TypographyLarge>Level: {party.level}</TypographyLarge>
-      {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
       <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />
       <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}

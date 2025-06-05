@@ -5,7 +5,7 @@ export const partyPlayerEditSchema = z.object({
 });
 
 export const partyDMEditSchema = z.object({
-  about: z.string().max(200, "About must be 200 characters or less."),
+  about: z.string().max(500, "About must be 500 characters or less."),
   level: z.number().min(1, "Level must be at least 1.").max(20, "Level must be at most 20."),
   name: z.string().max(50, "Name must be 50 characters or less.").min(1, "Name must be at least 1 character."),
   characters: z.array(z.object({
