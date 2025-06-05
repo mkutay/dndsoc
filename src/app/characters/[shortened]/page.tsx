@@ -57,9 +57,10 @@ export default async function Page({ params }:
           </TypographyLink>
         </TypographySmall>}
         <div className="flex flex-row justify-between items-center w-full">
-          <TypographyH1 className="text-primary">
-            <span className="font-drop-caps mr-0.5">{character.name.charAt(0)}</span><span>{character.name.slice(1)}</span>
-          </TypographyH1>
+          <h1 className="text-primary text-5xl font-extrabold font-headings tracking-wide flex flex-row items-start">
+            <div className="font-drop-caps text-7xl">{character.name.charAt(0)}</div>
+            <div>{character.name.slice(1)}</div>
+          </h1>
           {ownsCharacter && <CharacterEditButton shortened={shortened} />}
         </div>
       </div>
