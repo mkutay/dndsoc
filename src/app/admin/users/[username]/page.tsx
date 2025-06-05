@@ -47,9 +47,3 @@ export default async function Page({ params }: { params: Promise<{ username: str
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  const users = await DB.Users.Get.All();
-  if (users.isErr()) return [];
-  return users.value.map((user) => ({ username: user.username }));
-}

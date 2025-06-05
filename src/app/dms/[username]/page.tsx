@@ -81,11 +81,3 @@ async function getAllParties() {
   if (result.isErr()) redirect("/error?error=" + result.error.message);
   return result.value;
 }
-
-export async function generateStaticParams() {
-  const dms = await DB.DMs.Get.All();
-  if (dms.isErr()) return [];
-  return dms.value.map((dm) => ({
-    username: dm.users.username,
-  }));
-}

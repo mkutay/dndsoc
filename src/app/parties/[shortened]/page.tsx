@@ -91,11 +91,3 @@ async function getAllCampaigns() {
   if (allCampaigns.isErr()) redirect("/error?error=" + allCampaigns.error.message);
   return allCampaigns.value;
 }
-
-export async function generateStaticParams() {
-  const parties = await DB.Parties.Get.All();
-  if (parties.isErr()) return [];
-  return parties.value.map((party) => ({
-    shortened: party.shortened,
-  }));
-}

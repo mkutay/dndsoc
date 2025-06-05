@@ -60,11 +60,3 @@ export default async function Page({ params }:
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  const characters = await DB.Characters.Get.All();
-  if (characters.isErr()) return [];
-  return characters.value.map((character) => ({
-    shortened: character.shortened,
-  }));
-}

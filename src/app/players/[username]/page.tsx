@@ -66,11 +66,3 @@ export default async function Page({ params }:
     </div>
   );
 }
-
-export async function generateStaticParams() {
-  const players = await DB.Players.Get.All();
-  if (players.isErr()) return [];
-  return players.value.map((player) => ({
-    username: player.users.username,
-  }));
-}
