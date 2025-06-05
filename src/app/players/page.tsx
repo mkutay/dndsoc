@@ -7,6 +7,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
+import { Player } from "@/types/full-database.types";
+import { Play } from "next/font/google";
+import { Dot } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -28,28 +31,40 @@ export default async function Page() {
       <TypographyH1>Players</TypographyH1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {players.value.map((player) => (
-          <Card key={player.id}>
-            <CardHeader>
-              <CardTitle>{player.users.name.toUpperCase()}</CardTitle>
-              <CardDescription>
-                Level {player.level} | Received {player.received_achievements_player.length} Achievement{player.received_achievements_player.length === 1 ? "" : "s"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TypographyParagraph>
-                {player.about || "No about available."}
-              </TypographyParagraph>
-            </CardContent>
-            <CardFooter className="flex flex-row justify-end">
-              <Button asChild size="sm" variant="default">
-                <Link href={`/players/${player.users.username}`}>
-                  View Profile
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
+          <PlayerCard key={player.id} player={player} />
         ))}
       </div>
     </div>
+  );
+}
+
+function PlayerCard({ player }: { player: Player }) {
+  const level = `Level ${player.level}`;
+  const achievementCount = player.received_achievements_player.length;
+  const achievement = `Received ${achievementCount} Achievement${achievementCount === 1 ? "" : "s"}`;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{player.users.name.toUpperCase()}</CardTitle>
+        <CardDescription className="flex flex-row">
+          {level}
+          {achievementCount > 0 && <Dot />}
+          {achievementCount > 0 && achievement}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <TypographyParagraph>
+          {player.about || "No about available."}
+        </TypographyParagraph>
+      </CardContent>
+      <CardFooter className="flex flex-row justify-end">
+        <Button asChild size="sm" variant="default">
+          <Link href={`/players/${player.users.username}`}>
+            View Profile
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }

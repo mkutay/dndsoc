@@ -1,19 +1,22 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { TypographyH3 } from "@/components/typography/headings";
 
 export default function Loading() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <Skeleton className="lg:h-11 h-9 w-48" />
-      
-      <Skeleton className="h-6 w-24 mt-1.5" />
-      <Skeleton className="h-6 w-2/3 mt-1.5" />
+      {/* Profile header section */}
+      <div className="flex lg:flex-row flex-col gap-6">
+        <Skeleton className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto" />
+        <div className="flex flex-col mt-3 max-w-prose gap-1.5">
+          <Skeleton className="h-12 w-64" /> {/* Player name */}
+          <Skeleton className="h-6 w-24" /> {/* Level */}
+          <Skeleton className="h-6 w-2/3" /> {/* About section */}
+          <Skeleton className="h-10 w-32 mt-2" /> {/* Edit button */}
+        </div>
+      </div>
       
       {/* Characters section */}
-      <div className="flex flex-col gap-1 mt-4">
-        <TypographyH3>
-          <Skeleton className="h-6 w-24" />
-        </TypographyH3>
+      <div className="mt-8">
+        <Skeleton className="h-8 w-32 mb-4" />
         <div className="flex flex-row gap-2 w-full items-center flex-wrap">
           <Skeleton className="h-10 w-28" />
           <Skeleton className="h-10 w-36" />
@@ -21,19 +24,23 @@ export default function Loading() {
         </div>
       </div>
       
-      {/* Campaigns section */}
-      <Skeleton className="h-10 w-60 mt-6" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        <Skeleton className="h-60 w-full rounded-md" />
-        <Skeleton className="h-60 w-full rounded-md" />
-        <Skeleton className="h-60 w-full rounded-md hidden lg:block" />
+      {/* Achievements section */}
+      <div className="mt-8">
+        <Skeleton className="h-8 w-48 mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Skeleton className="h-48 w-full rounded-md" />
+          <Skeleton className="h-48 w-full rounded-md" />
+        </div>
       </div>
       
-      {/* Achievements section */}
-      <Skeleton className="h-10 w-60 mt-6" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        <Skeleton className="h-48 w-full rounded-md" />
-        <Skeleton className="h-48 w-full rounded-md" />
+      {/* Campaigns section */}
+      <div className="mt-8">
+        <Skeleton className="h-8 w-36 mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Skeleton className="h-60 w-full rounded-md" />
+          <Skeleton className="h-60 w-full rounded-md" />
+          <Skeleton className="h-60 w-full rounded-md hidden lg:block" />
+        </div>
       </div>
     </div>
   );

@@ -450,7 +450,7 @@ export type Database = {
         }
         Insert: {
           auth_user_uuid?: string
-          role?: Database["public"]["Enums"]["role"]
+          role: Database["public"]["Enums"]["role"]
         }
         Update: {
           auth_user_uuid?: string
@@ -458,7 +458,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "roles_auth_user_uuid_fkey"
+            foreignKeyName: "roles_auth_user_uuid_fkey1"
             columns: ["auth_user_uuid"]
             isOneToOne: true
             referencedRelation: "users"
