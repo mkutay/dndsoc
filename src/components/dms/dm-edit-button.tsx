@@ -1,13 +1,13 @@
+import { TiPencil } from "react-icons/ti";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { TiPencil } from "react-icons/ti";
 
 export function DMEditButton({ username }: { username: string }) {
   return (
-    <Button asChild variant="outline" size="icon">
+    <Button asChild variant="outline" size="default" className="w-fit">
       <Link href={`/dms/${username}/edit`}>
-        <TiPencil size={24} />
+        <TiPencil size={24} className="mr-2" /> Edit
       </Link>
     </Button>
   );

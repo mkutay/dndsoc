@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { DMEditButton } from "@/components/dms/dm-edit-button";
@@ -53,14 +52,18 @@ export default async function Page({ params }:
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <div className="flex flex-row justify-between items-center">
-        <TypographyH1 className="text-primary">
-          <span className="font-drop-caps mr-0.5">{name.charAt(0)}</span>{name.slice(1)}
-        </TypographyH1>
-        {ownsDM && <DMEditButton username={username} />}
+      <div className="flex lg:flex-row flex-col gap-6">
+        <div className="lg:w-36 lg:h-36 w-48 h-48 rounded-full bg-primary lg:mx-0 mx-auto"></div>
+        <div className="flex flex-col mt-3 max-w-prose gap-1.5">
+          <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
+            <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>
+            {name.slice(1)}
+          </h1>
+          <TypographyLarge>Level: {dm.level}</TypographyLarge>
+          {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}
+          {ownsDM && <DMEditButton username={username} />}
+        </div>
       </div>
-      <TypographyLarge>Level: {dm.level}</TypographyLarge>
-      {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}
       <Parties
         DMUuid={dm.id}
         ownsDM={ownsDM}

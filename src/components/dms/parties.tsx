@@ -81,7 +81,9 @@ export function Parties({
             </CardHeader>
             <CardContent>
               <TypographyParagraph>
-                {party.about}
+                {party.about && party.about.length > 100 
+                  ? party.about.substring(0, 100) + "..."
+                  : party.about}
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex justify-between">
