@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -6,6 +7,7 @@ import { Characters } from "@/components/parties/characters";
 import { PartyEditButton } from "@/components/parties/party-edit-button";
 import { Campaigns } from "@/components/parties/campaigns";
 import DB from "@/lib/db";
+import { getPublicUrlByUuid } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -52,10 +54,23 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCampaigns() : undefined;
   const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCharacters() : undefined;
 
+  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid, transform: {
+    width: 1600,
+    height: 1000,
+    resize: "cover",
+  } }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <div className="flex lg:flex-row flex-col gap-6">
-        <div className="lg:w-36 lg:h-36 w-48 h-48 rounded-full bg-primary lg:mx-0 mx-auto"></div>
+      <div className="flex flex-col gap-6">
+        {imageUrl ? <Image
+          src={imageUrl}
+          alt={`Image of ${party.name}`}
+          width={1600}
+          height={1000}
+          className="rounded-lg max-w-2xl mx-auto object-cover"
+        /> : <div className="rounded-lg bg-border max-w-2xl w-full mx-auto h-[400px]"></div>}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">
             DM&apos;ed By {dmedBy.map((dm, index) => (

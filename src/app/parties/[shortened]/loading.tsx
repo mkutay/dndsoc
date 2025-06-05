@@ -3,10 +3,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      {/* Header section with avatar and party info */}
-      <div className="flex lg:flex-row flex-col gap-6">
-        {/* Avatar skeleton */}
-        <Skeleton className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto" />
+      {/* Header section with image and party info */}
+      <div className="flex flex-col gap-6">
+        {/* Image skeleton */}
+        <Skeleton className="rounded-lg max-w-2xl w-full mx-auto h-[400px]" />
         
         {/* Party info skeleton */}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">

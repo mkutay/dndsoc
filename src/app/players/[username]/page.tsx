@@ -1,9 +1,12 @@
+import Image from "next/image";
+
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
 import { PlayerEditButton } from "@/components/players/player-edit-button";
 import { Campaigns } from "@/components/players/campaigns";
 import { Characters } from "@/components/players/characters";
+import { getPublicUrlByUuid } from "@/lib/storage";
 import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -46,10 +49,19 @@ export default async function Page({ params }:
 
   const name = player.users.name;
 
+  const imageUrlResult = player.image_uuid ? await getPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        <div className="lg:w-36 lg:h-36 w-48 h-48 rounded-full bg-primary lg:mx-0 mx-auto"></div>
+        {imageUrl ? <Image
+          src={imageUrl}
+          alt={`Image of ${player.users.name}`}
+          width={144}
+          height={144}
+          className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto object-cover border-border border-2"
+        /> : <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-border rounded-full"></div>}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
             <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>

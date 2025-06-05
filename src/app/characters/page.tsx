@@ -37,7 +37,9 @@ export default async function Page() {
             </CardHeader>
             <CardContent>
               <TypographyParagraph>
-                {character.about || "No about available."}
+                {character.about && character.about.length > 100 
+                  ? character.about.substring(0, 100) + "..."
+                  : character.about || "No about available."}
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end gap-2 flex-wrap">

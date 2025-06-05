@@ -148,6 +148,7 @@ export type Database = {
         Row: {
           about: string
           id: string
+          image_uuid: string | null
           level: number
           name: string
           player_uuid: string | null
@@ -156,6 +157,7 @@ export type Database = {
         Insert: {
           about?: string
           id?: string
+          image_uuid?: string | null
           level?: number
           name?: string
           player_uuid?: string | null
@@ -164,12 +166,20 @@ export type Database = {
         Update: {
           about?: string
           id?: string
+          image_uuid?: string | null
           level?: number
           name?: string
           player_uuid?: string | null
           shortened?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "characters_image_uuid_fkey1"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "characters_player_uuid_fkey"
             columns: ["player_uuid"]
@@ -229,18 +239,21 @@ export type Database = {
           about: string
           auth_user_uuid: string
           id: string
+          image_uuid: string | null
           level: number
         }
         Insert: {
           about?: string
           auth_user_uuid: string
           id?: string
+          image_uuid?: string | null
           level?: number
         }
         Update: {
           about?: string
           auth_user_uuid?: string
           id?: string
+          image_uuid?: string | null
           level?: number
         }
         Relationships: [
@@ -251,12 +264,35 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["auth_user_uuid"]
           },
+          {
+            foreignKeyName: "dms_image_uuid_fkey1"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      images: {
+        Row: {
+          id: string
+          name: string
+        }
+        Insert: {
+          id?: string
+          name: string
+        }
+        Update: {
+          id?: string
+          name?: string
+        }
+        Relationships: []
       }
       parties: {
         Row: {
           about: string
           id: string
+          image_uuid: string | null
           level: number
           name: string
           shortened: string
@@ -264,6 +300,7 @@ export type Database = {
         Insert: {
           about?: string
           id?: string
+          image_uuid?: string | null
           level?: number
           name?: string
           shortened: string
@@ -271,11 +308,20 @@ export type Database = {
         Update: {
           about?: string
           id?: string
+          image_uuid?: string | null
           level?: number
           name?: string
           shortened?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "parties_image_uuid_fkey1"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       party_campaigns: {
         Row: {
@@ -312,18 +358,21 @@ export type Database = {
           about: string
           auth_user_uuid: string
           id: string
+          image_uuid: string | null
           level: number
         }
         Insert: {
           about?: string
           auth_user_uuid: string
           id?: string
+          image_uuid?: string | null
           level?: number
         }
         Update: {
           about?: string
           auth_user_uuid?: string
           id?: string
+          image_uuid?: string | null
           level?: number
         }
         Relationships: [
@@ -340,6 +389,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "roles"
             referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "players_image_uuid_fkey1"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -492,7 +548,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_dm_for_player: {
+        Args: { player_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       role: "admin" | "dm" | "player"

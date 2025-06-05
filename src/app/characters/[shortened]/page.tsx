@@ -8,6 +8,8 @@ import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaigns-cards";
+import { getPublicUrlByUuid } from "@/lib/storage";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -49,10 +51,19 @@ export default async function Page({ params }:
   const role = auth ? auth.roles?.role : null;
   const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
 
+  const imageUrlResult = character.image_uuid ? await getPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
+  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-primary rounded-full"></div>
+        {imageUrl ? <Image
+          src={imageUrl}
+          alt={`Image of ${character.name}`}
+          width={144}
+          height={144}
+          className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto object-cover border-border border-2"
+        /> : <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-border rounded-full"></div>}
         <div className="flex flex-col max-w-prose gap-1.5 mt-3">
           <div className="flex flex-col gap-1">
             {character.players && <TypographySmall className="text-muted-foreground">
