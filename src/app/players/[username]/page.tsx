@@ -41,11 +41,11 @@ export default async function Page({ params }:
 ) {
   const { username } = await params;
   const result = await DB.Players.Get.Username({ username });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx" />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx 1" />;
   const player = result.value;
 
   const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx 2" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;

@@ -1,7 +1,6 @@
 import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
-import { runQueryUser } from "@/utils/supabase-run";
 import { getOrigin } from "./origin";
 import DB from "./db";
 
@@ -23,12 +22,24 @@ export const exchangeCodeForSession = (code: string) =>
           } as ExchangeCodeError)
     );
 
+type GetUserError = {
+  message: string;
+  code: "DATABASE_ERROR" | "USER_NOT_FOUND";
+};
+
 export const getUser = () =>
-  runQueryUser((supabase) =>
-    supabase.auth.getUser(),
-    "getUser"
-  )
-  .map((response) => response.user);
+  createClient()
+    .andThen((supabase) =>
+      fromSafePromise(supabase.auth.getUser())
+    )
+    .andThen((response) => !response.error
+      ? okAsync(response.data)
+      : errAsync({
+          message: "Failed to get user (in supabase): " + response.error.message,
+          code: "DATABASE_ERROR",
+        } as GetUserError)
+    )
+    .map((data) => data.user);
 
 /**
  * Signed up and authenticated user, so insert role and player into database
