@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export function DMEditButton({ username }: { username: string }) {
+export function EditButton({ href }: { href: string }) {
   return (
     <Button asChild variant="outline" size="default" className="w-fit">
-      <Link href={`/dms/${username}/edit`}>
+      <Link href={href}>
         <TiPencil size={24} className="mr-2" /> Edit
       </Link>
     </Button>

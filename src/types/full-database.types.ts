@@ -21,7 +21,9 @@ export type ReceivedAchievementsDM = Tables<"received_achievements_dm"> & {
 export type Character = Tables<"characters"> & {
   races: Tables<"races">[];
   classes: Tables<"classes">[];
-  campaigns: Tables<"campaigns">[];
+  players: Tables<"players"> & {
+    users: Tables<"users">;
+  };
 };
 
 export const rolesLabel = [

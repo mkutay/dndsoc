@@ -3,19 +3,15 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import Server from "@/server/server";
+import { signOutAction } from "@/server/auth/sign-out";
 
 export function AuthButtons({
   user
 }: {
   user: boolean;
 }) {
-  const onSubmit = async () => {
-    await Server.Auth.SignOut();
-  };
-
   return user ? (
-    <Button variant={"outline"} type="submit" size="sm" onClick={onSubmit}>
+    <Button variant={"outline"} type="submit" size="sm" onClick={signOutAction}>
       Sign out
     </Button>
   ) : (

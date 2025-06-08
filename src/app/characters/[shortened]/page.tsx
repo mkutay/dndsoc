@@ -2,14 +2,14 @@ import { Dot } from "lucide-react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
-import { CharacterEditButton } from "@/components/character-edit-button";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 import { ErrorComponent } from "@/components/error-component";
-import { CampaignCards } from "@/components/campaigns-cards";
+import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import Image from "next/image";
+import { EditButton } from "@/components/edit-button";
 
 export const dynamic = "force-dynamic";
 
@@ -88,7 +88,7 @@ export default async function Page({ params }:
             {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
           </div>
           {character.about && character.about.length !== 0 && <TypographyLead className="indent-6">{character.about}</TypographyLead>}
-          {ownsCharacter && <CharacterEditButton shortened={shortened} />}
+          {ownsCharacter && <EditButton href={`/characters/${shortened}/edit`} />}
         </div>
       </div>
 
@@ -114,7 +114,7 @@ async function Campaigns({ characterUuid }: { characterUuid: string }) {
   return (
     <>
       <TypographyH2 className="mt-6">Campaigns</TypographyH2>
-      <CampaignCards campaigns={campaigns.value} link="/campaigns" />
+      <CampaignCards campaigns={campaigns.value} />
     </>
   );
 }

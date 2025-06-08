@@ -7,6 +7,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
+import { truncateText } from "@/utils/formatting";
 
 export const dynamic = "force-dynamic";
 
@@ -36,9 +37,7 @@ export default async function Page() {
             </CardHeader>
             <CardContent>
               <TypographyParagraph>
-                {party.about && party.about.length > 100 
-                  ? party.about.substring(0, 100) + "..."
-                  : party.about || "No about available."}
+                {truncateText(party.about, 100)}
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">

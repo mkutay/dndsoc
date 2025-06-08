@@ -3,11 +3,11 @@ import Image from "next/image";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
-import { PlayerEditButton } from "@/components/players/player-edit-button";
 import { Campaigns } from "@/components/players/campaigns";
 import { Characters } from "@/components/players/characters";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import DB from "@/lib/db";
+import { EditButton } from "@/components/edit-button";
 
 export const dynamic = "force-dynamic";
 
@@ -73,7 +73,7 @@ export default async function Page({ params }:
           </h1>
           <TypographyLarge>Level: {player.level}</TypographyLarge>
           {player.about && player.about.length !== 0 && <TypographyLead className="indent-6">{player.about}</TypographyLead>}
-          {ownsPlayer && <PlayerEditButton username={username} />}
+          {ownsPlayer && <EditButton href={`/players/${username}/edit`} />}
         </div>
       </div>
       <Characters characters={player.characters} ownsPlayer={ownsPlayer} playerUuid={player.id} />
