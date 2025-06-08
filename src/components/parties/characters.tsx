@@ -1,198 +1,185 @@
 "use client";
 
-import { Check, ChevronsUpDown, MinusCircle } from "lucide-react";
-import { startTransition, useOptimistic, useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useOptimistic, useTransition, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
 import { z } from "zod";
 
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Card } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
+import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
-import { Tables } from "@/types/database.types";
 import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Character } from "@/types/full-database.types";
+import { CharacterCard } from "@/components/character-card";
 
-type Character = Tables<"characters">;
-
-export function Characters({
-  characters,
-  ownsAs,
-  partyId,
-  allCharacters
-}: {
-  characters: Character[]; // characters that are already in the party
-  ownsAs: "dm" | "player" | "admin" | null;
-  partyId: string;
-  allCharacters?: Character[]; // all characters, including those not in the party
-}) {
-  const { toast } = useToast();
-
-  const [optimisticCharacters, setOptimisticCharacters] = useOptimistic(
-    characters,
-    (currentState, action: {
-      type: "add"; character: Character;
-    } | {
-      type: "remove"; characterId: string;
-    }) => action.type === "add"
-      ? [...currentState, action.character]
-      : currentState.filter((character) => character.id !== action.characterId),
-  );
-
-  // sort by name
-  optimisticCharacters.sort((a, b) => {
-    if (a.name < b.name) return -1;
-    if (a.name > b.name) return 1;
-    return 0;
-  });
-
-  const onSubmit = async (character: Character) => {
-    setOptimisticCharacters({
-      type: "remove",
-      characterId: character.id,
-    });
-    const result = await Server.Characters.Remove.Party({ characterId: character.id, partyId, shortened: character.shortened });
-    if (!result.ok) {
-      toast({
-        title: "Could Not Remove Character",
-        description: result.error.message,
-        variant: "destructive",
-      });
-      setOptimisticCharacters({
-        type: "add",
-        character,
-      });
-    }
-  };
-
-  return (
-    <div className="mt-6 flex flex-col">
-      <TypographyH2>Characters</TypographyH2>
-      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-        {optimisticCharacters.map((character, index) => (
-          <Card key={index} className="w-full">
-            <CardHeader>
-              <CardTitle>{character.name}</CardTitle>
-              <CardDescription>
-                Level {character.level}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TypographyParagraph>
-                {character.about && character.about.length > 100 
-                  ? character.about.substring(0, 100) + "..."
-                  : character.about}
-              </TypographyParagraph>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" asChild>
-                <Link href={`/characters/${character.shortened}`}>
-                  View {character.name}
-                </Link>
-              </Button>
-                {(ownsAs === "dm" || ownsAs === "admin") && (
-                  <form
-                    action={async () => { await onSubmit(character); }}
-                  >
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="destructive" size="icon" type="submit">
-                            <MinusCircle size="18px" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <TypographyParagraph>Remove this PC from the party. You are able to add it later.</TypographyParagraph>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </form>
-                )}
-            </CardFooter>
-          </Card>
-        ))}
-        {(ownsAs === "dm" || ownsAs === "admin") && allCharacters && <AddCharacter
-          characters={allCharacters.filter((character) => !optimisticCharacters.some((c) => c.id === character.id))}
-          partyUuid={partyId}
-          setOptimisticCharacters={setOptimisticCharacters}
-        />}
-      </div>
-    </div>
-  )
-}
+type CharacterAction =
+  | { type: "add"; character: Character }
+  | { type: "remove"; characterId: string };
 
 export const addCharacterForPartySchema = z.object({
   character: z.string().optional(),
 });
 
-function AddCharacter({
+export function Characters({
   characters,
-  partyUuid,
-  setOptimisticCharacters,
+  ownsAs,
+  partyId,
+  allCharacters,
 }: {
   characters: Character[];
-  partyUuid: string;
-  setOptimisticCharacters: (action: {
-    type: "add";
-    character: Character;
-  } | {
-    type: "remove";
-    characterId: string;
-  }) => void;
+  ownsAs: "dm" | "player" | "admin" | null;
+  partyId: string;
+  allCharacters?: Character[];
 }) {
-  const [pending, setPending] = useState(false);
-  const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  
+  const [isPending, startTransition] = useTransition();
+
+  const [optimisticCharacters, updateOptimisticCharacters] = useOptimistic(
+    characters,
+    (state, action: CharacterAction) => {
+      switch (action.type) {
+        case "add":
+          return [...state, action.character];
+        case "remove":
+          return state.filter((c) => c.id !== action.characterId);
+      }
+    }
+  );
+
+  // Sort characters by name
+  const sortedCharacters = [...optimisticCharacters].sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
+
+  const handleRemoveCharacter = async (character: Character) => {
+    startTransition(async () => {
+      updateOptimisticCharacters({ type: "remove", characterId: character.id });
+
+      const result = await Server.Characters.Remove.Party({
+        characterId: character.id,
+        partyId,
+        shortened: character.shortened,
+      });
+
+      if (!result.ok) {
+        toast({
+          title: "Could Not Remove Character",
+          description: result.error.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
+
+  const handleAddCharacter = async (character: Character) => {
+    startTransition(async () => {
+      updateOptimisticCharacters({ type: "add", character });
+
+      const result = await Server.Parties.Add.Character({
+        characterId: character.id,
+        partyId,
+        shortened: character.shortened,
+      });
+
+      if (!result.ok) {
+        toast({
+          title: "Add Character Failed",
+          description: result.error.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
+
+  const availableCharacters =
+    allCharacters?.filter(
+      (character) => !optimisticCharacters.some((c) => c.id === character.id)
+    ) ?? [];
+
+  const canModify = ownsAs === "dm" || ownsAs === "admin";
+
+  return (
+    <div className="mt-6 flex flex-col">
+      <TypographyH2>Characters</TypographyH2>
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
+        {sortedCharacters.map((character) => (
+          <CharacterCard
+            key={character.id}
+            character={character}
+            ownsAs={ownsAs}
+            onRemove={() => handleRemoveCharacter(character)}
+            isLoading={isPending}
+            removeText="Remove this PC from the party. You can add it later."
+          />
+        ))}
+        {canModify && availableCharacters.length > 0 && (
+          <AddCharacterCard
+            characters={availableCharacters}
+            onAdd={handleAddCharacter}
+            isLoading={isPending}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function AddCharacterCard({
+  characters,
+  onAdd,
+  isLoading,
+}: {
+  characters: Character[];
+  onAdd: (character: Character) => void;
+  isLoading: boolean;
+}) {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof addCharacterForPartySchema>>({
     resolver: zodResolver(addCharacterForPartySchema),
     defaultValues: {
       character: "",
     },
   });
-  
-  if (characters.length === 0) return null;
 
-  const onSubmit = async (values: z.infer<typeof addCharacterForPartySchema>) => {
+  const handleSubmit = (values: z.infer<typeof addCharacterForPartySchema>) => {
     if (!values.character) return;
 
-    const characterToAdd = characters.find((character) => character.id === values.character)!;
-    startTransition(() =>
-      setOptimisticCharacters({
-        type: "add",
-        character: characterToAdd,
-      })
-    );
-    setPending(true);
-    setOpen(false);
-
-    const result = await Server.Parties.Add.Character({ characterId: values.character, partyId: partyUuid, shortened: characterToAdd.shortened });
-
-    setPending(false);
-
-    if (!result.ok) {
-      toast({
-        title: "Add Character Failed",
-        description: "Please try again. " + result.error.message,
-        variant: "destructive",
-      });
-      startTransition(() =>
-        setOptimisticCharacters({
-          type: "remove",
-          characterId: values.character || "",
-        })
-      );
-      setOpen(true);
-    } else {
+    const character = characters.find((c) => c.id === values.character);
+    if (character) {
+      onAdd(character);
       form.reset();
+      setOpen(false);
     }
   };
 
@@ -203,7 +190,7 @@ function AddCharacter({
           variant="nothing"
           type="button"
           className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
-          disabled={pending}
+          disabled={isLoading}
           asChild
         >
           <Card className="text-3xl font-book-card-titles tracking-widest">
@@ -219,7 +206,7 @@ function AddCharacter({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               control={form.control}
               name="character"
@@ -237,14 +224,23 @@ function AddCharacter({
                           )}
                         >
                           {!field.value && "Select a character..."}
-                          {field.value && (() => {
-                            const character = characters.find((character) => field.value === character.id);
-                            return character ? (
-                              <span>
-                                <TypographyLink target="_blank" href={`/characters/${character.shortened}`} variant="default">{character.name}</TypographyLink>
-                              </span>
-                            ) : null;
-                          })()}
+                          {field.value &&
+                            (() => {
+                              const character = characters.find(
+                                (character) => field.value === character.id
+                              );
+                              return character ? (
+                                <span>
+                                  <TypographyLink
+                                    target="_blank"
+                                    href={`/characters/${character.shortened}`}
+                                    variant="default"
+                                  >
+                                    {character.name}
+                                  </TypographyLink>
+                                </span>
+                              ) : null;
+                            })()}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </FormControl>
@@ -258,16 +254,22 @@ function AddCharacter({
                         <CommandList>
                           <CommandEmpty>No other characters found.</CommandEmpty>
                           <CommandGroup>
-                            {characters.map((character, index) => (
+                            {characters.map((character) => (
                               <CommandItem
                                 value={character.name}
-                                key={index}
+                                key={character.id}
                                 onSelect={() => {
-                                  form.setValue("character", character.id)
+                                  form.setValue("character", character.id);
                                 }}
                               >
                                 <span>
-                                  <TypographyLink target="_blank" href={`/characters/${character.shortened}`} variant="default">{character.name}</TypographyLink>
+                                  <TypographyLink
+                                    target="_blank"
+                                    href={`/characters/${character.shortened}`}
+                                    variant="default"
+                                  >
+                                    {character.name}
+                                  </TypographyLink>
                                 </span>
                                 <Check
                                   className={cn(
@@ -294,13 +296,15 @@ function AddCharacter({
                   type="submit"
                   variant="outline"
                   size="default"
-                  disabled={pending}
-                >Add</Button>
+                  disabled={isLoading}
+                >
+                  Add
+                </Button>
               </div>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
