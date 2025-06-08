@@ -5,6 +5,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { PlayerEditForm } from "./form";
 import DB from "@/lib/db";
+import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
         Go Back
       </TypographyLink>
       <TypographyH1 className="mt-0.5">Edit Your Public Player Page</TypographyH1>
+      <UploadWrapper playerId={player.id} playerShortened={player.users.username} />
       <PlayerEditForm player={player} />
     </div>
   );

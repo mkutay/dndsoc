@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { Player } from "@/types/full-database.types";
 import DB from "@/lib/db";
+import { truncateText } from "@/utils/formatting";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +55,7 @@ function PlayerCard({ player }: { player: Player }) {
       </CardHeader>
       <CardContent>
         <TypographyParagraph>
-          {player.about || "No about available."}
+          {truncateText(player.about, 100)}
         </TypographyParagraph>
       </CardContent>
       <CardFooter className="flex flex-row justify-end">

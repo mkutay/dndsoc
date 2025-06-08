@@ -5,6 +5,7 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { DMEditForm } from "./form";
 import DB from "@/lib/db";
+import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
         Go back
       </TypographyLink>
       <TypographyH1 className="mt-0.5">Edit Your Public DM Page</TypographyH1>
+      <UploadWrapper DMId={dm.value.id} DMShortened={dm.value.users.username} />
       <DMEditForm dm={dm.value} />
     </div>
   );

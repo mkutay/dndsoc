@@ -6,6 +6,7 @@ import { ErrorPage } from "@/components/error-page";
 import { CharacterEditForm } from "./form";
 import DB from "@/lib/db";
 import { formatClasses, formatRaces } from "@/utils/formatting";
+import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -56,6 +57,7 @@ export default async function Page({ params }:
         Go Back
       </TypographyLink>
       <TypographyH1 className="mt-0.5">Edit <span className="text-primary">{character.name}</span>&apos;s Page</TypographyH1>
+      <UploadWrapper characterId={character.id} characterShortened={character.shortened} />
       <CharacterEditForm character={character} />
     </div>
   );
