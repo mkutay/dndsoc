@@ -17,3 +17,8 @@ export const convertToShortened = (name: string) => {
     .replace(/[^a-zA-Z0-9\-]/g, "")
     .toLowerCase();
 }
+
+export function truncateText(text: string, maxLength: number) {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength - 3) + "...";
+}

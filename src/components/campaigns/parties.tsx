@@ -14,6 +14,7 @@ import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { AddPartyButton } from "./add-party-button";
 import { CreatePartyButton } from "./create-party-button";
+import { truncateText } from "@/utils/formatting";
 
 type Party = Tables<"parties">;
 
@@ -83,9 +84,7 @@ export function Parties({
             </CardHeader>
             <CardContent>
               <TypographyParagraph>
-                {party.about && party.about.length > 100 
-                  ? party.about.substring(0, 100) + "..."
-                  : party.about}
+                {truncateText(party.about, 100)}
               </TypographyParagraph>
             </CardContent>
             <CardFooter className="flex justify-between flex-wrap gap-2">

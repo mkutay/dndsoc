@@ -8,6 +8,7 @@ import { TypographyParagraph } from "./typography/paragraph";
 import { Character } from "@/types/full-database.types";
 import { Button } from "./ui/button";
 import { MinusCircle } from "lucide-react";
+import { truncateText } from "@/utils/formatting";
 
 type Props = {
   character: Character;
@@ -22,10 +23,7 @@ type Props = {
 export function CharacterCard(props: Props) {
   const { character } = props;
 
-  const truncatedAbout =
-    character.about && character.about.length > 100
-      ? character.about.substring(0, 100) + "..."
-      : character.about;
+  const truncatedAbout = truncateText(character.about, 100);
 
   return (
     <Card>
