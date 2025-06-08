@@ -3,12 +3,12 @@ import Image from "next/image";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { DMEditButton } from "@/components/dms/dm-edit-button";
 import { DMAchievements } from "@/components/dm-achievements-section";
 import { Campaigns } from "@/components/dms/campaigns";
 import { Parties } from "@/components/dms/parties";
-import DB from "@/lib/db";
 import { getPublicUrlByUuid } from "@/lib/storage";
+import { EditButton } from "@/components/edit-button";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -76,7 +76,7 @@ export default async function Page({ params }:
           </h1>
           <TypographyLarge>Level: {dm.level}</TypographyLarge>
           {dm.about && dm.about.length !== 0 && <TypographyLead>{dm.about}</TypographyLead>}
-          {ownsDM && <DMEditButton username={username} />}
+          {ownsDM && <EditButton href={`/dms/${username}/edit`} />}
         </div>
       </div>
       <Parties

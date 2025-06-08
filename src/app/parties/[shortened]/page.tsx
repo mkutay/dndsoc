@@ -4,10 +4,10 @@ import Image from "next/image";
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Characters } from "@/components/parties/characters";
-import { PartyEditButton } from "@/components/parties/party-edit-button";
 import { Campaigns } from "@/components/parties/campaigns";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import DB from "@/lib/db";
+import { EditButton } from "@/components/edit-button";
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           </h1>
           <TypographyLarge>Level: {party.level}</TypographyLarge>
           {party.about && party.about.length !== 0 && <TypographyLead>{party.about}</TypographyLead>}
-          <PartyEditButton ownsAs={ownsAs} shortened={shortened} />
+          {ownsAs && <EditButton href={`/parties/${shortened}/edit/${ownsAs === "admin" ? "dm" : ownsAs}`} />}
         </div>
       </div>
       <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />

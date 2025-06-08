@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronsUpDown, MinusCircle } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { useOptimistic, useTransition, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
