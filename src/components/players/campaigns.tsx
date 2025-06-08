@@ -1,6 +1,6 @@
 import { TypographyH2 } from "@/components/typography/headings";
 import { ErrorComponent } from "@/components/error-component";
-import { CampaignCards } from "@/components/campaigns-cards";
+import { CampaignCards } from "@/components/campaign-cards";
 import DB from "@/lib/db";
 
 export async function Campaigns({ playerUuid }: { playerUuid: string }) {
@@ -15,7 +15,7 @@ export async function Campaigns({ playerUuid }: { playerUuid: string }) {
   return (
     <>
       <TypographyH2 className="mt-8">Campaigns</TypographyH2>
-      <CampaignCards campaigns={campaigns} link="/campaigns" />
+      <CampaignCards campaigns={campaigns} />
     </>
   );
 }

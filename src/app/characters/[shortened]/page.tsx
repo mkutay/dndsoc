@@ -7,7 +7,7 @@ import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 import { ErrorComponent } from "@/components/error-component";
-import { CampaignCards } from "@/components/campaigns-cards";
+import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import Image from "next/image";
 
@@ -114,7 +114,7 @@ async function Campaigns({ characterUuid }: { characterUuid: string }) {
   return (
     <>
       <TypographyH2 className="mt-6">Campaigns</TypographyH2>
-      <CampaignCards campaigns={campaigns.value} link="/campaigns" />
+      <CampaignCards campaigns={campaigns.value} />
     </>
   );
 }

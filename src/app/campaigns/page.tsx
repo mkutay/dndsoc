@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import { TypographyH1 } from "@/components/typography/headings";
-import { CampaignCards } from "@/components/campaigns-cards";
+import { CampaignCards } from "@/components/campaign-cards";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
@@ -23,7 +23,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Campaigns</TypographyH1>
-      <CampaignCards campaigns={campaigns.value} link="/campaigns" />
+      <CampaignCards campaigns={campaigns.value} />
     </div>
   );
 }
