@@ -24,9 +24,9 @@ export function CampaignCards({
 
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-      {campaigns.map((campaign, index) => (
+      {campaigns.map((campaign) => (
         <CampaignCard
-          key={index}
+          key={campaign.id}
           campaign={campaign}
         />
       ))}

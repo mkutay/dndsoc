@@ -16,15 +16,15 @@ export function PartyCards({
   }
 
   // sort by level
-  parties.sort((a, b) => {
+  const sortedParties = [...parties].sort((a, b) => {
     return b.level - a.level;
   });
 
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-      {parties.map((party, index) => (
+      {sortedParties.map((party) => (
         <PartyCard
-          key={index}
+          key={party.id}
           party={party}
         />
       ))}

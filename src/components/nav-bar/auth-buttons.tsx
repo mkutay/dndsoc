@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-// import { signOutAction } from "@/server/auth/sign-out";
+import { signOutAction } from "@/server/auth/sign-out";
 
 export function AuthButtons({
   user
@@ -11,7 +11,7 @@ export function AuthButtons({
   user: boolean;
 }) {
   return user ? (
-    <Button variant={"outline"} type="submit" size="sm">
+    <Button variant={"outline"} type="submit" size="sm" onClick={signOutAction}>
       Sign out
     </Button>
   ) : (
