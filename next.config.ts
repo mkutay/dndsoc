@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
+    serverActions: {
+      bodySizeLimit: "8mb",
+    }
   },
   images: {
     remotePatterns: [
@@ -12,6 +15,8 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+    loader: "custom",
+    loaderFile: './loader.js',
   },
 };
 

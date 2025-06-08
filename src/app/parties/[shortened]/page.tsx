@@ -58,13 +58,11 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCampaigns() : undefined;
   const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCharacters() : undefined;
 
-  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid, transform: {
-    width: 1600,
-    height: 1000,
-    resize: "cover",
-  } }) : null;
+  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
+  // it doesn't start loading the image until all of the data is fetched above,
+  // only have things needed for the image here, put everything else in another component
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex flex-col gap-6">
@@ -73,7 +71,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           alt={`Image of ${party.name}`}
           width={1600}
           height={1000}
-          className="rounded-lg max-w-2xl mx-auto object-cover"
+          className="rounded-lg max-w-2xl lg:mx-auto mx-0 w-full"
         /> : <div className="rounded-lg bg-border max-w-2xl w-full mx-auto h-[400px]"></div>}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           {dmedBy.length !== 0 && <TypographySmall className="text-muted-foreground">

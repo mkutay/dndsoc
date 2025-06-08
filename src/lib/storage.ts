@@ -1,30 +1,21 @@
-import { okAsync } from "neverthrow";
+import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
 import { runQuery } from "@/utils/supabase-run";
 
-type TransformOptions = {
-  width?: number;
-  height?: number;
-  quality?: number;
-  resize?: 'cover' | 'contain' | 'fill';
-}
-
-export const getPublicUrl = ({ path, transform }: { path: string, transform?: TransformOptions }) => {
+export const getPublicUrl = ({ path }: { path: string }) => {
   if (path.startsWith("http")) return okAsync(path);
 
   return createClient()
     .andThen((supabase) => okAsync(supabase
       .storage
       .from("profile-images")
-      .getPublicUrl(path, {
-        transform
-      })
+      .getPublicUrl(path)
       .data.publicUrl
     ));
 }
 
-export const getPublicUrlByUuid = ({ imageUuid, transform }: { imageUuid: string, transform?: TransformOptions }) => {
+export const getPublicUrlByUuid = ({ imageUuid }: { imageUuid: string }) => {
   return runQuery((supabase) => supabase
     .from("images")
     .select("*")
@@ -32,6 +23,37 @@ export const getPublicUrlByUuid = ({ imageUuid, transform }: { imageUuid: string
     .single()
   )
   .andThen((result) =>
-    getPublicUrl({ path: result.name, transform })
+    getPublicUrl({ path: result.name })
   )
+}
+
+type UploadError = {
+  message: string;
+  code: "STORAGE_UPLOAD_ERROR";
+};
+
+export const upload = ({
+  blob,
+  file,
+  shortened,
+}: {
+  blob: Blob;
+  file: File;
+  shortened: string;
+}) => {
+  const filename = shortened + "-" + crypto.randomUUID() + "-" + file.name;
+
+  const storage = createClient()
+    .andThen((supabase) =>
+      fromSafePromise(supabase.storage.from("profile-images").upload(filename, blob))
+    )
+    .andThen((response) => response.error
+      ? errAsync({
+        message: `Failed to upload image: ${response.error.message}.`,
+        code: "STORAGE_UPLOAD_ERROR",
+      } as UploadError)
+      : okAsync(response.data)
+    );
+
+  return storage;
 }

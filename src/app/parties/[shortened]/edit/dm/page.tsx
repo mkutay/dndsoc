@@ -6,6 +6,7 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { DMForm } from "./form";
 import DB from "@/lib/db";
+import { UploadWrapper } from "./upload-wrapper";
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -98,6 +99,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         Go Back
       </TypographyLink>
       <TypographyH1>Edit Party <span className="text-primary">{party.name}</span></TypographyH1>
+      <UploadWrapper partyId={party.id} partyShortened={party.shortened} />
       <DMForm
         about={party.about}
         name={party.name}
