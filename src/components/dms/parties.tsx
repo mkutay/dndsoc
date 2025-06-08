@@ -1,28 +1,26 @@
 "use client";
 
-import { MinusCircle } from "lucide-react";
-import { useOptimistic } from "react";
-import Link from "next/link";
+import { useOptimistic, useTransition } from "react";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
-import { CreatePartyButton } from "./create-party-button";
-import { AddPartyButton } from "./add-party-button";
-import { truncateText } from "@/utils/formatting";
+import { AddParty } from "./add-party";
+import { CreateParty } from "./create-party";
+import { PartyCard } from "../party-card";
 
 type Party = Tables<"parties">;
+
+type PartyAction =
+  | { type: "add"; party: Party }
+  | { type: "remove"; partyId: string };
 
 export function Parties({
   DMUuid,
   parties,
   ownsDM,
-  allParties
+  allParties,
 }: {
   DMUuid: string;
   parties: Party[];
@@ -30,123 +28,95 @@ export function Parties({
   allParties: Party[] | undefined;
 }) {
   const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
 
-  const [optimisticParties, setOptimisticParties] = useOptimistic(
+  const [optimisticParties, updateOptimisticParties] = useOptimistic(
     parties,
-    (currentState, action: {
-      type: "add"; party: Party;
-    } | {
-      type: "remove"; partyId: string;
-    }) => action.type === "add"
-      ? [...currentState, action.party]
-      : currentState.filter((party) => party.id !== action.partyId),
+    (state, action: PartyAction) => {
+      switch (action.type) {
+        case "add":
+          return [...state, action.party];
+        case "remove":
+          return state.filter((p) => p.id !== action.partyId);
+      }
+    }
   );
 
-  // sort by name
-  optimisticParties.sort((a, b) => {
+  // Sort parties by name
+  const sortedParties = [...optimisticParties].sort((a, b) => {
     if (a.name < b.name) return -1;
     if (a.name > b.name) return 1;
     return 0;
   });
 
-  const onSubmit = async (party: Party) => {
-    setOptimisticParties({
-      type: "remove",
-      partyId: party.id,
+  const handleRemoveParty = async (party: Party) => {
+    startTransition(async () => {
+      updateOptimisticParties({ type: "remove", partyId: party.id });
+
+      const result = await Server.DMs.Remove.Party({
+        partyId: party.id,
+        dmUuid: DMUuid,
+        revalidate: "/dms/[username]",
+      });
+
+      if (!result.ok) {
+        toast({
+          title: "Could Not Remove Party",
+          description: result.error.message,
+          variant: "destructive",
+        });
+      }
     });
-    const result = await Server.DMs.Remove.Party({ partyId: party.id, dmUuid: DMUuid, revalidate: "/dms/[username]" });
-    if (!result.ok) {
-      toast({
-        title: "Could Not Remove Party",
-        description: result.error.message,
-        variant: "destructive",
-      });
-      setOptimisticParties({
-        type: "add",
-        party,
-      });
-    }
   };
+
+  const handleAddParty = async (party: Party) => {
+    startTransition(async () => {
+      updateOptimisticParties({ type: "add", party });
+
+      const result = await Server.DMs.Add.Party({
+        dmUuid: DMUuid,
+        partyId: party.id,
+        revalidate: `/dms/[username]`,
+      });
+
+      if (!result.ok) {
+        toast({
+          title: "Add Party Failed",
+          description: result.error.message,
+          variant: "destructive",
+        })
+      }
+    });
+  };
+
+  const availableParties =
+    allParties?.filter(
+      (party) => !optimisticParties.some((p) => p.id === party.id)
+    ) ?? [];
 
   return (
     <div className="mt-6 flex flex-col">
       <TypographyH2>Parties</TypographyH2>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-        {optimisticParties.map((party, index) => (
-          <Card key={index} className="w-full">
-            <CardHeader>
-              <CardTitle>{party.name}</CardTitle>
-              <CardDescription>
-                Level {party.level}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TypographyParagraph>
-                {truncateText(party.about, 100)}
-              </TypographyParagraph>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" asChild>
-                <Link href={`/parties/${party.shortened}`}>
-                  View {party.name}
-                </Link>
-              </Button>
-                {ownsDM && (
-                  <form
-                    action={async () => { await onSubmit(party); }}
-                  >
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="destructive" size="icon" type="submit">
-                            <MinusCircle size="18px" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <TypographyParagraph>Don&apos;t DM this party anymore.</TypographyParagraph>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </form>
-                )}
-            </CardFooter>
-          </Card>
+        {sortedParties.map((party) => (
+          <PartyCard
+            key={party.id}
+            party={party}
+            ownsDM={ownsDM}
+            onRemove={() => handleRemoveParty(party)}
+            isLoading={isPending}
+            removeText="Don't DM this party anymore."
+          />
         ))}
-        {ownsDM && <CreatePartyButton />}
-        {ownsDM && <AddPartyButtonWrapper
-          DMUuid={DMUuid}
-          allParties={allParties}
-          setOptimisticParties={setOptimisticParties}
-          optimisticParties={optimisticParties}
-        />}
+        {ownsDM && <CreateParty />}
+        {ownsDM && availableParties.length > 0 && (
+          <AddParty
+            parties={availableParties}
+            onAdd={handleAddParty}
+            isLoading={isPending}
+          />
+        )}
       </div>
     </div>
   );
-}
-
-function AddPartyButtonWrapper({
-  DMUuid,
-  allParties,
-  setOptimisticParties,
-  optimisticParties,
-}: {
-  DMUuid: string;
-  allParties: Party[] | undefined;
-  setOptimisticParties: (action: {
-    type: "add"; party: Party;
-  } | {
-    type: "remove"; partyId: string;
-  }) => void;
-  optimisticParties: Party[];
-}) {
-  if (!allParties || allParties.length === 0) return null;
-  const parties = allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id));
-  if (parties.length === 0) return null;
-  return (
-    <AddPartyButton
-      DMUuid={DMUuid}
-      parties={parties}
-      setOptimisticParties={setOptimisticParties}
-    />
-  )
 }

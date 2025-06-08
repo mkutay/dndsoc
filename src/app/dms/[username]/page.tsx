@@ -3,12 +3,15 @@ import Image from "next/image";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { DMAchievements } from "@/components/dm-achievements-section";
-import { Campaigns } from "@/components/dms/campaigns";
 import { Parties } from "@/components/dms/parties";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
 import DB from "@/lib/db";
+import { ReceivedAchievementsDM } from "@/types/full-database.types";
+import { TypographyH2 } from "@/components/typography/headings";
+import { DMAchievementCards } from "@/components/dm-achievements";
+import { ErrorComponent } from "@/components/error-component";
+import { CampaignCards } from "@/components/campaign-cards";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +92,37 @@ export default async function Page({ params }:
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
     </div>
   );
+}
+
+async function Campaigns({ DMUuid }: { DMUuid: string }) {
+  const notFound = <TypographyH2 className="mt-8">No campaigns found</TypographyH2>
+  const result = await DB.Campaigns.Get.DM({ DMUuid });
+  if (result.isErr()) {
+    return result.error.code === "NOT_FOUND"
+      ? notFound
+      : <ErrorComponent error={result.error} caller="/players/[username]/campaigns.tsx" />;
+  }
+  const campaigns = result.value;
+
+  if (campaigns.length === 0) return notFound;
+
+  return (
+    <>
+      <TypographyH2 className="mt-8">Campaigns</TypographyH2>
+      <CampaignCards campaigns={campaigns} />
+    </>
+  );
+}
+
+function DMAchievements({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsDM[] }) {
+  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+  
+  return (
+    <>
+      <TypographyH2 className="mt-6">Achievements</TypographyH2>
+      <DMAchievementCards receivedAchievements={receivedAchievements} />
+    </>
+  )
 }
 
 async function getAllParties() {
