@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "next lint",
@@ -37,7 +37,6 @@
     "react-dom": "19.0.0",
     "react-hook-form": "^7.57.0",
     "react-icons": "^5.5.0",
-    "supabase": "^2.24.3",
     "zod": "^3.25.56"
   },
   "devDependencies": {

@@ -3,8 +3,8 @@
 import { errAsync, okAsync, ResultAsync } from "neverthrow";
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/server";
 import { resultAsyncToActionResult } from "@/types/error-typing";
+import { createClient } from "@/utils/supabase/server";
 
 type SignOutError = {
   message: string;
@@ -23,5 +23,5 @@ export const signOutAction = async () => resultAsyncToActionResult(
         code: "DATABASE_ERROR",
       } as SignOutError)
   )
-  .andThen(() => redirect("/"))
+  .andTee(() => redirect("/"))
 )
