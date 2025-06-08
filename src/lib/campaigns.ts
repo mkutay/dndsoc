@@ -36,7 +36,17 @@ export const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string })
         ...partyCampaign.campaigns,
       }))
     )
-  );
+  )
+  .map((campaigns) => {
+    // Remove duplicates based on campaign id
+    const uniqueCampaigns = new Map<string, typeof campaigns[0]>();
+    campaigns.forEach((campaign) => {
+      if (!uniqueCampaigns.has(campaign.id)) {
+        uniqueCampaigns.set(campaign.id, campaign);
+      }
+    });
+    return Array.from(uniqueCampaigns.values());
+  });
 
 export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
   runQuery((supabase) =>
@@ -59,7 +69,17 @@ export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: 
         ...partyCampaign.campaigns,
       }))
     )
-  );
+  )
+  .map((campaigns) => {
+    // Remove duplicates based on campaign id
+    const uniqueCampaigns = new Map<string, typeof campaigns[0]>();
+    campaigns.forEach((campaign) => {
+      if (!uniqueCampaigns.has(campaign.id)) {
+        uniqueCampaigns.set(campaign.id, campaign);
+      }
+    });
+    return Array.from(uniqueCampaigns.values());
+  });
 
 export const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
   runQuery((supabase) =>
