@@ -288,6 +288,41 @@ export type Database = {
         }
         Relationships: []
       }
+      journal: {
+        Row: {
+          campaign_id: string
+          date: string
+          excerpt: string
+          id: string
+          shortened: string
+          title: string
+        }
+        Insert: {
+          campaign_id: string
+          date: string
+          excerpt?: string
+          id?: string
+          shortened?: string
+          title?: string
+        }
+        Update: {
+          campaign_id?: string
+          date?: string
+          excerpt?: string
+          id?: string
+          shortened?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parties: {
         Row: {
           about: string
@@ -346,6 +381,39 @@ export type Database = {
           },
           {
             foreignKeyName: "party_campaigns_party_id_fkey"
+            columns: ["party_id"]
+            isOneToOne: false
+            referencedRelation: "parties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      party_entries: {
+        Row: {
+          journal_id: string
+          party_id: string
+          text: string
+        }
+        Insert: {
+          journal_id?: string
+          party_id?: string
+          text?: string
+        }
+        Update: {
+          journal_id?: string
+          party_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "party_entries_journal_id_fkey"
+            columns: ["journal_id"]
+            isOneToOne: false
+            referencedRelation: "journal"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "party_entries_party_id_fkey"
             columns: ["party_id"]
             isOneToOne: false
             referencedRelation: "parties"
@@ -548,6 +616,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_party_entries_for_campaign: {
+        Args: { a_campaign_id: string; a_journal_id: string }
+        Returns: undefined
+      }
       is_dm_for_player: {
         Args: { player_id: string }
         Returns: boolean
