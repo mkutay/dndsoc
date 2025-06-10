@@ -1,3 +1,4 @@
+import { okAsync } from "neverthrow";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -7,10 +8,11 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
 import { runQuery } from "@/utils/supabase-run";
+import { getCampaigns } from "@/lib/campaigns";
 import { getUserRole } from "@/lib/roles";
 import { CreateJournal } from "./form";
-import { okAsync } from "neverthrow";
-import { getCampaigns } from "@/lib/campaigns";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const journals = await getAllJournals();

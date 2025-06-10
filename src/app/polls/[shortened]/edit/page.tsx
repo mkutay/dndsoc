@@ -7,6 +7,8 @@ import { runQuery } from "@/utils/supabase-run";
 import { TypographyH1 } from "@/components/typography/headings";
 import { EditPoll } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 

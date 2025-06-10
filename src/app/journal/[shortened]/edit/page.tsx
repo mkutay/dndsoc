@@ -1,11 +1,13 @@
 import { forbidden } from "next/navigation";
+import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
 import { TypographyH1 } from "@/components/typography/headings";
 import { runQuery } from "@/utils/supabase-run";
-import { JournalEditForm } from "./form";
 import { getUserRole } from "@/lib/roles";
-import Link from "next/link";
+import { JournalEditForm } from "./form";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;

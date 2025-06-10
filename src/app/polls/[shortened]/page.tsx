@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 

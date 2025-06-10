@@ -8,6 +8,8 @@ import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { CreatePoll } from "./form";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const polls = await getAllPolls();
   if (polls.isErr()) return <ErrorComponent error={polls.error} caller="/polls/page.tsx" />;
