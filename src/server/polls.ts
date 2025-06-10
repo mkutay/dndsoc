@@ -8,8 +8,6 @@ import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { getUser } from "@/lib/auth";
-import { L } from "vitest/dist/chunks/reporters.d.DL9pg5DB";
-import { ResultAsync } from "neverthrow";
 
 export const createPoll = async (data: z.infer<typeof createPollSchema>) => resultAsyncToActionResult(
   parseSchema(createPollSchema, data)
