@@ -323,6 +323,32 @@ export type Database = {
           },
         ]
       }
+      options: {
+        Row: {
+          id: string
+          poll_id: string
+          text: string
+        }
+        Insert: {
+          id?: string
+          poll_id?: string
+          text: string
+        }
+        Update: {
+          id?: string
+          poll_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "options_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parties: {
         Row: {
           about: string
@@ -466,6 +492,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      polls: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          question: string
+          shortened: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          question: string
+          shortened: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          question?: string
+          shortened?: string
+        }
+        Relationships: []
       }
       races: {
         Row: {
@@ -611,6 +661,52 @@ export type Database = {
         }
         Relationships: []
       }
+      votes: {
+        Row: {
+          auth_user_uuid: string
+          created_at: string
+          id: string
+          option_id: string
+          poll_id: string
+        }
+        Insert: {
+          auth_user_uuid?: string
+          created_at?: string
+          id?: string
+          option_id: string
+          poll_id: string
+        }
+        Update: {
+          auth_user_uuid?: string
+          created_at?: string
+          id?: string
+          option_id?: string
+          poll_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_auth_user_uuid_fkey"
+            columns: ["auth_user_uuid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "votes_option_id_fkey"
+            columns: ["option_id"]
+            isOneToOne: false
+            referencedRelation: "options"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "votes_poll_id_fkey"
+            columns: ["poll_id"]
+            isOneToOne: false
+            referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -623,6 +719,14 @@ export type Database = {
       is_dm_for_player: {
         Args: { player_id: string }
         Returns: boolean
+      }
+      vote_on: {
+        Args: {
+          a_option_id: string
+          a_poll_id: string
+          a_auth_user_uuid: string
+        }
+        Returns: undefined
       }
     }
     Enums: {

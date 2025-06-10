@@ -170,6 +170,7 @@ export function JournalEditForm({
                         "w-[240px] pl-3 text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
+                      disabled={pending}
                     >
                       {field.value ? (
                         format(field.value, "PPP")
@@ -185,7 +186,6 @@ export function JournalEditForm({
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    // Add proper disabled prop?
                     captionLayout="dropdown"
                   />
                 </PopoverContent>

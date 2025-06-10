@@ -70,7 +70,7 @@ export function CreateJournal({
       result,
       (shortened) => {
         toast({
-          title: "Success: Journal created.",
+          title: "Success: Journal created",
           description: "You can now edit your journal.",
           variant: "default",
         });
