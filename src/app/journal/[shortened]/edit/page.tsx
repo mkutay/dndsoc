@@ -1,4 +1,5 @@
 import { forbidden } from "next/navigation";
+import { cache } from "react";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -9,10 +10,24 @@ import { JournalEditForm } from "./form";
 
 export const dynamic = "force-dynamic";
 
+const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) => supabase
+    .from("journal")
+    .select(`
+      *,
+      campaigns!inner(*, party_campaigns(*, parties!inner(*))),
+      party_entries(*, parties(*))
+    `)
+    .eq("shortened", shortened)
+    .single()
+  );
+
+const cachedGetJournalWithPartyEntries = cache(getJournalWithPartyEntries);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const result = await getJournalWithPartyEntries({ shortened });
+  const result = await cachedGetJournalWithPartyEntries({ shortened });
   if (result.isErr()) return { title: "Journal Not Found" };
 
   return {
@@ -34,7 +49,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     forbidden();
   }
 
-  const result = await getJournalWithPartyEntries({ shortened });
+  const result = await cachedGetJournalWithPartyEntries({ shortened });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/journal/[shortened]/edit/page.tsx" />;
   const journal = result.value;
 
@@ -55,15 +70,3 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
-
-const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
-  runQuery((supabase) => supabase
-    .from("journal")
-    .select(`
-      *,
-      campaigns!inner(*, party_campaigns(*, parties!inner(*))),
-      party_entries(*, parties(*))
-    `)
-    .eq("shortened", shortened)
-    .single()
-  );

@@ -1,19 +1,23 @@
 import Image from "next/image";
+import { cache } from "react";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { ErrorPage } from "@/components/error-page";
 import { PlayerAchievements } from "@/components/player-achievements-section";
-import { Campaigns } from "@/components/players/campaigns";
 import { Characters } from "@/components/players/characters";
+import { Campaigns } from "@/components/players/campaigns";
+import { EditButton } from "@/components/edit-button";
+import { ErrorPage } from "@/components/error-page";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import DB from "@/lib/db";
-import { EditButton } from "@/components/edit-button";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetPlayer = cache(DB.Players.Get.Username);
+const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await DB.Players.Get.Username({ username });
+  const result = await cachedGetPlayer({ username });
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
   const player = result.value;
 
@@ -22,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const description = `Some statistics about player ${player.users.name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Player ${player.users.name}`;
 
-  const imageUrlResult = player.image_uuid ? await getPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
+  const imageUrlResult = player.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return {
@@ -40,7 +44,7 @@ export default async function Page({ params }:
   { params: Promise<{ username: string }> }
 ) {
   const { username } = await params;
-  const result = await DB.Players.Get.Username({ username });
+  const result = await cachedGetPlayer({ username });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx 1" />;
   const player = result.value;
 
@@ -53,7 +57,7 @@ export default async function Page({ params }:
 
   const name = player.users.name;
 
-  const imageUrlResult = player.image_uuid ? await getPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
+  const imageUrlResult = player.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return (

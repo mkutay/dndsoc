@@ -1,19 +1,23 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { cache } from "react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Characters } from "@/components/parties/characters";
 import { Campaigns } from "@/components/parties/campaigns";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import DB from "@/lib/db";
 import { EditButton } from "@/components/edit-button";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetParty = cache(DB.Parties.Get.Shortened);
+const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Parties.Get.Shortened({ shortened });
+  const result = await cachedGetParty({ shortened });
   if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
   const party = result.value;
 
@@ -23,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const description = `${about}${about && ". "}Level ${level} · Has ${char} Character${char === 1 ? "" : "s"}`;
   const title = `Party ${party.name}`;
 
-  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
+  const imageUrlResult = party.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return {
@@ -39,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Parties.Get.Shortened({ shortened });
+  const result = await cachedGetParty({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/page.tsx" isNotFound />;
   const party = result.value;
 
@@ -58,7 +62,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCampaigns() : undefined;
   const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCharacters() : undefined;
 
-  const imageUrlResult = party.image_uuid ? await getPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
+  const imageUrlResult = party.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   // it doesn't start loading the image until all of the data is fetched above,

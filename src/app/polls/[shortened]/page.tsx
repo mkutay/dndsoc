@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { cache } from "react";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -10,10 +11,23 @@ import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
+const getPoll = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) => supabase
+    .from("polls")
+    .select(`
+      *,
+      options(*, votes(*))
+    `)
+    .eq("shortened", shortened)
+    .single()
+  );
+
+const cachedGetPoll = cache(getPoll);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const result = await getPoll({ shortened });
+  const result = await cachedGetPoll({ shortened });
   if (result.isErr()) return { title: "Poll Not Found" };
 
   return {
@@ -29,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const result = await getPoll({ shortened });
+  const result = await cachedGetPoll({ shortened });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/polls/[shortened]/page.tsx" />;
   const poll = result.value;
 
@@ -68,14 +82,3 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
-
-const getPoll = ({ shortened }: { shortened: string }) =>
-  runQuery((supabase) => supabase
-    .from("polls")
-    .select(`
-      *,
-      options(*, votes(*))
-    `)
-    .eq("shortened", shortened)
-    .single()
-  );

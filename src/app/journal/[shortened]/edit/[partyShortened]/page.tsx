@@ -1,4 +1,5 @@
 import { forbidden } from "next/navigation";
+import { cache } from "react";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -9,10 +10,25 @@ import { PartyEntryForm } from "./form";
 
 export const dynamic = "force-dynamic";
 
+const getPartyEntry = ({ journalShortened, partyShortened }: { journalShortened: string, partyShortened: string }) =>
+  runQuery((supabase) => supabase
+    .from("party_entries")
+    .select(`
+      *,
+      journal!inner(*),
+      parties!inner(*)
+    `)
+    .eq("journal.shortened", journalShortened)
+    .eq("parties.shortened", partyShortened)
+    .single()
+  );
+
+const cachedGetPartyEntry = cache(getPartyEntry);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string, partyShortened: string }> }) {
   const { shortened, partyShortened } = await params;
 
-  const result = await getPartyEntry({ journalShortened: shortened, partyShortened });
+  const result = await cachedGetPartyEntry({ journalShortened: shortened, partyShortened });
   if (result.isErr()) return { title: "Party Entry Not Found" };
 
   return {
@@ -44,7 +60,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     if (access.isErr() || !access.value) forbidden();
   }
 
-  const result = await getPartyEntry({ journalShortened: shortened, partyShortened });
+  const result = await cachedGetPartyEntry({ journalShortened: shortened, partyShortened });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/journal/[id]/edit/[partyShortened]/page.tsx" />;
   const entry = result.value;
 
@@ -60,19 +76,6 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
-
-const getPartyEntry = ({ journalShortened, partyShortened }: { journalShortened: string, partyShortened: string }) =>
-  runQuery((supabase) => supabase
-    .from("party_entries")
-    .select(`
-      *,
-      journal!inner(*),
-      parties!inner(*)
-    `)
-    .eq("journal.shortened", journalShortened)
-    .eq("parties.shortened", partyShortened)
-    .single()
-  );
 
 const doesDMHaveAccessToParty = ({ partyShortened, authUuid }: { partyShortened: string, authUuid: string }) => {
   return runQuery((supabase) => supabase

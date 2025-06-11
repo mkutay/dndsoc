@@ -1,17 +1,20 @@
 import { forbidden } from "next/navigation";
+import { cache } from "react";
 
 import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
+import { UploadWrapper } from "./upload-wrapper";
 import { PlayerEditForm } from "./form";
 import DB from "@/lib/db";
-import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetPlayer = cache(DB.Players.Get.Username);
+
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await DB.Players.Get.Username({ username });
+  const result = await cachedGetPlayer({ username });
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
   const player = result.value;
 
@@ -32,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await DB.Players.Get.Username({ username });
+  const result = await cachedGetPlayer({ username });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/edit/page.tsx" />;
   const player = result.value;
 

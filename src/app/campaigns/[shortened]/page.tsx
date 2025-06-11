@@ -1,16 +1,19 @@
 import { redirect } from "next/navigation";
 import { format } from "date-fns";
+import { cache } from "react";
 
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { Parties } from "@/components/campaigns/parties";
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
+
+const cachedGetCampaign = cache(DB.Campaigns.Get.Shortened);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const campaigned = await DB.Campaigns.Get.Shortened({ shortened });
+  const campaigned = await cachedGetCampaign({ shortened });
   if (campaigned.isErr()) return { title: "Campaign Not Found", description: "This campaign does not exist." };
   const campaign = campaigned.value;
 
@@ -33,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const campaigned = await DB.Campaigns.Get.Shortened({ shortened });
+  const campaigned = await cachedGetCampaign({ shortened });
   if (campaigned.isErr()) return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 

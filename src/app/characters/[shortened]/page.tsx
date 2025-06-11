@@ -1,21 +1,25 @@
 import { Dot } from "lucide-react";
+import Image from "next/image";
+import { cache } from "react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import Image from "next/image";
 import { EditButton } from "@/components/edit-button";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetCharacter = cache(DB.Characters.Get.With.Player.Shortened);
+const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
+  const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
   const character = result.value;
 
@@ -26,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const description = `Some statistics about character ${name}: Level ${level} · ${formatClasses(classes)} · ${formatRaces(races)}`;
   const title = `Character ${name}`;
 
-  const imageUrlResult = character.image_uuid ? await getPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
+  const imageUrlResult = character.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return {
@@ -44,7 +48,7 @@ export default async function Page({ params }:
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await params;
-  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
+  const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
 
@@ -55,7 +59,7 @@ export default async function Page({ params }:
   const role = auth ? auth.roles?.role : null;
   const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
 
-  const imageUrlResult = character.image_uuid ? await getPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
+  const imageUrlResult = character.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return (

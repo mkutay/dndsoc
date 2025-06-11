@@ -1,18 +1,21 @@
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
+import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
+import { UploadWrapper } from "./upload-wrapper";
 import { CharacterEditForm } from "./form";
 import DB from "@/lib/db";
-import { formatClasses, formatRaces } from "@/utils/formatting";
-import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetCharacter = cache(DB.Characters.Get.With.Player.Shortened);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
+  const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
   const character = result.value;
 
@@ -37,7 +40,7 @@ export default async function Page({ params }:
   { params: Promise<{ shortened: string }> }
 ) {
   const { shortened } = await params;
-  const result = await DB.Characters.Get.With.Player.Shortened({ shortened });
+  const result = await cachedGetCharacter({ shortened });
 
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/edit/page.tsx" isNotFound />;
   const character = result.value;

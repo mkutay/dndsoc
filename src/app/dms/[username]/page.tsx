@@ -1,23 +1,27 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import { cache } from "react";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/dms/parties";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
-import DB from "@/lib/db";
 import { ReceivedAchievementsDM } from "@/types/full-database.types";
 import { TypographyH2 } from "@/components/typography/headings";
 import { DMAchievementCards } from "@/components/dm-achievements";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
+import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetDM = cache(DB.DMs.Get.Username);
+const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await DB.DMs.Get.Username({ username });
+  const result = await cachedGetDM({ username });
   if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
   const dm = result.value;
 
@@ -27,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const description = `Some statistics about our DM ${name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Our Awesome DM ${name}`;
 
-  const imageUrlResult = dm.image_uuid ? await getPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
+  const imageUrlResult = dm.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return {
@@ -45,7 +49,7 @@ export default async function Page({ params }:
   { params: Promise<{ username: string }> }
 ) {
   const { username } = await params;
-  const result = await DB.DMs.Get.Username({ username });
+  const result = await cachedGetDM({ username });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
   const dm = result.value;
 
@@ -59,7 +63,7 @@ export default async function Page({ params }:
 
   const parties = ownsDM ? await getAllParties() : undefined;
 
-  const imageUrlResult = dm.image_uuid ? await getPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
+  const imageUrlResult = dm.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return (

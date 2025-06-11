@@ -1,5 +1,6 @@
 import { okAsync } from "neverthrow";
 import { format } from "date-fns";
+import { cache } from "react";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -11,10 +12,24 @@ import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
+const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) => supabase
+    .from("journal")
+    .select(`
+      *,
+      campaigns:campaigns!inner(*),
+      party_entries:party_entries(*, parties:parties(*))
+    `)
+    .eq("shortened", shortened)
+    .single()
+  );
+
+const cachedGetJournalWithPartyEntries = cache(getJournalWithPartyEntries);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const result = await getJournalWithPartyEntries({ shortened });
+  const result = await cachedGetJournalWithPartyEntries({ shortened });
   if (result.isErr()) return { title: "Journal Not Found" };
 
   return {
@@ -30,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   
-  const result = await getJournalWithPartyEntries({ shortened });
+  const result = await cachedGetJournalWithPartyEntries({ shortened });
   if (result.isErr()) return <ErrorComponent error={result.error} caller="/journal/[shortened]/page.tsx" />;
   const journal = result.value;
 
@@ -102,18 +117,6 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
-
-const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
-  runQuery((supabase) => supabase
-    .from("journal")
-    .select(`
-      *,
-      campaigns:campaigns!inner(*),
-      party_entries:party_entries(*, parties:parties(*))
-    `)
-    .eq("shortened", shortened)
-    .single()
-  );
 
 const getPlayerParties = ({ authUuid, partyIds }: { authUuid: string, partyIds: string[] }) =>
   runQuery((supabase) => supabase

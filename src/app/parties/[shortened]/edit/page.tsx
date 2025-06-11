@@ -1,11 +1,14 @@
 import { forbidden, redirect } from "next/navigation";
+import { cache } from "react";
 
 import { ErrorPage } from "@/components/error-page";
 import DB from "@/lib/db";
 
+const cachedGetParty = cache(DB.Parties.Get.Shortened);
+
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Parties.Get.Shortened({ shortened });
+  const result = await cachedGetParty({ shortened });
   if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
   const party = result.value;
 
@@ -27,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await DB.Parties.Get.Shortened({ shortened });
+  const result = await cachedGetParty({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/page.tsx" isNotFound />;
   const party = result.value;
 

@@ -1,17 +1,20 @@
 import { forbidden } from "next/navigation";
+import { cache } from "react";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
+import { UploadWrapper } from "./upload-wrapper";
 import { DMEditForm } from "./form";
 import DB from "@/lib/db";
-import { UploadWrapper } from "./upload-wrapper";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetDM = cache(DB.DMs.Get.Username);
+
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await DB.DMs.Get.Username({ username });
+  const result = await cachedGetDM({ username });
   if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
   const dm = result.value;
 
@@ -35,7 +38,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const role = await DB.Roles.Get.With.User();
   if (role.isErr()) return <ErrorPage error={role.error} caller="/dms/[username]/edit/page.tsx" isForbidden />;
 
-  const dm = await DB.DMs.Get.Username({ username });
+  const dm = await cachedGetDM({ username });
   if (dm.isErr()) return <ErrorPage error={dm.error} caller="/dms/[username]/edit/page.tsx" isNotFound />;
 
   if (role.value.role !== "admin" && role.value.auth_user_uuid !== dm.value.auth_user_uuid) {

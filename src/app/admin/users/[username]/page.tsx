@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -6,11 +8,14 @@ import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+const cachedGetPlayer = cache(DB.Players.Get.Username);
+const cachedGetRole = cache(DB.Roles.Get.Auth);
+
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const player = await DB.Players.Get.Username({ username });
+  const player = await cachedGetPlayer({ username });
   if (player.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
-  const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
+  const role = await cachedGetRole({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) return { title: "Role Not Found", description: "This role does not exist." };
 
   const name = player.value.users.name;
@@ -29,10 +34,10 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
 
-  const player = await DB.Players.Get.Username({ username });
+  const player = await cachedGetPlayer({ username });
   if (player.isErr()) return <ErrorPage error={player.error} caller="/admin/users/[username]/page.tsx" isNotFound />;
 
-  const role = await DB.Roles.Get.Auth({ authUuid: player.value.auth_user_uuid });
+  const role = await cachedGetRole({ authUuid: player.value.auth_user_uuid });
   if (role.isErr()) return <ErrorPage error={role.error} caller="/admin/users/[username]/page.tsx" />;
 
   const name = player.value.users.name;
