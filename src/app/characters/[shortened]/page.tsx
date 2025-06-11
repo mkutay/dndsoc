@@ -10,11 +10,13 @@ import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
-import DB from "@/lib/db";
+import { getCharacterPlayerByShortened } from "@/lib/characters";
+import { getCampaignsByCharacterUuid } from "@/lib/campaigns";
+import { getPlayerRoleUser } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetCharacter = cache(DB.Characters.Get.With.Player.Shortened);
+const cachedGetCharacter = cache(getCharacterPlayerByShortened);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
@@ -52,7 +54,7 @@ export default async function Page({ params }:
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
@@ -105,7 +107,7 @@ export default async function Page({ params }:
 async function Campaigns({ characterUuid }: { characterUuid: string }) {
   const notFound = <TypographyH2 className="mt-6">No campaigns found</TypographyH2>;
 
-  const campaigns = await DB.Campaigns.Get.Character({ characterUuid });
+  const campaigns = await getCampaignsByCharacterUuid({ characterUuid });
   if (campaigns.isErr()) {
     return campaigns.error.code === "NOT_FOUND"
       ? notFound

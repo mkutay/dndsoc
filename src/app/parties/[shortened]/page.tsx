@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cache } from "react";
 
@@ -8,11 +7,14 @@ import { Characters } from "@/components/parties/characters";
 import { Campaigns } from "@/components/parties/campaigns";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
-import DB from "@/lib/db";
+import { getPlayerRoleUser } from "@/lib/players";
+import { getPartyByShortened } from "@/lib/parties";
+import { getCharacters } from "@/lib/characters";
+import { getCampaigns } from "@/lib/campaigns";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetParty = cache(DB.Parties.Get.Shortened);
+const cachedGetParty = cache(getPartyByShortened);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
@@ -51,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const campaigns = party.party_campaigns.map((partyCampaign) => partyCampaign.campaigns);
   const characters = party.character_party.map((characterParty) => characterParty.characters);
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
@@ -59,8 +61,11 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const ownsAs = role === "admin"
     ? "admin" : (dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) ? "dm" : (characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null;
 
-  const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCampaigns() : undefined;
-  const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getAllCharacters() : undefined;
+  const allCampaigns = (ownsAs === "dm" || ownsAs === "admin") ? await getCampaigns() : undefined;
+  if (allCampaigns && allCampaigns.isErr()) return <ErrorPage error={allCampaigns.error} caller="/parties/[shortened]/page.tsx" />;
+
+  const allCharacters = (ownsAs === "dm" || ownsAs === "admin") ? await getCharacters() : undefined;
+  if (allCharacters && allCharacters.isErr()) return <ErrorPage error={allCharacters.error} caller="/parties/[shortened]/page.tsx" />;
 
   const imageUrlResult = party.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
@@ -94,21 +99,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           {ownsAs && <EditButton href={`/parties/${shortened}/edit/${ownsAs === "admin" ? "dm" : ownsAs}`} />}
         </div>
       </div>
-      <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters} />
-      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns} />
+      <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters?.value} />
+      <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns?.value} />
       {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
-}
-
-async function getAllCharacters() {
-  const allCharacters = await DB.Characters.Get.All();
-  if (allCharacters.isErr()) redirect("/error?error=" + allCharacters.error.message);
-  return allCharacters.value;
-}
-
-async function getAllCampaigns() {
-  const allCampaigns = await DB.Campaigns.Get.All();
-  if (allCampaigns.isErr()) redirect("/error?error=" + allCampaigns.error.message);
-  return allCampaigns.value;
 }

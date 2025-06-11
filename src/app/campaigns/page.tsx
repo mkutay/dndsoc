@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { TypographyH1 } from "@/components/typography/headings";
 import { CampaignCards } from "@/components/campaign-cards";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
+import { getCampaigns } from "@/lib/campaigns";
 
 export const metadata: Metadata = {
   title: "Campaigns Being Played In Our Society",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const campaigns = await DB.Campaigns.Get.All();
+  const campaigns = await getCampaigns();
   if (campaigns.isErr()) return <ErrorPage error={campaigns.error} caller="/campaigns/page.tsx" />;
 
   return (

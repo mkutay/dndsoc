@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
     authInterrupts: true,
     serverActions: {
       bodySizeLimit: "8mb",
-    }
+    },
+    useCache: true,
   },
   images: {
     remotePatterns: [

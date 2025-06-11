@@ -1,20 +1,20 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { okAsync } from "neverthrow";
 import { z } from "zod";
 
+import { partyDMEditSchema, partyPlayerEditSchema } from "@/config/parties";
 import { createPartySchema } from "@/config/create-party-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { convertToShortened } from "@/utils/formatting";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
-import { partyDMEditSchema, partyPlayerEditSchema } from "@/config/parties";
-import DB from "@/lib/db";
-import { revalidatePath } from "next/cache";
-import { okAsync } from "neverthrow";
+import { getDMUser } from "@/lib/dms";
 
 export const insertParty = async (values: z.infer<typeof createPartySchema>) => resultAsyncToActionResult(
   parseSchema(createPartySchema, values)
-    .asyncAndThen(() => DB.DMs.Get.With.User())
+    .asyncAndThen(() => getDMUser())
     .andThen((DMUser) =>
       runQuery((supabase) => supabase
         .from("parties")

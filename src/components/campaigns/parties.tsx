@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
-import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { AddPartyButton } from "./add-party-button";
 import { CreatePartyButton } from "./create-party-button";
 import { truncateText } from "@/utils/formatting";
+import { removeCampaignFromParty } from "@/server/campaigns";
 
 type Party = Tables<"parties">;
 
@@ -56,7 +56,7 @@ export function Parties({
       type: "remove",
       partyId: party.id,
     });
-    const result = await Server.Campaigns.Remove.Party({ partyId: party.id, campaignId: campaignUuid, shortened });
+    const result = await removeCampaignFromParty({ partyId: party.id, campaignId: campaignUuid, shortened });
     if (!result.ok) {
       toast({
         title: "Could Not Remove Party",

@@ -1,15 +1,10 @@
 import { TypographyLarge, TypographyParagraph } from "./typography/paragraph";
 
 export function ErrorComponent({ error, caller, returnNull, silent }: {
-  error: string;
-  caller?: string;
-  returnNull?: boolean;
-  silent?: boolean;
-} | {
   error: {
     message: string;
     code: string;
-  };
+  } | string;
   caller?: string;
   returnNull?: boolean;
   silent?: boolean;

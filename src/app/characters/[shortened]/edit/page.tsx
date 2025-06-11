@@ -5,13 +5,14 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
+import { getCharacterPlayerByShortened } from "@/lib/characters";
 import { UploadWrapper } from "./upload-wrapper";
+import { getPlayerRoleUser } from "@/lib/players";
 import { CharacterEditForm } from "./form";
-import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetCharacter = cache(DB.Characters.Get.With.Player.Shortened);
+const cachedGetCharacter = cache(getCharacterPlayerByShortened);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -45,7 +46,7 @@ export default async function Page({ params }:
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/edit/page.tsx" isNotFound />;
   const character = result.value;
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;

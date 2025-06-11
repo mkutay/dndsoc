@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
+import { getDMs } from "@/lib/dms";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const dms = await DB.DMs.Get.All();
+  const dms = await getDMs();
   if (dms.isErr()) return <ErrorPage error={dms.error.message} caller="/dms/page.tsx" />;
 
   return (

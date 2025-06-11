@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import Image from "next/image";
 import { cache } from "react";
 
@@ -12,11 +11,14 @@ import { TypographyH2 } from "@/components/typography/headings";
 import { DMAchievementCards } from "@/components/dm-achievements";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
-import DB from "@/lib/db";
+import { getDMByUsername } from "@/lib/dms";
+import { getUserRole } from "@/lib/roles";
+import { getCampaignsByDMUuid } from "@/lib/campaigns";
+import { getParties } from "@/lib/parties";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetDM = cache(DB.DMs.Get.Username);
+const cachedGetDM = cache(getDMByUsername);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
@@ -53,7 +55,7 @@ export default async function Page({ params }:
   if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
   const dm = result.value;
 
-  const roled = await DB.Roles.Get.With.User();
+  const roled = await getUserRole();
   if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/dms/[username]" />;
 
   const auth = roled.isOk() ? roled.value : null;
@@ -61,7 +63,8 @@ export default async function Page({ params }:
   const ownsDM = (dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
   const name = dm.users.name;
 
-  const parties = ownsDM ? await getAllParties() : undefined;
+  const parties = ownsDM ? await getParties() : undefined;
+  if (parties && parties.isErr()) return <ErrorPage error={parties.error} caller="/dms/[username]/page.tsx" />;
 
   const imageUrlResult = dm.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
@@ -90,7 +93,7 @@ export default async function Page({ params }:
         DMUuid={dm.id}
         ownsDM={ownsDM}
         parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
-        allParties={parties}
+        allParties={parties?.value}
       />
       <Campaigns DMUuid={dm.id} />
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
@@ -100,7 +103,7 @@ export default async function Page({ params }:
 
 async function Campaigns({ DMUuid }: { DMUuid: string }) {
   const notFound = <TypographyH2 className="mt-8">No campaigns found</TypographyH2>
-  const result = await DB.Campaigns.Get.DM({ DMUuid });
+  const result = await getCampaignsByDMUuid({ DMUuid });
   if (result.isErr()) {
     return result.error.code === "NOT_FOUND"
       ? notFound
@@ -127,10 +130,4 @@ function DMAchievements({ receivedAchievements }: { receivedAchievements: Receiv
       <DMAchievementCards receivedAchievements={receivedAchievements} />
     </>
   )
-}
-
-async function getAllParties() {
-  const result = await DB.Parties.Get.All();
-  if (result.isErr()) redirect("/error?error=" + result.error.message);
-  return result.value;
 }

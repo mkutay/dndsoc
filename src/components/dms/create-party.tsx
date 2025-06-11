@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { createPartySchema } from "@/config/create-party-schema";
-import Server from "@/server/server";
+import { insertParty } from "@/server/parties";
 
 export function CreateParty() {
   const { toast } = useToast();
@@ -45,7 +45,7 @@ export function CreateParty() {
 
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     startTransition(async () => {
-      const result = await Server.Parties.Insert.DM(values);
+      const result = await insertParty(values);
 
       actionResultMatch(
         result,

@@ -6,7 +6,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { rolesLabel } from "@/types/full-database.types";
-import DB from "@/lib/db";
+import { getUsers } from "@/lib/users";
 
 export const metadata: Metadata = {
   title: "Admin View: All of Our Users",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const users = await DB.Users.Get.All();
+  const users = await getUsers();
   if (users.isErr()) return <ErrorPage error={users.error} caller="/admin/users/page.tsx" />;
 
   return (

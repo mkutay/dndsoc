@@ -4,11 +4,11 @@ import { useOptimistic, useTransition } from "react";
 
 import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
-import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { AddParty } from "./add-party";
 import { CreateParty } from "./create-party";
 import { PartyCard } from "../party-card";
+import { addPartyToDM, removePartyFromDM } from "@/server/dms";
 
 type Party = Tables<"parties">;
 
@@ -53,7 +53,7 @@ export function Parties({
     startTransition(async () => {
       updateOptimisticParties({ type: "remove", partyId: party.id });
 
-      const result = await Server.DMs.Remove.Party({
+      const result = await removePartyFromDM({
         partyId: party.id,
         dmUuid: DMUuid,
         revalidate: "/dms/[username]",
@@ -73,7 +73,7 @@ export function Parties({
     startTransition(async () => {
       updateOptimisticParties({ type: "add", party });
 
-      const result = await Server.DMs.Add.Party({
+      const result = await addPartyToDM({
         dmUuid: DMUuid,
         partyId: party.id,
         revalidate: `/dms/[username]`,

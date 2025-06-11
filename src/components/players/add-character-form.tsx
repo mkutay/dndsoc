@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/add-character-schema";
 import { actionResultMatch } from "@/types/error-typing";
-import Server from "@/server/server";
+import { insertCharacter } from "@/server/characters";
 
 export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
  
   const onSubmit = async (values: z.infer<typeof addCharacterSchema>) => {
     setPending(true);
-    const result = await Server.Characters.Insert(values, playerUuid);
+    const result = await insertCharacter(values, playerUuid);
     setPending(false);
 
     actionResultMatch(

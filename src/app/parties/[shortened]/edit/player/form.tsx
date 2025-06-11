@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { partyPlayerEditSchema } from "@/config/parties";
-import Server from "@/server/server";
+import { updatePlayerParty } from "@/server/parties";
 
 export function PlayerForm({
   about,
@@ -40,7 +40,7 @@ export function PlayerForm({
  
   const onSubmit = async (values: z.infer<typeof partyPlayerEditSchema>) => {
     setPending(true);
-    const result = await Server.Parties.Update.Player(values, partyUuid);
+    const result = await updatePlayerParty(values, partyUuid);
     setPending(false);
 
     actionResultMatch(

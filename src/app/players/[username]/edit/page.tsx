@@ -6,11 +6,11 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { UploadWrapper } from "./upload-wrapper";
 import { PlayerEditForm } from "./form";
-import DB from "@/lib/db";
+import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetPlayer = cache(DB.Players.Get.Username);
+const cachedGetPlayer = cache(getPlayerByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/edit/page.tsx" />;
   const player = result.value;
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;

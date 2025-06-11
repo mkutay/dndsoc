@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { DMEditSchema } from "@/config/dms";
-import Server from "@/server/server";
+import { updateDM } from "@/server/dms";
 
 export function DMEditForm({ dm }: { dm: { id: string, about: string, } }) {
   const { toast } = useToast();
@@ -34,7 +34,7 @@ export function DMEditForm({ dm }: { dm: { id: string, about: string, } }) {
  
   const onSubmit = async (values: z.infer<typeof DMEditSchema>) => {
     setPending(true);
-    const result = await Server.DMs.Update(values, dm.id);
+    const result = await updateDM(values, dm.id);
     setPending(false);
 
     actionResultMatch(

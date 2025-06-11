@@ -2,9 +2,10 @@ import { forbidden, redirect } from "next/navigation";
 import { cache } from "react";
 
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
+import { getPartyByShortened } from "@/lib/parties";
+import { getPlayerRoleUser } from "@/lib/players";
 
-const cachedGetParty = cache(DB.Parties.Get.Shortened);
+const cachedGetParty = cache(getPartyByShortened);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -37,7 +38,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
   const characters = party.character_party.map((characterParty) => characterParty.characters);
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;

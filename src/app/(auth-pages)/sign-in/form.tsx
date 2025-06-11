@@ -21,7 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
 import { TypographyLink } from "@/components/typography/paragraph";
-import Server from "@/server/server";
+import { signInAction } from "@/server/auth/sign-in";
 
 export function SignInForm() {
   const { toast } = useToast();
@@ -37,7 +37,7 @@ export function SignInForm() {
  
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
-    const result = await Server.Auth.SignIn(values);
+    const result = await signInAction(values);
     setPending(false);
 
     actionResultMatch(result,

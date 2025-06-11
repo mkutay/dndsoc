@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { siteConfig } from "@/config/site";
-import Server from "@/server/server";
+import { signOutAction } from "@/server/auth/sign-out";
 
 export function NavBarSheet({ user }: { user: boolean }) {
   const [open, setOpen] = useState(false);
@@ -25,7 +25,7 @@ export function NavBarSheet({ user }: { user: boolean }) {
 
   const onSubmit = async () => {
     handleLinkClick();
-    await Server.Auth.SignOut();
+    await signOutAction();
   };
   
   return (

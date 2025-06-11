@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
 import { CharacterCards } from "@/components/character-cards";
-import DB from "@/lib/db";
+import { getCharacters } from "@/lib/characters";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const characters = await DB.Characters.Get.All();
+  const characters = await getCharacters();
   if (characters.isErr()) return <ErrorPage error={characters.error} caller="/characters/page.tsx" />;
 
   return (

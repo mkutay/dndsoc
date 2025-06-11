@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { createPartySchema } from "@/config/create-party-schema";
-import Server from "@/server/server";
+import { insertPartyWithCampaign } from "@/server/parties";
 
 export function CreatePartyForm({ campaignUuid }: { campaignUuid: string }) {
   const { toast } = useToast();
@@ -35,7 +35,7 @@ export function CreatePartyForm({ campaignUuid }: { campaignUuid: string }) {
  
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     setPending(true);
-    const result = await Server.Parties.Insert.Campaign(values, campaignUuid);
+    const result = await insertPartyWithCampaign(values, campaignUuid);
     setPending(false);
 
     actionResultMatch(

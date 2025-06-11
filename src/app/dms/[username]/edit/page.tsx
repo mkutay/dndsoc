@@ -5,12 +5,13 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { UploadWrapper } from "./upload-wrapper";
+import { getDMByUsername } from "@/lib/dms";
+import { getUserRole } from "@/lib/roles";
 import { DMEditForm } from "./form";
-import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetDM = cache(DB.DMs.Get.Username);
+const cachedGetDM = cache(getDMByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const role = await DB.Roles.Get.With.User();
+  const role = await getUserRole();
   if (role.isErr()) return <ErrorPage error={role.error} caller="/dms/[username]/edit/page.tsx" isForbidden />;
 
   const dm = await cachedGetDM({ username });

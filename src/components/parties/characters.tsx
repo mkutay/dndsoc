@@ -35,11 +35,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
-import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Character } from "@/types/full-database.types";
 import { CharacterCard } from "@/components/character-card";
+import { addCharacterToParty, removeCharacterFromParty } from "@/server/characters";
 
 type CharacterAction =
   | { type: "add"; character: Character }
@@ -86,7 +86,7 @@ export function Characters({
     startTransition(async () => {
       updateOptimisticCharacters({ type: "remove", characterId: character.id });
 
-      const result = await Server.Characters.Remove.Party({
+      const result = await removeCharacterFromParty({
         characterId: character.id,
         partyId,
         shortened: character.shortened,
@@ -106,7 +106,7 @@ export function Characters({
     startTransition(async () => {
       updateOptimisticCharacters({ type: "add", character });
 
-      const result = await Server.Parties.Add.Character({
+      const result = await addCharacterToParty({
         characterId: character.id,
         partyId,
         shortened: character.shortened,

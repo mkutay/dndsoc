@@ -3,13 +3,14 @@ import { cache } from "react";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
+import { getPlayerByUsername } from "@/lib/players";
+import { getRole } from "@/lib/roles";
 import { AdminRoleEditForm } from "./role-form";
-import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetPlayer = cache(DB.Players.Get.Username);
-const cachedGetRole = cache(DB.Roles.Get.Auth);
+const cachedGetPlayer = cache(getPlayerByUsername);
+const cachedGetRole = cache(getRole);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;

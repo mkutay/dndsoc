@@ -1,10 +1,10 @@
 import { TypographyH2 } from "@/components/typography/headings";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
-import DB from "@/lib/db";
+import { getCampaignsByPlayerUuid } from "@/lib/campaigns";
 
 export async function Campaigns({ playerUuid }: { playerUuid: string }) {
-  const result = await DB.Campaigns.Get.Player({ playerUuid });
+  const result = await getCampaignsByPlayerUuid({ playerUuid });
   if (result.isErr()) {
     return result.error.code === "NOT_FOUND"
       ? <TypographyH2 className="mt-8">No campaigns found</TypographyH2>

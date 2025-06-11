@@ -22,7 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { characterEditSchema } from "@/config/character-edit-schema";
 import { cn } from "@/lib/utils";
 import { actionResultMatch } from "@/types/error-typing";
-import Server from "@/server/server";
+import { updateCharacter } from "@/server/characters";
 
 export function CharacterEditForm({
   character
@@ -61,7 +61,7 @@ export function CharacterEditForm({
  
   const onSubmit = async (values: z.infer<typeof characterEditSchema>) => {
     setPending(true);
-    const result = await Server.Characters.Update(values, character.shortened);
+    const result = await updateCharacter(values, character.shortened);
     setPending(false);
 
     actionResultMatch(result,

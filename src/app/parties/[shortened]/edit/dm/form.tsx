@@ -45,7 +45,7 @@ import { partyDMEditSchema } from "@/config/parties";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { cn } from "@/lib/utils";
-import Server from "@/server/server";
+import { updateDMParty } from "@/server/parties";
 
 type Campaign = {
   description: string;
@@ -152,7 +152,7 @@ export function DMForm({
  
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
     setPending(true);
-    const result = await Server.Parties.Update.DM(values, partyUuid);
+    const result = await updateDMParty(values, partyUuid);
     setPending(false);
 
     actionResultMatch(

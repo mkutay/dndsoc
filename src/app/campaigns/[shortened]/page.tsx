@@ -1,15 +1,16 @@
-import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import { cache } from "react";
 
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { Parties } from "@/components/campaigns/parties";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
+import { getCampaign } from "@/lib/campaigns";
+import { getUserRole } from "@/lib/roles";
+import { getParties } from "@/lib/parties";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetCampaign = cache(DB.Campaigns.Get.Shortened);
+const cachedGetCampaign = cache(getCampaign);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -40,13 +41,14 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   if (campaigned.isErr()) return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 
-  const roled = await DB.Roles.Get.With.User();
+  const roled = await getUserRole();
   if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/dms/[username]" />;
 
   const auth = roled.isOk() ? roled.value : null;
   const role = auth ? auth.role : null;
   const isAdmin = role === "admin";
-  const parties = isAdmin ? await getAllParties() : undefined;
+  const parties = isAdmin ? await getParties() : undefined;
+  if (parties && parties.isErr()) return <ErrorPage error={parties.error} caller="/campaigns/[shortened]/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -60,15 +62,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         parties={campaign.party_campaigns.map((partyCampaign) => partyCampaign.parties)}
         campaignUuid={campaign.id}
         isAdmin={isAdmin}
-        allParties={parties}
+        allParties={parties?.value}
         shortened={shortened}
       />
     </div>
   );
-}
-
-async function getAllParties() {
-  const result = await DB.Parties.Get.All();
-  if (result.isErr()) redirect("/error?error=" + result.error.message);
-  return result.value;
 }

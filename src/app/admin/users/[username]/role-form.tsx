@@ -24,7 +24,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { cn } from "@/lib/utils";
 import { rolesLabel } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
-import Server from "@/server/server";
+import { updateRole } from "@/server/roles";
 
 export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
   const { toast } = useToast();
@@ -39,7 +39,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
  
   const onSubmit = async (values: z.infer<typeof adminRoleEditSchema>) => {
     setPending(true);
-    const result = await Server.Roles.Update(values, role.auth_user_uuid);
+    const result = await updateRole(values, role.auth_user_uuid);
     setPending(false);
 
     actionResultMatch(result,

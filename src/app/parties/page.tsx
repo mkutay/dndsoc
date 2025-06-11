@@ -6,8 +6,8 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import DB from "@/lib/db";
 import { truncateText } from "@/utils/formatting";
+import { getParties } from "@/lib/parties";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const result = await DB.Parties.Get.All();
+  const result = await getParties();
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/page.tsx" />;
   const parties = result.value;
 

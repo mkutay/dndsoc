@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
-import Server from "@/server/server";
+import { forgotPasswordAction } from "@/server/auth/forgot-password";
 
 export function ForgotPasswordForm() {
   const { toast } = useToast();
@@ -34,7 +34,7 @@ export function ForgotPasswordForm() {
  
   const onSubmit = async (values: z.infer<typeof forgotPasswordFormSchema>) => {
     setPending(true);
-    const result = await Server.Auth.ForgotPassword(values);
+    const result = await forgotPasswordAction(values);
     setPending(false);
 
     actionResultMatch(result,

@@ -37,9 +37,9 @@ import { CampaignCard } from "@/components/campaign-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tables } from "@/types/database.types";
-import Server from "@/server/server";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { addCampaignToParty, removeCampaignFromParty } from "@/server/campaigns";
 
 type Campaign = Tables<"campaigns">;
 
@@ -88,7 +88,7 @@ export function Campaigns({
     startTransition(async () => {
       updateOptimisticCampaigns({ type: "remove", campaignId: campaign.id });
 
-      const result = await Server.Campaigns.Remove.Party({
+      const result = await removeCampaignFromParty({
         campaignId: campaign.id,
         partyId,
         shortened: campaign.shortened,
@@ -107,7 +107,7 @@ export function Campaigns({
     startTransition(async () => {
       updateOptimisticCampaigns({ type: "add", campaign });
 
-      const result = await Server.Parties.Add.Campaign({
+      const result = await addCampaignToParty({
         campaignId: campaign.id,
         partyId,
         shortened: campaign.shortened,

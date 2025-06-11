@@ -7,12 +7,12 @@ import { Characters } from "@/components/players/characters";
 import { Campaigns } from "@/components/players/campaigns";
 import { EditButton } from "@/components/edit-button";
 import { ErrorPage } from "@/components/error-page";
+import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import DB from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetPlayer = cache(DB.Players.Get.Username);
+const cachedGetPlayer = cache(getPlayerByUsername);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
@@ -48,7 +48,7 @@ export default async function Page({ params }:
   if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx 1" />;
   const player = result.value;
 
-  const combinedAuth = await DB.Auth.Get.With.PlayerAndRole();
+  const combinedAuth = await getPlayerRoleUser();
   if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx 2" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;

@@ -15,13 +15,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import Server from "@/server/server";
 import { Tables } from "@/types/database.types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { DialogFooter } from "@/components/ui/dialog";
+import { addCampaignToParty } from "@/server/campaigns";
 
 type Party = Tables<"parties">;
 
@@ -73,7 +73,7 @@ export function AddPartyForm({
     setPending(true);
     setOpen(false);
 
-    const result = await Server.Parties.Add.Campaign({ campaignId: campaignUuid, partyId: values.party, shortened });
+    const result = await addCampaignToParty({ campaignId: campaignUuid, partyId: values.party, shortened });
 
     setPending(false);
 

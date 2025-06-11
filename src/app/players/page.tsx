@@ -8,8 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { Player } from "@/types/full-database.types";
-import DB from "@/lib/db";
 import { truncateText } from "@/utils/formatting";
+import { getPlayers } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const players = await DB.Players.Get.All();
+  const players = await getPlayers();
   if (players.isErr()) return <ErrorPage error={players.error} caller="/players/page.tsx" />;
 
   return (
