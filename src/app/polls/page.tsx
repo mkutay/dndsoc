@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -9,6 +10,15 @@ import { getUserRole } from "@/lib/roles";
 import { CreatePoll } from "./form";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Polls",
+  description: "List of all polls in the KCL Dungeons and Dragons app.",
+  openGraph: {
+    title: "Polls",
+    description: "List of all polls in the KCL Dungeons and Dragons app.",
+  },
+};
 
 export default async function Page() {
   const polls = await getAllPolls();

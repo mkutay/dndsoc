@@ -9,6 +9,22 @@ import { PartyEntryForm } from "./form";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string, partyShortened: string }> }) {
+  const { shortened, partyShortened } = await params;
+
+  const result = await getPartyEntry({ journalShortened: shortened, partyShortened });
+  if (result.isErr()) return { title: "Party Entry Not Found" };
+
+  return {
+    title: `Edit ${result.value.parties.name}'s Journal Entry`,
+    description: `Edit the details of this party's journal entry for ${result.value.journal.title}.`,
+    openGraph: {
+      title: `Edit ${result.value.parties.name}'s Journal Entry`,
+      description: `Edit the details of this party's journal entry for ${result.value.journal.title}.`,
+    },
+  }
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string, partyShortened: string }> }) {
   const { shortened, partyShortened } = await params;
 

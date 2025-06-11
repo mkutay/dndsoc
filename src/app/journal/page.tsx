@@ -1,5 +1,6 @@
 import { okAsync } from "neverthrow";
 import { format } from "date-fns";
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
@@ -13,6 +14,15 @@ import { getUserRole } from "@/lib/roles";
 import { CreateJournal } from "./form";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Journal",
+  description: "List of our journals in the KCL Dungeons and Dragons app.",
+  openGraph: {
+    title: "Journal",
+    description: "List of our polls in the KCL Dungeons and Dragons app.",
+  },
+};
 
 export default async function Page() {
   const journals = await getAllJournals();

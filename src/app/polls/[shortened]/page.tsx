@@ -10,6 +10,22 @@ import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+
+  const result = await getPoll({ shortened });
+  if (result.isErr()) return { title: "Poll Not Found" };
+
+  return {
+    title: `Poll: ${result.value.question}`,
+    description: "View the details of this poll and vote on it.",
+    openGraph: {
+      title: `Poll: ${result.value.question}`,
+      description: "View the details of this poll and vote on it.",
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 

@@ -9,6 +9,22 @@ import { JournalEditForm } from "./form";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+
+  const result = await getJournalWithPartyEntries({ shortened });
+  if (result.isErr()) return { title: "Journal Not Found" };
+
+  return {
+    title: `Edit Journal: ${result.value.title}`,
+    description: "Edit the details of all of the entries in this journal.",
+    openGraph: {
+      title: `Edit Journal: ${result.value.title}`,
+      description: "Edit the details of all of the entries in this journal.",
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 

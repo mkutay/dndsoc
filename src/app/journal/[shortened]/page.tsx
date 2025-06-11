@@ -11,6 +11,22 @@ import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+
+  const result = await getJournalWithPartyEntries({ shortened });
+  if (result.isErr()) return { title: "Journal Not Found" };
+
+  return {
+    title: `Journal: ${result.value.title}`,
+    description: "View the details of this journal.",
+    openGraph: {
+      title: `Journal: ${result.value.title}`,
+      description: "View the details of this journal.",
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   

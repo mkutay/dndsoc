@@ -9,6 +9,22 @@ import { EditPoll } from "./form";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+  const { shortened } = await params;
+
+  const result = await getPoll({ shortened });
+  if (result.isErr()) return { title: "Poll Not Found" };
+
+  return {
+    title: `Edit Poll: ${result.value.question}`,
+    description: "Edit the details of this poll.",
+    openGraph: {
+      title: `Edit Poll: ${result.value.question}`,
+      description: "Edit the details of this poll.",
+    },
+  };
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
