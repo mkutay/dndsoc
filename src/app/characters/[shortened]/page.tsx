@@ -1,3 +1,4 @@
+import { errAsync, okAsync } from "neverthrow";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import { cache } from "react";
@@ -11,8 +12,8 @@ import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
-import { getCampaignsByCharacterUuid } from "@/lib/campaigns";
 import { getPlayerRoleUser } from "@/lib/players";
+import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
@@ -124,3 +125,36 @@ async function Campaigns({ characterUuid }: { characterUuid: string }) {
     </>
   );
 }
+
+export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("parties")
+      .select(`*, party_campaigns!inner(*, campaigns(*)), character_party!inner(*, characters!inner(*))`)
+      .eq("character_party.characters.id", characterUuid),
+    "getCampaignsByCharacterUuid"
+  )
+  .andThen((data) => data.length === 0
+    ? errAsync({
+        message: `No campaigns found for character with UUID ${characterUuid}`,
+        code: "NOT_FOUND" as const,
+      })
+    : okAsync(data)
+  )
+  .map((parties) => 
+    parties.flatMap((party) =>
+      party.party_campaigns.map((partyCampaign) => ({
+        ...partyCampaign.campaigns,
+      }))
+    )
+  )
+  .map((campaigns) => {
+    // Remove duplicates based on campaign id
+    const uniqueCampaigns = new Map<string, typeof campaigns[0]>();
+    campaigns.forEach((campaign) => {
+      if (!uniqueCampaigns.has(campaign.id)) {
+        uniqueCampaigns.set(campaign.id, campaign);
+      }
+    });
+    return Array.from(uniqueCampaigns.values());
+  });

@@ -1,3 +1,4 @@
+import { errAsync, okAsync } from "neverthrow";
 import Image from "next/image";
 import { cache } from "react";
 
@@ -13,8 +14,8 @@ import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
 import { getDMByUsername } from "@/lib/dms";
 import { getUserRole } from "@/lib/roles";
-import { getCampaignsByDMUuid } from "@/lib/campaigns";
 import { getParties } from "@/lib/parties";
+import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
@@ -131,3 +132,36 @@ function DMAchievements({ receivedAchievements }: { receivedAchievements: Receiv
     </>
   )
 }
+
+export const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("parties")
+      .select(`*, party_campaigns!inner(*, campaigns(*)), dm_party(*, dms!inner(*))`)
+      .eq("dm_party.dms.id", DMUuid),
+    "getCampaignsByDMUuid"
+  )
+  .andThen((data) => data.length === 0
+    ? errAsync({
+        message: `No campaigns found for DM with UUID ${DMUuid}`,
+        code: "NOT_FOUND" as const,
+      })
+    : okAsync(data)
+  )
+  .map((parties) => 
+    parties.flatMap((party) =>
+      party.party_campaigns.map((partyCampaign) => ({
+        ...partyCampaign.campaigns,
+      }))
+    )
+  )
+  .map((campaigns) => {
+    // Remove duplicates based on campaign id
+    const uniqueCampaigns = new Map<string, typeof campaigns[0]>();
+    campaigns.forEach((campaign) => {
+      if (!uniqueCampaigns.has(campaign.id)) {
+        uniqueCampaigns.set(campaign.id, campaign);
+      }
+    });
+    return Array.from(uniqueCampaigns.values());
+  });

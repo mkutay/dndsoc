@@ -21,7 +21,7 @@ import { Tables } from "@/types/database.types";
 import { adminRoleEditSchema } from "@/config/admin-schema";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { rolesLabel } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
 import { updateRole } from "@/server/roles";

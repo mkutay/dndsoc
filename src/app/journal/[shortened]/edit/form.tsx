@@ -28,7 +28,7 @@ import { journalAllEditSchema } from "@/config/journal-schema";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { convertToShortened } from "@/utils/formatting";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { Calendar } from "@/components/ui/calendar";
 import { updateJournalAll } from "@/server/journal";

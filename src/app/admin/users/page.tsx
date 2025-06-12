@@ -6,7 +6,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { rolesLabel } from "@/types/full-database.types";
-import { getUsers } from "@/lib/users";
+import { runQuery } from "@/utils/supabase-run";
 
 export const metadata: Metadata = {
   title: "Admin View: All of Our Users",
@@ -44,3 +44,9 @@ export default async function Page() {
     </div>
   );
 }
+
+const getUsers = () => 
+  runQuery((supabase) => supabase
+    .from("users")
+    .select("*, roles(*)")
+  );

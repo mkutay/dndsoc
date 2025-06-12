@@ -4,11 +4,21 @@ import { cache } from "react";
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
 import { Parties } from "@/components/campaigns/parties";
 import { ErrorPage } from "@/components/error-page";
-import { getCampaign } from "@/lib/campaigns";
 import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
+import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
+
+export const getCampaign = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("campaigns")
+      .select("*, party_campaigns(*, parties!inner(*))")
+      .eq("shortened", shortened)
+      .single(),
+    "getCampaign"
+  );
 
 const cachedGetCampaign = cache(getCampaign);
 

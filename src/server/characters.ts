@@ -10,9 +10,8 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
-import { deleteCharacterClass, getCharacterByShortened, upsertCharacterClass } from "@/lib/characters";
+import { deleteCharacterClass } from "@/lib/characters";
 import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "@/lib/races";
-import { insertClasses } from "@/lib/classes";
 
 export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>, playerUuid: string) =>
   resultAsyncToActionResult(
@@ -36,7 +35,12 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
   );
 
 export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterShortened: string) {
-  const character = getCharacterByShortened({ shortened: characterShortened });
+  const character = runQuery((supabase) => supabase
+    .from("characters")
+    .select("*, races(*), classes(*)")
+    .eq("shortened", characterShortened)
+    .single()
+  );
 
   const charactersResult = parseSchema(characterEditSchema, values)
     .asyncAndThen(() => runQuery((supabase) => supabase
@@ -81,14 +85,24 @@ const updateClasses = ({
   characterId: string;
 }) =>
   deleteCharacterClass({ characterId })
-    .andThen(() => insertClasses({ classes: classes.map((cls) => ({ name: cls.value })) }))
+    .andThen(() => 
+      runQuery((supabase) => supabase
+        .from("classes")
+        .upsert(
+          classes.map((cls) => ({ name: cls.value })),
+          { ignoreDuplicates: false, onConflict: "name" },
+        )
+        .select("*")
+      )
+    )
     .andThen((classes) =>
-      upsertCharacterClass({
-        classes: classes.map((cls) => ({
+      runQuery((supabase) => supabase
+        .from("character_class")
+        .upsert(classes.map((cls) => ({
           character_id: characterId,
           class_id: cls.id,
-        }))
-      })
+        })), { ignoreDuplicates: false })
+      )
     );
 
 export const removeCharacterFromParty = async ({

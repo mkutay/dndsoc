@@ -22,12 +22,6 @@ export const insertUser = (user: UserArgument) =>
     .single()
   );
 
-export const getUsers = () => 
-  runQuery((supabase) => supabase
-    .from("users")
-    .select("*, roles(*)")
-  );
-
 export const getUserByAuthUuid = ({ authUserUuid }: { authUserUuid: string }) => 
   runQuery((supabase) => supabase
     .from("users")

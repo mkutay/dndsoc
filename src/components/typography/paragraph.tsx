@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import Link from "next/link";
 import { ComponentProps } from "react";
 

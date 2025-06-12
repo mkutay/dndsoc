@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 
 export function TypographyH1({ children, className }: { children: React.ReactNode, className?: string }) {
   return (

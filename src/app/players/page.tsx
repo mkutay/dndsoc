@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { Player } from "@/types/full-database.types";
 import { truncateText } from "@/utils/formatting";
-import { getPlayers } from "@/lib/players";
+import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
@@ -68,3 +68,12 @@ function PlayerCard({ player }: { player: Player }) {
     </Card>
   );
 }
+
+const getPlayers = () => 
+  runQuery<Player[]>(
+    supabase => 
+      supabase
+        .from("players")
+        .select("*, users(*), received_achievements_player(*, achievements(*))"),
+    "getPlayers"
+  );

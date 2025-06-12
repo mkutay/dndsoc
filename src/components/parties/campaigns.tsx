@@ -38,7 +38,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { addCampaignToParty, removeCampaignFromParty } from "@/server/campaigns";
 
 type Campaign = Tables<"campaigns">;

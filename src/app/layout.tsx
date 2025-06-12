@@ -7,7 +7,7 @@ import { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, 
 import { NavBar } from "@/components/nav-bar/nav-bar";
 import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import "@/app/globals.css";
 
 const defaultUrl = process.env.PRODUCTION_SITE_URL

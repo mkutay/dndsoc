@@ -41,7 +41,7 @@ import { Input } from "@/components/ui/input";
 import { Tables } from "@/types/database.types";
 import { createJournal } from "@/server/journal";
 import { actionResultMatch } from "@/types/error-typing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
 
 export function CreateJournal({

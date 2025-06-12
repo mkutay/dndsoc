@@ -34,7 +34,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tables } from "@/types/database.types";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
 
 type Party = Tables<"parties">;

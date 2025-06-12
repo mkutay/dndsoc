@@ -17,7 +17,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Tables } from "@/types/database.types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { DialogFooter } from "@/components/ui/dialog";

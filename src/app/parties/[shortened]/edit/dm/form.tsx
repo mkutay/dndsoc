@@ -44,7 +44,7 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { partyDMEditSchema } from "@/config/parties";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { updateDMParty } from "@/server/parties";
 
 type Campaign = {

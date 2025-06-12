@@ -37,24 +37,6 @@ export const upsertPlayer = (player: PlayerArgument) =>
       .single()
   );
 
-export const getPlayers = () => 
-  runQuery<Player[]>(
-    supabase => 
-      supabase
-        .from("players")
-        .select("*, users(*), received_achievements_player(*, achievements(*))"),
-    "getPlayers"
-  );
-
-export const getPlayerAuthUserUuid = ({ authUserUuid }: { authUserUuid: string }) => 
-  runQuery<Player>((supabase) =>
-    supabase
-      .from("players")
-      .select(`*, users(*), received_achievements_player(*, achievements(*))`)
-      .eq("auth_user_uuid", authUserUuid)
-      .single()
-  );
-
 export const getPlayerByUsername = ({ username }: { username: string }) =>
   runQuery<ExtendedPlayer>((supabase) =>
     supabase
@@ -63,24 +45,6 @@ export const getPlayerByUsername = ({ username }: { username: string }) =>
       .eq("users.username", username)
       .single(),
     "getPlayerByUsername"
-  );
-
-export const getPlayerUser = () => 
-  getUser()
-  .andThen((user) => 
-    runQuery((supabase) => supabase
-      .from("players")
-      .select(`*, users(*)`)
-      .eq("auth_user_uuid", user.id)
-      .single()
-    )
-  )
-  .mapErr((error) => error.message.includes("Auth session missing") 
-    ? {
-        message: "User is not logged in",
-        code: "NOT_LOGGED_IN",
-      } as NotLoggedInError
-    : error
   );
 
 // Some thing to consider: the admin might not have a player -- so the "!inner" might fail
@@ -93,25 +57,6 @@ export const getPlayerRoleUser = () =>
       .eq("auth_user_uuid", user.id)
       .single(),
       "getPlayerRoleUser"
-    )
-  )
-  .mapErr((error) => error.message.includes("Auth session missing") 
-    ? {
-        message: "User is not logged in",
-        code: "NOT_LOGGED_IN",
-      } as NotLoggedInError
-    : error
-  );
-
-export const getDMRoleUser = () =>
-  getUser()
-  .andThen((user) =>
-    runQuery((supabase) => supabase
-      .from("users")
-      .select(`*, roles!inner(*), dms!inner(*)`)
-      .eq("auth_user_uuid", user.id)
-      .single(),
-      "getDMRoleUser"
     )
   )
   .mapErr((error) => error.message.includes("Auth session missing") 

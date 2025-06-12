@@ -28,7 +28,7 @@ import { CalendarIcon, MinusCircle, PlusCircle, RefreshCcw } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea";
 import { convertToShortened } from "@/utils/formatting";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/styling";
 import { format } from "date-fns";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { editPoll } from "@/server/polls";
