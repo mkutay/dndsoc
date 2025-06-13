@@ -9,13 +9,13 @@ import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
 import { ReceivedAchievementsDM } from "@/types/full-database.types";
 import { TypographyH2 } from "@/components/typography/headings";
-import { DMAchievementCards } from "@/components/dm-achievements";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
 import { getDMByUsername } from "@/lib/dms";
 import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
 import { runQuery } from "@/utils/supabase-run";
+import { AchievementCards } from "@/components/achievement-cards";
 
 export const dynamic = "force-dynamic";
 
@@ -90,6 +90,7 @@ export default async function Page({ params }:
           {ownsDM && <EditButton href={`/dms/${username}/edit`} />}
         </div>
       </div>
+      <DMAchievements receivedAchievements={dm.received_achievements_dm} />
       <Parties
         DMUuid={dm.id}
         ownsDM={ownsDM}
@@ -97,7 +98,6 @@ export default async function Page({ params }:
         allParties={parties?.value}
       />
       <Campaigns DMUuid={dm.id} />
-      <DMAchievements receivedAchievements={dm.received_achievements_dm} />
     </div>
   );
 }
@@ -128,7 +128,7 @@ function DMAchievements({ receivedAchievements }: { receivedAchievements: Receiv
   return (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <DMAchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} />
     </>
   )
 }

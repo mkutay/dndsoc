@@ -14,6 +14,8 @@ import { EditButton } from "@/components/edit-button";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
 import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
+import { ReceivedAchievementsCharacter } from "@/types/full-database.types";
+import { AchievementCards } from "@/components/achievement-cards";
 
 export const dynamic = "force-dynamic";
 
@@ -98,11 +100,21 @@ export default async function Page({ params }:
           {ownsCharacter && <EditButton href={`/characters/${shortened}/edit`} />}
         </div>
       </div>
-
+      <CharacterAchievements receivedAchievements={character.received_achievements_character} />
       <Campaigns characterUuid={character.id} />
-      {/* Add achievements */}
     </div>
   );
+}
+
+export const CharacterAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsCharacter[] }) => {
+  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+  
+  return (
+    <>
+      <TypographyH2 className="mt-6">Achievements</TypographyH2>
+      <AchievementCards receivedAchievements={receivedAchievements} />
+    </>
+  )
 }
 
 async function Campaigns({ characterUuid }: { characterUuid: string }) {

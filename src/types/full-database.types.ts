@@ -18,6 +18,10 @@ export type ReceivedAchievementsDM = Tables<"received_achievements_dm"> & {
   achievements: Tables<"achievements">;
 };
 
+export type ReceivedAchievementsCharacter = Tables<"received_achievements_character"> & {
+  achievements: Tables<"achievements">;
+};
+
 export type Character = Tables<"characters"> & {
   races: Tables<"races">[];
   classes: Tables<"classes">[];

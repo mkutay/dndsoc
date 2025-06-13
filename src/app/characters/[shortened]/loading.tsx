@@ -22,10 +22,18 @@ export default function Loading() {
         </div>
       </div>
 
+      {/* Achievements section */}
+      <Skeleton className="h-10 w-60 mt-8" />
+      <div className="flex flex-wrap gap-4 mt-6">
+        <Skeleton className="h-16 w-72 rounded-2xl" />
+        <Skeleton className="h-16 w-80 rounded-2xl" />
+        <Skeleton className="h-16 w-80 rounded-2xl" />
+      </div>
+
       {/* Campaigns section */}
       <Skeleton className="h-10 w-60 mt-8" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        <Skeleton className="h-60 w-full rounded-md" />
+        <Skeleton className="h-80 w-full rounded-md" />
         <Skeleton className="h-60 w-full rounded-md" />
         <Skeleton className="h-60 w-full rounded-md hidden lg:block" />
       </div>

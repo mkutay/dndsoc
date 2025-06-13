@@ -13,6 +13,14 @@ export default function Loading() {
           <Skeleton className="h-10 w-20 mt-2" /> {/* Edit button */}
         </div>
       </div>
+
+      {/* Achievements section */}
+      <Skeleton className="h-10 w-40 mt-6" /> {/* "Achievements" heading */}
+      <div className="flex flex-wrap gap-4 mt-6">
+        <Skeleton className="h-16 w-64 rounded-2xl" />
+        <Skeleton className="h-16 w-72 rounded-2xl" />
+        <Skeleton className="h-16 w-64 rounded-2xl" />
+      </div>
       
       {/* Parties section */}
       <div className="mt-6 flex flex-col">
@@ -30,14 +38,6 @@ export default function Loading() {
         <Skeleton className="h-60 w-full rounded-md" />
         <Skeleton className="h-60 w-full rounded-md" />
         <Skeleton className="h-60 w-full rounded-md hidden lg:block" />
-      </div>
-      
-      {/* Achievements section */}
-      <Skeleton className="h-10 w-40 mt-6" /> {/* "Achievements" heading */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        <Skeleton className="h-48 w-full rounded-md" />
-        <Skeleton className="h-48 w-full rounded-md" />
-        <Skeleton className="h-48 w-full rounded-md hidden lg:block" />
       </div>
     </div>
   );

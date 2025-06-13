@@ -27,9 +27,11 @@ export default function Loading() {
       {/* Achievements section */}
       <div className="mt-8">
         <Skeleton className="h-8 w-48 mb-4" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Skeleton className="h-48 w-full rounded-md" />
-          <Skeleton className="h-48 w-full rounded-md" />
+        <div className="flex flex-wrap gap-4 mt-6">
+          <Skeleton className="h-16 w-64 rounded-2xl" />
+          <Skeleton className="h-16 w-72 rounded-2xl" />
+          <Skeleton className="h-16 w-56 rounded-2xl" />
+          <Skeleton className="h-16 w-68 rounded-2xl" />
         </div>
       </div>
       

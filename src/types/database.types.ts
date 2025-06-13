@@ -11,19 +11,43 @@ export type Database = {
     Tables: {
       achievements: {
         Row: {
+          category: string | null
           description: string
+          description_long: string | null
+          difficulty: Database["public"]["Enums"]["difficulty"] | null
           id: string
+          is_hidden: boolean
+          max_unlocks: number
           name: string
+          points: number | null
+          shortened: string
+          type: Database["public"]["Enums"]["achievement_type"]
         }
         Insert: {
+          category?: string | null
           description: string
+          description_long?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty"] | null
           id?: string
+          is_hidden?: boolean
+          max_unlocks?: number
           name: string
+          points?: number | null
+          shortened: string
+          type: Database["public"]["Enums"]["achievement_type"]
         }
         Update: {
+          category?: string | null
           description?: string
+          description_long?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty"] | null
           id?: string
+          is_hidden?: boolean
+          max_unlocks?: number
           name?: string
+          points?: number | null
+          shortened?: string
+          type?: Database["public"]["Enums"]["achievement_type"]
         }
         Relationships: []
       }
@@ -136,7 +160,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "character_races_race_id_fkey"
+            foreignKeyName: "character_race_race_id_fkey"
             columns: ["race_id"]
             isOneToOne: false
             referencedRelation: "races"
@@ -193,14 +217,17 @@ export type Database = {
         Row: {
           id: string
           name: string
+          rules_url: string | null
         }
         Insert: {
           id?: string
           name: string
+          rules_url?: string | null
         }
         Update: {
           id?: string
           name?: string
+          rules_url?: string | null
         }
         Relationships: []
       }
@@ -521,16 +548,58 @@ export type Database = {
         Row: {
           id: string
           name: string
+          rules_url: string | null
         }
         Insert: {
           id?: string
           name: string
+          rules_url?: string | null
         }
         Update: {
           id?: string
           name?: string
+          rules_url?: string | null
         }
         Relationships: []
+      }
+      received_achievements_character: {
+        Row: {
+          achievement_uuid: string
+          character_uuid: string
+          count: number
+          first_received_date: string
+          last_received_date: string
+        }
+        Insert: {
+          achievement_uuid: string
+          character_uuid: string
+          count?: number
+          first_received_date: string
+          last_received_date: string
+        }
+        Update: {
+          achievement_uuid?: string
+          character_uuid?: string
+          count?: number
+          first_received_date?: string
+          last_received_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "received_achievements_characters_achievement_uuid_fkey"
+            columns: ["achievement_uuid"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "received_achievements_characters_character_uuid_fkey"
+            columns: ["character_uuid"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       received_achievements_dm: {
         Row: {
@@ -567,13 +636,6 @@ export type Database = {
             columns: ["dm_uuid"]
             isOneToOne: false
             referencedRelation: "dms"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "received_achievements_dm_player_uuid_fkey"
-            columns: ["dm_uuid"]
-            isOneToOne: false
-            referencedRelation: "players"
             referencedColumns: ["id"]
           },
         ]
@@ -730,6 +792,8 @@ export type Database = {
       }
     }
     Enums: {
+      achievement_type: "dm" | "player" | "character"
+      difficulty: "easy" | "medium" | "hard" | "impossible"
       role: "admin" | "dm" | "player"
     }
     CompositeTypes: {
@@ -846,6 +910,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      achievement_type: ["dm", "player", "character"],
+      difficulty: ["easy", "medium", "hard", "impossible"],
       role: ["admin", "dm", "player"],
     },
   },

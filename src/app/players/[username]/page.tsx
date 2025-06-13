@@ -2,13 +2,15 @@ import Image from "next/image";
 import { cache } from "react";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { PlayerAchievements } from "@/components/player-achievements-section";
 import { Characters } from "@/components/players/characters";
 import { Campaigns } from "@/components/players/campaigns";
 import { EditButton } from "@/components/edit-button";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 import { getPublicUrlByUuid } from "@/lib/storage";
+import { TypographyH2 } from "@/components/typography/headings";
+import { AchievementCards } from "@/components/achievement-cards";
+import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
+import { ReceivedAchievementsPlayer } from "@/types/full-database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -85,4 +87,15 @@ export default async function Page({ params }:
       <Campaigns playerUuid={player.id} />
     </div>
   );
+}
+
+export const PlayerAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsPlayer[] }) => {
+  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+  
+  return (
+    <>
+      <TypographyH2 className="mt-6">Achievements</TypographyH2>
+      <AchievementCards receivedAchievements={receivedAchievements} />
+    </>
+  )
 }
