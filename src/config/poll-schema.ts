@@ -8,7 +8,9 @@ export const createPollSchema = z.object({
 
 export const editPollSchema = createPollSchema.extend({
   expiresAt: z.date().nullable(),
-  shortened: z.string().optional(),
+  shortened: z.string()
+    .regex(/^[a-zA-Z0-9]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$/, "Shortened value must start and end with letters or numbers, and can contain underscores and dashes.")
+    .optional(),
   options: z.array(z.object({
     text: z.string().min(1, "Option text is required.").max(250, "Option text must be 250 characters or less."),
     id: z.string().uuid().optional(),

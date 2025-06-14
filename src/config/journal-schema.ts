@@ -16,7 +16,9 @@ export const journalAllEditSchema = z.object({
   title: z.string()
     .min(1, "Title is required.")
     .max(100, "Title must be 100 characters or less."),
-  shortened: z.string().optional(),
+  shortened: z.string()
+    .regex(/^[a-zA-Z0-9]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$/, "Shortened value must start and end with letters or numbers, and can contain underscores and dashes.")
+    .optional(),
   entries: z.array(z.object({
     partyId: z.string().min(1, "Party ID is required."),
     text: entryTextSchema,

@@ -13,6 +13,7 @@ export function formatRaces(races: Tables<"races">[] | { name: string }[]) {
 // All lowercase
 export const convertToShortened = (name: string) => {
   return name
+    .trim()
     .replace(/ /g, "-")
     .replace(/[^a-zA-Z0-9\-]/g, "")
     .toLowerCase();

@@ -7,7 +7,7 @@ const passwordSchema = z.string()
 const usernameSchema = z.string()
   .min(1, "Username must be at least one character long.")
   .max(20, "Username must be at most 20 characters long.")
-  .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores.");
+  .regex(/^[a-zA-Z0-9]([a-zA-Z0-9_-]*[a-zA-Z0-9])?$/, "Username must start and end with letters or numbers, and can contain underscores and dashes.")
 
 const nameSchema = z.string()
   .min(1, "Name must be at least one character long.")
@@ -16,7 +16,6 @@ const nameSchema = z.string()
 const emailSchema = z.string()
   .email("Email must be a valid email address.")
   .max(100, "Email must be at most 100 characters long.")
-  .endsWith("@kcl.ac.uk", "Email must end with '@kcl.ac.uk'.");
 
 export const forgotPasswordFormSchema = z.object({
   email: emailSchema,
@@ -33,7 +32,9 @@ export const signUpFormSchema = z.object({
     .startsWith("K", "K-number must start with 'K'."),
   username: usernameSchema,
   name: nameSchema,
-}).extend(signInFormSchema.shape);
+  email: emailSchema.endsWith("@kcl.ac.uk", "Email must end with '@kcl.ac.uk'."),
+  password: passwordSchema,
+});
 
 export const resetPasswordSchema = z.object({
   newPassword: passwordSchema,
