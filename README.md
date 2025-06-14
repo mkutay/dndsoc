@@ -50,6 +50,9 @@ It provides a centralised platform for:
    This starts up the Supabase local server with the migrations under
    `/supabase/migrations` and the data in `/supabase/seed.sql`.
 
+   You can sign in with three accounts to test the system out: `admin@kcl.ac.uk`, `player@kcl.ac.uk`,
+   and `dm@kcl.ac.uk`, with the password of `123456`. Obviously, this is just sample information and is not _real_.
+
 4. **Environment Variables**
 
    Populate `.env.example` file in `.env.local` with the information given by the `supabase start` command.
