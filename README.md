@@ -26,7 +26,7 @@ It provides a centralised platform for:
 ### Prerequisites
 
 - [Bun](https://bun.sh/) (recommended) or Node.js 18+
-- Supabase account and project
+- Supabase CLI
 
 ### Development Setup
 
@@ -41,31 +41,27 @@ It provides a centralised platform for:
    bun install
    ```
 
-3. **Environment Variables**
-   
-   Create a `.env.local` file in the root directory with the following variables:
-   ```env
-   # Supabase Configuration (Required)
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABASE_SERVICE_KEY=your_supabase_service_role_key
+3. **Setup DB**
+   ```bash
+   supabase start
+   supabase db reset --local
+   ```
+   This starts up the Supabase local server with the migrations under
+   `/supabase/migrations` and the data in `/supabase/seed.sql`.
 
-   # Site Configuration
-   PRODUCTION_SITE_URL=your_production_domain
-
-   # Test Configuration (for running tests)
-   TEST_USER_EMAIL=test_user_email
-   TEST_USER_PASSWORD=test_user_password
+4. **Environment Variables**
+   Populate `.env.example` file in `.env.local` with the information given by the `supabase start` command.
+   ```bash
+   cp .env.example .env.local
    ```
 
-   **Need access to environment variables?** Contact me (Kutay) for development keys. *(The DM holds the sacred scrolls!)*
-
-4. **Start the development server**
+5. **Start the development server**
    ```bash
    bun dev
    ```
 
-5. **Build for production** 
+6. **Build for production** 
+   Test the types and run the linter to check for errors overall.
    ```bash
    BUILDING=true bun run build
    ```
@@ -132,30 +128,16 @@ src/
 
 ## Contributing
 
-Contributions are welcome! Please follow these guidelines
+Contributions are welcome! Please be respectful and follow obvious design patterns.
 
-1. **Code Style**: Follow the existing patterns and TypeScript conventions
-2. **Error Handling**: Use Neverthrow for all async operations
-3. **Testing**: Add tests for new features
-4. **Documentation**: Update README and code comments
-5. **Respect**: Be respectful and follow obvious design patterns
+If you have changed the schema of the DB, then make sure to run the following command to
+add the new changes into the repo. 
 
-### Development Workflow
+```bash
+supabase db diff -f add_new_feature
+```
 
-
-1. Fork the repository
-2. Create a feature branch
-3. Make changes following the code quality standards
-4. Test your changes thoroughly
-5. Submit a pull request with a clear description
-
-## Contact
-
-For questions about development, environment variables, or contributions, contact me (Kutay).
-
-## License
-
-This project is licensed under the terms specified in the LICENSE file (GNU GPL V3).
+After that, you are welcome to create a PR, where I'll review your changes.
 
 ---
 
