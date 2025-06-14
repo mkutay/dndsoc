@@ -63,7 +63,17 @@ export const upload = ({
         code: "STORAGE_UPLOAD_ERROR",
       } as UploadError)
       : okAsync(response.data)
-    );
+    )
+    .andThen((data) => runQuery((supabase) =>
+      supabase
+        .from("images")
+        .insert({
+          id: data.path,
+          name: data.path,
+        })
+        .select("*")
+        .single()
+    ))
 
   return storage;
 }
