@@ -16,6 +16,7 @@ import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
 import { ReceivedAchievementsCharacter } from "@/types/full-database.types";
 import { AchievementCards } from "@/components/achievement-cards";
+import { PartyCard } from "@/components/party-card";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +68,8 @@ export default async function Page({ params }:
   const imageUrlResult = character.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: character.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
+  const parties = Array.from(new Set(character.character_party.map((party) => party.parties)));
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
@@ -102,6 +105,15 @@ export default async function Page({ params }:
       </div>
       <CharacterAchievements receivedAchievements={character.received_achievements_character} />
       <Campaigns characterUuid={character.id} />
+      <TypographyH2 className="mt-6">Parties</TypographyH2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+        {parties.map((party) => (
+          <PartyCard
+            key={party.id}
+            party={party}
+          />
+        ))}
+      </div>
     </div>
   );
 }
