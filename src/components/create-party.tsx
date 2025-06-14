@@ -28,7 +28,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
-import { createPartySchema } from "@/config/create-party-schema";
+import { createPartySchema } from "@/config/parties";
 import { insertParty } from "@/server/parties";
 
 export function CreateParty() {

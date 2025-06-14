@@ -54,9 +54,9 @@ export function SignUpForm() {
         }, 3000);
       },
       (error) => toast({
-      title: "Sign Up Failed",
-      description: "Please try again. " + error.message,
-      variant: "destructive",
+        title: "Sign Up Failed",
+        description: "Please try again. " + error.message,
+        variant: "destructive",
       }),
     );
   };

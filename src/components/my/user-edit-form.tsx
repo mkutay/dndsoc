@@ -18,7 +18,7 @@ import {
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { userEditSchema } from "@/config/user-edit-schema";
+import { userEditSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
 import { updateUser } from "@/server/users";
 import { Edit } from "lucide-react";

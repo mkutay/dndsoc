@@ -1,13 +1,16 @@
 import { z } from "zod";
 
+const aboutSchema = z.string().max(1000, "About must be 1000 characters or less.");
+const nameSchema = z.string().min(1, "Name is required.").max(60, "Name must be less than 60 characters.");
+
 export const partyPlayerEditSchema = z.object({
-  about: z.string().max(200, "About must be 200 characters or less."),
+  about: aboutSchema,
 });
 
 export const partyDMEditSchema = z.object({
-  about: z.string().max(500, "About must be 500 characters or less."),
+  about: aboutSchema,
+  name: nameSchema,
   level: z.number().min(1, "Level must be at least 1.").max(20, "Level must be at most 20."),
-  name: z.string().max(50, "Name must be 50 characters or less.").min(1, "Name must be at least 1 character."),
   characters: z.array(z.object({
     id: z.string().min(1, "Character is required."),
   })).min(1, "At least one character is required.").refine(
@@ -29,4 +32,8 @@ export const partyDMEditSchema = z.object({
   selectedCharacter: z.string().optional(), // For the combobox
   selectedCampaign: z.string().optional(), // For the combobox
   selectedDM: z.string().optional(), // For the combobox
+});
+
+export const createPartySchema = z.object({
+  name: nameSchema,
 });

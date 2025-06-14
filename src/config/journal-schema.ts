@@ -1,25 +1,33 @@
 import { z } from "zod";
 
+const titleSchema = z.string()
+  .min(1, "Title is required.")
+  .max(100, "Title must be 100 characters or less.");
+
+const entryTextSchema = z.string()
+  .min(1, "Entry text is required.")
+  .max(2000, "Entry text must be 2000 characters or less.");
+
 export const journalAllEditSchema = z.object({
-  excerpt: z.string().min(1, "Excerpt is required."),
+  excerpt: titleSchema,
   date: z.date({
     required_error: "Date is required."
   }),
-  title: z.string().min(1, "Title is required."),
+  title: z.string()
+    .min(1, "Title is required.")
+    .max(100, "Title must be 100 characters or less."),
   shortened: z.string().optional(),
   entries: z.array(z.object({
     partyId: z.string().min(1, "Party ID is required."),
-    text: z.string().min(1, "Entry text is required."),
+    text: entryTextSchema,
   })).min(1, "At least one entry is required.")
 });
 
 export const journalPartyEntryEditSchema = z.object({
-  text: z.string().min(1, "Entry text is required.")
+  text: entryTextSchema,
 });
 
 export const journalCreateSchema = z.object({
-  title: z.string().min(1, "Title is required."),
-  campaignId: z.string({
-    required_error: "Campaign is required.",
-  }).uuid(),
+  title: titleSchema,
+  campaignId: z.string().uuid("Campaign is required."),
 });

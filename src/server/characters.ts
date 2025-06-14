@@ -4,8 +4,8 @@ import { okAsync, ResultAsync } from "neverthrow";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-import { addCharacterSchema } from "@/config/add-character-schema";
-import { characterEditSchema } from "@/config/character-edit-schema";
+import { addCharacterSchema } from "@/config/character-schema";
+import { characterEditSchema } from "@/config/character-schema";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";

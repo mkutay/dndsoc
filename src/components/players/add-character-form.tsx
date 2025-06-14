@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { addCharacterSchema } from "@/config/add-character-schema";
+import { addCharacterSchema } from "@/config/character-schema";
 import { actionResultMatch } from "@/types/error-typing";
 import { insertCharacter } from "@/server/characters";
 

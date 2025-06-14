@@ -5,7 +5,7 @@ import { okAsync } from "neverthrow";
 import { z } from "zod";
 
 import { partyDMEditSchema, partyPlayerEditSchema } from "@/config/parties";
-import { createPartySchema } from "@/config/create-party-schema";
+import { createPartySchema } from "@/config/parties";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { convertToShortened } from "@/utils/formatting";
 import { parseSchema } from "@/utils/parse-schema";

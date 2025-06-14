@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { userEditSchema } from "@/config/user-edit-schema";
+import { userEditSchema } from "@/config/auth-schemas";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 

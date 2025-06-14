@@ -1,26 +1,49 @@
 import { z } from "zod";
 
+const passwordSchema = z.string()
+  .min(6, "Password must be at least 6 characters long.")
+  .max(100, "Password must be at most 100 characters long.");
+
+const usernameSchema = z.string()
+  .min(1, "Username must be at least one character long.")
+  .max(20, "Username must be at most 20 characters long.")
+  .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores.");
+
+const nameSchema = z.string()
+  .min(1, "Name must be at least one character long.")
+  .max(60, "Name must be at most 60 characters long.");
+
+const emailSchema = z.string()
+  .email("Email must be a valid email address.")
+  .max(100, "Email must be at most 100 characters long.")
+  .endsWith("@kcl.ac.uk", "Email must end with '@kcl.ac.uk'.");
+
 export const forgotPasswordFormSchema = z.object({
-  email: z.string().email(),
+  email: emailSchema,
 });
 
 export const signInFormSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6).max(100),
+  email: emailSchema,
+  password: passwordSchema,
 });
 
 export const signUpFormSchema = z.object({
-  knumber: z.string().min(9).max(9).startsWith("K", "K-number must start with 'K'."),
-  username: z.string().min(2).max(50).regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores."),
-  name: z.string().min(2).max(60),
-  email: z.string().email(),
-  password: z.string().min(6).max(100),
-});
+  knumber: z.string()
+    .length(9, "K-number must be have 8 digits and start with 'K'.")
+    .startsWith("K", "K-number must start with 'K'."),
+  username: usernameSchema,
+  name: nameSchema,
+}).extend(signInFormSchema.shape);
 
 export const resetPasswordSchema = z.object({
-  newPassword: z.string().min(6).max(100),
-  confirmPassword: z.string().min(6).max(100),
+  newPassword: passwordSchema,
+  confirmPassword: passwordSchema,
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Both passwords must match.",
   path: ["confirmPassword"],
+});
+
+export const userEditSchema = z.object({
+  username: usernameSchema,
+  name: nameSchema,
 });
