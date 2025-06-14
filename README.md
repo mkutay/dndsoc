@@ -46,11 +46,14 @@ It provides a centralised platform for:
    supabase start
    supabase db reset --local
    ```
+
    This starts up the Supabase local server with the migrations under
    `/supabase/migrations` and the data in `/supabase/seed.sql`.
 
 4. **Environment Variables**
+
    Populate `.env.example` file in `.env.local` with the information given by the `supabase start` command.
+
    ```bash
    cp .env.example .env.local
    ```
@@ -61,7 +64,9 @@ It provides a centralised platform for:
    ```
 
 6. **Build for production** 
+
    Test the types and run the linter to check for errors overall.
+   
    ```bash
    BUILDING=true bun run build
    ```
@@ -138,6 +143,8 @@ supabase db diff -f add_new_feature
 ```
 
 After that, you are welcome to create a PR, where I'll review your changes.
+
+For more information about the Supabase migrations, [see](https://supabase.com/docs/guides/deployment/managing-environments).
 
 ---
 
