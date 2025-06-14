@@ -57,17 +57,18 @@ export const completeSignUp = () => {
     auth_user_uuid: user.id,
   }));
 
-  const insertedRole = user.andThen((user) => insertRole({
+  const insertedRole = insertedUser.andThen((user) => insertRole({
     role: "player",
-    auth_user_uuid: user.id,
+    auth_user_uuid: user.auth_user_uuid,
   }));
 
-  const insertedPlayer = user.andThen((user) => insertPlayer({
-    auth_user_uuid: user.id,
-    level: 1,
-  }));
-
-  return ResultAsync.combine([insertedUser, insertedRole, insertedPlayer]);
+  return insertedRole
+    .andThen((user) => 
+      insertPlayer({
+        auth_user_uuid: user.auth_user_uuid,
+        level: 1,
+      })
+    );
 };
 
 type SignUpUserError = {

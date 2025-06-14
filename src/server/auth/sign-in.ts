@@ -36,7 +36,7 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
           } as SignInError)
       )
       .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
-      .orTee((userError) => userError.code === "NOT_FOUND"
+      .orElse((userError) => userError.code === "NOT_FOUND"
         ? completeSignUp()
         : errAsync(userError)
       )

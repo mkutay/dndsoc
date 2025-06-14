@@ -42,13 +42,11 @@ export function SignInForm() {
 
     actionResultMatch(result,
       () => redirect(`/my`),
-      (error) => error.code === "NOT_FOUND"
-        ? redirect(`/my`)
-        : toast({
-          title: "Sign In Failed",
-          description: "Please try again. " + error.message,
-          variant: "destructive",
-        })
+      (error) => toast({
+        title: "Sign In Failed",
+        description: "Please try again. " + error.message,
+        variant: "destructive",
+      })
     );
   };
 

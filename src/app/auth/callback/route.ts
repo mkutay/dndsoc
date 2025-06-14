@@ -28,7 +28,7 @@ export async function GET(request: Request) {
       console.error("Error completing sign up: " + completed.error.message);
       return NextResponse.redirect(`${origin}/sign-in`);
     } else {
-      return NextResponse.redirect(`${origin}/players`);
+      return NextResponse.redirect(`${origin}/my`);
     }
   }
 
@@ -37,5 +37,5 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/players`);
+  return NextResponse.redirect(`${origin}/my`);
 }
