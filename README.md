@@ -151,6 +151,15 @@ For more information about the Supabase migrations, [see](https://supabase.com/d
 
 ---
 
-Built with <3 for the KCL DnD Society by Kutay and contributors.
+Built with <3 for the KCL DnD Society by [Kutay](https://www.mkutay.dev) and contributors.
 
 *May your code compile and your dice roll high!*
+
+<p align="center">
+  <img
+    src="/public/logo-light.png"
+    alt="DnD Society Logo Image"
+    width="20%"
+    height="auto"
+  >
+</p>
