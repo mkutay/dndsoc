@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
+import { truncateText } from "@/utils/formatting";
 
 export function ProfileLinksClient({
   username,
@@ -22,11 +23,13 @@ export function ProfileLinksClient({
     level: number;
     achievementsCount: number;
     campaignsCount: number;
+    about: string;
   };
   player: {
     imageUrl: string | null;
     level: number;
     achievementsCount: number;
+    about: string;
   };
 }) {
   const hasDM = dm !== undefined;
@@ -36,17 +39,20 @@ export function ProfileLinksClient({
     level: number;
     achievementsCount: number;
     campaignsCount?: number;
+    about: string;
   }>(hasDM ? {
     role: "dm",
     imageUrl: dm.imageUrl,
     level: dm.level,
     achievementsCount: dm.achievementsCount,
     campaignsCount: dm.campaignsCount,
+    about: dm.about,
   } : {
     role: "player",
     imageUrl: player.imageUrl,
     level: player.level,
     achievementsCount: player.achievementsCount,
+    about: player.about,
   });
 
   const setDM = () => {
@@ -57,6 +63,7 @@ export function ProfileLinksClient({
       level: dm.level,
       achievementsCount: dm.achievementsCount,
       campaignsCount: dm.campaignsCount,
+      about: dm.about,
     });
   };
 
@@ -66,8 +73,11 @@ export function ProfileLinksClient({
       imageUrl: player.imageUrl,
       level: player.level,
       achievementsCount: player.achievementsCount,
+      about: player.about,
     });
   };
+
+  const roleText = profile.role === "dm" ? "DM" : "Player";
 
   return (
     <Card>
@@ -77,40 +87,43 @@ export function ProfileLinksClient({
           Your Profile
         </CardTitle>
         <CardDescription>
-          Your public profile as a {profile.role === "dm" ? "DM" : "Player"}.
+          Your public profile as a {roleText}.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center gap-4">
+      <CardContent className="flex flex-col gap-4">
+        <div className="flex items-start gap-4">
           {profile.imageUrl ? (
             <Image
               src={profile.imageUrl}
               alt={`Profile image of ${name}`}
-              width={64}
-              height={64}
-              className="w-16 h-16 rounded-full object-cover border-2 border-border"
+              width={128}
+              height={128}
+              className="w-28 h-28 rounded-full object-cover border-2 border-border"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-border flex items-center justify-center">
+            <div className="w-28 h-28 rounded-full bg-border flex items-center justify-center">
               <User size={24} className="text-muted-foreground" />
             </div>
           )}
-          <div className="flex-1 min-w-0">
-            <TypographyLarge className="font-normal">{name}</TypographyLarge>
+          <div>
+            <TypographyLarge className="text-xl">{name}</TypographyLarge>
             <TypographySmall className="text-muted-foreground">
               Level {profile.level}
             </TypographySmall>
+            <p className="text-md mt-2">
+              {truncateText(profile.about, 100)}
+            </p>
           </div>
         </div>
 
-        {profile.achievementsCount > 0 ? <div className="flex items-center gap-2 px-4 rounded-lg">
+        {profile.achievementsCount > 0 ? <div className="flex items-center gap-2 px-4 rounded-lg mt-2">
           <Trophy size={20} className="text-amber-500" />
           <div className="flex sm:flex-row flex-col gap-2">
             <TypographySmall className="font-medium uppercase">
               {profile.achievementsCount} Achievement{profile.achievementsCount !== 1 ? 's' : ''}
             </TypographySmall>
             <TypographySmall className="text-muted-foreground">
-              Earned as {profile.role === "dm" ? "DM" : "Player"}
+              Earned as {roleText}
             </TypographySmall>
           </div>
         </div> : null}
@@ -130,16 +143,21 @@ export function ProfileLinksClient({
       <CardFooter className="w-full">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex sm:flex-row flex-col gap-2">
-            {profile.role === "player" && dm ? <Button variant="outline" className="w-full flex flex-row items-center gap-1" onClick={setDM}>
+            {profile.role === "player" && dm ? <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
               <Gamepad2 size={16} />
               View as DM
-            </Button> : profile.role !== "player" ? <Button variant="outline" className="w-full flex flex-row items-center gap-1" onClick={setPlayer}>
+            </Button> : profile.role !== "player" ? <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setPlayer}>
               <User size={16} />
               View as Player
             </Button> : null}
             <Button asChild variant="default" className="w-full">
               <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
-                Go to Public Profile
+                View {roleText} Profile
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="sm:w-fit w-full">
+              <Link href={`/${profile.role + "s"}/${username}/edit`} target="_blank">
+                Edit
               </Link>
             </Button>
           </div>

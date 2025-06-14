@@ -39,7 +39,7 @@ export async function MyParties({
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Crown size={20} />
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight font-headings">
+        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
           Parties You DM ({parties.length})
         </h3>
       </div>

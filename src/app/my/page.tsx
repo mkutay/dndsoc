@@ -37,8 +37,8 @@ export default async function Page() {
         <MyProfile user={user.users} />
       </div>
 
-      <div className="mt-12 space-y-12">
-        {characters.value.length !== 0 && <MyCharacters characters={characters.value} />}
+      <div className="mt-10 space-y-10">
+        <MyCharacters characters={characters.value} />
         {partiesDM.value.length !== 0 && <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0].dm_party[0].dm_id} />}
       </div>
     </div>

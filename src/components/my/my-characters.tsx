@@ -14,7 +14,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Tables } from "@/types/database.types";
 import { formatClasses, formatRaces, truncateText } from "@/utils/formatting";
-import { AddCharacterForm } from "../players/add-character-form";
+import { AddCharacterForm } from "@/components/players/add-character-form";
+import { getPlayerRoleUser } from "@/lib/players";
+import { ErrorPage } from "../error-page";
 
 interface MyCharactersProps {
   characters: (Tables<"characters"> & {
@@ -24,30 +26,15 @@ interface MyCharactersProps {
   })[];
 }
 
-export function MyCharacters({ characters }: MyCharactersProps) {
-  if (characters.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sword size={20} />
-            Your Characters
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <TypographyParagraph className="text-muted-foreground">
-            You haven&apos;t created any characters yet. Create your first character to start playing!
-          </TypographyParagraph>
-        </CardContent>
-      </Card>
-    );
-  }
+export async function MyCharacters({ characters }: MyCharactersProps) {
+  const player = characters.length === 0 ? await getPlayerRoleUser() : null;
+  if (player && player.isErr()) return <ErrorPage error={player.error} caller="/components/my/my-characters.tsx" />;
 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Sword size={20} />
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight font-headings">
+        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
           Your Characters ({characters.length})
         </h3>
       </div>
@@ -109,7 +96,7 @@ export function MyCharacters({ characters }: MyCharactersProps) {
                 You can add a new character to your player.
               </DialogDescription>
             </DialogHeader>
-            <AddCharacterForm playerUuid={characters[0].players.id} />
+            <AddCharacterForm playerUuid={player ? player.value.players.id : characters[0].players.id} />
           </DialogContent>
         </Dialog>
       </div>

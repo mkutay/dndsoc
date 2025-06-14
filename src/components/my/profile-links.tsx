@@ -32,6 +32,7 @@ export async function ProfileLinks({
       })
       return campaignIds.size;
     })(),
+    about: dm.value.about,
   } : undefined;
 
   return (
@@ -43,6 +44,7 @@ export async function ProfileLinks({
         imageUrl: playerImageUrl,
         level: player.value.level,
         achievementsCount: player.value.received_achievements_player.length,
+        about: player.value.about,
       }}
     />
   )
