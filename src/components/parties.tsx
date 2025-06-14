@@ -2,13 +2,12 @@
 
 import { useOptimistic, useTransition } from "react";
 
-import { TypographyH2 } from "@/components/typography/headings";
+import { addPartyToDM, removePartyFromDM } from "@/server/dms";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { AddParty } from "./add-party";
 import { CreateParty } from "./create-party";
-import { PartyCard } from "../party-card";
-import { addPartyToDM, removePartyFromDM } from "@/server/dms";
+import { PartyCard } from "./party-card";
 
 type Party = Tables<"parties">;
 
@@ -95,28 +94,25 @@ export function Parties({
     ) ?? [];
 
   return (
-    <div className="mt-6 flex flex-col">
-      <TypographyH2>Parties</TypographyH2>
-      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-        {sortedParties.map((party) => (
-          <PartyCard
-            key={party.id}
-            party={party}
-            ownsDM={ownsDM}
-            onRemove={() => handleRemoveParty(party)}
-            isLoading={isPending}
-            removeText="Don't DM this party anymore."
-          />
-        ))}
-        {ownsDM && <CreateParty />}
-        {ownsDM && availableParties.length > 0 && (
-          <AddParty
-            parties={availableParties}
-            onAdd={handleAddParty}
-            isLoading={isPending}
-          />
-        )}
-      </div>
+    <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
+      {sortedParties.map((party) => (
+        <PartyCard
+          key={party.id}
+          party={party}
+          ownsDM={ownsDM}
+          onRemove={() => handleRemoveParty(party)}
+          isLoading={isPending}
+          removeText="Don't DM this party anymore."
+        />
+      ))}
+      {ownsDM && <CreateParty />}
+      {ownsDM && availableParties.length > 0 && (
+        <AddParty
+          parties={availableParties}
+          onAdd={handleAddParty}
+          isLoading={isPending}
+        />
+      )}
     </div>
   );
 }

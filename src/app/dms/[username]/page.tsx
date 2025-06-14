@@ -4,7 +4,7 @@ import { cache } from "react";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { Parties } from "@/components/dms/parties";
+import { Parties } from "@/components/parties";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
 import { ReceivedAchievementsDM } from "@/types/full-database.types";
@@ -91,12 +91,15 @@ export default async function Page({ params }:
         </div>
       </div>
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
-      <Parties
-        DMUuid={dm.id}
-        ownsDM={ownsDM}
-        parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
-        allParties={parties?.value}
-      />
+      <div className="mt-6 flex flex-col">
+        <TypographyH2>Parties</TypographyH2>
+        <Parties
+          DMUuid={dm.id}
+          ownsDM={ownsDM}
+          parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
+          allParties={parties?.value}
+        />
+      </div>
       <Campaigns DMUuid={dm.id} />
     </div>
   );

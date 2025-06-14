@@ -40,5 +40,5 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
         ? completeSignUp()
         : errAsync(userError)
       )
-      .map((user) => ({ username: user.username }))
+      .andThen(() => okAsync())
   );

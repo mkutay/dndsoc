@@ -13,3 +13,17 @@ export const getPartyByShortened = ({ shortened }: { shortened: string }) =>
     .eq("shortened", shortened)
     .single(),
   );
+
+export const getPartiesByDMAuthUuid = ({ authUuid }: { authUuid: string }) =>
+  runQuery((supabase) => supabase
+    .from("parties")
+    .select("*, dm_party!inner(*, dms!inner(*))")
+    .eq("dm_party.dms.auth_user_uuid", authUuid)
+  );
+
+export const getPartiesByPlayerAuthUuid = ({ authUuid }: { authUuid: string }) =>
+  runQuery((supabase) => supabase
+    .from("parties")
+    .select("*, character_party!inner(*, characters!inner(*, players!inner(*)))")
+    .eq("character_party.characters.players.auth_user_uuid", authUuid)
+  );

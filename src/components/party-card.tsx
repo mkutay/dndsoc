@@ -48,18 +48,23 @@ export function PartyCard(props: Props) {
         </TypographyParagraph>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild size="sm">
           <Link href={`/parties/${party.shortened}`}>
-            View {party.name}
+            View Party
           </Link>
         </Button>
-        {'ownsDM' in props && props.ownsDM && (
+        {'ownsDM' in props && props.ownsDM && (<div className="flex items-center flex-row gap-2">
+          <Button size="sm" variant="outline" asChild>
+            <Link href={`/parties/${party.shortened}/edit/dm`}>
+              Edit
+            </Link>
+          </Button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="destructive"
-                  size="icon"
+                  size="smIcon"
                   onClick={props.onRemove}
                   disabled={props.isLoading}
                 >
@@ -73,7 +78,7 @@ export function PartyCard(props: Props) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-        )}
+        </div>)}
       </CardFooter>
     </Card>
   );

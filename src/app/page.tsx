@@ -54,6 +54,9 @@ export default function Home() {
         <li>
           <TypographyLink href="/achievements">Achivements</TypographyLink>
         </li>
+        <li>
+          <TypographyLink href="/my">My Page (Needs an account)</TypographyLink>
+        </li>
       </TypographyList>
       <div className="flex flex-row w-full items-center justify-end mt-6 text-4xl font-headings leading-none">
         {/* <div className="font-serif text-primary group-hover:text-primary/80 transition-all text-2xl mb-3">§</div> */}

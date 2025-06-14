@@ -1,6 +1,7 @@
 import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
+import { createClient as createClientSync } from "@/utils/supabase/client";
 import { runQuery } from "@/utils/supabase-run";
 
 export const getPublicUrl = ({ path }: { path: string }) => {
@@ -13,6 +14,15 @@ export const getPublicUrl = ({ path }: { path: string }) => {
       .getPublicUrl(path)
       .data.publicUrl
     ));
+}
+
+export const getPublicUrlByPathSync = ({ path }: { path: string }) => {
+  if (path.startsWith("http")) return path;
+  return createClientSync()
+    .storage
+    .from("profile-images")
+    .getPublicUrl(path)
+    .data.publicUrl;
 }
 
 export const getPublicUrlByUuid = ({ imageUuid }: { imageUuid: string }) => {

@@ -1,17 +1,11 @@
-import { Player } from "@/types/full-database.types";
 import { runQuery } from "@/utils/supabase-run";
 import { getUser } from "./auth";
-import { Tables } from "@/types/database.types";
 
 type PlayerArgument = {
   about?: string;
   id?: string;
   level?: number;
   auth_user_uuid: string;
-};
-
-type ExtendedPlayer = Player & {
-  characters: Tables<"characters">[];
 };
 
 type NotLoggedInError = {
@@ -38,7 +32,7 @@ export const upsertPlayer = (player: PlayerArgument) =>
   );
 
 export const getPlayerByUsername = ({ username }: { username: string }) =>
-  runQuery<ExtendedPlayer>((supabase) =>
+  runQuery((supabase) =>
     supabase
       .from("players")
       .select(`*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*)`)

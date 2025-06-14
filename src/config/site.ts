@@ -4,6 +4,10 @@ export const siteConfig = {
   author: "KCL DnD Society",
   navItems: [
     {
+      href: "/my",
+      label: "My",
+    },
+    {
       href: "/about",
       label: "About",
     },

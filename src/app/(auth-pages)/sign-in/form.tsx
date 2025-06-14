@@ -41,9 +41,9 @@ export function SignInForm() {
     setPending(false);
 
     actionResultMatch(result,
-      (value) => redirect(`/players/${value.username}`),
+      () => redirect(`/my`),
       (error) => error.code === "NOT_FOUND"
-        ? redirect(`/players`)
+        ? redirect(`/my`)
         : toast({
           title: "Sign In Failed",
           description: "Please try again. " + error.message,

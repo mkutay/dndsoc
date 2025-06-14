@@ -1,20 +1,14 @@
 "use client";
 
-import { MinusCircle } from "lucide-react";
 import { useOptimistic } from "react";
-import Link from "next/link";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { AddPartyButton } from "./add-party-button";
 import { CreatePartyButton } from "./create-party-button";
-import { truncateText } from "@/utils/formatting";
 import { removeCampaignFromParty } from "@/server/campaigns";
+import { PartyCard } from "../party-card";
 
 type Party = Tables<"parties">;
 
@@ -74,45 +68,15 @@ export function Parties({
     <div className="mt-6 flex flex-col">
       <TypographyH2>Parties</TypographyH2>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-        {optimisticParties.map((party, index) => (
-          <Card key={index} className="w-full">
-            <CardHeader>
-              <CardTitle>{party.name}</CardTitle>
-              <CardDescription>
-                Level {party.level}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TypographyParagraph>
-                {truncateText(party.about, 100)}
-              </TypographyParagraph>
-            </CardContent>
-            <CardFooter className="flex justify-between flex-wrap gap-2">
-              <Button variant="outline" asChild>
-                <Link href={`/parties/${party.shortened}`}>
-                  View {party.name}
-                </Link>
-              </Button>
-                {isAdmin && (
-                  <form
-                    action={async () => { await onSubmit(party); }}
-                  >
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="destructive" size="icon" type="submit">
-                            <MinusCircle size="18px" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <TypographyParagraph>Remove this party from the campaign.</TypographyParagraph>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </form>
-                )}
-            </CardFooter>
-          </Card>
+        {optimisticParties.map((party) => (
+          <PartyCard
+            key={party.id}
+            party={party}
+            ownsDM={isAdmin}
+            onRemove={() => onSubmit(party)}
+            isLoading={false}
+            removeText="Remove this party from the campaign."
+          />
         ))}
         {isAdmin && <CreatePartyButton campaignUuid={campaignUuid} />}
         {isAdmin && <AddPartyButtonWrapper
