@@ -10,8 +10,6 @@ import { AnimatedDice } from "@/components/animated-dice";
 import { FeaturesSection } from "@/components/home-page/features-section";
 import { TypographyHr } from "@/components/typography/blockquote";
 
-export const dynamic = "force-dynamic";
-
 export default function Home() {
   return (
     <main className="min-h-screen">
@@ -67,7 +65,12 @@ export default function Home() {
             </div>
 
             <div className="animate-fade-in-up">
-              <D20Dice size="xl" />
+              <div className="md:flex hidden justify-center">
+                <D20Dice size="xl" />
+              </div>
+              <div className="flex md:hidden justify-center">
+                <D20Dice size="lg" />
+              </div>
             </div>
           </div>
         </div>

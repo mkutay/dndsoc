@@ -152,7 +152,7 @@ const config = {
   		},
   		backgroundImage: {
   			'grid-pattern': '`\n          linear-gradient(to right, hsl(var(--primary) / 0.1) 1px, transparent 1px),\n          linear-gradient(to bottom, hsl(var(--primary) / 0.1) 1px, transparent 1px)\n        `',
-  			'hero-glow': 'radial-gradient(circle at center, hsl(var(--primary) / 0.2) 0%, transparent 53%)',
+  			'hero-glow': 'radial-gradient(circle at center, hsl(var(--primary) / 0.2) 0%, transparent 50%)',
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
   			'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
   		},

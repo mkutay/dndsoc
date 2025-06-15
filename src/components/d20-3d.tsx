@@ -30,7 +30,7 @@ const sizeMap = {
 // Build each triangular face (centroid + outward normal), then
 // pair opposites so numbers sum to 21
 function createIcosahedronFaces(): FaceData[] {
-  const geom = new THREE.IcosahedronGeometry(1, 0).toNonIndexed();
+  const geom = new THREE.IcosahedronGeometry(1, 0);
   const pos = geom.attributes.position;
   const faceCount = pos.count / 3; // 20 faces
 

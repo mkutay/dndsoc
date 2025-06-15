@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -6,12 +9,17 @@ import darkLogo from "@/public/logo-dark.png";
 import { AuthButtons } from "@/components/nav-bar/auth-buttons";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { siteConfig } from "@/config/site";
-import { getUser } from "@/lib/auth";
 import { NavBarSheet } from "./nav-bar-sheet";
+import { createClient } from "@/utils/supabase/client";
 
-export async function NavBar() {
-  const user = await getUser();
-  const ok = user.isOk();
+export function NavBar() {
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => {
+      setLoggedIn(data.session ? true : false);
+    });
+  }, []);
 
   return (
     <nav className="bg-background/80 backdrop-blur-sm lg:sticky top-0 h-fit z-50">
@@ -42,14 +50,16 @@ export async function NavBar() {
             ))}
           </div>
         </div>
-        <div className="flex-row place-items-center gap-4 lg:flex hidden">
-          <ThemeSwitcher />
-          <AuthButtons user={ok} />
-        </div>
-        <div className="flex-row place-items-center gap-4 flex lg:hidden">
-          <ThemeSwitcher />
-          <NavBarSheet user={ok} />
-        </div>
+        {loggedIn !== null && <>
+          <div className="flex-row place-items-center gap-4 lg:flex hidden">
+            <ThemeSwitcher />
+            <AuthButtons user={loggedIn} />
+          </div>
+          <div className="flex-row place-items-center gap-4 flex lg:hidden">
+            <ThemeSwitcher />
+            <NavBarSheet user={loggedIn} />
+          </div>
+        </>}
       </div>
     </nav>
   );
