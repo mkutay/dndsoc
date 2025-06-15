@@ -16,9 +16,9 @@ export function TypographyH2({ children, className }: { children: React.ReactNod
   );
 }
 
-export function TypographyH3({ children }: { children: React.ReactNode }) {
+export function TypographyH3({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight font-headings">
+    <h3 className={cn("scroll-m-20 text-2xl font-semibold tracking-tight font-headings", className)}>
       {children}
     </h3>
   );

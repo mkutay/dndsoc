@@ -40,10 +40,10 @@ export { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
-    template: "%s | KCL Dungeons and Dragons App",
-    default: "KCL Dungeons and Dragons Web App",
+    template: "%s | KCL Dungeons and Dragons Society",
+    default: "King's College London Dungeons and Dragons Society",
   },
-  description: "Everything you need to play Dungeons and Dragons with us!",
+  description: "Everything you need to play Dungeons and Dragons with us! Join our community, manage your characters, and embark on epic adventures.",
   generator: "Next.js",
   applicationName: "KCL DnD",
   referrer: "origin-when-cross-origin",
