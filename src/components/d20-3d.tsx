@@ -288,8 +288,8 @@ function D20Mesh({
           <icosahedronGeometry args={[1, 0]} />
           <meshStandardMaterial
             color="#8B52A6"
-            metalness={0.01}
-            roughness={0.8}
+            metalness={0.1}
+            roughness={0.7}
             toneMapped={false}
           />
         </mesh>
