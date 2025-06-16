@@ -6,12 +6,17 @@ import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/server/auth/sign-out";
 
 export function AuthButtons({
-  user
+  loggedIn,
+  setLoggedIn,
 }: {
-  user: boolean;
+  loggedIn: boolean;
+  setLoggedIn: (value: boolean) => void;
 }) {
-  return user ? (
-    <Button variant={"outline"} type="submit" size="sm" onClick={signOutAction}>
+  return loggedIn ? (
+    <Button variant={"outline"} type="submit" size="sm" onClick={async () => {
+      setLoggedIn(false);
+      await signOutAction();
+    }}>
       Sign out
     </Button>
   ) : (

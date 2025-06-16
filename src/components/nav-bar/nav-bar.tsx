@@ -8,9 +8,9 @@ import lightLogo from "@/public/logo-light.png";
 import darkLogo from "@/public/logo-dark.png";
 import { AuthButtons } from "@/components/nav-bar/auth-buttons";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { createClient } from "@/utils/supabase/client";
 import { siteConfig } from "@/config/site";
 import { NavBarSheet } from "./nav-bar-sheet";
-import { createClient } from "@/utils/supabase/client";
 
 export function NavBar() {
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
@@ -53,11 +53,11 @@ export function NavBar() {
         {loggedIn !== null && <>
           <div className="flex-row place-items-center gap-4 lg:flex hidden">
             <ThemeSwitcher />
-            <AuthButtons user={loggedIn} />
+            <AuthButtons loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           </div>
           <div className="flex-row place-items-center gap-4 flex lg:hidden">
             <ThemeSwitcher />
-            <NavBarSheet user={loggedIn} />
+            <NavBarSheet loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           </div>
         </>}
       </div>

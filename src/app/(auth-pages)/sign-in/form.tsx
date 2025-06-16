@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,9 @@ export function SignInForm() {
     setPending(false);
 
     actionResultMatch(result,
-      () => redirect(`/my`),
+      () => {
+        window.location.replace("/my");
+      },
       (error) => toast({
         title: "Sign In Failed",
         description: "Please try again. " + error.message,

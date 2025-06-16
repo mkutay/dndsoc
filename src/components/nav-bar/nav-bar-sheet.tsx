@@ -16,7 +16,13 @@ import { TypographyHr } from "@/components/typography/blockquote";
 import { siteConfig } from "@/config/site";
 import { signOutAction } from "@/server/auth/sign-out";
 
-export function NavBarSheet({ user }: { user: boolean }) {
+export function NavBarSheet({
+  loggedIn,
+  setLoggedIn,
+}: {
+  loggedIn: boolean;
+  setLoggedIn: (value: boolean) => void;
+}) {
   const [open, setOpen] = useState(false);
   
   const handleLinkClick = () => {
@@ -25,6 +31,7 @@ export function NavBarSheet({ user }: { user: boolean }) {
 
   const onSubmit = async () => {
     handleLinkClick();
+    setLoggedIn(false);
     await signOutAction();
   };
   
@@ -46,7 +53,7 @@ export function NavBarSheet({ user }: { user: boolean }) {
             </Button>
           ))}
           <TypographyHr />
-          {user ? (
+          {loggedIn ? (
             <Button variant="secondary" type="submit" className="w-full" onClick={onSubmit}>
               Sign out
             </Button>
