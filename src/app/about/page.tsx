@@ -55,7 +55,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-12 md:py-18">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -99,7 +99,7 @@ export default function AboutPage() {
       </section>
 
       {/* Society Leadership Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
+      <section className="py-12 md:py-18 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -268,7 +268,7 @@ export default function AboutPage() {
       </section>
 
       {/* Where We Play Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-12 md:py-18">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -313,7 +313,7 @@ export default function AboutPage() {
       </section>
 
       {/* About This Website Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
+      <section className="py-12 md:py-18 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -371,14 +371,14 @@ export default function AboutPage() {
       </section>
 
       {/* KCLSU & Connect Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-12 md:py-18">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
               Part of KCLSU
             </TypographyH2>
             
-            <Card className="hover:shadow-lg transition-shadow mb-12 max-w-2xl mx-auto">
+            <Card className="hover:shadow-lg transition-shadow mb-16 max-w-2xl mx-auto">
               <CardContent className="p-6 md:p-8">
                 <TypographyParagraph className="text-center text-lg mb-6">
                   We&apos;re proud to be an official society under the King&apos;s College London Students&apos; Union (KCLSU),
@@ -396,7 +396,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
 
-            <TypographyHr className="mb-12" />
+            <TypographyHr className="mb-16" />
 
             <TypographyH3 className="text-3xl md:text-4xl font-bold text-center mb-8">
               Connect With Us
@@ -459,7 +459,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <section className="py-12 md:py-18 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <TypographyH2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground border-none">
             Ready to Join YOUR Adventure?
