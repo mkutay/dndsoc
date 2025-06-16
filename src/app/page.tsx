@@ -7,7 +7,7 @@ import { D20Dice } from "@/components/d20-3d";
 import { TypographyH1, TypographyH3 } from "@/components/typography/headings";
 import { TypographyParagraph, TypographyLead } from "@/components/typography/paragraph";
 import { AnimatedDice } from "@/components/animated-dice";
-import { FeaturesSection } from "@/components/home-page/features-section";
+import { FeaturesSection } from "@/components/home-features-section";
 import { TypographyHr } from "@/components/typography/blockquote";
 
 export default function Home() {

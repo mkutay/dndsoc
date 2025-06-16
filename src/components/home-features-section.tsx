@@ -24,7 +24,7 @@ export function FeaturesSection() {
             title="Session Journal"
             description="Document your adventures, track important story beats, and preserve epic moments for posterity."
             href="/journal"
-            delay={650}
+            delay={50}
           />
           <FeatureCard
             icon={Vote}
