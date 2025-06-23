@@ -80,6 +80,7 @@ const NavContent = () => {
         {sections.map((section) => (
           <button
             key={section.id}
+            type="button"
             onClick={() => {
               const element = document.getElementById(section.id);
               element?.scrollIntoView({ behavior: "smooth", block: "start" });

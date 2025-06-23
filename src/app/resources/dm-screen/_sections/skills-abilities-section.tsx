@@ -125,7 +125,7 @@ const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({
           <Card className="md:mt-16 mt-12 md:px-6 md:py-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <ClipboardList className="md:w-8 md:h-8 w-7 y-7 mb-1.5" />
+                <ClipboardList className="md:w-8 md:h-8 w-7 h-7 mb-1.5" />
                 Skill Check Reminders
               </CardTitle>
             </CardHeader>
