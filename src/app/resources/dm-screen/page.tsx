@@ -14,13 +14,12 @@ import FooterCtaSection from "./_sections/footer-cta-section";
 import DMScreenNav, { SectionIds } from "./_components/dm-screen-nav";
 
 export const metadata: Metadata = {
-  title: "Fitz's 5e DM Screen",
+  title: "Kutay's 5e DM Screen",
   description:
     "A comprehensive digital Dungeon Master screen for Dungeons & Dragons 5th Edition, providing quick reference rules, tables, and combat information.",
   openGraph: {
-    title: "Fitz's 5e DM Screen",
-    description:
-      "Your essential digital D&D 5e DM Screen for fast rule lookups and game management.",
+    title: "Kutay's 5e DM Screen",
+    description: "Your essential digital D&D 5e DM Screen for fast rule lookups and game management.",
   },
 };
 
