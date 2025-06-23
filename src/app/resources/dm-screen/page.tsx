@@ -13,6 +13,8 @@ import FooterCtaSection from "./_sections/footer-cta-section";
 
 import DMScreenNav, { SectionIds } from "./_components/dm-screen-nav";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Kutay's 5e DM Screen",
   description:
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function DMScreenPage() {
   return (
-    <main className="scroll-auto">
+    <main>
       <DMScreenNav />
 
       <div className="pt-20 lg:pt-0">
