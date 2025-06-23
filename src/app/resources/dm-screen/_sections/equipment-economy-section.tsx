@@ -8,7 +8,15 @@ import {
   Coins,
   Users,
   DicesIcon,
+  ScrollText,
 } from "lucide-react";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   TypographyH2,
   TypographyH3,
@@ -16,6 +24,7 @@ import {
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -26,7 +35,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyHr } from "@/components/typography/blockquote";
-import { GiDroplets } from "react-icons/gi";
+import { GiDroplets, GiMagicLamp, GiTavernSign, GiTwoCoins } from "react-icons/gi";
 
 interface EquipmentEconomySectionProps {
   id: string;
@@ -149,7 +158,7 @@ function ArmourTable() {
     }
   ];
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="h-full hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Shield className="w-6 md:w-7 h-6 md:h-7" />
@@ -835,7 +844,7 @@ function LifestyleExpenses() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Coins className="w-6 md:w-7 h-6 md:h-7" />
+          <GiTwoCoins className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Lifestyle Expenses
         </CardTitle>
       </CardHeader>
@@ -895,7 +904,7 @@ function FoodDrinkLodging() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
-          <Coins className="w-6 md:w-7 h-6 md:h-7" />
+          <GiTavernSign className="w-8 md:w-9 h-8 md:h-9 text-primary" />
           Food, Drink & Lodging
         </CardTitle>
       </CardHeader>
@@ -1093,6 +1102,126 @@ function FoodWaterNeeds() {
   );
 }
 
+function MagicItemEconomy() {
+  const saleableItemsData = [
+    { rarity: "Common", basePrice: "100 gp", daysToFind: "1d4", rollModifier: "+10" },
+    { rarity: "Uncommon", basePrice: "500 gp", daysToFind: "1d6", rollModifier: "+0" },
+    { rarity: "Rare", basePrice: "5,000 gp", daysToFind: "1d8", rollModifier: "-10" },
+    { rarity: "Very Rare", basePrice: "50,000 gp", daysToFind: "1d10", rollModifier: "-20" },
+  ];
+
+  const sellingResultsData = [
+    { roll: "20 or lower", result: "offering 1 /10 of the base price" },
+    { roll: "21-40", result: "offering 1 /4 of the base price" },
+    { roll: "41-80", result: "offering 1 /2 of the base price" },
+    { roll: "81-90", result: "offering the full base price" },
+    { roll: "91 or higher", result: "A shady buyer offering 3 /2 × the base price, no questions asked" },
+  ];
+
+  const craftingData = [
+    { rarity: "Common", cost: "100 gp", minLevel: "3" },
+    { rarity: "Uncommon", cost: "500 gp", minLevel: "3" },
+    { rarity: "Rare", cost: "5,000 gp", minLevel: "6" },
+    { rarity: "Very Rare", cost: "50,000 gp", minLevel: "11" },
+    { rarity: "Legendary", cost: "500,000 gp", minLevel: "17" },
+  ];
+
+  return (
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-3">
+          <GiMagicLamp className="w-9 h-9 text-primary" />
+          Magic Item Economy
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <Accordion type="multiple" className="space-y-2">
+          <AccordionItem value="saleable-items">
+            <AccordionTrigger className="text-xl font-bold font-quotes">
+              Saleable Magic Items
+            </AccordionTrigger>
+            <AccordionContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="font-medium">Rarity</TableHead>
+                    <TableHead className="font-medium">Base Price</TableHead>
+                    <TableHead className="font-medium">Days to Find Buyer</TableHead>
+                    <TableHead className="font-medium">D100 Roll Modifier*</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {saleableItemsData.map((row, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-semibold">{row.rarity}</TableCell>
+                      <TableCell>{row.basePrice}</TableCell>
+                      <TableCell>{row.daysToFind}</TableCell>
+                      <TableCell className="text-center">{row.rollModifier}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableCaption className="text-left text-sm text-muted-foreground italic mt-0">
+                  *Apply to rolls on Selling a Magic Item table
+                </TableCaption>
+              </Table>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="selling-items">
+            <AccordionTrigger className="text-xl font-bold font-quotes">
+              Selling a Magic Item
+            </AccordionTrigger>
+            <AccordionContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="font-medium w-28">D100 + Mod.</TableHead>
+                    <TableHead className="font-medium">You Find a Buyer...</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sellingResultsData.map((row, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-semibold">{row.roll}</TableCell>
+                      <TableCell className="text-sm">{row.result}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="crafting-items">
+            <AccordionTrigger className="text-xl font-bold font-quotes">
+              Crafting Magic Items
+            </AccordionTrigger>
+            <AccordionContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="font-medium">Rarity</TableHead>
+                    <TableHead className="font-medium">Creation Cost</TableHead>
+                    <TableHead className="font-medium">Minimum Level</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {craftingData.map((row, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-semibold">{row.rarity}</TableCell>
+                      <TableCell>{row.cost}</TableCell>
+                      <TableCell className="text-center">{row.minLevel}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardContent>
+    </Card>
+  );
+}
+
 const EquipmentEconomySection: React.FC<EquipmentEconomySectionProps> = ({
   id,
 }) => {
@@ -1104,7 +1233,10 @@ const EquipmentEconomySection: React.FC<EquipmentEconomySectionProps> = ({
         </TypographyH2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-16">
-          <ArmourTable />
+          <div className="flex flex-col gap-6 md:gap-8 h-full">
+            <ArmourTable />
+            <MagicItemEconomy />
+          </div>
           <WeaponsTable />
 
           {/* Other Economy Tables */}

@@ -14,7 +14,7 @@ import {
   TypographyH2,
   TypographyH3,
 } from "@/components/typography/headings";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -178,7 +178,7 @@ function Exhaustion() {
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiTiredEye className="md:w-8 md:h-8 w-6 h-6 text-muted-foreground" />
-          <span className="text-2xl">Exhaustion</span>
+          Exhaustion
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -186,16 +186,16 @@ function Exhaustion() {
           {exhaustionLevels.map((level) => (
             <div
               key={level.level}
-              className="p-4 rounded-lg border transition-all hover:scale-[1.01] duration-500 bg-muted/20"
+              className="px-4 py-2 rounded-lg border transition-all hover:scale-[1.01] duration-500 bg-muted/20"
             >
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-muted text-muted-foreground">
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold bg-muted text-muted-foreground">
                     {level.level}
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm md:text-base font-medium leading-relaxed font-quotes mt-1">
+                  <p className="text-sm md:text-base font-medium leading-relaxed font-quotes mt-0.5">
                     {level.effect}
                   </p>
                 </div>
@@ -239,6 +239,9 @@ function GroundSurfaceTracking() {
           <Footprints className="w-7 h-7 text-primary" />
           Tracking
         </CardTitle>
+        <CardDescription className="font-quotes">
+          DC to track a creature based on ground surface and conditions.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
@@ -284,7 +287,7 @@ function OverlandTravelPace() {
             Base = Speed / 10 Miles per Hour
           </TypographyParagraph>
         </div>
-        <ul className="space-y-3">
+        <ul className="space-y-2">
           {travelPaceInfo.map((info, i) => (
             <li key={i} className="flex items-start gap-2">
               <span className="text-primary mt-1 font-bold">•</span>
@@ -355,7 +358,7 @@ function RandomWeather() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="font-medium">d20</TableHead>
+                  <TableHead className="font-medium">D20</TableHead>
                   <TableHead className="font-medium">Wind</TableHead>
                 </TableRow>
               </TableHeader>
@@ -374,7 +377,7 @@ function RandomWeather() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="font-medium">d20</TableHead>
+                  <TableHead className="font-medium">D20</TableHead>
                   <TableHead className="font-medium">Precipitation</TableHead>
                 </TableRow>
               </TableHeader>
@@ -460,7 +463,7 @@ function LingeringInjuries() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="font-medium w-16 text-center">d20</TableHead>
+              <TableHead className="font-medium w-16 text-center">D20</TableHead>
               <TableHead className="font-medium">Injury</TableHead>
             </TableRow>
           </TableHeader>
