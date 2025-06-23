@@ -152,8 +152,8 @@ export default function ResourcesPage() {
       {/* Resource Library */}
       <section className="py-10 md:py-14">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16 max-w-6xl mx-auto">
               <h2 className="tracking-wide text-3xl md:text-5xl font-bold mb-4 font-headings md:flex inline-block flex-none flex-row gap-2 justify-center items-center border-border border-b-4 w-fit mx-auto px-10 pb-3">
                 <Library className="md:w-10 md:h-10 w-8 h-8 float-left" />
                 The Complete Library
@@ -163,7 +163,7 @@ export default function ResourcesPage() {
               </TypographyParagraph>
             </div>
             
-            <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            <div className="grid lg:grid-cols-2 gap-8 mb-12 max-w-6xl mx-auto">
               <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full"></div>
                 <div className="absolute top-4 right-4">
@@ -230,7 +230,7 @@ export default function ResourcesPage() {
               </Card>
             </div>
             
-            <div className="grid md:grid-cols-4 gap-4">
+            <div className="grid lg:grid-cols-5 grid-cols-1 gap-4">
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-gradient-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
@@ -268,6 +268,27 @@ export default function ResourcesPage() {
                   <Button asChild size="sm" variant="outline">
                     <Link href="/resources/Battle-Grid.pdf" target="_blank">
                       Download
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-gradient-to-br from-accent to-accent/80 dark:border-border dark:border-2 border-transparent text-accent-foreground">
+                <CardHeader>
+                  <CardTitle>
+                    <Crown className="w-12 h-12 text-primary mx-auto" />
+                    <h3 className="font-headings text-xl mt-2">Kutay&apos;s DM Screen</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>
+                    Please it took so long
+                  </TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="default">
+                    <Link href="/resources/dm-screen" target="_blank">
+                      EXPLORE
                     </Link>
                   </Button>
                 </CardFooter>
