@@ -1,9 +1,6 @@
 import {
   Sun,
   Move,
-  Skull,
-  Scale,
-  Sparkles,
   Crown,
   Droplets,
   TreeDeciduous,
@@ -199,7 +196,7 @@ function Suffocating() {
           Suffocating
         </CardTitle>
         <Badge className="w-fit" variant="secondary">
-          PHB '14, p. 183
+          PHB &apos;14, p. 183
         </Badge>
       </CardHeader>
       <CardContent className="space-y-2">

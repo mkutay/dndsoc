@@ -2,10 +2,7 @@
 
 import React, { useState } from "react";
 import {
-  SquareKanban,
   HeartCrack,
-  Footprints,
-  CloudLightning,
   Flame,
   Info,
 } from "lucide-react";

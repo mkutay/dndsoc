@@ -1,4 +1,4 @@
-import { Sparkles, ScrollText, DicesIcon, Skull } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import {
   GiCastle,
   GiCrossedSwords,
@@ -166,7 +166,7 @@ function Traps() {
                 <strong className="text-primary">Detection:</strong> Wisdom (Perception) check vs trap DC, or passive Perception to notice in passing.
               </div>
               <div className="p-3 bg-muted rounded-md text-sm">
-                <strong className="text-primary">Disabling:</strong> Intelligence (Investigation) to deduce what to do, then Dexterity check with thieves' tools.
+                <strong className="text-primary">Disabling:</strong> Intelligence (Investigation) to deduce what to do, then Dexterity check with thieves&apos; tools.
               </div>
               <div className="p-3 bg-muted rounded-md text-sm">
                 <strong className="text-primary">Magic Traps:</strong> Intelligence (Arcana) check or dispel magic can disable most magic traps.

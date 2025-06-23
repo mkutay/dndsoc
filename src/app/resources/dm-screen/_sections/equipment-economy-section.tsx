@@ -2,13 +2,7 @@
 
 import React from "react";
 import {
-  Shield,
-  Swords,
-  SquareKanban,
-  Coins,
-  Users,
   DicesIcon,
-  ScrollText,
 } from "lucide-react";
 
 import {
