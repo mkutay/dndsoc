@@ -35,7 +35,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyHr } from "@/components/typography/blockquote";
-import { GiDroplets, GiMagicLamp, GiTavernSign, GiTwoCoins } from "react-icons/gi";
+import { GiCapeArmor, GiDroplets, GiJigsawBox, GiMagicLamp, GiPointySword, GiSlap, GiTavernSign, GiTwoCoins } from "react-icons/gi";
+import { Badge } from "@/components/ui/badge";
 
 interface EquipmentEconomySectionProps {
   id: string;
@@ -161,9 +162,12 @@ function ArmourTable() {
     <Card className="h-full hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Shield className="w-6 md:w-7 h-6 md:h-7" />
+          <GiCapeArmor className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Armour
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB &apos;14, p. 144
+        </Badge>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="light">
@@ -604,9 +608,12 @@ function WeaponsTable() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
-          <Swords className="w-6 md:w-7 h-6 md:h-7" />
+          <GiPointySword className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Weapons
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB &apos;14, p. 149
+        </Badge>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="simple-melee">
@@ -757,7 +764,7 @@ function ContainerCapacity() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <SquareKanban className="w-6 md:w-7 h-6 md:h-7" />
+          <GiJigsawBox className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Container Capacity
         </CardTitle>
         <CardDescription className="text-sm text-muted-foreground font-quotes">
@@ -803,7 +810,7 @@ function Services() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Users className="w-6 md:w-7 h-6 md:h-7" />
+          <GiSlap className="w-8 h-8 md:w-10 md:h-10 text-primary" />
           Services
         </CardTitle>
       </CardHeader>
@@ -907,6 +914,9 @@ function FoodDrinkLodging() {
           <GiTavernSign className="w-8 md:w-9 h-8 md:h-9 text-primary" />
           Food, Drink & Lodging
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB &apos;14, p. 158
+        </Badge>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="general">
@@ -1036,6 +1046,9 @@ function FoodWaterNeeds() {
           <GiDroplets className="md:w-10 md:h-10 w-8 h-8 text-primary" />
           Food & Water Needs
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB &apos;14, p. 185
+        </Badge>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
