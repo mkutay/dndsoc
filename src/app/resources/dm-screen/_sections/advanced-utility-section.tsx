@@ -39,7 +39,8 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { GiGearHammer, GiGems, GiTiredEye } from "react-icons/gi";
+import { GiAnarchy, GiFootprint, GiGearHammer, GiGems, GiHeavyRain, GiTiredEye, GiTravelDress } from "react-icons/gi";
+import { Badge } from "@/components/ui/badge";
 
 interface AdvancedUtilitySectionProps {
   id: string;
@@ -70,9 +71,12 @@ function Objects() {
     <Card className="hover:shadow-lg transition-all justify-start duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <SquareKanban className="w-6 h-6 md:w-7 md:h-7" />
+          <GiAnarchy className="w-9 h-9 md:w-10 md:h-10 text-primary" />
           Objects
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 246
+        </Badge>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
@@ -177,7 +181,7 @@ function Exhaustion() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <GiTiredEye className="md:w-8 md:h-8 w-6 h-6 text-muted-foreground" />
+          <GiTiredEye className="md:w-11 md:h-11 w-9 h-9 text-primary" />
           Exhaustion
         </CardTitle>
       </CardHeader>
@@ -236,12 +240,15 @@ function GroundSurfaceTracking() {
     <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Footprints className="w-7 h-7 text-primary" />
+          <GiFootprint className="w-9 h-9 text-primary" />
           Tracking
         </CardTitle>
         <CardDescription className="font-quotes">
           DC to track a creature based on ground surface and conditions.
         </CardDescription>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 244
+        </Badge>
       </CardHeader>
       <CardContent>
         <Table>
@@ -277,9 +284,12 @@ function OverlandTravelPace() {
     <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Footprints className="w-6 h-6 text-primary" />
+          <GiTravelDress className="w-10 h-10 text-primary" />
           Overland Travel Pace
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 242
+        </Badge>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="p-2 bg-muted/20 rounded-lg border">
@@ -323,9 +333,12 @@ function RandomWeather() {
     <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <CloudLightning className="w-7 h-7 text-primary" />
+          <GiHeavyRain className="w-10 h-10 text-primary" />
           Random Weather
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 109
+        </Badge>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="temperature" className="w-full">
@@ -415,6 +428,9 @@ function ImprovisingDamage() {
           <Flame className="w-7 h-7 text-primary" />
           Improvising Damage
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 249
+        </Badge>
       </CardHeader>
       <CardContent>
         <Table>
@@ -456,8 +472,11 @@ function LingeringInjuries() {
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <HeartCrack className="w-7 h-7 text-primary" />
-          Lingering Injuries (DMG p.272)
+          Lingering Injuries
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          DMG &apos;14 p. 272
+        </Badge>
       </CardHeader>
       <CardContent>
         <Table>
