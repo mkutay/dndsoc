@@ -22,6 +22,11 @@ import {
   GiSlashedShield,
   GiThunderBlade,
   GiFocusedLightning,
+  GiCampfire,
+  GiJumpAcross,
+  GiSpikedWall,
+  GiConcentrationOrb,
+  GiScales,
 } from "react-icons/gi";
 
 import {
@@ -44,6 +49,7 @@ import { TypographyHr } from "@/components/typography/blockquote";
 import { Latex } from "@/components/latex";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IconType } from "react-icons";
+import { Badge } from "@/components/ui/badge";
 
 interface EnvironmentCombatSectionProps {
   id: string;
@@ -75,9 +81,12 @@ function LightSources() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Sun className="w-6 md:w-7 h-6 md:h-7" />
+          <GiCampfire className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Light Sources
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB &apos;14, p. 183
+        </Badge>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="mundane">
@@ -144,7 +153,7 @@ function Jumping() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
-          <Move className="w-6 md:w-7 h-6 md:h-7" />
+          <GiJumpAcross className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Jumping
         </CardTitle>
       </CardHeader>
@@ -186,9 +195,12 @@ function Suffocating() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Skull className="w-6 md:w-7 h-6 md:h-7" />
+          <GiSpikedWall className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Suffocating
         </CardTitle>
+        <Badge className="w-fit" variant="secondary">
+          PHB '14, p. 183
+        </Badge>
       </CardHeader>
       <CardContent className="space-y-2">
         <TypographyParagraph>
@@ -219,7 +231,7 @@ function SizeCategories() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
-          <Scale className="w-6 md:w-7 h-6 md:h-7" />
+          <GiScales className="w-9 md:w-10 h-9 md:h-10 text-primary" />
           Size Categories
         </CardTitle>
       </CardHeader>
@@ -254,7 +266,7 @@ function Concentration() {
     <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
-          <Sparkles className="w-6 md:w-7 h-6 md:h-7" />
+          <GiConcentrationOrb className="w-8 md:w-10 h-8 md:h-10 text-primary" />
           Concentration
         </CardTitle>
       </CardHeader>
