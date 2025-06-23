@@ -2,6 +2,7 @@ import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 import { Metadata } from "next";
+import 'katex/dist/katex.min.css';
 
 import { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection } from "@/fonts/fonts";
 import { NavBar } from "@/components/nav-bar/nav-bar";
