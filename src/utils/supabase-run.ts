@@ -1,8 +1,8 @@
-import { PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
+import { type PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
-import { Database } from "@/types/database.types";
+import { type Database } from "@/types/database.types";
 
 export type SupabaseQueryError = {
   message: string;

@@ -7,7 +7,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 import { TypographyParagraph } from "./typography/paragraph";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Character } from "@/types/full-database.types";
+import { type Character } from "@/types/full-database.types";
 import { truncateText } from "@/utils/formatting";
 
 type Props =
@@ -56,9 +56,7 @@ export function CharacterCard(props: Props) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <TypographyParagraph>
-                  {props.removeText ? props.removeText : "Remove this character."}
-                </TypographyParagraph>
+                <TypographyParagraph>{props.removeText ?? "Remove this character."}</TypographyParagraph>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { runQuery } from "@/utils/supabase-run";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { truncateText } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 
@@ -48,7 +48,7 @@ function AchievementCard({ achievement }: { achievement: Tables<"achievements"> 
         <CardDescription className="flex flex-row">
           {points}
           {difficulty ? " " : null}
-          {difficulty ? difficulty : null}
+          {difficulty}
         </CardDescription>
       </CardHeader>
       <CardContent>{truncateText(achievement.description, 100)}</CardContent>

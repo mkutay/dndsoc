@@ -6,7 +6,7 @@ import { AddParty } from "./add-party";
 import { CreateParty } from "./create-party";
 import { PartyCard } from "./party-card";
 import { addPartyToDM, removePartyFromDM } from "@/server/dms";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 
 type Party = Tables<"parties">;

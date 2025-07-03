@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 import { TypographyH1 } from "@/components/typography/headings";
 import { CampaignCards } from "@/components/campaign-cards";

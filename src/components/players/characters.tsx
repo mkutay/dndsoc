@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AddCharacterButton } from "./add-character-button";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 export function Characters({
   characters,

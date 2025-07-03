@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ComponentProps } from "react";
+import { type ComponentProps } from "react";
+
 import { cn } from "@/utils/styling";
 
 export function TypographyParagraph({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -36,7 +37,7 @@ export function TypographyLink(props: ComponentProps<typeof Link> & { variant?: 
       {...props}
       className={cn(
         "underline font-medium underline-offset-2 transition-colors",
-        linkClasses[props.variant || "primary"],
+        linkClasses[props.variant ?? "primary"],
         props.className,
       )}
     >

@@ -87,9 +87,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         }))}
         votedId={
           user.isOk()
-            ? poll.options.find((option) =>
+            ? (poll.options.find((option) =>
                 option.votes.some((vote) => vote.auth_user_uuid === user.value.auth_user_uuid),
-              )?.id || null
+              )?.id ?? null)
             : undefined
         }
         pollId={poll.id}

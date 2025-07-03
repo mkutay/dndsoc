@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 type Party = Tables<"parties">;
 

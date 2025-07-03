@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { journalAllEditSchema } from "@/config/journal-schema";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { convertToShortened } from "@/utils/formatting";
 import { cn } from "@/utils/styling";
@@ -38,7 +38,7 @@ export function JournalEditForm({
 
   const entries = allParties.map((party) => ({
     partyId: party.id,
-    text: partyEntries.find((entry) => entry.parties.id === party.id)?.text || "",
+    text: partyEntries.find((entry) => entry.parties.id === party.id)?.text ?? "",
     name: party.name,
     shortened: party.shortened,
   }));
@@ -178,7 +178,7 @@ export function JournalEditForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Entry for the Party {allParties.find((p) => p.id === entries[index]?.partyId)?.name || "Unknown"}
+                    Entry for the Party {allParties.find((p) => p.id === entries[index]?.partyId)?.name ?? "Unknown"}
                   </FormLabel>
                   <FormControl>
                     <div className="relative w-full items-center">

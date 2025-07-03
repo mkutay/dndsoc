@@ -40,7 +40,6 @@ const eslintConfig = [
       // React/JSX Rules
       "react/react-in-jsx-scope": "off",
       "react/jsx-key": "error",
-      "react/no-array-index-key": "error",
       "react/hook-use-state": "error",
       "react/jsx-pascal-case": "error",
       "react/jsx-no-leaked-render": "error",

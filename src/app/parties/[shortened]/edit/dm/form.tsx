@@ -93,7 +93,7 @@ export function DMForm({
   const [pending, setPending] = useState(false);
   const [charactersDialogOpen, setCharactersDialogOpen] = useState(false);
   const [campaignsDialogOpen, setCampaignsDialogOpen] = useState(false);
-  const [DMsDialogOpen, setDMsDialogOpen] = useState(false);
+  const [dmsDialogOpen, setDmsDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof partyDMEditSchema>>({
     resolver: zodResolver(partyDMEditSchema),
@@ -398,7 +398,7 @@ export function DMForm({
                           size="default"
                           className="mt-2 space-x-1 items-center w-fit"
                           onClick={() => {
-                            charactersAppend({ id: field.value || "" });
+                            charactersAppend({ id: field.value ?? "" });
                             setCharactersDialogOpen(false);
                             form.setValue("selectedCharacter", "");
                           }}
@@ -562,7 +562,7 @@ export function DMForm({
                           size="default"
                           className="mt-2 space-x-1 items-center w-fit"
                           onClick={() => {
-                            campaignsAppend({ id: field.value || "" });
+                            campaignsAppend({ id: field.value ?? "" });
                             setCampaignsDialogOpen(false);
                             form.setValue("selectedCampaign", "");
                           }}
@@ -626,7 +626,7 @@ export function DMForm({
               )}
             />
           ))}
-          <Dialog open={DMsDialogOpen} onOpenChange={setDMsDialogOpen}>
+          <Dialog open={dmsDialogOpen} onOpenChange={setDmsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
                 <PlusIcon size="18px" />
@@ -709,8 +709,8 @@ export function DMForm({
                           size="default"
                           className="mt-2 space-x-1 items-center w-fit"
                           onClick={() => {
-                            dmsAppend({ id: field.value || "" });
-                            setDMsDialogOpen(false);
+                            dmsAppend({ id: field.value ?? "" });
+                            setDmsDialogOpen(false);
                             form.setValue("selectedDM", "");
                           }}
                           disabled={pending || form.getValues("dms").length === DMs.length}

@@ -14,7 +14,7 @@ import { EditButton } from "@/components/edit-button";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
 import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
-import { ReceivedAchievementsCharacter } from "@/types/full-database.types";
+import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
 import { AchievementCards } from "@/components/achievement-cards";
 import { PartyCard } from "@/components/party-card";
 
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
     openGraph: {
       title,
       description,
-      images: [imageUrl || "/logo-light.png"],
+      images: [imageUrl ?? "/logo-light.png"],
     },
   };
 }

@@ -1,5 +1,5 @@
 import { CharacterCard } from "./character-card";
-import { Character } from "@/types/full-database.types";
+import { type Character } from "@/types/full-database.types";
 
 export function CharacterCards({ characters }: { characters: Character[] }) {
   return (

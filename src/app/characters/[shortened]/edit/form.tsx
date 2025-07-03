@@ -41,7 +41,7 @@ export function CharacterEditForm({
     defaultValues: {
       about: character.about,
       level: character.level,
-      race: character.races.length ? character.races[0].name : "",
+      race: character.races[0] ? character.races[0].name : "",
       classes: classes.length ? classes : [{ value: "" }],
     },
   });

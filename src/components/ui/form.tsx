@@ -5,10 +5,10 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
-  FieldError,
-  FieldErrorsImpl,
+  type FieldError,
+  type FieldErrorsImpl,
   FormProvider,
-  Merge,
+  type Merge,
   useFormContext,
   type ControllerProps,
   type FieldPath,

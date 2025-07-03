@@ -8,7 +8,7 @@ import { z } from "zod";
 import { RefreshCcw } from "lucide-react";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { journalPartyEntryEditSchema } from "@/config/journal-schema";
 import { actionResultMatch } from "@/types/error-typing";
 import { updateJournalPartyEntry } from "@/server/journal";

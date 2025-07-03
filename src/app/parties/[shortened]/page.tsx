@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
     openGraph: {
       title,
       description,
-      images: [imageUrl || "/logo-light.png"],
+      images: [imageUrl ?? "/logo-light.png"],
     },
   };
 }

@@ -10,7 +10,7 @@ import { getPublicUrlByUuid } from "@/lib/storage";
 import { TypographyH2 } from "@/components/typography/headings";
 import { AchievementCards } from "@/components/achievement-cards";
 import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
-import { ReceivedAchievementsPlayer } from "@/types/full-database.types";
+import { type ReceivedAchievementsPlayer } from "@/types/full-database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [imageUrl || "/logo-light.png"],
+      images: [imageUrl ?? "/logo-light.png"],
     },
   };
 }

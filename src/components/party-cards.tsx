@@ -1,6 +1,6 @@
 import { PartyCard } from "./party-card";
 import { TypographyParagraph } from "./typography/paragraph";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 export function PartyCards({ parties }: { parties: Tables<"parties">[] }) {
   if (parties.length === 0) {

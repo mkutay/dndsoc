@@ -13,7 +13,7 @@ import { ReceivedAchievementsDM } from "@/components/received-achievements-dm";
 import { ReceivedAchievementsPlayer } from "@/components/received-achievements-player";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 
   return {
     title: achievement.name,
-    description: achievement.description_long ? achievement.description_long : achievement.description,
+    description: achievement.description_long ?? achievement.description,
     openGraph: {
       title: achievement.name,
-      description: achievement.description_long ? achievement.description_long : achievement.description,
+      description: achievement.description_long ?? achievement.description,
     },
   };
 }
@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   if (result.isErr()) return <ErrorPage error={result.error} />;
   const achievement = result.value;
 
-  const description = achievement.description_long ? achievement.description_long : achievement.description;
+  const description = achievement.description_long ?? achievement.description;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">

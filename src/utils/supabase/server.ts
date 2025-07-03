@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { ResultAsync } from "neverthrow";
 import { cookies } from "next/headers";
 
-import { Database } from "@/types/database.types";
+import { type Database } from "@/types/database.types";
 
 export const createAsyncClient = async () => {
   const cookieStore = await cookies();
@@ -22,7 +22,7 @@ export const createAsyncClient = async () => {
               cookieStore.set(name, value, options);
             });
           } catch (error) {
-            console.log(error);
+            console.warn(error);
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.

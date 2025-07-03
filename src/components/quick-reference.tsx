@@ -1,8 +1,8 @@
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { GiJuggler } from "react-icons/gi";
-import { IconType } from "react-icons";
+import { type IconType } from "react-icons";
 
-import { iconMap, ReferenceItem } from "@/config/quick-reference-data";
+import { iconMap, type ReferenceItem } from "@/config/quick-reference-data";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Badge } from "@/components/ui/badge";
 
 export function ReferenceCard({ item }: { item: ReferenceItem }) {
-  const IconComponent = iconMap[item.icon] || GiJuggler;
+  const IconComponent = iconMap[item.icon] ?? GiJuggler;
 
   return (
     <Dialog>
@@ -56,6 +56,7 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
                 {item.bullets.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-2 text-base">
                     <span className="w-2 h-2 bg-primary rounded-full mt-1.5 shrink-0" />
+                    {/* eslint-disable-next-line react/no-danger */}
                     <span dangerouslySetInnerHTML={{ __html: bullet }} />
                   </li>
                 ))}

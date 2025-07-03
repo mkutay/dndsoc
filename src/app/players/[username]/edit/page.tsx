@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsPlayer = (auth && player.auth_user_uuid === auth.auth_user_uuid) || false || role === "admin";
+  const ownsPlayer = auth ? player.auth_user_uuid === auth.auth_user_uuid : role === "admin";
 
   if (!ownsPlayer) forbidden();
 

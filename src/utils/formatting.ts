@@ -1,4 +1,4 @@
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 export function formatClasses(classes: Tables<"classes">[] | { name: string }[]) {
   return classes.map((cls) => cls.name).join(", ");

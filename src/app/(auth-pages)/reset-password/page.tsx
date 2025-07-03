@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 import { ResetPasswordForm } from "./form";
 import { TypographyParagraph } from "@/components/typography/paragraph";

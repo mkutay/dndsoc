@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { formatClasses, formatRaces, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
 import { getPlayerRoleUser } from "@/lib/players";

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { truncateText } from "@/utils/formatting";
 
 type Party = Tables<"parties">;
@@ -52,9 +52,7 @@ export function PartyCard(props: Props) {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <TypographyParagraph>
-                    {props.removeText ? props.removeText : "Remove this party."}
-                  </TypographyParagraph>
+                  <TypographyParagraph>{props.removeText ?? "Remove this party."}</TypographyParagraph>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

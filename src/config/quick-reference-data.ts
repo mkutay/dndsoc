@@ -44,7 +44,7 @@ import {
   GiStrong,
   GiWingfoot,
 } from "react-icons/gi";
-import { IconType } from "react-icons";
+import { type IconType } from "react-icons";
 
 export const iconMap: { [key: string]: IconType } = {
   "crossed-swords": GiCrossedSwords,

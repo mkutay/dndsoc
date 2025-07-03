@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CalendarIcon, MinusCircle, PlusCircle, RefreshCcw } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { editPollSchema } from "@/config/poll-schema";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -57,13 +57,12 @@ export function EditPoll({
 
     actionResultMatch(
       result,
-      (r) => {
+      () => {
         toast({
           title: "Poll Updated",
           description: "The poll has been updated successfully.",
           variant: "default",
         });
-        console.dir(r, { depth: null });
       },
       (error) => {
         toast({
@@ -151,7 +150,7 @@ export function EditPoll({
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={field.value ? field.value : undefined}
+                    selected={field.value ?? undefined}
                     onSelect={field.onChange}
                     captionLayout="dropdown"
                   />

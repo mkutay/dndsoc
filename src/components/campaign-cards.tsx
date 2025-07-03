@@ -1,6 +1,6 @@
 import { TypographyParagraph } from "./typography/paragraph";
 import { CampaignCard } from "./campaign-card";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 export function CampaignCards({ campaigns }: { campaigns: Tables<"campaigns">[] }) {
   if (campaigns.length === 0) {

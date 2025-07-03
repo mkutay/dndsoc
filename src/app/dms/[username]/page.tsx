@@ -7,7 +7,7 @@ import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/parties";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { EditButton } from "@/components/edit-button";
-import { ReceivedAchievementsDM } from "@/types/full-database.types";
+import { type ReceivedAchievementsDM } from "@/types/full-database.types";
 import { TypographyH2 } from "@/components/typography/headings";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [imageUrl || "/logo-light.png"],
+      images: [imageUrl ?? "/logo-light.png"],
     },
   };
 }

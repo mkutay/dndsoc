@@ -4,7 +4,7 @@ import { beforeAll, expect, test, describe } from "vitest";
 import { createClient as supaCreateClient } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/server";
-import { Database } from "@/types/database.types";
+import { type Database } from "@/types/database.types";
 
 export const supabaseServiceRole = supaCreateClient<Database>(
   process.env.SUPABASE_URL!,

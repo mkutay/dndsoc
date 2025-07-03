@@ -21,7 +21,7 @@ export const Latex: React.FC<LatexProps> = ({ latexString, displayMode = false }
       } catch (error: unknown) {
         console.error("KaTeX rendering error:", error);
         if (ref.current) {
-          ref.current.innerHTML = `<span class="text-destructive-foreground">Error: ${error || "Invalid LaTeX"}</span>`;
+          ref.current.innerHTML = `<span class="text-destructive-foreground">Error: ${error ?? "Invalid LaTeX"}</span>`;
         }
       }
     }

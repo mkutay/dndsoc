@@ -1,5 +1,5 @@
 import { Dot } from "lucide-react";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 
 import { TypographyH1 } from "@/components/typography/headings";
@@ -7,7 +7,7 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import { Player } from "@/types/full-database.types";
+import { type Player } from "@/types/full-database.types";
 import { truncateText } from "@/utils/formatting";
 import { runQuery } from "@/utils/supabase-run";
 

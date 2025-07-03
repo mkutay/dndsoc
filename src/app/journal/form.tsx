@@ -23,7 +23,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useToast } from "@/hooks/use-toast";
 import { journalCreateSchema } from "@/config/journal-schema";
 import { Input } from "@/components/ui/input";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { createJournal } from "@/server/journal";
 import { actionResultMatch } from "@/types/error-typing";
 import { cn } from "@/utils/styling";

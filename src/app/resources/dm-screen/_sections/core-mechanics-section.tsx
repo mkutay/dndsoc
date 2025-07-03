@@ -108,7 +108,7 @@ function AbilityScoresModifiers() {
           }}
         />
         <div className="text-xl font-quotes flex flex-row justify-between items-center">
-          <p>Modifier: {modifier ? modifier : "NaN"}</p>
+          <p>Modifier: {modifier ?? "NaN"}</p>
           <Latex latexString="\left\lfloor \frac{\text{score} - 10}{2} \right\rfloor" />
         </div>
       </CardContent>

@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { TypographyParagraph } from "./typography/paragraph";
 import { Button } from "./ui/button";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 
 type Campaign = Tables<"campaigns">;
 
@@ -50,9 +50,7 @@ export function CampaignCard(props: Props) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <TypographyParagraph>
-                  {props.removeText ? props.removeText : "Remove this campaign."}
-                </TypographyParagraph>
+                <TypographyParagraph>{props.removeText ?? "Remove this campaign."}</TypographyParagraph>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

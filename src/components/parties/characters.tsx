@@ -24,7 +24,7 @@ import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/utils/styling";
-import { Character } from "@/types/full-database.types";
+import { type Character } from "@/types/full-database.types";
 import { CharacterCard } from "@/components/character-card";
 import { addCharacterToParty, removeCharacterFromParty } from "@/server/characters";
 

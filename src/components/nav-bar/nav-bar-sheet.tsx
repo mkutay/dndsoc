@@ -30,7 +30,7 @@ export function NavBarSheet({ loggedIn, setLoggedIn }: { loggedIn: boolean; setL
           <HamburgerMenuIcon stroke="currentColor" strokeWidth="1px" />
         </Button>
       </SheetTrigger>
-      <SheetContent onOpenAutoFocus={(e) => e.preventDefault()} autoFocus={false}>
+      <SheetContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <SheetHeader>
           <SheetTitle>Navigate</SheetTitle>
         </SheetHeader>

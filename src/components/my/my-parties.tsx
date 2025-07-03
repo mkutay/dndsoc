@@ -2,7 +2,7 @@ import { Crown } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { Parties } from "@/components/parties";
 import { getParties } from "@/lib/parties";
 import { ErrorPage } from "@/components/error-page";

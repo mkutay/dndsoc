@@ -14,7 +14,7 @@ import {
   Star,
 } from "lucide-react";
 import { DiscordLogoIcon } from "@radix-ui/react-icons";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 
 import { TypographyH1, TypographyH2, TypographyH3 } from "@/components/typography/headings";

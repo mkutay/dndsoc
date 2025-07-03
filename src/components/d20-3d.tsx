@@ -65,7 +65,7 @@ function createIcosahedronFaces(): FaceData[] {
   const numMap = new Array<number>(faceCount);
   let label = 1;
   for (let i = 0; i < faceCount; i++) {
-    if (numMap[i] == null) {
+    if (numMap[i] === null) {
       const j = opposite[i];
       numMap[i] = label;
       numMap[j] = 21 - label;
@@ -100,7 +100,7 @@ export function D20Dice({ className, size = "md", onRoll, disabled = false }: D2
   const handleRollComplete = () => {
     setIsRolling(false);
     setHasRolled(true);
-    if (result != null) onRoll?.(result);
+    if (result !== null) onRoll?.(result);
   };
 
   if (hasError) {
@@ -114,6 +114,15 @@ export function D20Dice({ className, size = "md", onRoll, disabled = false }: D2
             "bg-primary/10 rounded-lg border-2 border-primary/20",
           )}
           onClick={rollDice}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              rollDice();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Roll D20 dice"
         >
           <span className="text-primary font-bold">D20</span>
         </div>
@@ -126,7 +135,19 @@ export function D20Dice({ className, size = "md", onRoll, disabled = false }: D2
 
   return (
     <div className={cn("relative inline-block", className)}>
-      <div className={cn(canvas, "cursor-pointer")} onClick={rollDice}>
+      <div
+        className={cn(canvas, "cursor-pointer")}
+        onClick={rollDice}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            rollDice();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Roll D20 dice"
+      >
         <Canvas
           camera={{ position: [0, 0, 4], fov: 50 }}
           gl={{ antialias: true, alpha: true }}
@@ -205,7 +226,7 @@ function D20Mesh({
   const { camera } = useThree();
 
   useEffect(() => {
-    if (isRolling && result != null && groupRef.current) {
+    if (isRolling && result !== null && groupRef.current) {
       startQuat.current.copy(groupRef.current.quaternion);
       startTime.current = Date.now() / 1000;
       finishedRef.current = false;
@@ -215,17 +236,19 @@ function D20Mesh({
       spinCount.current = 4 + Math.random() * 6;
 
       // compute final orientation: face.normal -> camera direction
-      const face = faces.find((f) => f.number === result)!;
-      const camDir = camera.position.clone().normalize();
-      const mapQ = new THREE.Quaternion().setFromUnitVectors(face.normal, camDir);
-      const twistQ = new THREE.Quaternion().setFromAxisAngle(camDir, Math.random() * Math.PI * 2);
-      finalQuat.current.copy(twistQ).multiply(mapQ);
+      const face = faces.find((f) => f.number === result);
+      if (face) {
+        const camDir = camera.position.clone().normalize();
+        const mapQ = new THREE.Quaternion().setFromUnitVectors(face.normal, camDir);
+        const twistQ = new THREE.Quaternion().setFromAxisAngle(camDir, Math.random() * Math.PI * 2);
+        finalQuat.current.copy(twistQ).multiply(mapQ);
+      }
     }
   }, [isRolling, result, faces, camera]);
 
   useFrame(() => {
-    const grp = groupRef.current!;
-    if (isRolling) {
+    const grp = groupRef.current;
+    if (isRolling && grp) {
       const t = Date.now() / 1000 - startTime.current;
       const dur = 2.5;
       if (t < dur) {

@@ -1,5 +1,5 @@
 import { ProfileLinksClient } from "./profile-links-client";
-import { Enums, Tables } from "@/types/database.types";
+import { type Enums, type Tables } from "@/types/database.types";
 import { getPublicUrlByPathSync } from "@/lib/storage";
 import { ErrorPage } from "@/components/error-page";
 import { runQuery } from "@/utils/supabase-run";

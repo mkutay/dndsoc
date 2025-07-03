@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 import HeroSection from "./_sections/hero-section";
 import CoreMechanicsSection from "./_sections/core-mechanics-section";
@@ -11,7 +11,7 @@ import AdvancedUtilitySection from "./_sections/advanced-utility-section";
 import AdvancedEncountersSection from "./_sections/advanced-encounters-section";
 import FooterCtaSection from "./_sections/footer-cta-section";
 
-import DMScreenNav, { SectionIds } from "./_components/dm-screen-nav";
+import DMScreenNav, { type SectionIds } from "./_components/dm-screen-nav";
 
 export const dynamic = "force-static";
 

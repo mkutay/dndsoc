@@ -20,7 +20,7 @@ import {
   GiScales,
 } from "react-icons/gi";
 
-import { IconType } from "react-icons";
+import { type IconType } from "react-icons";
 import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

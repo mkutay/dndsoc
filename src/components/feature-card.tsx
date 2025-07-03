@@ -1,7 +1,7 @@
 "use client";
 
-import { ForwardRefExoticComponent, RefAttributes, useEffect, useState } from "react";
-import { ArrowRight, LucideProps } from "lucide-react";
+import { type ForwardRefExoticComponent, type RefAttributes, useEffect, useState } from "react";
+import { ArrowRight, type LucideProps } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "./ui/button";

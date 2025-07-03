@@ -9,7 +9,7 @@ import { startTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -60,8 +60,8 @@ export function AddPartyForm({
 
   const onSubmit = async (values: z.infer<typeof addPartyToCampaignSchema>) => {
     if (!values.party) return;
-
-    const partyToAdd = parties.find((party) => party.id === values.party)!;
+    const partyToAdd = parties.find((party) => party.id === values.party);
+    if (!partyToAdd) return;
     startTransition(() =>
       setOptimisticParties({
         type: "add",
@@ -84,7 +84,7 @@ export function AddPartyForm({
       startTransition(() =>
         setOptimisticParties({
           type: "remove",
-          partyId: values.party || "",
+          partyId: values.party ?? "",
         }),
       );
       setOpen(true);

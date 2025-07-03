@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 

@@ -23,7 +23,7 @@ import { TypographyH2 } from "@/components/typography/headings";
 import { CampaignCard } from "@/components/campaign-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/utils/styling";
 import { addCampaignToParty, removeCampaignFromParty } from "@/server/campaigns";

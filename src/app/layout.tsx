@@ -1,7 +1,7 @@
 import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import "katex/dist/katex.min.css";
 
 import {

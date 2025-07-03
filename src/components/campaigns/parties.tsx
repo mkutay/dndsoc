@@ -6,7 +6,7 @@ import { PartyCard } from "../party-card";
 import { AddPartyButton } from "./add-party-button";
 import { CreatePartyButton } from "./create-party-button";
 import { TypographyH2 } from "@/components/typography/headings";
-import { Tables } from "@/types/database.types";
+import { type Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
 import { removeCampaignFromParty } from "@/server/campaigns";
 

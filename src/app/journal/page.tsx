@@ -1,6 +1,6 @@
 import { okAsync } from "neverthrow";
 import { format } from "date-fns";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 
 import { CreateJournal } from "./form";

@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { playersEditSchema } from "@/config/player-edit-schema";
-import { Player } from "@/types/full-database.types";
+import { type Player } from "@/types/full-database.types";
 import { actionResultMatch } from "@/types/error-typing";
 import { updatePlayer } from "@/server/players";
 

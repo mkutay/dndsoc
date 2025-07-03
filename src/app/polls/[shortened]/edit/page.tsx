@@ -16,9 +16,9 @@ const getPoll = ({ shortened }: { shortened: string }) =>
       .from("polls")
       .select(
         `
-      *,
-      options(*)
-    `,
+          *,
+          options(*)
+        `,
       )
       .eq("shortened", shortened)
       .single(),

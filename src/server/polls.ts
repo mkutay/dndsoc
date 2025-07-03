@@ -63,7 +63,7 @@ export const editPoll = async (pollId: string, data: z.infer<typeof editPollSche
           .upsert(
             data.options.map((option) => ({
               text: option.text,
-              id: option.id ? option.id : crypto.randomUUID(),
+              id: option.id ?? crypto.randomUUID(),
               poll_id: pollId,
             })),
           )
