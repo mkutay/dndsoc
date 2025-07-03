@@ -56,12 +56,12 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         <TypographyLarge>Points: {achievement.points}</TypographyLarge>
         <div className="flex flex-row items-center gap-1 mb-0.5 flex-wrap">
           {Array.from({ length: achievement.points / 5 }, (_, i) => (
-            <div key={i} className="w-4 h-4 bg-gradient-to-br from-blue-300 to-blue-600 rounded-full shadow-lg border border-blue-200" />
+            <div key={i} className="w-4 h-4 bg-linear-to-br from-blue-300 to-blue-600 rounded-full shadow-lg border border-blue-200" />
           ))}
         </div>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger className="mb-[1px]">
+            <TooltipTrigger className="mb-px">
               <InfoIcon className="text-foreground hover:text-foreground/80 transition-all" />
             </TooltipTrigger>
             <TooltipContent>

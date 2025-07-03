@@ -36,7 +36,7 @@ export default function AboutPage() {
               </div>
             </div>
             
-            <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
+            <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-linear-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
               <span className="font-drop-caps font-normal">A</span>bout <span className="font-drop-caps font-normal">U</span>s
             </TypographyH1>
             
@@ -99,7 +99,7 @@ export default function AboutPage() {
       </section>
 
       {/* Society Leadership Section */}
-      <section className="py-12 md:py-18 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
+      <section className="py-12 md:py-18 bg-linear-to-b from-bg-background via-bg-muted/40 to-bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -313,7 +313,7 @@ export default function AboutPage() {
       </section>
 
       {/* About This Website Section */}
-      <section className="py-12 md:py-18 bg-gradient-to-b from-bg-background via-bg-muted/40 to-bg-background">
+      <section className="py-12 md:py-18 bg-linear-to-b from-bg-background via-bg-muted/40 to-bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -358,7 +358,7 @@ export default function AboutPage() {
               </Card>
             </div>
             
-            {/* <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-6 md:p-8 border border-primary/20 max-w-2xl mx-auto">
+            {/* <div className="bg-linear-to-r from-primary/10 to-primary/5 rounded-2xl p-6 md:p-8 border border-primary/20 max-w-2xl mx-auto">
               <TypographyH3 className="text-2xl font-bold mb-4 text-center">
                 Ready to Roll for Initiative in the Digital Realm?
               </TypographyH3>
@@ -459,7 +459,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-18 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <section className="py-12 md:py-18 bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <TypographyH2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground border-none">
             Ready to Join YOUR Adventure?

@@ -77,7 +77,7 @@ const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({
   return (
     <section
       id={id}
-      className="py-12 md:py-18 bg-gradient-to-b from-background via-muted/40 to-background"
+      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background"
     >
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">

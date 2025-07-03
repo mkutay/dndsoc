@@ -26,7 +26,7 @@ export default function Home() {
               </div>
             </div>
             
-            <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
+            <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-linear-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
               <span className="font-drop-caps font-normal">R</span>oll for <span className="font-drop-caps font-normal">I</span>nitiative
             </TypographyH1>
             
@@ -137,7 +137,7 @@ export default function Home() {
 
             <TypographyHr className="mb-16 md:mb-20" />
             
-            <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-6 md:p-8 lg:p-12 border border-primary/20 max-w-4xl mx-auto">
+            <div className="bg-linear-to-r from-primary/10 to-primary/5 rounded-2xl p-6 md:p-8 lg:p-12 border border-primary/20 max-w-4xl mx-auto">
               <TypographyH3 className="text-2xl md:text-3xl font-bold mb-4">
                 Open Source & Community Driven
               </TypographyH3>
@@ -161,7 +161,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <section className="py-16 md:py-20 bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground items-start flex flex-row justify-center">
             <span className="font-drop-caps text-4xl md:text-6xl font-normal">R</span>eady

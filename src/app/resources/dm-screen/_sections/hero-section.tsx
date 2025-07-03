@@ -23,7 +23,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ id }) => {
             </div>
           </div>
 
-          <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
+          <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-linear-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
             Kutay&apos;s{" "}
             <span className="font-drop-caps font-normal tracking-tighter">DM</span>{" "}
             Screen

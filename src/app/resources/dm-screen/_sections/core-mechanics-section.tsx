@@ -51,7 +51,7 @@ function CharacterAdvancement() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-card to-primary/5 h-fit">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/20 hover:border-primary/40 bg-linear-to-br from-card to-primary/5 h-fit">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Users className="w-6 md:w-7 h-6 md:h-7 text-primary" />
@@ -95,7 +95,7 @@ function AbilityScoresModifiers() {
   const [modifier, setModifier] = useState<string | null>(null);
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-600 bg-gradient-to-br from-card to-blue-50 dark:to-blue-950/20">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-600 bg-linear-to-br from-card to-blue-50 dark:to-blue-950/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <DicesIcon className="w-9 md:w-10 h-9 md:h-10 text-blue-600 dark:text-blue-400" />
@@ -134,7 +134,7 @@ function AbilityScoresModifiers() {
 
 function MagicSpecialRules() {
   return (
-    <Card className="md:w-3/5 w-full h-fit justify-start hover:shadow-lg transition-all duration-300 border-2 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-600 bg-gradient-to-br from-card to-purple-50 dark:to-purple-950/20">
+    <Card className="md:w-3/5 w-full h-fit justify-start hover:shadow-lg transition-all duration-300 border-2 border-purple-200 dark:border-purple-800 hover:border-purple-300 dark:hover:border-purple-600 bg-linear-to-br from-card to-purple-50 dark:to-purple-950/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />

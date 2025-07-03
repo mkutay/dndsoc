@@ -25,7 +25,7 @@ const ConditionsSection: React.FC<ConditionsSectionProps> = ({ id }) => {
   return (
     <section
       id={id}
-      className="py-12 md:py-18 bg-gradient-to-b from-background via-muted/40 to-background"
+      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background"
     >
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
@@ -60,7 +60,7 @@ const ConditionsSection: React.FC<ConditionsSectionProps> = ({ id }) => {
           )}
 
           {/* Conditions Quick Reference */}
-          <Card className="md:px-6 md:py-2 md:mt-16 mt-12 bg-gradient-to-r from-red-50/50 via-pink-50/30 to-purple-50/50 dark:from-red-950/20 dark:via-pink-950/10 dark:to-purple-950/20 border-2 border-red-200/50 dark:border-red-800/50">
+          <Card className="md:px-6 md:py-2 md:mt-16 mt-12 bg-linear-to-r from-red-50/50 via-pink-50/30 to-purple-50/50 dark:from-red-950/20 dark:via-pink-950/10 dark:to-purple-950/20 border-2 border-red-200/50 dark:border-red-800/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HeartCrack className="w-7 h-7 md:w-8 md:h-8" />

@@ -58,7 +58,7 @@ function Traps() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiTrapMask className="w-8 h-8 md:w-10 md:h-10 text-primary" />
@@ -215,7 +215,7 @@ function Chases() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiRunningNinja className="w-8 h-8 md:w-10 md:h-10 text-primary" />
@@ -303,7 +303,7 @@ function ChaseComplications() {
   ];
 
   return (
-    <Card className="justify-start col-span-full hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start col-span-full hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Sparkles className="w-7 h-7 text-primary" />
@@ -381,7 +381,7 @@ function Carousing() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiCarousel className="w-10 h-10 text-primary mb-1.5" />
@@ -464,7 +464,7 @@ function Madness() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiPotionOfMadness className="w-9 h-9 text-primary" />
@@ -569,7 +569,7 @@ const AdvancedEncountersSection: React.FC<AdvancedEncountersSectionProps> = ({ i
   return (
     <section
       id={id}
-      className="py-12 md:py-18 bg-gradient-to-b from-background via-muted/40 to-background"
+      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background"
     >
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
@@ -586,7 +586,7 @@ const AdvancedEncountersSection: React.FC<AdvancedEncountersSectionProps> = ({ i
           </div>
 
           {/* Advanced Encounters Tips */}
-          <div className="py-6 md:py-8 px-8 md:px-12 bg-gradient-to-r from-violet-50/50 via-indigo-50/30 to-purple-50/50 dark:from-violet-950/20 dark:via-indigo-950/10 dark:to-purple-950/20 rounded-2xl border border-violet-200/50 dark:border-violet-800/50">
+          <div className="py-6 md:py-8 px-8 md:px-12 bg-linear-to-r from-violet-50/50 via-indigo-50/30 to-purple-50/50 dark:from-violet-950/20 dark:via-indigo-950/10 dark:to-purple-950/20 rounded-2xl border border-violet-200/50 dark:border-violet-800/50">
             <CardTitle className="mb-6 text-violet-700 dark:text-violet-300 flex items-center gap-3">
               <Sparkles className="w-7 h-7" />
               Advanced Encounter Design

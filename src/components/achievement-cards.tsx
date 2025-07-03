@@ -35,7 +35,7 @@ export async function AchievementCards({
           href={`/achievements/${achievement.achievements.shortened}`}
         >
           <div className="font-quotes text-lg">{achievement.achievements.name}</div>
-            <div className="w-3.5 h-3.5 bg-gradient-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
+            <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
           <div className="tracking-wide">Received {times[achievement.count]}</div>
         </Link>
       ))}

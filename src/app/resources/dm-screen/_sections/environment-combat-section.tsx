@@ -75,7 +75,7 @@ function LightSources() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiCampfire className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -147,7 +147,7 @@ function LightSources() {
 
 function Jumping() {
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
           <GiJumpAcross className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -189,7 +189,7 @@ function Jumping() {
 
 function Suffocating() {
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiSpikedWall className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -225,7 +225,7 @@ function SizeCategories() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiScales className="w-9 md:w-10 h-9 md:h-10 text-primary" />
@@ -260,7 +260,7 @@ function SizeCategories() {
 
 function Concentration() {
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
           <GiConcentrationOrb className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -342,7 +342,7 @@ function RatingXP() {
         w-full
         hover:shadow-lg transition-all duration-300
         border-2 border-primary/40
-        bg-gradient-to-br from-card to-card/80
+        bg-linear-to-br from-card to-card/80
         justify-start h-fit
       "
     >
@@ -396,7 +396,7 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
             group
             border-2 border-border
             hover:border-primary/50
-            bg-gradient-to-br from-card to-card/80
+            bg-linear-to-br from-card to-card/80
           "
         >
           <CardHeader className="pb-2">
@@ -429,7 +429,7 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
               <ul className="space-y-2">
                 {details.map((d, i) => (
                   <li key={i} className="flex items-start gap-2 text-base">
-                    <span className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                    <span className="w-2 h-2 bg-primary rounded-full mt-1.5 shrink-0" />
                     {d}
                   </li>
                 ))}
@@ -444,7 +444,7 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
               <ul className="space-y-2">
                 {examples.map((e, i) => (
                   <li key={i} className="flex items-start gap-2 text-base">
-                    <span className="w-2 h-2 bg-secondary rounded-full mt-1.5 flex-shrink-0" />
+                    <span className="w-2 h-2 bg-secondary rounded-full mt-1.5 shrink-0" />
                     {e}
                   </li>
                 ))}
@@ -699,7 +699,7 @@ const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
   return (
     <section
       id={id}
-      className="py-12 md:py-18 bg-gradient-to-b from-background via-muted/20 to-background"
+      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/20 to-background"
     >
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
@@ -730,7 +730,7 @@ const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
           </div>
 
           {/* Environmental Rules Tips */}
-          <div className="max-w-6xl mx-auto bg-gradient-to-r from-emerald-50/50 via-teal-50/30 to-cyan-50/50 dark:from-emerald-950/20 dark:via-teal-950/10 dark:to-cyan-950/20 rounded-2xl py-6 md:py-8 px-8 md:px-12 border border-emerald-200/50 dark:border-emerald-800/50 shadow-lg">
+          <div className="max-w-6xl mx-auto bg-linear-to-r from-emerald-50/50 via-teal-50/30 to-cyan-50/50 dark:from-emerald-950/20 dark:via-teal-950/10 dark:to-cyan-950/20 rounded-2xl py-6 md:py-8 px-8 md:px-12 border border-emerald-200/50 dark:border-emerald-800/50 shadow-lg">
             <h3 className="text-3xl md:text-4xl font-bold font-headings mb-6 text-emerald-700 dark:text-emerald-300 flex items-center gap-3">
               <TreeDeciduous className="md:w-8 md:h-8 w-7 h-7" />
               Environmental Tactics & Tips

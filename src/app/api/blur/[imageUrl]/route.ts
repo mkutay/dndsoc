@@ -49,9 +49,9 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error("Error generating blur placeholder:", error);
+    console.error("Error generating blur-sm placeholder:", error);
     return NextResponse.json(
-      { error: "Internal server error while generating blur placeholder" },
+      { error: "Internal server error while generating blur-sm placeholder" },
       { status: 500 }
     );
   }

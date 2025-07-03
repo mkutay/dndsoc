@@ -68,7 +68,7 @@ export function D20({ className, size = "md", onRoll, disabled = false, variant 
         disabled={disabled || isRolling}
         className={cn(
           "relative transition-all duration-200 hover:scale-110 active:scale-95",
-          "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full",
+          "focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
           isRolling && "animate-spin cursor-not-allowed",
           className

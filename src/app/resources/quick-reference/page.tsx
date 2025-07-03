@@ -20,19 +20,19 @@ export const metadata: Metadata = {
 
 export default function QuickReferencePage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
+    <main className="min-h-screen bg-linear-to-br from-background via-muted/30 to-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-12 md:py-20">
         <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent rounded-3xl p-8 md:p-12 border border-primary/30 backdrop-blur-sm">
+            <div className="bg-linear-to-r from-primary/20 via-primary/10 to-transparent rounded-3xl p-8 md:p-12 border border-primary/30 backdrop-blur-sm">
               <div className="flex flex-col lg:flex-row items-center md:gap-0 gap-4">
                 <div className="text-center lg:text-left w-fit">
                   <div className="inline-flex items-center gap-2 mb-4 p-2 rounded-full bg-primary/20 border border-primary/30">
                     <Zap className="w-5 h-5 text-primary" />
                     <span className="text-sm font-medium text-primary font-quotes">Complete 5e Reference</span>
                   </div>
-                  <TypographyH1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                  <TypographyH1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                     Quick<br />Reference
                   </TypographyH1>
                   <TypographyParagraph className="text-lg md:text-xl text-muted-foreground mb-6">
@@ -68,7 +68,7 @@ export default function QuickReferencePage() {
       </section>
 
       {/* Quick Navigation */}
-      <section className="py-8 md:py-12 bg-gradient-to-b from-muted/20 to-transparent">
+      <section className="py-8 md:py-12 bg-linear-to-b from-muted/20 to-transparent">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto w-full">
             <TypographyH3 className="text-center mb-6">Jump to Section</TypographyH3>
@@ -129,7 +129,7 @@ export default function QuickReferencePage() {
       </div>
 
       {/* Bonus Actions Section */}
-      <div id="bonus-actions" className="bg-gradient-to-b from-muted/10 to-transparent">
+      <div id="bonus-actions" className="bg-linear-to-b from-muted/10 to-transparent">
         <ReferenceSection 
           title="Bonus Actions" 
           icon={Zap} 
@@ -149,7 +149,7 @@ export default function QuickReferencePage() {
       </div>
 
       {/* Conditions Section */}
-      <div id="conditions" className="bg-gradient-to-b from-muted/10 to-transparent">
+      <div id="conditions" className="bg-linear-to-b from-muted/10 to-transparent">
         <ReferenceSection 
           title="Conditions" 
           icon={Shield} 
@@ -169,7 +169,7 @@ export default function QuickReferencePage() {
       </div>
 
       {/* Environment Section */}
-      <div id="environment" className="bg-gradient-to-b from-muted/10 to-transparent">
+      <div id="environment" className="bg-linear-to-b from-muted/10 to-transparent">
         <section className="py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
@@ -228,7 +228,7 @@ export default function QuickReferencePage() {
       </div>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <section className="py-16 md:py-20 bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <TypographyH2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground border-none">
             Ready to Use These Rules?

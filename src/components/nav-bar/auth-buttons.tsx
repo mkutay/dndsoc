@@ -13,7 +13,7 @@ export function AuthButtons({
   setLoggedIn: (value: boolean) => void;
 }) {
   return loggedIn ? (
-    <Button variant={"outline"} type="submit" size="sm" onClick={async () => {
+    <Button variant="outline" type="submit" size="sm" onClick={async () => {
       setLoggedIn(false);
       await signOutAction();
     }}>
@@ -21,10 +21,10 @@ export function AuthButtons({
     </Button>
   ) : (
     <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
+      <Button asChild size="sm" variant="outline">
         <Link href="/sign-in">Sign In</Link>
       </Button>
-      <Button asChild size="sm" variant={"default"}>
+      <Button asChild size="sm">
         <Link href="/sign-up">Sign Up</Link>
       </Button>
     </div>

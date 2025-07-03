@@ -65,7 +65,7 @@ function Objects() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all justify-start duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="hover:shadow-lg transition-all justify-start duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiAnarchy className="w-9 h-9 md:w-10 md:h-10 text-primary" />
@@ -175,7 +175,7 @@ function Exhaustion() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiTiredEye className="md:w-11 md:h-11 w-9 h-9 text-primary" />
@@ -190,7 +190,7 @@ function Exhaustion() {
               className="px-4 py-2 rounded-lg border transition-all hover:scale-[1.01] duration-500 bg-muted/20"
             >
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold bg-muted text-muted-foreground">
                     {level.level}
                   </div>
@@ -234,7 +234,7 @@ function GroundSurfaceTracking() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiFootprint className="w-9 h-9 text-primary" />
@@ -278,7 +278,7 @@ function OverlandTravelPace() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiTravelDress className="w-10 h-10 text-primary" />
@@ -327,7 +327,7 @@ function RandomWeather() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiHeavyRain className="w-10 h-10 text-primary" />
@@ -419,7 +419,7 @@ function ImprovisingDamage() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <Flame className="w-7 h-7 text-primary" />
@@ -465,7 +465,7 @@ function LingeringInjuries() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <HeartCrack className="w-7 h-7 text-primary" />

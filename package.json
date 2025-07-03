@@ -27,7 +27,6 @@
     "@supabase/supabase-js": "latest",
     "@types/katex": "^0.16.7",
     "@types/three": "^0.177.0",
-    "autoprefixer": "10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -50,6 +49,7 @@
     "zod": "^3.25.56"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "22.10.2",
     "@types/react": "^19.1.6",
     "@types/react-dom": "19.0.2",
@@ -58,7 +58,7 @@
     "jsdom": "^26.1.0",
     "postcss": "8.4.49",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "^4.1.11",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.7.2",
     "vitest": "^3.2.2"

@@ -153,7 +153,7 @@ function ArmourTable() {
     }
   ];
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="h-full hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiCapeArmor className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -599,7 +599,7 @@ function WeaponsTable() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/80 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
           <GiPointySword className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -755,7 +755,7 @@ function ContainerCapacity() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiJigsawBox className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -801,7 +801,7 @@ function Services() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiSlap className="w-8 h-8 md:w-10 md:h-10 text-primary" />
@@ -842,7 +842,7 @@ function LifestyleExpenses() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiTwoCoins className="w-8 md:w-10 h-8 md:h-10 text-primary" />
@@ -902,7 +902,7 @@ function FoodDrinkLodging() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
           <GiTavernSign className="w-8 md:w-9 h-8 md:h-9 text-primary" />
@@ -1034,7 +1034,7 @@ function FoodWaterNeeds() {
   ];
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-gradient-to-br from-card to-card/20 justify-start">
+    <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/20 justify-start">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiDroplets className="md:w-10 md:h-10 w-8 h-8 text-primary" />
@@ -1134,7 +1134,7 @@ function MagicItemEconomy() {
   ];
 
   return (
-    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-gradient-to-br from-card to-card/40">
+    <Card className="justify-start hover:shadow-lg transition-all duration-300 border-2 border-border bg-linear-to-br from-card to-card/40">
       <CardHeader>
         <CardTitle className="flex items-center gap-3">
           <GiMagicLamp className="w-9 h-9 text-primary" />

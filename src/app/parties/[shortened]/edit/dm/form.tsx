@@ -247,7 +247,7 @@ export function DMForm({
                   <FormLabel className={cn(index !== 0 ? "hidden" : "flex")}>Characters</FormLabel>
                   <FormControl>
                     <div className="relative w-full items-center">
-                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a character..."}
                         {field.value && (() => {
                           const character = characters.find((char) => field.value.id === char.id);
@@ -267,7 +267,7 @@ export function DMForm({
                         type="button"
                         variant="destructive"
                         size="icon"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full flex-shrink-0"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
                         onClick={() => {
                           charactersRemove(index);
                         }}
@@ -410,7 +410,7 @@ export function DMForm({
                   <FormLabel className={cn(index !== 0 ? "hidden" : "flex")}>Campaigns</FormLabel>
                   <FormControl>
                     <div className="relative w-full items-center">
-                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a character..."}
                         {field.value && (() => {
                           const campaign = campaigns.find((campaign) => field.value.id === campaign.id);
@@ -425,7 +425,7 @@ export function DMForm({
                         type="button"
                         variant="destructive"
                         size="icon"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full flex-shrink-0"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
                         onClick={() => {
                           campaignsRemove(index);
                         }}
@@ -559,7 +559,7 @@ export function DMForm({
                   <FormLabel className={cn(index !== 0 ? "hidden" : "flex")}>DMs</FormLabel>
                   <FormControl>
                     <div className="relative w-full items-center">
-                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
+                      <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a DM..."}
                         {field.value && (() => {
                           const dm = DMs.find((dm) => field.value.id === dm.id);
@@ -574,7 +574,7 @@ export function DMForm({
                         type="button"
                         variant="destructive"
                         size="icon"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full flex-shrink-0"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
                         onClick={() => {
                           dmsRemove(index);
                         }}

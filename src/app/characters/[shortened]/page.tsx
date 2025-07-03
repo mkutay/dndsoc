@@ -94,9 +94,9 @@ export default async function Page({ params }:
           </div>
           <div className="flex flex-row">
             <TypographyLarge>Level {character.level}</TypographyLarge>
-            {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-[1px]" />}
+            {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-px" />}
             {character.classes.length !== 0 && <TypographyLarge>{formatClasses(character.classes)}</TypographyLarge>}
-            {(character.classes.length !== 0 && character.races.length !== 0) && <Dot className="mt-[1px]" />}
+            {(character.classes.length !== 0 && character.races.length !== 0) && <Dot className="mt-px" />}
             {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
           </div>
           {character.about && character.about.length !== 0 && <TypographyLead className="indent-6">{character.about}</TypographyLead>}

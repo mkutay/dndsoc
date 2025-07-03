@@ -168,7 +168,7 @@ export function CharacterEditForm({
                         type="button"
                         variant="destructive"
                         size="icon"
-                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full flex-shrink-0"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
                         onClick={() => {
                           remove(index);
                         }}

@@ -15,7 +15,7 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 group dark:border-2 dark:border-border hover:dark:border-primary/50">
+        <Card className="cursor-pointer hover:shadow-lg transition-all duration-300 group dark:border-2 dark:border-border dark:hover:border-primary/50">
           <CardHeader className="pb-2">
             <CardTitle className="flex sm:flex-row flex-col items-center gap-3 text-lg">
               <IconComponent className="w-10 h-10 text-primary group-hover:scale-110 transition-transform duration-300" />
@@ -63,7 +63,7 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
               <ul className="space-y-2">
                 {item.bullets.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-2 text-base">
-                    <span className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                    <span className="w-2 h-2 bg-primary rounded-full mt-1.5 shrink-0" />
                     <span dangerouslySetInnerHTML={{ __html: bullet }} />
                   </li>
                 ))}

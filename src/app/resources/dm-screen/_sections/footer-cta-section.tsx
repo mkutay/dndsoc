@@ -7,7 +7,7 @@ interface FooterCtaSectionProps {
 
 const FooterCtaSection: React.FC<FooterCtaSectionProps> = ({ id }) => {
   return (
-    <section id={id} className="py-12 md:py-18 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+    <section id={id} className="py-12 md:py-18 bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
       <div className="container mx-auto px-4 text-center">
         <TypographyH2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground border-none">
           Ready to Forge Your Own Adventures?
