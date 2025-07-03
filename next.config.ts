@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+import "./src/env";
+
 const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
@@ -17,7 +19,7 @@ const nextConfig: NextConfig = {
       },
     ],
     loader: "custom",
-    loaderFile: './loader.js',
+    loaderFile: "./loader.js",
   },
 };
 

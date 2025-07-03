@@ -18,10 +18,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
 import { cn } from "@/utils/styling";
 import "@/app/globals.css";
+import { env } from "@/env";
 
-const defaultUrl = process.env.PRODUCTION_SITE_URL
-  ? `https://${process.env.PRODUCTION_SITE_URL}`
-  : "http://localhost:3000";
+const defaultUrl = env.SITE_URL;
 
 const sans = Libre_Baskerville({
   subsets: ["latin"],

@@ -27,6 +27,7 @@
     "@react-three/fiber": "^9.1.2",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "@t3-oss/env-core": "^0.13.8",
     "@types/katex": "^0.16.7",
     "@types/three": "^0.177.0",
     "class-variance-authority": "^0.7.1",

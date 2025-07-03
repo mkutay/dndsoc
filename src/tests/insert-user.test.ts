@@ -5,16 +5,13 @@ import { createClient as supaCreateClient } from "@supabase/supabase-js";
 
 import { createClient } from "@/utils/supabase/server";
 import { type Database } from "@/types/database.types";
+import { env } from "@/env";
 
-export const supabaseServiceRole = supaCreateClient<Database>(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_KEY!,
-  {
-    auth: {
-      persistSession: false,
-    },
+export const supabaseServiceRole = supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+  auth: {
+    persistSession: false,
   },
-);
+});
 
 describe("authenticated user", () => {
   beforeAll(async () => {
@@ -35,8 +32,8 @@ export async function signInUser() {
     error,
     data: { session },
   } = await supabase.auth.signInWithPassword({
-    email: process.env.TEST_USER_EMAIL!,
-    password: process.env.TEST_USER_PASSWORD!,
+    email: "player@kcl.ac.uk",
+    password: "123345",
   });
   expect(error).toBeNull();
   expect(session).not.toBeNull();
