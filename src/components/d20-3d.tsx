@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Text, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
+import { D20 } from "./d20";
 import { cn } from "@/utils/styling";
 
 interface D20DiceProps {
@@ -62,10 +63,10 @@ function createIcosahedronFaces(): FaceData[] {
   }
 
   // 3) assign numbers 1 to 20 so opposites sum to 21
-  const numMap = new Array<number>(faceCount);
+  const numMap = new Array<number | undefined>(faceCount);
   let label = 1;
   for (let i = 0; i < faceCount; i++) {
-    if (numMap[i] === null) {
+    if (numMap[i] === undefined) {
       const j = opposite[i];
       numMap[i] = label;
       numMap[j] = 21 - label;
@@ -77,7 +78,7 @@ function createIcosahedronFaces(): FaceData[] {
   return raw.map((f) => ({
     centroid: f.centroid,
     normal: f.normal,
-    number: numMap[f.index],
+    number: numMap[f.index] ?? -1,
   }));
 }
 
@@ -104,46 +105,15 @@ export function D20Dice({ className, size = "md", onRoll, disabled = false }: D2
   };
 
   if (hasError) {
-    // fallback 2D
-    return (
-      <div className={cn("relative inline-block", className)}>
-        <div
-          className={cn(
-            canvas,
-            "cursor-pointer flex items-center justify-center",
-            "bg-primary/10 rounded-lg border-2 border-primary/20",
-          )}
-          onClick={rollDice}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              rollDice();
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Roll D20 dice"
-        >
-          <span className="text-primary font-bold">D20</span>
-        </div>
-        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground text-center whitespace-nowrap">
-          {isRolling ? "Rolling..." : "Click to roll"}
-        </div>
-      </div>
-    );
+    return <D20 size="xl" />;
   }
 
   return (
     <div className={cn("relative inline-block", className)}>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div
         className={cn(canvas, "cursor-pointer")}
         onClick={rollDice}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            rollDice();
-          }
-        }}
         role="button"
         tabIndex={0}
         aria-label="Roll D20 dice"
