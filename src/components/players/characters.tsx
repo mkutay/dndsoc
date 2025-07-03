@@ -16,9 +16,7 @@ export function Characters({
 }) {
   return (
     <div className="flex flex-col mt-6">
-      <TypographyH2>
-        Characters
-      </TypographyH2>
+      <TypographyH2>Characters</TypographyH2>
       {characters.length === 0 && ownsPlayer ? (
         <div className="w-fit mt-6">
           <AddCharacterButton playerUuid={playerUuid} />
@@ -27,12 +25,10 @@ export function Characters({
         <div className="flex flex-row gap-2 w-full items-center flex-wrap mt-6">
           {characters.map((character) => (
             <Button asChild variant="secondary" className="w-fit" key={character.id}>
-              <Link href={`/characters/${character.shortened}`}>
-                {character.name}
-              </Link>
+              <Link href={`/characters/${character.shortened}`}>{character.name}</Link>
             </Button>
           ))}
-          {ownsPlayer && <AddCharacterButton playerUuid={playerUuid} />}
+          {ownsPlayer ? <AddCharacterButton playerUuid={playerUuid} /> : null}
         </div>
       )}
     </div>

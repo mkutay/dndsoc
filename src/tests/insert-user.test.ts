@@ -1,10 +1,10 @@
 // BAD TEST
 
-import { beforeAll, expect, test, describe } from 'vitest';
+import { beforeAll, expect, test, describe } from "vitest";
 import { createClient as supaCreateClient } from "@supabase/supabase-js";
 
-import { createClient } from '@/utils/supabase/server';
-import { Database } from '@/types/database.types';
+import { createClient } from "@/utils/supabase/server";
+import { Database } from "@/types/database.types";
 
 export const supabaseServiceRole = supaCreateClient<Database>(
   process.env.SUPABASE_URL!,
@@ -13,7 +13,7 @@ export const supabaseServiceRole = supaCreateClient<Database>(
     auth: {
       persistSession: false,
     },
-  }
+  },
 );
 
 describe("authenticated user", () => {
@@ -21,8 +21,7 @@ describe("authenticated user", () => {
     await signInUser();
   });
 
-  test("insert user", async () => {
-  });
+  test("insert user", async () => {});
 });
 
 export async function signInUser() {
@@ -38,8 +37,8 @@ export async function signInUser() {
   } = await supabase.auth.signInWithPassword({
     email: process.env.TEST_USER_EMAIL!,
     password: process.env.TEST_USER_PASSWORD!,
-  })
-  expect(error).toBeNull()
-  expect(session).not.toBeNull()
-  expect(await supabase.auth.getSession()).not.toBeNull()
+  });
+  expect(error).toBeNull();
+  expect(session).not.toBeNull();
+  expect(await supabase.auth.getSession()).not.toBeNull();
 }

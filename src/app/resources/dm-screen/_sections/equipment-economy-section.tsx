@@ -1,35 +1,26 @@
 "use client";
 
 import React from "react";
-import {
-  DicesIcon,
-} from "lucide-react";
+import { DicesIcon } from "lucide-react";
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  TypographyH2,
-  TypographyH3,
-} from "@/components/typography/headings";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  GiCapeArmor,
+  GiDroplets,
+  GiJigsawBox,
+  GiMagicLamp,
+  GiPointySword,
+  GiSlap,
+  GiTavernSign,
+  GiTwoCoins,
+} from "react-icons/gi";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyHr } from "@/components/typography/blockquote";
-import { GiCapeArmor, GiDroplets, GiJigsawBox, GiMagicLamp, GiPointySword, GiSlap, GiTavernSign, GiTwoCoins } from "react-icons/gi";
 import { Badge } from "@/components/ui/badge";
 
 interface EquipmentEconomySectionProps {
@@ -61,7 +52,7 @@ function ArmourTable() {
       str: "—",
       stealth: "—",
       weight: "13 lb",
-    }
+    },
   ];
 
   const medium = [
@@ -104,7 +95,7 @@ function ArmourTable() {
       str: "—",
       stealth: "Disadvantage",
       weight: "40 lb",
-    }
+    },
   ];
 
   const heavy = [
@@ -139,7 +130,7 @@ function ArmourTable() {
       str: "STR 15",
       stealth: "Disadvantage",
       weight: "65 lb",
-    }
+    },
   ];
 
   const shield = [
@@ -150,7 +141,7 @@ function ArmourTable() {
       str: "—",
       stealth: "—",
       weight: "6 lb",
-    }
+    },
   ];
   return (
     <Card className="h-full hover:shadow-lg transition-all duration-300 border-2 border-primary/40 bg-linear-to-br from-card to-card/80 justify-start">
@@ -175,9 +166,7 @@ function ArmourTable() {
           <TypographyHr className="my-4" />
 
           <TabsContent value="light">
-            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">
-              Don: 1 min, Doff: 1 min.
-            </div>
+            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">Don: 1 min, Doff: 1 min.</div>
             <ScrollArea className="w-full">
               <Table>
                 <TableHeader>
@@ -193,9 +182,7 @@ function ArmourTable() {
                 <TableBody>
                   {light.map((armor, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {armor.type}
-                      </TableCell>
+                      <TableCell className="font-medium">{armor.type}</TableCell>
                       <TableCell>{armor.cost}</TableCell>
                       <TableCell>{armor.ac}</TableCell>
                       <TableCell>{armor.str}</TableCell>
@@ -210,9 +197,7 @@ function ArmourTable() {
           </TabsContent>
 
           <TabsContent value="medium">
-            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">
-              Don: 5 min, Doff: 1 min.
-            </div>
+            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">Don: 5 min, Doff: 1 min.</div>
             <ScrollArea className="w-full">
               <Table>
                 <TableHeader>
@@ -228,9 +213,7 @@ function ArmourTable() {
                 <TableBody>
                   {medium.map((armor, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {armor.type}
-                      </TableCell>
+                      <TableCell className="font-medium">{armor.type}</TableCell>
                       <TableCell>{armor.cost}</TableCell>
                       <TableCell>{armor.ac}</TableCell>
                       <TableCell>{armor.str}</TableCell>
@@ -245,9 +228,7 @@ function ArmourTable() {
           </TabsContent>
 
           <TabsContent value="heavy">
-            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">
-              Don: 10 min, Doff: 5 min.
-            </div>
+            <div className="font-quotes text-sm text-muted-foreground mb-2 text-center">Don: 10 min, Doff: 5 min.</div>
             <ScrollArea className="w-full">
               <Table>
                 <TableHeader>
@@ -263,9 +244,7 @@ function ArmourTable() {
                 <TableBody>
                   {heavy.map((armor, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {armor.type}
-                      </TableCell>
+                      <TableCell className="font-medium">{armor.type}</TableCell>
                       <TableCell>{armor.cost}</TableCell>
                       <TableCell>{armor.ac}</TableCell>
                       <TableCell>{armor.str}</TableCell>
@@ -298,9 +277,7 @@ function ArmourTable() {
                 <TableBody>
                   {shield.map((armor, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {armor.type}
-                      </TableCell>
+                      <TableCell className="font-medium">{armor.type}</TableCell>
                       <TableCell>{armor.cost}</TableCell>
                       <TableCell>{armor.ac}</TableCell>
                       <TableCell>{armor.str}</TableCell>
@@ -326,78 +303,78 @@ function WeaponsTable() {
       cost: "1 sp",
       damage: "1d4 B",
       weight: "2 lb",
-      properties: "Light"
+      properties: "Light",
     },
     {
       name: "Dagger",
       cost: "2 gp",
       damage: "1d4 P",
       weight: "1 lb",
-      properties: "Finesse, light, thrown (range 20/60)"
+      properties: "Finesse, light, thrown (range 20/60)",
     },
     {
       name: "Greatclub",
       cost: "2 sp",
       damage: "1d8 B",
       weight: "10 lb",
-      properties: "Two-handed"
+      properties: "Two-handed",
     },
     {
       name: "Handaxe",
       cost: "5 gp",
       damage: "1d6 S",
       weight: "2 lb",
-      properties: "Light, thrown (range 20/60)"
+      properties: "Light, thrown (range 20/60)",
     },
     {
       name: "Javelin",
       cost: "5 sp",
       damage: "1d6 P",
       weight: "2 lb",
-      properties: "Thrown (range 30/120)"
+      properties: "Thrown (range 30/120)",
     },
     {
       name: "Light Hammer",
       cost: "2 gp",
       damage: "1d4 B",
       weight: "2 lb",
-      properties: "Light, thrown (range 20/60)"
+      properties: "Light, thrown (range 20/60)",
     },
     {
       name: "Mace",
       cost: "5 gp",
       damage: "1d6 B",
       weight: "4 lb",
-      properties: "—"
+      properties: "—",
     },
     {
       name: "Quarterstaff",
       cost: "2 sp",
       damage: "1d6 B",
       weight: "4 lb",
-      properties: "Versatile (1d8)"
+      properties: "Versatile (1d8)",
     },
     {
       name: "Sickle",
       cost: "1 gp",
       damage: "1d4 S",
       weight: "2 lb",
-      properties: "Light"
+      properties: "Light",
     },
     {
       name: "Spear",
       cost: "1 gp",
       damage: "1d6 P",
       weight: "3 lb",
-      properties: "Thrown (range 20/60), versatile (1d8)"
+      properties: "Thrown (range 20/60), versatile (1d8)",
     },
     {
       name: "Unarmed Strike",
       cost: "—",
       damage: "1 B",
       weight: "—",
-      properties: "—"
-    }
+      properties: "—",
+    },
   ];
 
   const simpleRanged = [
@@ -406,29 +383,29 @@ function WeaponsTable() {
       cost: "25 gp",
       damage: "1d8 P",
       weight: "5 lb",
-      properties: "Ammunition (range 80/320), loading, two-handed"
+      properties: "Ammunition (range 80/320), loading, two-handed",
     },
     {
       name: "Dart",
       cost: "5 cp",
       damage: "1d4 P",
       weight: "1/4 lb",
-      properties: "Finesse, thrown (range 20/60)"
+      properties: "Finesse, thrown (range 20/60)",
     },
     {
       name: "Shortbow",
       cost: "25 gp",
       damage: "1d6 P",
       weight: "2 lb",
-      properties: "Ammunition (range 80/320), two-handed"
+      properties: "Ammunition (range 80/320), two-handed",
     },
     {
       name: "Sling",
       cost: "1 sp",
       damage: "1d4 B",
       weight: "—",
-      properties: "Ammunition (range 30/120)"
-    }
+      properties: "Ammunition (range 30/120)",
+    },
   ];
 
   const martialMelee = [
@@ -437,127 +414,127 @@ function WeaponsTable() {
       cost: "10 gp",
       damage: "1d8 S",
       weight: "4 lb",
-      properties: "Versatile (1d10)"
+      properties: "Versatile (1d10)",
     },
     {
       name: "Flail",
       cost: "10 gp",
       damage: "1d8 B",
       weight: "2 lb",
-      properties: "—"
+      properties: "—",
     },
     {
       name: "Glaive",
       cost: "20 gp",
       damage: "1d10 S",
       weight: "6 lb",
-      properties: "Heavy, reach, two-handed"
+      properties: "Heavy, reach, two-handed",
     },
     {
       name: "Greataxe",
       cost: "30 gp",
       damage: "1d12 S",
       weight: "7 lb",
-      properties: "Heavy, two-handed"
+      properties: "Heavy, two-handed",
     },
     {
       name: "Greatsword",
       cost: "50 gp",
       damage: "2d6 S",
       weight: "6 lb",
-      properties: "Heavy, two-handed"
+      properties: "Heavy, two-handed",
     },
     {
       name: "Halberd",
       cost: "20 gp",
       damage: "1d10 S",
       weight: "6 lb",
-      properties: "Heavy, reach, two-handed"
+      properties: "Heavy, reach, two-handed",
     },
     {
       name: "Lance",
       cost: "10 gp",
       damage: "1d12 P",
       weight: "6 lb",
-      properties: "Reach, special"
+      properties: "Reach, special",
     },
     {
       name: "Longsword",
       cost: "15 gp",
       damage: "1d8 S",
       weight: "3 lb",
-      properties: "Versatile (1d10)"
+      properties: "Versatile (1d10)",
     },
     {
       name: "Maul",
       cost: "10 gp",
       damage: "2d6 B",
       weight: "10 lb",
-      properties: "Heavy, two-handed"
+      properties: "Heavy, two-handed",
     },
     {
       name: "Morningstar",
       cost: "15 gp",
       damage: "1d8 P",
       weight: "4 lb",
-      properties: "—"
+      properties: "—",
     },
     {
       name: "Pike",
       cost: "5 gp",
       damage: "1d10 P",
       weight: "18 lb",
-      properties: "Heavy, reach, two-handed"
+      properties: "Heavy, reach, two-handed",
     },
     {
       name: "Rapier",
       cost: "25 gp",
       damage: "1d8 P",
       weight: "2 lb",
-      properties: "Finesse"
+      properties: "Finesse",
     },
     {
       name: "Scimitar",
       cost: "25 gp",
       damage: "1d6 S",
       weight: "3 lb",
-      properties: "Finesse, light"
+      properties: "Finesse, light",
     },
     {
       name: "Shortsword",
       cost: "10 gp",
       damage: "1d6 P",
       weight: "2 lb",
-      properties: "Finesse, light"
+      properties: "Finesse, light",
     },
     {
       name: "Trident",
       cost: "5 gp",
       damage: "1d6 P",
       weight: "4 lb",
-      properties: "Thrown (range 20/60), versatile (1d8)"
+      properties: "Thrown (range 20/60), versatile (1d8)",
     },
     {
       name: "War Pick",
       cost: "5 gp",
       damage: "1d8 P",
       weight: "2 lb",
-      properties: "—"
+      properties: "—",
     },
     {
       name: "Warhammer",
       cost: "15 gp",
       damage: "1d8 B",
       weight: "2 lb",
-      properties: "Versatile (1d10)"
+      properties: "Versatile (1d10)",
     },
     {
       name: "Whip",
       cost: "2 gp",
       damage: "1d4 S",
       weight: "3 lb",
-      properties: "Finesse, reach"
-    }
+      properties: "Finesse, reach",
+    },
   ];
 
   const martialRanged = [
@@ -566,36 +543,36 @@ function WeaponsTable() {
       cost: "10 gp",
       damage: "1 P",
       weight: "1 lb",
-      properties: "Ammunition (range 25/100), loading"
+      properties: "Ammunition (range 25/100), loading",
     },
     {
       name: "Crossbow, hand",
       cost: "75 gp",
       damage: "1d6 P",
       weight: "3 lb",
-      properties: "Ammunition (range 30/120), light, loading"
+      properties: "Ammunition (range 30/120), light, loading",
     },
     {
       name: "Crossbow, heavy",
       cost: "50 gp",
       damage: "1d10 P",
       weight: "18 lb",
-      properties: "Ammunition (range 100/400), heavy, loading, two-handed"
+      properties: "Ammunition (range 100/400), heavy, loading, two-handed",
     },
     {
       name: "Longbow",
       cost: "50 gp",
       damage: "1d8 P",
       weight: "2 lb",
-      properties: "Ammunition (range 150/600), heavy, two-handed"
+      properties: "Ammunition (range 150/600), heavy, two-handed",
     },
     {
       name: "Net",
       cost: "1 gp",
       damage: "—",
       weight: "3 lb",
-      properties: "Special, thrown (range 5/15)"
-    }
+      properties: "Special, thrown (range 5/15)",
+    },
   ];
 
   return (
@@ -751,7 +728,7 @@ function ContainerCapacity() {
     { name: "Pouch", capacity: "⅕ ft³ / 6 lbs" },
     { name: "Sack", capacity: "1 ft³ / 30 lbs" },
     { name: "Vial", capacity: "4 oz liquid" },
-    { name: "Waterskin", capacity: "4 pints" }
+    { name: "Waterskin", capacity: "4 pints" },
   ];
 
   return (
@@ -797,7 +774,7 @@ function Services() {
     { service: "Hireling (Unskilled)", pay: "2 sp/day" },
     { service: "Messenger", pay: "2 cp/mile" },
     { service: "Road or gate toll", pay: "1 cp" },
-    { service: "Ship's passage", pay: "1 sp/mile" }
+    { service: "Ship's passage", pay: "1 sp/mile" },
   ];
 
   return (
@@ -838,7 +815,7 @@ function LifestyleExpenses() {
     { lifestyle: "Modest", cost: "1 gp" },
     { lifestyle: "Comfortable", cost: "2 gp" },
     { lifestyle: "Wealthy", cost: "4 gp" },
-    { lifestyle: "Aristocratic", cost: "10 gp min." }
+    { lifestyle: "Aristocratic", cost: "10 gp min." },
   ];
 
   return (
@@ -880,7 +857,7 @@ function FoodDrinkLodging() {
     { item: "Cheese, hunk", cost: "1 sp" },
     { item: "Meat, chunk", cost: "3 sp" },
     { item: "Wine (Common Pitcher)", cost: "2 sp" },
-    { item: "Wine (Fine Bottle)", cost: "10 gp" }
+    { item: "Wine (Fine Bottle)", cost: "10 gp" },
   ];
 
   const innStay = [
@@ -889,7 +866,7 @@ function FoodDrinkLodging() {
     { type: "Modest", cost: "5 sp" },
     { type: "Comfortable", cost: "8 sp" },
     { type: "Wealthy", cost: "2 gp" },
-    { type: "Aristocratic", cost: "4 gp" }
+    { type: "Aristocratic", cost: "4 gp" },
   ];
 
   const meals = [
@@ -898,7 +875,7 @@ function FoodDrinkLodging() {
     { type: "Modest", cost: "3 sp" },
     { type: "Comfortable", cost: "5 sp" },
     { type: "Wealthy", cost: "8 sp" },
-    { type: "Aristocratic", cost: "2 gp" }
+    { type: "Aristocratic", cost: "2 gp" },
   ];
 
   return (
@@ -985,9 +962,10 @@ function FoodDrinkLodging() {
             </Table>
           </TabsContent>
         </Tabs>
-        
+
         <TypographyParagraph className="text-sm italic mt-4 pt-4 border-t border-border/50">
-          <strong>Additional Resources:</strong> Mounts & Other Animals, Tack, Harness & Drawn Vehicles, Waterborne Vehicles — See PHB p.157
+          <strong>Additional Resources:</strong> Mounts & Other Animals, Tack, Harness & Drawn Vehicles, Waterborne
+          Vehicles — See PHB p.157
         </TypographyParagraph>
       </CardContent>
     </Card>
@@ -998,39 +976,39 @@ function FoodWaterNeeds() {
   const dailyNeeds = [
     {
       size: "Tiny",
-      requirements: "¼ lb food, ½ gal water"
+      requirements: "¼ lb food, ½ gal water",
     },
     {
       size: "Small/Medium",
-      requirements: "1 lb food, 1 gal water"
+      requirements: "1 lb food, 1 gal water",
     },
     {
       size: "Large",
-      requirements: "4 lbs food, 4 gal water"
+      requirements: "4 lbs food, 4 gal water",
     },
     {
       size: "Huge",
-      requirements: "16 lbs food, 16 gal water"
+      requirements: "16 lbs food, 16 gal water",
     },
     {
       size: "Gargantuan",
-      requirements: "64 lbs food, 64 gal water"
-    }
+      requirements: "64 lbs food, 64 gal water",
+    },
   ];
 
   const foragingDCs = [
     {
       availability: "Abundant",
-      dc: "10"
+      dc: "10",
     },
     {
       availability: "Limited",
-      dc: "15"
+      dc: "15",
     },
     {
       availability: "Very little",
-      dc: "20"
-    }
+      dc: "20",
+    },
   ];
 
   return (
@@ -1050,9 +1028,7 @@ function FoodWaterNeeds() {
           <div>
             <div className="mb-2">
               <TypographyH3>Per Day Requirements</TypographyH3>
-              <div className="text-sm text-muted-foreground font-quotes">
-                *Water needs double in hot conditions
-              </div>
+              <div className="text-sm text-muted-foreground font-quotes">*Water needs double in hot conditions</div>
             </div>
             <ScrollArea className="w-full">
               <Table>
@@ -1144,9 +1120,7 @@ function MagicItemEconomy() {
       <CardContent className="space-y-6">
         <Accordion type="multiple" className="space-y-2">
           <AccordionItem value="saleable-items">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Saleable Magic Items
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Saleable Magic Items</AccordionTrigger>
             <AccordionContent>
               <Table>
                 <TableHeader>
@@ -1175,9 +1149,7 @@ function MagicItemEconomy() {
           </AccordionItem>
 
           <AccordionItem value="selling-items">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Selling a Magic Item
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Selling a Magic Item</AccordionTrigger>
             <AccordionContent>
               <Table>
                 <TableHeader>
@@ -1199,9 +1171,7 @@ function MagicItemEconomy() {
           </AccordionItem>
 
           <AccordionItem value="crafting-items">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Crafting Magic Items
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Crafting Magic Items</AccordionTrigger>
             <AccordionContent>
               <Table>
                 <TableHeader>
@@ -1229,9 +1199,7 @@ function MagicItemEconomy() {
   );
 }
 
-const EquipmentEconomySection: React.FC<EquipmentEconomySectionProps> = ({
-  id,
-}) => {
+const EquipmentEconomySection: React.FC<EquipmentEconomySectionProps> = ({ id }) => {
   return (
     <section id={id} className="py-12 md:py-18">
       <div className="max-w-6xl mx-auto px-4">
@@ -1269,7 +1237,8 @@ const EquipmentEconomySection: React.FC<EquipmentEconomySectionProps> = ({
               Equipment & Economy Tips
             </CardTitle>
             <CardDescription className="max-w-prose">
-              Managing equipment and economy in your campaign can enhance player engagement and immersion. Here are some tips:
+              Managing equipment and economy in your campaign can enhance player engagement and immersion. Here are some
+              tips:
             </CardDescription>
           </CardHeader>
           <CardContent>

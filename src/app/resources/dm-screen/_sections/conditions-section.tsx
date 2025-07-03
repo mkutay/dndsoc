@@ -19,14 +19,11 @@ const ConditionsSection: React.FC<ConditionsSectionProps> = ({ id }) => {
   const hasMoreItems = visibleItems < dataCondition.length;
 
   const handleSeeMore = () => {
-    setVisibleItems(prev => Math.min(prev + itemsPerPage, dataCondition.length));
+    setVisibleItems((prev) => Math.min(prev + itemsPerPage, dataCondition.length));
   };
 
   return (
-    <section
-      id={id}
-      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background"
-    >
+    <section id={id} className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -40,24 +37,17 @@ const ConditionsSection: React.FC<ConditionsSectionProps> = ({ id }) => {
 
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {dataCondition.slice(0, visibleItems).map((item, index) => (
-              <ReferenceCard
-                key={index}
-                item={item}
-              />
+              <ReferenceCard key={index} item={item} />
             ))}
           </div>
 
-          {hasMoreItems && (
+          {hasMoreItems ? (
             <div className="flex justify-center mt-8">
-              <Button
-                onClick={handleSeeMore}
-                variant="outline"
-                className="px-8 py-3 text-lg font-medium"
-              >
+              <Button onClick={handleSeeMore} variant="outline" className="px-8 py-3 text-lg font-medium">
                 See More ({Math.min(itemsPerPage, dataCondition.length - visibleItems)} more)
               </Button>
             </div>
-          )}
+          ) : null}
 
           {/* Conditions Quick Reference */}
           <Card className="md:px-6 md:py-2 md:mt-16 mt-12 bg-linear-to-r from-red-50/50 via-pink-50/30 to-purple-50/50 dark:from-red-950/20 dark:via-pink-950/10 dark:to-purple-950/20 border-2 border-red-200/50 dark:border-red-800/50">

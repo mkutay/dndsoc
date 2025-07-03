@@ -13,7 +13,7 @@ export default function Loading() {
           <Skeleton className="h-10 w-32 mt-2" /> {/* Edit button */}
         </div>
       </div>
-      
+
       {/* Characters section */}
       <div className="mt-8">
         <Skeleton className="h-8 w-32 mb-4" />
@@ -23,7 +23,7 @@ export default function Loading() {
           <Skeleton className="h-10 w-32" />
         </div>
       </div>
-      
+
       {/* Achievements section */}
       <div className="mt-8">
         <Skeleton className="h-8 w-48 mb-4" />
@@ -34,7 +34,7 @@ export default function Loading() {
           <Skeleton className="h-16 w-68 rounded-2xl" />
         </div>
       </div>
-      
+
       {/* Campaigns section */}
       <div className="mt-8">
         <Skeleton className="h-8 w-36 mb-4" />

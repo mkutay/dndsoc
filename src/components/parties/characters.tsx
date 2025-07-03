@@ -15,22 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Card } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -41,9 +28,7 @@ import { Character } from "@/types/full-database.types";
 import { CharacterCard } from "@/components/character-card";
 import { addCharacterToParty, removeCharacterFromParty } from "@/server/characters";
 
-type CharacterAction =
-  | { type: "add"; character: Character }
-  | { type: "remove"; characterId: string };
+type CharacterAction = { type: "add"; character: Character } | { type: "remove"; characterId: string };
 
 export const addCharacterForPartySchema = z.object({
   character: z.string().optional(),
@@ -72,7 +57,7 @@ export function Characters({
         case "remove":
           return state.filter((c) => c.id !== action.characterId);
       }
-    }
+    },
   );
 
   // Sort characters by name
@@ -123,9 +108,7 @@ export function Characters({
   };
 
   const availableCharacters =
-    allCharacters?.filter(
-      (character) => !optimisticCharacters.some((c) => c.id === character.id)
-    ) ?? [];
+    allCharacters?.filter((character) => !optimisticCharacters.some((c) => c.id === character.id)) ?? [];
 
   const canModify = ownsAs === "dm" || ownsAs === "admin";
 
@@ -143,13 +126,9 @@ export function Characters({
             removeText="Remove this PC from the party. You can add it later."
           />
         ))}
-        {canModify && availableCharacters.length > 0 && (
-          <AddCharacterCard
-            characters={availableCharacters}
-            onAdd={handleAddCharacter}
-            isLoading={isPending}
-          />
-        )}
+        {canModify && availableCharacters.length > 0 ? (
+          <AddCharacterCard characters={availableCharacters} onAdd={handleAddCharacter} isLoading={isPending} />
+        ) : null}
       </div>
     </div>
   );
@@ -193,17 +172,13 @@ function AddCharacterCard({
           disabled={isLoading}
           asChild
         >
-          <Card className="text-3xl font-book-card-titles tracking-widest">
-            Add Character
-          </Card>
+          <Card className="text-3xl font-book-card-titles tracking-widest">Add Character</Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Character</DialogTitle>
-          <DialogDescription>
-            You can select a new character to add to your party.
-          </DialogDescription>
+          <DialogDescription>You can select a new character to add to your party.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -218,39 +193,32 @@ function AddCharacterCard({
                         <Button
                           variant="outline"
                           role="combobox"
-                          className={cn(
-                            "w-[250px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
+                          className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                         >
                           {!field.value && "Select a character..."}
-                          {field.value &&
-                            (() => {
-                              const character = characters.find(
-                                (character) => field.value === character.id
-                              );
-                              return character ? (
-                                <span>
-                                  <TypographyLink
-                                    target="_blank"
-                                    href={`/characters/${character.shortened}`}
-                                    variant="default"
-                                  >
-                                    {character.name}
-                                  </TypographyLink>
-                                </span>
-                              ) : null;
-                            })()}
+                          {field.value
+                            ? (() => {
+                                const character = characters.find((character) => field.value === character.id);
+                                return character ? (
+                                  <span>
+                                    <TypographyLink
+                                      target="_blank"
+                                      href={`/characters/${character.shortened}`}
+                                      variant="default"
+                                    >
+                                      {character.name}
+                                    </TypographyLink>
+                                  </span>
+                                ) : null;
+                              })()
+                            : null}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                       <Command>
-                        <CommandInput
-                          placeholder="Search a character..."
-                          className="h-9"
-                        />
+                        <CommandInput placeholder="Search a character..." className="h-9" />
                         <CommandList>
                           <CommandEmpty>No other characters found.</CommandEmpty>
                           <CommandGroup>
@@ -272,12 +240,7 @@ function AddCharacterCard({
                                   </TypographyLink>
                                 </span>
                                 <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    character.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
+                                  className={cn("ml-auto", character.id === field.value ? "opacity-100" : "opacity-0")}
                                 />
                               </CommandItem>
                             ))}
@@ -292,12 +255,7 @@ function AddCharacterCard({
             />
             <DialogFooter>
               <div className="w-full flex flex-row justify-end">
-                <Button
-                  type="submit"
-                  variant="outline"
-                  size="default"
-                  disabled={isLoading}
-                >
+                <Button type="submit" variant="outline" size="default" disabled={isLoading}>
                   Add
                 </Button>
               </div>

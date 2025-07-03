@@ -13,32 +13,29 @@ import { getUserByAuthUuid } from "@/lib/users";
 type SignInError = {
   message: string;
   code: "DATABASE_ERROR";
-}
+};
 
-export const signInAction = async (values: z.infer<typeof signInFormSchema>) => 
+export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
   resultAsyncToActionResult(
     parseSchema(signInFormSchema, values)
       .asyncAndThen(() => createClient())
-      .andThen((supabase) => 
+      .andThen((supabase) =>
         fromSafePromise(
           supabase.auth.signInWithPassword({
             email: values.email,
             password: values.password,
-          })
-        )
+          }),
+        ),
       )
-      .andThen((result) => 
+      .andThen((result) =>
         !result.error
           ? okAsync(result.data.user.id)
           : errAsync({
-            message: "Failed to sign in.",
-            code: "DATABASE_ERROR",
-          } as SignInError)
+              message: "Failed to sign in.",
+              code: "DATABASE_ERROR",
+            } as SignInError),
       )
       .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
-      .orElse((userError) => userError.code === "NOT_FOUND"
-        ? completeSignUp()
-        : errAsync(userError)
-      )
-      .andThen(() => okAsync())
+      .orElse((userError) => (userError.code === "NOT_FOUND" ? completeSignUp() : errAsync(userError)))
+      .andThen(() => okAsync()),
   );

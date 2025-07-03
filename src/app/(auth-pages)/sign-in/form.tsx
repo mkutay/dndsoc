@@ -1,20 +1,12 @@
 "use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
@@ -33,21 +25,23 @@ export function SignInForm() {
       password: "",
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
     const result = await signInAction(values);
     setPending(false);
 
-    actionResultMatch(result,
+    actionResultMatch(
+      result,
       () => {
         window.location.replace("/my");
       },
-      (error) => toast({
-        title: "Sign In Failed",
-        description: "Please try again. " + error.message,
-        variant: "destructive",
-      })
+      (error) =>
+        toast({
+          title: "Sign In Failed",
+          description: "Please try again. " + error.message,
+          variant: "destructive",
+        }),
     );
   };
 
@@ -64,9 +58,7 @@ export function SignInForm() {
               <FormControl>
                 <Input placeholder="first.second@kcl.ac.uk" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your KCL email address.
-              </FormDescription>
+              <FormDescription>This is your KCL email address.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -84,21 +76,17 @@ export function SignInForm() {
                 </TypographyLink>
               </FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Your password"
-                  {...field}
-                />
+                <Input type="password" placeholder="Your password" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your password. It must be at least 6 characters long.
-              </FormDescription>
+              <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>Submit</Button>
+        <Button type="submit" disabled={pending}>
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

@@ -6,8 +6,10 @@ type SchemaValidationError = {
   code: "INVALID_VALUES";
 };
 
-export const parseSchema = <O extends object>(schema: z.ZodSchema<O>, values: O): 
-  Result<void, SchemaValidationError> => {
+export const parseSchema = <O extends object>(
+  schema: z.ZodSchema<O>,
+  values: O,
+): Result<void, SchemaValidationError> => {
   const validation = schema.safeParse(values);
   return validation.success
     ? ok()
@@ -15,4 +17,4 @@ export const parseSchema = <O extends object>(schema: z.ZodSchema<O>, values: O)
         message: "Invalid values for schema: " + validation.error.message,
         code: "INVALID_VALUES",
       });
-}
+};

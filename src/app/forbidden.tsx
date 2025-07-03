@@ -11,14 +11,10 @@ export default function Forbidden() {
       <TypographyParagraph>You cannot access this page, maybe sign in?</TypographyParagraph>
       <div className="flex flex-row gap-4">
         <Button asChild className="mt-8 w-fit">
-          <Link href="/sign-in">
-            Sign In
-          </Link>
+          <Link href="/sign-in">Sign In</Link>
         </Button>
         <Button asChild className="mt-8 w-fit" variant="outline">
-          <Link href="/">
-            Go Back To Home
-          </Link>
+          <Link href="/">Go Back To Home</Link>
         </Button>
       </div>
     </div>

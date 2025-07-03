@@ -6,7 +6,7 @@ export default function Loading() {
       <div className="flex lg:flex-row flex-col gap-6">
         {/* Avatar skeleton */}
         <Skeleton className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto rounded-full" />
-        
+
         <div className="flex flex-col max-w-prose gap-1.5 mt-3">
           <div className="flex flex-col gap-1">
             {/* "Played By" text */}

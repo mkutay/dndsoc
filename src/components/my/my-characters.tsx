@@ -1,6 +1,7 @@
 import { Sword } from "lucide-react";
 import Link from "next/link";
 
+import { ErrorPage } from "../error-page";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +17,6 @@ import { Tables } from "@/types/database.types";
 import { formatClasses, formatRaces, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
 import { getPlayerRoleUser } from "@/lib/players";
-import { ErrorPage } from "../error-page";
 
 interface MyCharactersProps {
   characters: (Tables<"characters"> & {
@@ -55,23 +55,17 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
                 )}
               </CardDescription>
             </CardHeader>
-            {character.about && (
+            {character.about ? (
               <CardContent>
-                <TypographyParagraph className="text-sm">
-                  {truncateText(character.about, 100)}
-                </TypographyParagraph>
+                <TypographyParagraph className="text-sm">{truncateText(character.about, 100)}</TypographyParagraph>
               </CardContent>
-            )}
+            ) : null}
             <CardFooter className="flex gap-2">
               <Button asChild size="sm">
-                <Link href={`/characters/${character.shortened}`}>
-                  View Character
-                </Link>
+                <Link href={`/characters/${character.shortened}`}>View Character</Link>
               </Button>
               <Button asChild size="sm" variant="outline">
-                <Link href={`/characters/${character.shortened}/edit`}>
-                  Edit
-                </Link>
+                <Link href={`/characters/${character.shortened}/edit`}>Edit</Link>
               </Button>
             </CardFooter>
           </Card>
@@ -84,17 +78,13 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
               className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
               asChild
             >
-              <Card className="text-3xl font-book-card-titles tracking-widest">
-                Create Character
-              </Card>
+              <Card className="text-3xl font-book-card-titles tracking-widest">Create Character</Card>
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add Character</DialogTitle>
-              <DialogDescription>
-                You can add a new character to your player.
-              </DialogDescription>
+              <DialogDescription>You can add a new character to your player.</DialogDescription>
             </DialogHeader>
             <AddCharacterForm playerUuid={player ? player.value.players.id : characters[0].players.id} />
           </DialogContent>

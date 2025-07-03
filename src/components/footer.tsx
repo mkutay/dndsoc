@@ -14,13 +14,11 @@ export function Footer() {
               <p className="text-lg font-medium">
                 Made with <span className="text-primary font-bold">&lt;3</span>
               </p>
-              <p className="text-sm text-muted-foreground font-quotes">
-                Let&apos;s roll together!
-              </p>
+              <p className="text-sm text-muted-foreground font-quotes">Let&apos;s roll together!</p>
             </div>
-            <Link 
-              href="https://www.mkutay.dev" 
-              target="_blank" 
+            <Link
+              href="https://www.mkutay.dev"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:text-primary/80 transition-all text-md"
             >
@@ -54,7 +52,10 @@ export function Footer() {
                   <p className="text-sm text-muted-foreground font-quotes">
                     Join fellow adventurers in epic D&D stories!
                   </p>
-                  <Link href="/sign-up" className="text-md text-primary hover:text-primary/80 transition-colors font-normal">
+                  <Link
+                    href="/sign-up"
+                    className="text-md text-primary hover:text-primary/80 transition-colors font-normal"
+                  >
                     Sign up now
                   </Link>
                 </div>
@@ -71,12 +72,10 @@ export function Footer() {
                 Made with <span className="text-primary font-bold">&lt;3</span>
               </p>
               <div className="flex flex-col gap-2">
-                <p className="text-sm text-muted-foreground font-quotes">
-                  Let&apos;s roll together!
-                </p>
-                <Link 
-                  href="https://www.mkutay.dev" 
-                  target="_blank" 
+                <p className="text-sm text-muted-foreground font-quotes">Let&apos;s roll together!</p>
+                <Link
+                  href="https://www.mkutay.dev"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:text-primary/80 transition-all text-md"
                 >
@@ -85,9 +84,7 @@ export function Footer() {
               </div>
             </div>
             <div className="flex flex-col justify-between">
-              <h3 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">
-                Community
-              </h3>
+              <h3 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">Community</h3>
               <div className="flex flex-col gap-2">
                 <p className="text-sm text-muted-foreground font-quotes">
                   Join fellow adventurers in epic D&D stories!
@@ -100,9 +97,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col justify-between">
-            <h3 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">
-              Quick Links
-            </h3>
+            <h3 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">Quick Links</h3>
             <div className="flex flex-col gap-2">
               {siteConfig.footerItems.map((item) => (
                 <Link

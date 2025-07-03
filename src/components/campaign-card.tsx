@@ -7,20 +7,22 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { TypographyParagraph } from "./typography/paragraph";
-import { Tables } from "@/types/database.types";
 import { Button } from "./ui/button";
+import { Tables } from "@/types/database.types";
 
 type Campaign = Tables<"campaigns">;
 
-type Props = {
-  campaign: Campaign;
-  ownsAs: "dm" | "player" | "admin" | null;
-  onRemove: () => void;
-  isLoading: boolean;
-  removeText?: string;
-} | {
-  campaign: Campaign;
-};
+type Props =
+  | {
+      campaign: Campaign;
+      ownsAs: "dm" | "player" | "admin" | null;
+      onRemove: () => void;
+      isLoading: boolean;
+      removeText?: string;
+    }
+  | {
+      campaign: Campaign;
+    };
 
 export function CampaignCard(props: Props) {
   const { campaign } = props;
@@ -29,8 +31,7 @@ export function CampaignCard(props: Props) {
       <CardHeader>
         <CardTitle>{campaign.name}</CardTitle>
         <CardDescription>
-          {format(campaign.start_date, "PP")} -{" "}
-          {campaign.end_date ? format(campaign.end_date, "PP") : "Ongoing"}
+          {format(campaign.start_date, "PP")} - {campaign.end_date ? format(campaign.end_date, "PP") : "Ongoing"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -38,20 +39,13 @@ export function CampaignCard(props: Props) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" asChild>
-          <Link href={`/campaigns/${campaign.shortened}`}>
-            View {campaign.name}
-          </Link>
+          <Link href={`/campaigns/${campaign.shortened}`}>View {campaign.name}</Link>
         </Button>
-        {'ownsAs' in props && props.ownsAs === "admin" && (
+        {"ownsAs" in props && props.ownsAs === "admin" && (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  onClick={props.onRemove}
-                  disabled={props.isLoading}
-                >
+                <Button variant="destructive" size="icon" onClick={props.onRemove} disabled={props.isLoading}>
                   <MinusCircle size="18px" />
                 </Button>
               </TooltipTrigger>

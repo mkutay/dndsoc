@@ -28,14 +28,14 @@ export default async function Page() {
         {users.value.map((user, index) => (
           <Card key={index}>
             <CardHeader>
-              <CardTitle>{user.name} ({user.username})</CardTitle>
+              <CardTitle>
+                {user.name} ({user.username})
+              </CardTitle>
               <CardDescription>{rolesLabel.find((val) => val.value === user.roles?.role)?.label}</CardDescription>
             </CardHeader>
             <CardFooter>
               <Button variant="outline" size="default" asChild>
-                <Link href={`/admin/users/${user.username}`}>
-                  View User
-                </Link>
+                <Link href={`/admin/users/${user.username}`}>View User</Link>
               </Button>
             </CardFooter>
           </Card>
@@ -45,8 +45,4 @@ export default async function Page() {
   );
 }
 
-const getUsers = () => 
-  runQuery((supabase) => supabase
-    .from("users")
-    .select("*, roles(*)")
-  );
+const getUsers = () => runQuery((supabase) => supabase.from("users").select("*, roles(*)"));

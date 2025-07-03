@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
+import { ForgotPasswordForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
-import { ForgotPasswordForm } from "./form";
 
 export const dynamic = "force-dynamic";
 

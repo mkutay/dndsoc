@@ -2,7 +2,17 @@ import { Sword, Shield, Zap, Eye, Move, RotateCcw } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
 
-import { dataAction, dataBonusAction, dataCondition, dataEnvironmentCover, dataEnvironmentLight, dataEnvironmentObscurance, dataEnvironmentVision, dataMovement, dataReaction } from "@/config/quick-reference-data";
+import {
+  dataAction,
+  dataBonusAction,
+  dataCondition,
+  dataEnvironmentCover,
+  dataEnvironmentLight,
+  dataEnvironmentObscurance,
+  dataEnvironmentVision,
+  dataMovement,
+  dataReaction,
+} from "@/config/quick-reference-data";
 import { TypographyH1, TypographyH2, TypographyH3 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
@@ -11,10 +21,12 @@ import { ReferenceCard, ReferenceSection } from "@/components/quick-reference";
 
 export const metadata: Metadata = {
   title: "Quick Reference",
-  description: "Full D&D 5e quick reference guide. Actions, bonus actions, reactions, conditions, movement, and environmental rules for KCL DnD Society.",
+  description:
+    "Full D&D 5e quick reference guide. Actions, bonus actions, reactions, conditions, movement, and environmental rules for KCL DnD Society.",
   openGraph: {
     title: "D&D 5e Quick Reference",
-    description: "Essential D&D 5e rules reference with actions, conditions, movement, and environmental mechanics for players and DMs.",
+    description:
+      "Essential D&D 5e rules reference with actions, conditions, movement, and environmental mechanics for players and DMs.",
   },
 };
 
@@ -33,7 +45,9 @@ export default function QuickReferencePage() {
                     <span className="text-sm font-medium text-primary font-quotes">Complete 5e Reference</span>
                   </div>
                   <TypographyH1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                    Quick<br />Reference
+                    Quick
+                    <br />
+                    Reference
                   </TypographyH1>
                   <TypographyParagraph className="text-lg md:text-xl text-muted-foreground mb-6">
                     Essential DnD 5e rules at your fingertips.
@@ -121,8 +135,8 @@ export default function QuickReferencePage() {
       {/* Actions Section */}
       <div id="actions">
         <ReferenceSection
-          title="Actions" 
-          icon={Sword} 
+          title="Actions"
+          icon={Sword}
           data={dataAction}
           description="Actions you can take on your turn during combat."
         />
@@ -130,9 +144,9 @@ export default function QuickReferencePage() {
 
       {/* Bonus Actions Section */}
       <div id="bonus-actions" className="bg-linear-to-b from-muted/10 to-transparent">
-        <ReferenceSection 
-          title="Bonus Actions" 
-          icon={Zap} 
+        <ReferenceSection
+          title="Bonus Actions"
+          icon={Zap}
           data={dataBonusAction}
           description="Special actions that can be taken in addition to your main action."
         />
@@ -140,9 +154,9 @@ export default function QuickReferencePage() {
 
       {/* Reactions Section */}
       <div id="reactions">
-        <ReferenceSection 
-          title="Reactions" 
-          icon={RotateCcw} 
+        <ReferenceSection
+          title="Reactions"
+          icon={RotateCcw}
           data={dataReaction}
           description="Immediate responses to specific triggers that occur on any turn."
         />
@@ -150,9 +164,9 @@ export default function QuickReferencePage() {
 
       {/* Conditions Section */}
       <div id="conditions" className="bg-linear-to-b from-muted/10 to-transparent">
-        <ReferenceSection 
-          title="Conditions" 
-          icon={Shield} 
+        <ReferenceSection
+          title="Conditions"
+          icon={Shield}
           data={dataCondition}
           description="Status effects that can be applied to creatures."
         />
@@ -160,9 +174,9 @@ export default function QuickReferencePage() {
 
       {/* Movement Section */}
       <div id="movement">
-        <ReferenceSection 
-          title="Movement" 
-          icon={Move} 
+        <ReferenceSection
+          title="Movement"
+          icon={Move}
           data={dataMovement}
           description="Different types of movement and their costs."
         />
@@ -182,7 +196,7 @@ export default function QuickReferencePage() {
                   Environmental conditions that affect visibility, movement, and combat
                 </TypographyParagraph>
               </div>
-              
+
               {/* Obscurance */}
               <div className="mb-12">
                 <TypographyH3 className="text-2xl font-bold mb-6 text-center">Obscurance</TypographyH3>
@@ -234,18 +248,20 @@ export default function QuickReferencePage() {
             Ready to Use These Rules?
           </TypographyH2>
           <TypographyParagraph className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto opacity-90">
-            Join a party and put these mechanics to good use! We are always welcoming new players—seasoned or new—to our community.
+            Join a party and put these mechanics to good use! We are always welcoming new players—seasoned or new—to our
+            community.
           </TypographyParagraph>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <Button asChild size="lg" variant="secondary" className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6">
-              <Link href="/parties">
-                Browse Parties
-              </Link>
+              <Link href="/parties">Browse Parties</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              <Link href="/resources">
-                More Resources
-              </Link>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="text-base md:text-lg px-6 md:px-8 py-4 md:py-6 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+            >
+              <Link href="/resources">More Resources</Link>
             </Button>
           </div>
         </div>

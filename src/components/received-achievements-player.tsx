@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { Tables } from "@/types/database.types";
-import { runQuery } from "@/utils/supabase-run";
 import { TypographyH2 } from "./typography/headings";
 import { ErrorPage } from "./error-page";
+import { Tables } from "@/types/database.types";
+import { runQuery } from "@/utils/supabase-run";
 
 export async function ReceivedAchievementsPlayer({ achievement }: { achievement: Tables<"achievements"> }) {
   if (achievement.type !== "player") return null;
@@ -26,7 +26,11 @@ export async function ReceivedAchievementsPlayer({ achievement }: { achievement:
       <TypographyH2>Received Players</TypographyH2>
       <div className="flex flex-row flex-wrap gap-4 max-w-xl">
         {players.map((player) => (
-          <Link key={player.player_uuid} className="p-4 bg-card text-card-foreground rounded-2xl shadow hover:bg-card/80 transition-colors text-lg w-fit font-quotes" href={`/players/${player.players.users.username}`}>
+          <Link
+            key={player.player_uuid}
+            className="p-4 bg-card text-card-foreground rounded-2xl shadow hover:bg-card/80 transition-colors text-lg w-fit font-quotes"
+            href={`/players/${player.players.users.username}`}
+          >
             {player.players.users.name}
           </Link>
         ))}
@@ -35,8 +39,7 @@ export async function ReceivedAchievementsPlayer({ achievement }: { achievement:
   );
 }
 
-const getReceivedAchievementsPlayer = (id: string) => runQuery((supabase) => supabase
-  .from("received_achievements_player")
-  .select("*, players(*, users!inner(*))")
-  .eq("achievement_uuid", id)
-);
+const getReceivedAchievementsPlayer = (id: string) =>
+  runQuery((supabase) =>
+    supabase.from("received_achievements_player").select("*, players(*, users!inner(*))").eq("achievement_uuid", id),
+  );

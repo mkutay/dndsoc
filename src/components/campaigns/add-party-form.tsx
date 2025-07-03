@@ -1,19 +1,13 @@
 "use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { startTransition, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Tables } from "@/types/database.types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -36,21 +30,25 @@ export function AddPartyForm({
   setOpen,
   shortened,
 }: {
-  campaignUuid: string,
-  parties: Party[],
-  setOptimisticParties: (action: {
-    type: "add";
-    party: Party;
-  } | {
-    type: "remove";
-    partyId: string;
-  }) => void;
+  campaignUuid: string;
+  parties: Party[];
+  setOptimisticParties: (
+    action:
+      | {
+          type: "add";
+          party: Party;
+        }
+      | {
+          type: "remove";
+          partyId: string;
+        },
+  ) => void;
   setOpen: (open: boolean) => void;
   shortened: string;
 }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
-  
+
   const form = useForm<z.infer<typeof addPartyToCampaignSchema>>({
     resolver: zodResolver(addPartyToCampaignSchema),
     defaultValues: {
@@ -59,7 +57,7 @@ export function AddPartyForm({
   });
 
   if (parties.length === 0) return null;
- 
+
   const onSubmit = async (values: z.infer<typeof addPartyToCampaignSchema>) => {
     if (!values.party) return;
 
@@ -68,7 +66,7 @@ export function AddPartyForm({
       setOptimisticParties({
         type: "add",
         party: partyToAdd,
-      })
+      }),
     );
     setPending(true);
     setOpen(false);
@@ -87,7 +85,7 @@ export function AddPartyForm({
         setOptimisticParties({
           type: "remove",
           partyId: values.party || "",
-        })
+        }),
       );
       setOpen(true);
     } else {
@@ -109,30 +107,28 @@ export function AddPartyForm({
                     <Button
                       variant="outline"
                       role="combobox"
-                      className={cn(
-                        "w-[250px] justify-between",
-                        !field.value && "text-muted-foreground"
-                      )}
+                      className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                     >
                       {!field.value && "Select a party..."}
-                      {field.value && (() => {
-                        const party = parties.find((party) => field.value === party.id);
-                        return party ? (
-                          <span>
-                            <TypographyLink target="_blank" href={`/parties/${party.shortened}`} variant="default">{party.name}</TypographyLink>
-                          </span>
-                        ) : null;
-                      })()}
+                      {field.value
+                        ? (() => {
+                            const party = parties.find((party) => field.value === party.id);
+                            return party ? (
+                              <span>
+                                <TypographyLink target="_blank" href={`/parties/${party.shortened}`} variant="default">
+                                  {party.name}
+                                </TypographyLink>
+                              </span>
+                            ) : null;
+                          })()
+                        : null}
                       <ChevronsUpDown className="opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                   <Command>
-                    <CommandInput
-                      placeholder="Search a party..."
-                      className="h-9"
-                    />
+                    <CommandInput placeholder="Search a party..." className="h-9" />
                     <CommandList>
                       <CommandEmpty>No other party found.</CommandEmpty>
                       <CommandGroup>
@@ -141,20 +137,15 @@ export function AddPartyForm({
                             value={party.name}
                             key={index}
                             onSelect={() => {
-                              form.setValue("party", party.id)
+                              form.setValue("party", party.id);
                             }}
                           >
                             <span>
-                              <TypographyLink target="_blank" href={`/parties/${party.shortened}`} variant="default">{party.name}</TypographyLink>
+                              <TypographyLink target="_blank" href={`/parties/${party.shortened}`} variant="default">
+                                {party.name}
+                              </TypographyLink>
                             </span>
-                            <Check
-                              className={cn(
-                                "ml-auto",
-                                party.id === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
+                            <Check className={cn("ml-auto", party.id === field.value ? "opacity-100" : "opacity-0")} />
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -168,12 +159,9 @@ export function AddPartyForm({
         />
         <DialogFooter>
           <div className="w-full flex flex-row justify-end">
-            <Button
-              type="submit"
-              variant="outline"
-              size="default"
-              disabled={pending}
-            >Add</Button>
+            <Button type="submit" variant="outline" size="default" disabled={pending}>
+              Add
+            </Button>
           </div>
         </DialogFooter>
       </form>

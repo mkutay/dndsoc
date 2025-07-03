@@ -3,9 +3,9 @@ import { redirect } from "next/navigation";
 import { ErrorPage } from "@/components/error-page";
 
 export default async function Page({
-  searchParams
+  searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { error } = await searchParams;
   if (!error) return redirect("/");

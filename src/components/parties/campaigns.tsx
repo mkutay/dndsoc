@@ -15,21 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
@@ -43,9 +30,7 @@ import { addCampaignToParty, removeCampaignFromParty } from "@/server/campaigns"
 
 type Campaign = Tables<"campaigns">;
 
-type CampaignAction =
-  | { type: "add"; campaign: Campaign }
-  | { type: "remove"; campaignId: string };
+type CampaignAction = { type: "add"; campaign: Campaign } | { type: "remove"; campaignId: string };
 
 export const addCampaignForPartySchema = z.object({
   campaign: z.string().optional(),
@@ -65,17 +50,14 @@ export function Campaigns({
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
-  const [optimisticCampaigns, updateOptimisticCampaigns] = useOptimistic(
-    campaigns,
-    (state, action: CampaignAction) => {
-      switch (action.type) {
-        case "add":
-          return [...state, action.campaign];
-        case "remove":
-          return state.filter((c) => c.id !== action.campaignId);
-      }
+  const [optimisticCampaigns, updateOptimisticCampaigns] = useOptimistic(campaigns, (state, action: CampaignAction) => {
+    switch (action.type) {
+      case "add":
+        return [...state, action.campaign];
+      case "remove":
+        return state.filter((c) => c.id !== action.campaignId);
     }
-  );
+  });
 
   // Sort campaigns by date
   const sortedCampaigns = optimisticCampaigns.sort((a, b) => {
@@ -84,7 +66,7 @@ export function Campaigns({
     return dateB.getTime() - dateA.getTime();
   });
 
-  const handleRemoveCampaign = (campaign: Campaign) => 
+  const handleRemoveCampaign = (campaign: Campaign) =>
     startTransition(async () => {
       updateOptimisticCampaigns({ type: "remove", campaignId: campaign.id });
 
@@ -103,7 +85,7 @@ export function Campaigns({
       }
     });
 
-  const handleAddCampaign = (campaign: Campaign) => 
+  const handleAddCampaign = (campaign: Campaign) =>
     startTransition(async () => {
       updateOptimisticCampaigns({ type: "add", campaign });
 
@@ -118,14 +100,12 @@ export function Campaigns({
           title: "Add Campaign Failed",
           description: result.error.message,
           variant: "destructive",
-        })
+        });
       }
     });
 
   const availableCampaigns =
-    allCampaigns?.filter(
-      (campaign) => !optimisticCampaigns.some((c) => c.id === campaign.id)
-    ) ?? [];
+    allCampaigns?.filter((campaign) => !optimisticCampaigns.some((c) => c.id === campaign.id)) ?? [];
 
   return (
     <div className="mt-6 flex flex-col">
@@ -142,11 +122,7 @@ export function Campaigns({
           />
         ))}
         {ownsAs === "admin" && availableCampaigns.length > 0 && (
-          <AddCampaignCard
-            campaigns={availableCampaigns}
-            onAdd={handleAddCampaign}
-            isLoading={isPending}
-          />
+          <AddCampaignCard campaigns={availableCampaigns} onAdd={handleAddCampaign} isLoading={isPending} />
         )}
       </div>
     </div>
@@ -191,17 +167,13 @@ function AddCampaignCard({
           disabled={isLoading}
           asChild
         >
-          <Card className="text-3xl font-book-card-titles tracking-widest">
-            Add Campaign
-          </Card>
+          <Card className="text-3xl font-book-card-titles tracking-widest">Add Campaign</Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Campaign</DialogTitle>
-          <DialogDescription>
-            You can select a new campaign to add to your party.
-          </DialogDescription>
+          <DialogDescription>You can select a new campaign to add to your party.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -216,39 +188,32 @@ function AddCampaignCard({
                         <Button
                           variant="outline"
                           role="combobox"
-                          className={cn(
-                            "w-[250px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
+                          className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                         >
                           {!field.value && "Select a campaign..."}
-                          {field.value &&
-                            (() => {
-                              const campaign = campaigns.find(
-                                (campaign) => field.value === campaign.id
-                              );
-                              return campaign ? (
-                                <span>
-                                  <TypographyLink
-                                    target="_blank"
-                                    href={`/campaigns/${campaign.shortened}`}
-                                    variant="default"
-                                  >
-                                    {campaign.name}
-                                  </TypographyLink>
-                                </span>
-                              ) : null;
-                            })()}
+                          {field.value
+                            ? (() => {
+                                const campaign = campaigns.find((campaign) => field.value === campaign.id);
+                                return campaign ? (
+                                  <span>
+                                    <TypographyLink
+                                      target="_blank"
+                                      href={`/campaigns/${campaign.shortened}`}
+                                      variant="default"
+                                    >
+                                      {campaign.name}
+                                    </TypographyLink>
+                                  </span>
+                                ) : null;
+                              })()
+                            : null}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                       <Command>
-                        <CommandInput
-                          placeholder="Search a campaign..."
-                          className="h-9"
-                        />
+                        <CommandInput placeholder="Search a campaign..." className="h-9" />
                         <CommandList>
                           <CommandEmpty>No other campaign found.</CommandEmpty>
                           <CommandGroup>
@@ -270,12 +235,7 @@ function AddCampaignCard({
                                   </TypographyLink>
                                 </span>
                                 <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    campaign.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
+                                  className={cn("ml-auto", campaign.id === field.value ? "opacity-100" : "opacity-0")}
                                 />
                               </CommandItem>
                             ))}
@@ -290,12 +250,7 @@ function AddCampaignCard({
             />
             <DialogFooter>
               <div className="w-full flex flex-row justify-end">
-                <Button
-                  type="submit"
-                  variant="outline"
-                  size="default"
-                  disabled={isLoading}
-                >
+                <Button type="submit" variant="outline" size="default" disabled={isLoading}>
                   Add
                 </Button>
               </div>

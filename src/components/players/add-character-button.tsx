@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 
+import { AddCharacterForm } from "./add-character-form";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AddCharacterForm } from "./add-character-form";
 
 export function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
   return (
@@ -22,9 +22,7 @@ export function AddCharacterButton({ playerUuid }: { playerUuid: string }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Character</DialogTitle>
-          <DialogDescription>
-            You can add a new character to your player.
-          </DialogDescription>
+          <DialogDescription>You can add a new character to your player.</DialogDescription>
         </DialogHeader>
         <AddCharacterForm playerUuid={playerUuid} />
       </DialogContent>

@@ -15,24 +15,15 @@ type GetUserByAuthUuidError = {
 };
 
 export const insertUser = (user: UserArgument) =>
-  runQuery<User>((supabase) => supabase
-    .from("users")
-    .insert(user)
-    .select("*")
-    .single()
-  );
+  runQuery<User>((supabase) => supabase.from("users").insert(user).select("*").single());
 
-export const getUserByAuthUuid = ({ authUserUuid }: { authUserUuid: string }) => 
-  runQuery((supabase) => supabase
-    .from("users")
-    .select("*")
-    .eq("auth_user_uuid", authUserUuid)
-    .single()
-  )
-  .mapErr((error) => error.message.includes("PGRST116")
-    ? {
-        message: `Public user with auth uuid '${authUserUuid}' not found from table users`,
-        code: "NOT_FOUND",
-      } as GetUserByAuthUuidError
-    : error
-  )
+export const getUserByAuthUuid = ({ authUserUuid }: { authUserUuid: string }) =>
+  runQuery((supabase) => supabase.from("users").select("*").eq("auth_user_uuid", authUserUuid).single()).mapErr(
+    (error) =>
+      error.message.includes("PGRST116")
+        ? ({
+            message: `Public user with auth uuid '${authUserUuid}' not found from table users`,
+            code: "NOT_FOUND",
+          } as GetUserByAuthUuidError)
+        : error,
+  );

@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
+import { SignInForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
-import { SignInForm } from "./form";
 
 export const dynamic = "force-dynamic";
 

@@ -8,15 +8,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
@@ -26,14 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { journalCreateSchema } from "@/config/journal-schema";
@@ -44,11 +29,7 @@ import { actionResultMatch } from "@/types/error-typing";
 import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
 
-export function CreateJournal({
-  campaigns,
-}: {
-  campaigns: Tables<"campaigns">[];
-}) {
+export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] }) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -83,27 +64,21 @@ export function CreateJournal({
           description: error.message,
           variant: "destructive",
         });
-      }
-    )
+      },
+    );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="default"
-          type="button"
-          className="w-fit mt-4"
-        >
+        <Button variant="default" type="button" className="w-fit mt-4">
           Write a New Journal
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Write a New Journal</DialogTitle>
-          <DialogDescription>
-            This will create a new journal entry for you to fill out.
-          </DialogDescription>
+          <DialogDescription>This will create a new journal entry for you to fill out.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -117,9 +92,7 @@ export function CreateJournal({
                   <FormControl>
                     <Input placeholder="New Journal" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your journal&apos;s title.
-                  </FormDescription>
+                  <FormDescription>This is your journal&apos;s title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -136,40 +109,33 @@ export function CreateJournal({
                         <Button
                           variant="outline"
                           role="combobox"
-                          className={cn(
-                            "w-[250px] justify-between",
-                            !field.value && "text-muted-foreground"
-                          )}
+                          className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                           disabled={isPending}
                         >
                           {!field.value && "Select a campaign..."}
-                          {field.value &&
-                            (() => {
-                              const campaign = campaigns.find(
-                                (campaign) => field.value === campaign.id
-                              );
-                              return campaign ? (
-                                <span>
-                                  <TypographyLink
-                                    target="_blank"
-                                    href={`/campaigns/${campaign.shortened}`}
-                                    variant="default"
-                                  >
-                                    {campaign.name}
-                                  </TypographyLink>
-                                </span>
-                              ) : null;
-                            })()}
+                          {field.value
+                            ? (() => {
+                                const campaign = campaigns.find((campaign) => field.value === campaign.id);
+                                return campaign ? (
+                                  <span>
+                                    <TypographyLink
+                                      target="_blank"
+                                      href={`/campaigns/${campaign.shortened}`}
+                                      variant="default"
+                                    >
+                                      {campaign.name}
+                                    </TypographyLink>
+                                  </span>
+                                ) : null;
+                              })()
+                            : null}
                           <ChevronsUpDown className="opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                       <Command>
-                        <CommandInput
-                          placeholder="Search a campaign..."
-                          className="h-9"
-                        />
+                        <CommandInput placeholder="Search a campaign..." className="h-9" />
                         <CommandList>
                           <CommandEmpty>No other campaign found.</CommandEmpty>
                           <CommandGroup>
@@ -191,12 +157,7 @@ export function CreateJournal({
                                   </TypographyLink>
                                 </span>
                                 <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    campaign.id === field.value
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
+                                  className={cn("ml-auto", campaign.id === field.value ? "opacity-100" : "opacity-0")}
                                 />
                               </CommandItem>
                             ))}
@@ -205,21 +166,14 @@ export function CreateJournal({
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    This is the campaign this journal entry belongs to.
-                  </FormDescription>
+                  <FormDescription>This is the campaign this journal entry belongs to.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
               <div className="w-full flex flex-row justify-end">
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="default"
-                  disabled={isPending}
-                >
+                <Button type="submit" variant="default" size="default" disabled={isPending}>
                   Create
                 </Button>
               </div>

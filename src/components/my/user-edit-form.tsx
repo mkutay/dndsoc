@@ -1,33 +1,25 @@
-"use client"
+"use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 
+import { Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { userEditSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
 import { updateUser } from "@/server/users";
-import { Edit } from "lucide-react";
 
-export function UserEditForm({ 
+export function UserEditForm({
   user,
   onCancel,
-  onSuccess
-}: { 
+  onSuccess,
+}: {
   user: {
     auth_user_uuid: string;
     username: string;
@@ -46,7 +38,7 @@ export function UserEditForm({
       name: user.name,
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof userEditSchema>) => {
     setPending(true);
     const result = await updateUser(values, user.auth_user_uuid);
@@ -61,13 +53,13 @@ export function UserEditForm({
         });
         onSuccess?.();
       },
-      (error) => 
+      (error) =>
         toast({
           title: "Update Failed",
           description: "Please try again. " + error.message,
           variant: "destructive",
-        })
-    )
+        }),
+    );
   };
 
   return (
@@ -77,9 +69,7 @@ export function UserEditForm({
           <Edit size={20} />
           Edit Profile
         </CardTitle>
-        <CardDescription>
-          Update your username and display name.
-        </CardDescription>
+        <CardDescription>Update your username and display name.</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,9 +84,7 @@ export function UserEditForm({
                   <FormControl>
                     <Input placeholder="Kutay" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+                  <FormDescription>This is your public display name.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -121,16 +109,18 @@ export function UserEditForm({
           </CardContent>
           <CardFooter>
             <div className="flex gap-2">
-              <Button type="submit" disabled={pending}>Update Information</Button>
-              {onCancel && (
+              <Button type="submit" disabled={pending}>
+                Update Information
+              </Button>
+              {onCancel ? (
                 <Button type="button" variant="outline" onClick={onCancel} disabled={pending}>
                   Cancel
                 </Button>
-              )}
+              ) : null}
             </div>
           </CardFooter>
         </form>
       </Form>
     </Card>
-  )
+  );
 }

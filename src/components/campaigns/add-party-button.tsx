@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { AddPartyForm } from "./add-party-form";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tables } from "@/types/database.types";
-import { useState } from "react";
-import { AddPartyForm } from "./add-party-form";
 
 type Party = Tables<"parties">;
 
@@ -22,15 +22,19 @@ export function AddPartyButton({
   setOptimisticParties,
   shortened,
 }: {
-  campaignUuid: string,
-  parties: Party[],
-  setOptimisticParties: (action: {
-    type: "add";
-    party: Party;
-  } | {
-    type: "remove";
-    partyId: string;
-  }) => void;
+  campaignUuid: string;
+  parties: Party[];
+  setOptimisticParties: (
+    action:
+      | {
+          type: "add";
+          party: Party;
+        }
+      | {
+          type: "remove";
+          partyId: string;
+        },
+  ) => void;
   shortened: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -43,17 +47,13 @@ export function AddPartyButton({
           className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
           asChild
         >
-          <Card className="text-3xl font-book-card-titles tracking-widest">
-            Add Party
-          </Card>
+          <Card className="text-3xl font-book-card-titles tracking-widest">Add Party</Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Party</DialogTitle>
-          <DialogDescription>
-            You can add any existing party to this campaign.
-          </DialogDescription>
+          <DialogDescription>You can add any existing party to this campaign.</DialogDescription>
         </DialogHeader>
         <AddPartyForm
           campaignUuid={campaignUuid}

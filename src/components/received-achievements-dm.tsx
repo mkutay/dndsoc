@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import { Tables } from "@/types/database.types";
-import { runQuery } from "@/utils/supabase-run";
 import { TypographyH2 } from "./typography/headings";
 import { ErrorPage } from "./error-page";
+import { Tables } from "@/types/database.types";
+import { runQuery } from "@/utils/supabase-run";
 
 export async function ReceivedAchievementsDM({ achievement }: { achievement: Tables<"achievements"> }) {
   if (achievement.type !== "dm") return null;
@@ -26,7 +26,11 @@ export async function ReceivedAchievementsDM({ achievement }: { achievement: Tab
       <TypographyH2>Received DMS</TypographyH2>
       <div className="flex flex-row flex-wrap gap-4 max-w-xl">
         {dms.map((dm) => (
-          <Link key={dm.dm_uuid} className="p-4 bg-card text-card-foreground rounded-2xl shadow hover:bg-card/80 transition-colors text-lg w-fit font-quotes" href={`/dms/${dm.dms.users.username}`}>
+          <Link
+            key={dm.dm_uuid}
+            className="p-4 bg-card text-card-foreground rounded-2xl shadow hover:bg-card/80 transition-colors text-lg w-fit font-quotes"
+            href={`/dms/${dm.dms.users.username}`}
+          >
             {dm.dms.users.name}
           </Link>
         ))}
@@ -35,8 +39,7 @@ export async function ReceivedAchievementsDM({ achievement }: { achievement: Tab
   );
 }
 
-const getReceivedAchievementsDM = (id: string) => runQuery((supabase) => supabase
-  .from("received_achievements_dm")
-  .select("*, dms(*, users!inner(*))")
-  .eq("achievement_uuid", id)
-);
+const getReceivedAchievementsDM = (id: string) =>
+  runQuery((supabase) =>
+    supabase.from("received_achievements_dm").select("*, dms(*, users!inner(*))").eq("achievement_uuid", id),
+  );

@@ -15,7 +15,8 @@ export const dynamic = "force-dynamic";
 export default async function Page() {
   const userResult = await getUserRole();
   if (userResult.isErr()) {
-    if (userResult.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={userResult.error} caller="/my/page.tsx (user)" />;
+    if (userResult.error.code !== "NOT_LOGGED_IN")
+      return <ErrorPage error={userResult.error} caller="/my/page.tsx (user)" />;
     else forbidden();
   }
 
@@ -31,7 +32,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Your Page</TypographyH1>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <ProfileLinks role={role} user={user.users} />
         <MyProfile user={user.users} />
@@ -39,7 +40,9 @@ export default async function Page() {
 
       <div className="mt-10 space-y-10">
         <MyCharacters characters={characters.value} />
-        {partiesDM.value.length !== 0 && <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0].dm_party[0].dm_id} />}
+        {partiesDM.value.length !== 0 && (
+          <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0].dm_party[0].dm_id} />
+        )}
       </div>
     </div>
   );

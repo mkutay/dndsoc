@@ -1,16 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  HeartCrack,
-  Flame,
-  Info,
-} from "lucide-react";
+import { HeartCrack, Flame, Info } from "lucide-react";
 
-import {
-  TypographyH2,
-  TypographyH3,
-} from "@/components/typography/headings";
+import { GiAnarchy, GiFootprint, GiGearHammer, GiGems, GiHeavyRain, GiTiredEye, GiTravelDress } from "react-icons/gi";
+import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -21,22 +15,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TypographyParagraph } from "@/components/typography/paragraph";
-import { GiAnarchy, GiFootprint, GiGearHammer, GiGems, GiHeavyRain, GiTiredEye, GiTravelDress } from "react-icons/gi";
 import { Badge } from "@/components/ui/badge";
 
 interface AdvancedUtilitySectionProps {
@@ -44,9 +25,9 @@ interface AdvancedUtilitySectionProps {
 }
 
 function Objects() {
-  const [selectedAC, setSelectedAC] = useState<{ object: string, ac: number } | null>(null);
-  const [selectedHP, setSelectedHP] = useState<{ size: string, fragile: string, resilient: string } | null>(null);
-  
+  const [selectedAC, setSelectedAC] = useState<{ object: string; ac: number } | null>(null);
+  const [selectedHP, setSelectedHP] = useState<{ size: string; fragile: string; resilient: string } | null>(null);
+
   const objectAC = [
     { object: "Cloth, paper, rope", ac: 11 },
     { object: "Crystal, glass, ice", ac: 13 },
@@ -77,9 +58,7 @@ function Objects() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-          <TypographyH3 className="text-xl font-bold font-quotes mb-3">
-            Object Armour Class
-          </TypographyH3>
+          <TypographyH3 className="text-xl font-bold font-quotes mb-3">Object Armour Class</TypographyH3>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full justify-between">
@@ -91,8 +70,8 @@ function Objects() {
               <DropdownMenuLabel>Material AC Values</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {objectAC.map((item, index) => (
-                <DropdownMenuItem 
-                  key={index} 
+                <DropdownMenuItem
+                  key={index}
                   className="flex justify-between cursor-pointer"
                   onClick={() => setSelectedAC(item)}
                 >
@@ -102,20 +81,18 @@ function Objects() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          {selectedAC && (
+          {selectedAC ? (
             <div className="mt-3 p-3 bg-muted/50 rounded-lg border">
               <div className="text-center">
                 <span className="text-lg font-font-normal tracking-tight">{selectedAC.object}</span>
                 <div className="text-2xl font-bold text-primary mt-1">AC {selectedAC.ac}</div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
 
         <div>
-          <TypographyH3 className="text-xl font-bold font-quotes mb-3">
-            Object Hit-Points (DMG p.247)
-          </TypographyH3>
+          <TypographyH3 className="text-xl font-bold font-quotes mb-3">Object Hit-Points (DMG p.247)</TypographyH3>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full justify-between">
@@ -127,21 +104,25 @@ function Objects() {
               <DropdownMenuLabel>Size HP Values</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {objectHP.map((item, index) => (
-                <DropdownMenuItem 
-                  key={index} 
+                <DropdownMenuItem
+                  key={index}
                   className="flex flex-col items-start gap-1 p-3 cursor-pointer"
                   onClick={() => setSelectedHP(item)}
                 >
                   <span className="font-medium">{item.size}</span>
                   <div className="flex gap-4 text-sm text-muted-foreground">
-                    <span>Fragile: <strong>{item.fragile}</strong></span>
-                    <span>Resilient: <strong>{item.resilient}</strong></span>
+                    <span>
+                      Fragile: <strong>{item.fragile}</strong>
+                    </span>
+                    <span>
+                      Resilient: <strong>{item.resilient}</strong>
+                    </span>
                   </div>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          {selectedHP && (
+          {selectedHP ? (
             <div className="mt-3 p-3 bg-muted/50 rounded-lg border">
               <div className="text-center">
                 <span className="text-lg font-normal tracking-tight">{selectedHP.size}</span>
@@ -157,7 +138,7 @@ function Objects() {
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </CardContent>
     </Card>
@@ -196,9 +177,7 @@ function Exhaustion() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm md:text-base font-medium leading-relaxed font-quotes mt-0.5">
-                    {level.effect}
-                  </p>
+                  <p className="text-sm md:text-base font-medium leading-relaxed font-quotes mt-0.5">{level.effect}</p>
                 </div>
               </div>
             </div>
@@ -210,9 +189,7 @@ function Exhaustion() {
           <div className="flex items-start gap-3">
             <Info className="w-8 h-8" />
             <div className="space-y-2 text-sm mt-[7px]">
-              <p className="font-medium font-quotes">
-                Recovery Rules:
-              </p>
+              <p className="font-medium font-quotes">Recovery Rules:</p>
               <p>
                 Finishing a Long Rest reduces exhaustion level by 1, provided the creature has ingested food and drink.
               </p>
@@ -274,7 +251,7 @@ function OverlandTravelPace() {
     "Fast Pace: increase distance by 1/3 (-5 to passive PER)",
     "Slow Pace: decrease distance by 1/3 (able to use Stealth)",
     "Difficult Terrain halves the distance travelled",
-    "Forced March: Each hour of travel beyond 8 hours, each character must make a CON check at the end of the hour or take one level of Exhaustion. CON check DC = 10 + 1 per hour over 8."
+    "Forced March: Each hour of travel beyond 8 hours, each character must make a CON check at the end of the hour or take one level of Exhaustion. CON check DC = 10 + 1 per hour over 8.",
   ];
 
   return (
@@ -414,7 +391,10 @@ function ImprovisingDamage() {
     { example: "Hit by falling rubble, collapsing tunnel, stumble into vat of acid", dice: "4d10" },
     { example: "Crushed by compacting walls, hit by whirling steel blades, wading through lava stream", dice: "10d10" },
     { example: "Submerged in lava, hit by crashing flying fortress", dice: "18d10" },
-    { example: "Tumble into vortex of Elemental Fire, crushed in jaws of god-like or moon-sized monster", dice: "24d10" },
+    {
+      example: "Tumble into vortex of Elemental Fire, crushed in jaws of god-like or moon-sized monster",
+      dice: "24d10",
+    },
     { example: "Rocks fall, everyone dies. Campaign ends.", dice: "∞d10" },
   ];
 
@@ -455,7 +435,10 @@ function LingeringInjuries() {
   const injuryData = [
     { roll: "1", injury: "LOSE AN EYE. Disadvantage on Sight PER and Ranged attacks" },
     { roll: "2", injury: "LOSE AN ARM OR HAND." },
-    { roll: "3", injury: "LOSE A FOOT OR LEG. 1/2 speed on foot, fall prone after Dash, Disadvantage on DEX/Balance checks" },
+    {
+      roll: "3",
+      injury: "LOSE A FOOT OR LEG. 1/2 speed on foot, fall prone after Dash, Disadvantage on DEX/Balance checks",
+    },
     { roll: "4", injury: "LIMP. Foot speed -5'. DC 10 DEX check after Dash or fall prone." },
     { roll: "5-7", injury: "INTERNAL INJURY. DC 15 CON check to act or react." },
     { roll: "8-10", injury: "BROKEN RIBS. As 5-7, but DC 10." },
@@ -497,9 +480,7 @@ function LingeringInjuries() {
   );
 }
 
-const AdvancedUtilitySection: React.FC<AdvancedUtilitySectionProps> = ({
-  id,
-}) => {
+const AdvancedUtilitySection: React.FC<AdvancedUtilitySectionProps> = ({ id }) => {
   return (
     <section id={id} className="py-12 md:py-18">
       <div className="container mx-auto px-4">

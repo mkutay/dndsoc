@@ -1,12 +1,4 @@
-import {
-  BookOpen,
-  Sparkles,
-  Swords,
-  Shield,
-  Move,
-  Sun,
-  ClipboardList,
-} from "lucide-react";
+import { BookOpen, Sparkles, Swords, Shield, Move, Sun, ClipboardList } from "lucide-react";
 
 import { TypographyH2 } from "@/components/typography/headings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,65 +12,43 @@ const abilities = [
     ability: "Strength",
     icon: Swords,
     skills: ["Athletics"],
-    description: "Physical power, muscle, and endurance"
+    description: "Physical power, muscle, and endurance",
   },
   {
     ability: "Dexterity",
     icon: Move,
     skills: ["Acrobatics", "Sleight of Hand", "Stealth"],
-    description: "Agility, reflexes, and balance"
+    description: "Agility, reflexes, and balance",
   },
   {
     ability: "Constitution",
     icon: Shield,
     skills: [], // No skills directly tied to CON in 5e base, though saves are important
-    description: "Health, stamina, and vital force"
+    description: "Health, stamina, and vital force",
   },
   {
     ability: "Intelligence",
     icon: BookOpen,
-    skills: [
-      "Arcana",
-      "History",
-      "Investigation",
-      "Nature",
-      "Religion",
-    ],
-    description: "Reasoning, memory, and analytical thinking"
+    skills: ["Arcana", "History", "Investigation", "Nature", "Religion"],
+    description: "Reasoning, memory, and analytical thinking",
   },
   {
     ability: "Wisdom",
     icon: Sun,
-    skills: [
-      "Animal Handling",
-      "Insight",
-      "Medicine",
-      "Perception",
-      "Survival",
-    ],
-    description: "Awareness, intuition, and common sense"
+    skills: ["Animal Handling", "Insight", "Medicine", "Perception", "Survival"],
+    description: "Awareness, intuition, and common sense",
   },
   {
     ability: "Charisma",
     icon: Sparkles,
-    skills: [
-      "Deception",
-      "Intimidation",
-      "Performance",
-      "Persuasion",
-    ],
-    description: "Force of personality, leadership, and confidence"
+    skills: ["Deception", "Intimidation", "Performance", "Persuasion"],
+    description: "Force of personality, leadership, and confidence",
   },
 ];
 
-const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({
-  id,
-}) => {
+const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({ id }) => {
   return (
-    <section
-      id={id}
-      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background"
-    >
+    <section id={id} className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -99,9 +69,7 @@ const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({
                     })()}
                     {item.ability}
                   </CardTitle>
-                  <p className="text-base font-quotes text-muted-foreground italic">
-                    {item.description}
-                  </p>
+                  <p className="text-base font-quotes text-muted-foreground italic">{item.description}</p>
                 </CardHeader>
                 <CardContent className="pt-2">
                   <div className="space-y-2">
@@ -135,10 +103,18 @@ const SkillsAbilitiesSection: React.FC<SkillsAbilitiesSectionProps> = ({
                   <div>
                     <p className="mb-2 font-quotes text-xl">Most Common Checks</p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
-                      <li><strong className="tracking-wider">Perception:</strong> Noticing hidden objects/creatures</li>
-                      <li><strong className="tracking-wider">Investigation:</strong> Searching for clues and information</li>
-                      <li><strong className="tracking-wider">Insight:</strong> Reading people&apos;s intentions</li>
-                      <li><strong className="tracking-wider">Persuasion:</strong> Convincing others</li>
+                      <li>
+                        <strong className="tracking-wider">Perception:</strong> Noticing hidden objects/creatures
+                      </li>
+                      <li>
+                        <strong className="tracking-wider">Investigation:</strong> Searching for clues and information
+                      </li>
+                      <li>
+                        <strong className="tracking-wider">Insight:</strong> Reading people&apos;s intentions
+                      </li>
+                      <li>
+                        <strong className="tracking-wider">Persuasion:</strong> Convincing others
+                      </li>
                     </ul>
                   </div>
                 </div>

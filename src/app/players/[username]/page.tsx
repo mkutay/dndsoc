@@ -42,20 +42,19 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   };
 }
 
-export default async function Page({ params }: 
-  { params: Promise<{ username: string }> }
-) {
+export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
   const result = await cachedGetPlayer({ username });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx 1" />;
   const player = result.value;
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx 2" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx 2" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsPlayer = (player.auth_user_uuid === auth?.auth_user_uuid) || role === "admin";
+  const ownsPlayer = player.auth_user_uuid === auth?.auth_user_uuid || role === "admin";
 
   const name = player.users.name;
 
@@ -65,21 +64,27 @@ export default async function Page({ params }:
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        {imageUrl ? <Image
-          src={imageUrl}
-          alt={`Image of ${player.users.name}`}
-          width={144}
-          height={144}
-          className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto object-cover border-border border-2"
-        /> : <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-border rounded-full"></div>}
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={`Image of ${player.users.name}`}
+            width={144}
+            height={144}
+            className="lg:w-36 lg:h-36 w-48 h-48 rounded-full lg:mx-0 mx-auto object-cover border-border border-2"
+          />
+        ) : (
+          <div className="lg:w-36 lg:h-36 w-48 h-48 lg:mx-0 mx-auto bg-border rounded-full"></div>
+        )}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
             <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>
             <div>{name.slice(1)}</div>
           </h1>
           <TypographyLarge>Level: {player.level}</TypographyLarge>
-          {player.about && player.about.length !== 0 && <TypographyLead className="indent-6">{player.about}</TypographyLead>}
-          {ownsPlayer && <EditButton href={`/players/${username}/edit`} />}
+          {player.about && player.about.length !== 0 ? (
+            <TypographyLead className="indent-6">{player.about}</TypographyLead>
+          ) : null}
+          {ownsPlayer ? <EditButton href={`/players/${username}/edit`} /> : null}
         </div>
       </div>
       <Characters characters={player.characters} ownsPlayer={ownsPlayer} playerUuid={player.id} />
@@ -89,13 +94,17 @@ export default async function Page({ params }:
   );
 }
 
-export const PlayerAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsPlayer[] }) => {
+export const PlayerAchievements = ({
+  receivedAchievements,
+}: {
+  receivedAchievements: ReceivedAchievementsPlayer[];
+}) => {
   if (!receivedAchievements || receivedAchievements.length === 0) return null;
-  
+
   return (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
       <AchievementCards receivedAchievements={receivedAchievements} />
     </>
-  )
-}
+  );
+};

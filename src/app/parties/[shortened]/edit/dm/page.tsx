@@ -2,16 +2,16 @@ import { redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 import { cache } from "react";
 
+import { UploadWrapper } from "./upload-wrapper";
+import { DMForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { UploadWrapper } from "./upload-wrapper";
 import { getPartyByShortened } from "@/lib/parties";
 import { getPlayerRoleUser } from "@/lib/players";
 import { getCampaigns } from "@/lib/campaigns";
 import { getCharacters } from "@/lib/characters";
 import { getDMs } from "@/lib/dms";
-import { DMForm } from "./form";
 
 const cachedGetParty = cache(getPartyByShortened);
 
@@ -40,22 +40,27 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   const result = await cachedGetParty({ shortened });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/dm/page.tsx" isNotFound />;
+  if (result.isErr())
+    return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/dm/page.tsx" isNotFound />;
   const party = result.value;
 
   const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
   const characteredBy = party.character_party.map((characterParty) => characterParty.characters);
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
   const dmUuid = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
-  const ownsAs = (dmUuid || role === "admin")
-  ? "dm"
-  : ((characteredBy.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
-  
+  const ownsAs =
+    dmUuid || role === "admin"
+      ? "dm"
+      : characteredBy.some((character) => character.player_uuid === auth?.players.id)
+        ? "player"
+        : null;
+
   if (ownsAs === "player") {
     redirect(`/parties/${shortened}/edit/player`);
   } else if (ownsAs === null) {
@@ -73,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       level: dm.level,
       id: dm.id,
     }));
-  
+
   const all = await ResultAsync.combine([getCampaigns(), getCharacters(), getDMs()]);
   if (all.isErr()) return <ErrorPage error={all.error} caller="/parties/[shortened]/edit/dm/page.tsx" />;
   const dms = all.value[2].map((dm) => ({
@@ -97,7 +102,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       level: character.players.level,
       username: character.players.users.username,
       name: character.players.users.name,
-    }
+    },
   }));
 
   return (
@@ -105,7 +110,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyLink href={`/parties/${party.shortened}`} variant="muted" className="tracking-wide font-quotes">
         Go Back
       </TypographyLink>
-      <TypographyH1>Edit Party <span className="text-primary">{party.name}</span></TypographyH1>
+      <TypographyH1>
+        Edit Party <span className="text-primary">{party.name}</span>
+      </TypographyH1>
       <UploadWrapper partyId={party.id} partyShortened={party.shortened} />
       <DMForm
         about={party.about}
@@ -121,5 +128,5 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         thisDMUuid={dmUuid}
       />
     </div>
-  )
+  );
 }

@@ -24,14 +24,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ id }) => {
           </div>
 
           <TypographyH1 className="text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-6 md:mb-8 bg-linear-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up">
-            Kutay&apos;s{" "}
-            <span className="font-drop-caps font-normal tracking-tighter">DM</span>{" "}
-            Screen
+            Kutay&apos;s <span className="font-drop-caps font-normal tracking-tighter">DM</span> Screen
           </TypographyH1>
 
           <TypographyLead className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 max-w-3xl mx-auto text-muted-foreground animate-fade-in-up">
-            Your quick and easy reference for Dungeons & Dragons 5th Edition
-            rules, tables, and conditions.
+            Your quick and easy reference for Dungeons & Dragons 5th Edition rules, tables, and conditions.
           </TypographyLead>
 
           <div className="md:flex hidden justify-center">

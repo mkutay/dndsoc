@@ -1,4 +1,19 @@
-import { BookOpen, Download, ExternalLink, Users, Crown, Sparkles, FileText, Globe, ArrowRight, Info, Heart, MessageSquare, Github, Library } from "lucide-react";
+import {
+  BookOpen,
+  Download,
+  ExternalLink,
+  Users,
+  Crown,
+  Sparkles,
+  FileText,
+  Globe,
+  ArrowRight,
+  Info,
+  Heart,
+  MessageSquare,
+  Github,
+  Library,
+} from "lucide-react";
 import { GiCurlyMask, GiDiceSixFacesThree, GiRollingDiceCup } from "react-icons/gi";
 import { DiscordLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
@@ -14,10 +29,12 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Resources",
-  description: "Essential DnD resources for players and DMs at King's College London DnD Society. Find character sheets, rulebooks, tools, and guides to enhance your adventures.",
+  description:
+    "Essential DnD resources for players and DMs at King's College London DnD Society. Find character sheets, rulebooks, tools, and guides to enhance your adventures.",
   openGraph: {
     title: "DnD Resources",
-    description: "Everything you need to start your DnD journey. Character sheets, rulebooks, digital tools, and helpful guides for new and experienced players.",
+    description:
+      "Everything you need to start your DnD journey. Character sheets, rulebooks, digital tools, and helpful guides for new and experienced players.",
   },
 };
 
@@ -35,7 +52,9 @@ export default function ResourcesPage() {
                     <span className="text-sm font-medium text-primary font-quotes">Adventure Toolkit</span>
                   </div>
                   <TypographyH1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                    Resource<br />Library
+                    Resource
+                    <br />
+                    Library
                   </TypographyH1>
                   {/* <TypographyParagraph className="text-lg md:text-xl text-muted-foreground mb-6">
                     Your destination for D&D essentials.
@@ -90,7 +109,7 @@ export default function ResourcesPage() {
                 Don&apos;t worry about memorising everything — we&apos;ll teach you as we play!
               </TypographyParagraph>
             </div>
-            
+
             <div className="grid lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
               <div className="relative lg:min-h-96">
                 <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
@@ -105,7 +124,8 @@ export default function ResourcesPage() {
                   </CardHeader>
                   <CardContent>
                     <TypographyParagraph>
-                      We recommend starting with D&D Beyond, a free online character builder that makes it easy to create and manage your character.
+                      We recommend starting with D&D Beyond, a free online character builder that makes it easy to
+                      create and manage your character.
                     </TypographyParagraph>
                   </CardContent>
                   <CardFooter>
@@ -117,7 +137,7 @@ export default function ResourcesPage() {
                   </CardFooter>
                 </Card>
               </div>
-              
+
               <div className="relative">
                 <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
                   b
@@ -131,8 +151,8 @@ export default function ResourcesPage() {
                   </CardHeader>
                   <CardContent>
                     <TypographyParagraph>
-                      You can also download a fillable PDF character sheet to keep track of your character!
-                      Especially useful if you prefer pen and paper or want to print it out.
+                      You can also download a fillable PDF character sheet to keep track of your character! Especially
+                      useful if you prefer pen and paper or want to print it out.
                     </TypographyParagraph>
                   </CardContent>
                   <CardFooter>
@@ -162,7 +182,7 @@ export default function ResourcesPage() {
                 Everything a D&D player or DM could need
               </TypographyParagraph>
             </div>
-            
+
             <div className="grid lg:grid-cols-2 gap-8 mb-12 max-w-6xl mx-auto">
               <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-bl-full"></div>
@@ -171,13 +191,16 @@ export default function ResourcesPage() {
                 </div>
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full font-semibold">CORE RULEBOOK</span>
+                    <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full font-semibold">
+                      CORE RULEBOOK
+                    </span>
                   </div>
                   <CardTitle>Player&apos;s Handbook (2014)</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="mb-4">
-                    The essential guide for players. Contains all the basic rules, classes, races, spells, and equipment you need to play D&D 5th Edition.
+                    The essential guide for players. Contains all the basic rules, classes, races, spells, and equipment
+                    you need to play D&D 5th Edition.
                   </TypographyParagraph>
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant="secondary">Classes & Races</Badge>
@@ -195,7 +218,7 @@ export default function ResourcesPage() {
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-bl-full"></div>
                 <div className="absolute top-4 right-4">
@@ -203,13 +226,16 @@ export default function ResourcesPage() {
                 </div>
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-semibold">DIGITAL TOOL</span>
+                    <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-semibold">
+                      DIGITAL TOOL
+                    </span>
                   </div>
                   <CardTitle>5e.tools</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="mb-4">
-                    The ultimate online reference with searchable rules, spells, monsters, and items. Perfect for quick lookups during games!
+                    The ultimate online reference with searchable rules, spells, monsters, and items. Perfect for quick
+                    lookups during games!
                   </TypographyParagraph>
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant="secondary">Searchable</Badge>
@@ -229,7 +255,7 @@ export default function ResourcesPage() {
                 </CardFooter>
               </Card>
             </div>
-            
+
             <div className="grid lg:grid-cols-5 grid-cols-1 gap-4">
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
@@ -239,9 +265,7 @@ export default function ResourcesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
-                    Official fillable PDF
-                  </TypographyParagraph>
+                  <TypographyParagraph>Official fillable PDF</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="outline">
@@ -251,7 +275,7 @@ export default function ResourcesPage() {
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
@@ -260,9 +284,7 @@ export default function ResourcesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
-                    For tactical combat
-                  </TypographyParagraph>
+                  <TypographyParagraph>For tactical combat</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="outline">
@@ -281,9 +303,7 @@ export default function ResourcesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
-                    Please it took so long
-                  </TypographyParagraph>
+                  <TypographyParagraph>Please it took so long</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="default">
@@ -293,7 +313,7 @@ export default function ResourcesPage() {
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
@@ -302,9 +322,7 @@ export default function ResourcesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
-                    Digital character tools
-                  </TypographyParagraph>
+                  <TypographyParagraph>Digital character tools</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="outline">
@@ -314,7 +332,7 @@ export default function ResourcesPage() {
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
@@ -323,15 +341,11 @@ export default function ResourcesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
-                    Essential rules and actions
-                  </TypographyParagraph>
+                  <TypographyParagraph>Essential rules and actions</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="outline">
-                    <Link href="/resources/quick-reference">
-                      Explore
-                    </Link>
+                    <Link href="/resources/quick-reference">Explore</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -358,10 +372,13 @@ export default function ResourcesPage() {
                 Explore official pre-made level 3 characters to spark your creativity!
               </TypographyParagraph>
             </div>
-            
+
             <div className="max-w-3xl mx-auto flex flex-col gap-6">
               <Accordion type="single" collapsible className="w-full space-y-4">
-                <AccordionItem value="fighters-paladins" className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-red-50/50 to-orange-50/50 dark:from-red-950/20 dark:to-orange-950/20">
+                <AccordionItem
+                  value="fighters-paladins"
+                  className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-red-50/50 to-orange-50/50 dark:from-red-950/20 dark:to-orange-950/20"
+                >
                   <AccordionTrigger className="text-lg hover:no-underline">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -414,8 +431,11 @@ export default function ResourcesPage() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                
-                <AccordionItem value="spellcasters" className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-purple-50/50 to-blue-50/50 dark:from-purple-950/20 dark:to-blue-950/20">
+
+                <AccordionItem
+                  value="spellcasters"
+                  className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-purple-50/50 to-blue-50/50 dark:from-purple-950/20 dark:to-blue-950/20"
+                >
                   <AccordionTrigger className="text-lg hover:no-underline">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
@@ -468,8 +488,11 @@ export default function ResourcesPage() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                
-                <AccordionItem value="divine-nature" className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20">
+
+                <AccordionItem
+                  value="divine-nature"
+                  className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20"
+                >
                   <AccordionTrigger className="text-lg hover:no-underline">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
@@ -522,8 +545,11 @@ export default function ResourcesPage() {
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                
-                <AccordionItem value="rogues-scouts" className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-slate-50/50 to-zinc-50/50 dark:from-slate-950/20 dark:to-zinc-950/20">
+
+                <AccordionItem
+                  value="rogues-scouts"
+                  className="border border-muted/50 rounded-xl px-6 py-2 bg-linear-to-r from-slate-50/50 to-zinc-50/50 dark:from-slate-950/20 dark:to-zinc-950/20"
+                >
                   <AccordionTrigger className="text-lg hover:no-underline">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-full flex items-center justify-center">
@@ -594,9 +620,7 @@ export default function ResourcesPage() {
                   </div>
                 </div>
                 <div>
-                  <TypographyH2 className="text-center">
-                    Remember: It&apos;s All About the Fun
-                  </TypographyH2>
+                  <TypographyH2 className="text-center">Remember: It&apos;s All About the Fun</TypographyH2>
                   <div className="flex flex-col gap-4 mt-4 w-fit mx-auto">
                     <div className="text-base flex flex-row gap-2 items-center">
                       <Badge>New players:</Badge> Don&apos;t stress about knowing every rule!
@@ -649,7 +673,7 @@ export default function ResourcesPage() {
             <D20Dice size="sm" />
           </div>
         </div>
-        
+
         <div className="relative container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
@@ -660,11 +684,11 @@ export default function ResourcesPage() {
                 Ready to Begin Your Epic Journey?
               </TypographyH2>
               <TypographyParagraph className="text-lg md:text-xl mb-8 opacity-90 text-primary-foreground max-w-2xl mx-auto">
-                With these resources in your inventory, you&apos;re prepared for any adventure. 
-                Join our society and let&apos;s create legendary stories together!
+                With these resources in your inventory, you&apos;re prepared for any adventure. Join our society and
+                let&apos;s create legendary stories together!
               </TypographyParagraph>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button asChild size="lg" variant="secondary" className="text-base md:text-lg px-8 py-6 group">
                 <Link href="/sign-up" className="flex items-center gap-2">
@@ -673,16 +697,29 @@ export default function ResourcesPage() {
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="text-base md:text-lg px-8 py-6 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="text-base md:text-lg px-8 py-6 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+              >
                 <Link href="/parties" className="flex items-center gap-2">
                   <Crown className="w-5 h-5" />
                   Find a Party
                 </Link>
               </Button>
             </div>
-            
+
             <div className="mt-8 text-primary-foreground/80 text-sm">
-              Questions? Check out our <Link href="/about" className="underline hover:text-primary-foreground">About page</Link> or browse our <Link href="/journal" className="underline hover:text-primary-foreground">Journal</Link> for our sessions.
+              Questions? Check out our{" "}
+              <Link href="/about" className="underline hover:text-primary-foreground">
+                About page
+              </Link>{" "}
+              or browse our{" "}
+              <Link href="/journal" className="underline hover:text-primary-foreground">
+                Journal
+              </Link>{" "}
+              for our sessions.
             </div>
           </div>
         </div>
@@ -704,7 +741,7 @@ export default function ResourcesPage() {
                 Connect with fellow adventurers across all our platforms!
               </TypographyParagraph>
             </div>
-            
+
             <div className="flex flex-row flex-wrap justify-center gap-6 mb-8">
               {/* KCLSU Official Society Page */}
               <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-blue-50/50 dark:to-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50">
@@ -712,7 +749,9 @@ export default function ResourcesPage() {
                   <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Crown className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-blue-800 dark:text-blue-200 font-headings text-2xl">Official Society</h3>
+                  <h3 className="font-semibold mb-2 text-blue-800 dark:text-blue-200 font-headings text-2xl">
+                    Official Society
+                  </h3>
                 </CardHeader>
                 <CardContent className="p-6">
                   <TypographyParagraph className="text-sm mb-4 text-blue-700 dark:text-blue-300">
@@ -727,14 +766,16 @@ export default function ResourcesPage() {
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               {/* GitHub Repository */}
               <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-slate-50/50 dark:to-slate-950/30 border-2 border-slate-200/50 dark:border-slate-800/50">
                 <CardHeader>
                   <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Github className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-slate-800 dark:text-slate-200 font-headings text-2xl">Open Source</h3>
+                  <h3 className="font-semibold mb-2 text-slate-800 dark:text-slate-200 font-headings text-2xl">
+                    Open Source
+                  </h3>
                 </CardHeader>
                 <CardContent className="p-6">
                   <TypographyParagraph className="text-sm mb-4 text-slate-700 dark:text-slate-300">
@@ -742,21 +783,28 @@ export default function ResourcesPage() {
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild variant="outline" size="sm" className="w-full border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
+                  >
                     <Link href="https://github.com/mkutay/dndsoc" target="_blank">
                       View Code <ExternalLink className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               {/* WhatsApp */}
               <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-green-50/50 dark:to-green-950/30 border-2 border-green-200/50 dark:border-green-800/50">
                 <CardHeader>
                   <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <MessageSquare className="w-6 h-6 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-green-800 dark:text-green-200 font-headings text-2xl">WhatsApp</h3>
+                  <h3 className="font-semibold mb-2 text-green-800 dark:text-green-200 font-headings text-2xl">
+                    WhatsApp
+                  </h3>
                 </CardHeader>
                 <CardContent className="p-6">
                   <TypographyParagraph className="text-sm mb-4 text-green-700 dark:text-green-300">
@@ -764,19 +812,26 @@ export default function ResourcesPage() {
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full border-green-300 dark:border-green-700" disabled>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-green-300 dark:border-green-700"
+                    disabled
+                  >
                     Link Coming Soon
                   </Button>
                 </CardFooter>
               </Card>
-              
+
               {/* Discord */}
               <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-indigo-50/50 dark:to-indigo-950/30 border-2 border-indigo-200/50 dark:border-indigo-800/50">
                 <CardHeader>
                   <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <DiscordLogoIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-indigo-800 dark:text-indigo-200 font-headings text-2xl">Discord</h3>
+                  <h3 className="font-semibold mb-2 text-indigo-800 dark:text-indigo-200 font-headings text-2xl">
+                    Discord
+                  </h3>
                 </CardHeader>
                 <CardContent className="p-6">
                   <TypographyParagraph className="text-sm mb-4 text-indigo-700 dark:text-indigo-300">
@@ -784,7 +839,12 @@ export default function ResourcesPage() {
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full border-indigo-300 dark:border-indigo-700" disabled>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-indigo-300 dark:border-indigo-700"
+                    disabled
+                  >
                     Link Coming Soon
                   </Button>
                 </CardFooter>
@@ -795,7 +855,9 @@ export default function ResourcesPage() {
                   <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <InstagramLogoIcon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-pink-800 dark:text-pink-200 font-headings text-2xl">Instagram</h3>
+                  <h3 className="font-semibold mb-2 text-pink-800 dark:text-pink-200 font-headings text-2xl">
+                    Instagram
+                  </h3>
                 </CardHeader>
                 <CardContent className="p-6">
                   <TypographyParagraph className="text-sm mb-4 text-pink-700 dark:text-pink-300">
@@ -824,111 +886,114 @@ export default function ResourcesPage() {
                 <div className="w-3 h-3 bg-primary-30 rounded-full animate-pulse delay-200"></div>
               </div>
               <h2 className="flex flex-row gap-4 text-3xl md:text-4xl font-bold mb-4 font-headings justify-center">
-                <GiDiceSixFacesThree  />
+                <GiDiceSixFacesThree />
                 D&D Terms & Jargon
               </h2>
               <TypographyParagraph className="text-lg text-muted-foreground mb-8 font-quotes">
                 Don&apos;t know your AC from your HP? No worries! Here&apos;s your survival guide to <i>D&D speak</i>.
               </TypographyParagraph>
             </div>
-            
+
             {(() => {
               const glossaryTerms = {
                 "Game Mechanics": [
                   {
                     term: "AC (Armor Class)",
-                    definition: "How hard you are to hit in combat"
+                    definition: "How hard you are to hit in combat",
                   },
                   {
                     term: "HP (Hit Points)",
-                    definition: "Your character's health/life force"
+                    definition: "Your character's health/life force",
                   },
                   {
                     term: "d20, d6, d4",
-                    definition: "Dice types (20-sided, 6-sided, 4-sided)"
+                    definition: "Dice types (20-sided, 6-sided, 4-sided)",
                   },
                   {
                     term: "Saving Throw",
-                    definition: "Roll to avoid bad effects (like dodging a trap)"
+                    definition: "Roll to avoid bad effects (like dodging a trap)",
                   },
                   {
                     term: "Initiative",
-                    definition: "Turn order in combat"
-                  }
+                    definition: "Turn order in combat",
+                  },
                 ],
                 "Common Phrases": [
                   {
-                    term: "\"Natural 20\" / \"Nat 20\"",
-                    definition: "Rolling a 20 on a d20 - the best possible roll!"
+                    term: '"Natural 20" / "Nat 20"',
+                    definition: "Rolling a 20 on a d20 - the best possible roll!",
                   },
                   {
-                    term: "\"Critical Fail\" / \"Nat 1\"",
-                    definition: "Rolling a 1 on a d20 - things go very wrong"
+                    term: '"Critical Fail" / "Nat 1"',
+                    definition: "Rolling a 1 on a d20 - things go very wrong",
                   },
                   {
-                    term: "\"Roll for Initiative\"",
-                    definition: "Combat is starting! Determine turn order"
+                    term: '"Roll for Initiative"',
+                    definition: "Combat is starting! Determine turn order",
                   },
                   {
-                    term: "\"TPK\"",
-                    definition: "Total Party Kill - when everyone dies (it happens!)"
+                    term: '"TPK"',
+                    definition: "Total Party Kill - when everyone dies (it happens!)",
                   },
                   {
-                    term: "\"Session Zero\"",
-                    definition: "Pre-game meeting to discuss rules & expectations"
-                  }
+                    term: '"Session Zero"',
+                    definition: "Pre-game meeting to discuss rules & expectations",
+                  },
                 ],
                 "Character Terms": [
                   {
                     term: "PC (Player Character)",
-                    definition: "Your character that you control"
+                    definition: "Your character that you control",
                   },
                   {
                     term: "NPC (Non-Player Character)",
-                    definition: "Characters controlled by the DM"
+                    definition: "Characters controlled by the DM",
                   },
                   {
                     term: "Backstory",
-                    definition: "Your character's history before the adventure"
+                    definition: "Your character's history before the adventure",
                   },
                   {
                     term: "Multiclass",
-                    definition: "Having levels in multiple character classes"
-                  }
+                    definition: "Having levels in multiple character classes",
+                  },
                 ],
                 "Fun Slang": [
                   {
-                    term: "\"Murder Hobo\"",
-                    definition: "Player who solves everything with violence"
+                    term: '"Murder Hobo"',
+                    definition: "Player who solves everything with violence",
                   },
                   {
-                    term: "\"Min-Maxing\"",
-                    definition: "Optimizing character stats for maximum efficiency"
+                    term: '"Min-Maxing"',
+                    definition: "Optimizing character stats for maximum efficiency",
                   },
                   {
-                    term: "\"Railroading\"",
-                    definition: "When the DM forces players down one path"
+                    term: '"Railroading"',
+                    definition: "When the DM forces players down one path",
                   },
                   {
-                    term: "\"Metagaming\"",
-                    definition: "Using out-of-character knowledge in-game"
-                  }
-                ]
+                    term: '"Metagaming"',
+                    definition: "Using out-of-character knowledge in-game",
+                  },
+                ],
               };
 
               const sectionIcons = {
                 "Game Mechanics": FileText,
                 "Common Phrases": MessageSquare,
                 "Character Terms": Users,
-                "Fun Slang": Sparkles
+                "Fun Slang": Sparkles,
               };
 
               return (
                 <div className="bg-linear-to-br from-background via-primary/5 to-background rounded-3xl p-6 md:p-8 border-2 border-border">
                   <div className="grid md:grid-cols-2 gap-6">
                     {Object.entries(glossaryTerms).map(([sectionTitle, terms]) => {
-                      const IconComponent: React.ElementType = Object.prototype.hasOwnProperty.call(sectionIcons, sectionTitle) 
-                        ? sectionIcons[sectionTitle as keyof typeof sectionIcons] 
+                      const IconComponent: React.ElementType = Object.prototype.hasOwnProperty.call(
+                        sectionIcons,
+                        sectionTitle,
+                      )
+                        ? sectionIcons[sectionTitle as keyof typeof sectionIcons]
                         : FileText;
                       return (
                         <div key={sectionTitle} className="space-y-4">
@@ -951,12 +1016,11 @@ export default function ResourcesPage() {
                 </div>
               );
             })()}
-              
+
             <div className="mt-8 text-center bg-linear-to-r from-primary/5 via-primary/10 to-primary/5 rounded-xl p-6 border-2 border-border max-w-prose mx-auto">
               <div className="text-foreground font-medium leading-7">
-                <Badge>Pro Tip:</Badge> Don&apos;t worry about memorizing all these terms! 
-                We are a welcoming community, and you can always ask for clarification during games.
-                Everyone started as a beginner. 
+                <Badge>Pro Tip:</Badge> Don&apos;t worry about memorizing all these terms! We are a welcoming community,
+                and you can always ask for clarification during games. Everyone started as a beginner.
               </div>
             </div>
           </div>

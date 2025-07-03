@@ -13,8 +13,8 @@ const FooterCtaSection: React.FC<FooterCtaSectionProps> = ({ id }) => {
           Ready to Forge Your Own Adventures?
         </TypographyH2>
         <TypographyParagraph className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto opacity-90">
-          This screen is just a starting point! Dive deeper into the rules or
-          create your own custom content. The possibilities are endless.
+          This screen is just a starting point! Dive deeper into the rules or create your own custom content. The
+          possibilities are endless.
         </TypographyParagraph>
       </div>
     </section>

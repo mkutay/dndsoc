@@ -5,7 +5,7 @@ export default function Loading() {
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       {/* Page title skeleton */}
       <Skeleton className="lg:h-11 h-9 w-48" />
-      
+
       {/* Two-column grid skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         {/* ProfileLinks card skeleton */}
@@ -25,7 +25,7 @@ export default function Loading() {
           {Array.from({ length: 3 }).map((_, index) => (
             <Skeleton key={index} className="h-60 w-full rounded-lg" />
           ))}
-          
+
           {/* Create Character card skeleton */}
           <Skeleton className="h-60 w-full rounded-lg" />
         </div>

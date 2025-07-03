@@ -5,37 +5,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
 
+import { CalendarIcon, MinusCircle, PlusCircle, RefreshCcw } from "lucide-react";
+import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { Tables } from "@/types/database.types";
 import { editPollSchema } from "@/config/poll-schema";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon, MinusCircle, PlusCircle, RefreshCcw } from "lucide-react";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { convertToShortened } from "@/utils/formatting";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/utils/styling";
-import { format } from "date-fns";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { editPoll } from "@/server/polls";
 import { actionResultMatch } from "@/types/error-typing";
 
 export function EditPoll({
-  poll
+  poll,
 }: {
   poll: Tables<"polls"> & {
     options: Tables<"options">[];
@@ -67,7 +55,8 @@ export function EditPoll({
     const result = await editPoll(poll.id, data);
     setPending(false);
 
-    actionResultMatch(result,
+    actionResultMatch(
+      result,
       (r) => {
         toast({
           title: "Poll Updated",
@@ -80,11 +69,11 @@ export function EditPoll({
         toast({
           title: "Error Updating Poll",
           description: error.message,
-          variant: "destructive"
+          variant: "destructive",
         });
-      }
+      },
     );
-  }
+  };
 
   return (
     <Form {...form}>
@@ -108,9 +97,7 @@ export function EditPoll({
                   }}
                 />
               </FormControl>
-              <FormDescription>
-                This is the question of the poll.
-              </FormDescription>
+              <FormDescription>This is the question of the poll.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -125,9 +112,7 @@ export function EditPoll({
               <FormControl>
                 <Input placeholder="shoort" {...field} />
               </FormControl>
-              <FormDescription>
-                This is the shortened version of the question, used in URLs.
-              </FormDescription>
+              <FormDescription>This is the shortened version of the question, used in URLs.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -144,17 +129,10 @@ export function EditPoll({
                     <FormControl>
                       <Button
                         variant="outline"
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
+                        className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                         disabled={pending}
                       >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
+                        {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -167,9 +145,7 @@ export function EditPoll({
                       field.onChange(null);
                     }}
                   >
-                    <MinusCircle
-                      className="w-4 h-4"
-                    />
+                    <MinusCircle className="w-4 h-4" />
                   </Button>
                 </div>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -182,8 +158,7 @@ export function EditPoll({
                 </PopoverContent>
               </Popover>
               <FormDescription>
-                This is the date when the poll expires.
-                After this date, no more votes can be cast.
+                This is the date when the poll expires. After this date, no more votes can be cast.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -198,16 +173,10 @@ export function EditPoll({
               name={`options.${index}.text`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Option {index + 1}
-                  </FormLabel>
+                  <FormLabel>Option {index + 1}</FormLabel>
                   <FormControl>
                     <div className="w-full items-center flex flex-row gap-2">
-                      <Input
-                        {...field}
-                        disabled={pending}
-                        className="w-full"
-                      />
+                      <Input {...field} disabled={pending} className="w-full" />
                       <Button
                         type="button"
                         variant="destructive"
@@ -236,7 +205,9 @@ export function EditPoll({
           </Button>
         </div>
         <div className="flex flex-row gap-2">
-          <Button type="submit" disabled={pending}>Submit</Button>
+          <Button type="submit" disabled={pending}>
+            Submit
+          </Button>
           <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
             <RefreshCcw />
           </Button>

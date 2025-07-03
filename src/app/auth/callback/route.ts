@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 
-import { exchangeCodeForSession } from "@/lib/auth";
-import { completeSignUp } from "@/lib/auth";
+import { exchangeCodeForSession, completeSignUp } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  
+
   // PRODUCTION_SITE_URL is only a FDQN (only a absolute domain name)
-  const origin = process.env.PRODUCTION_SITE_URL ? "https://" + process.env.PRODUCTION_SITE_URL : "http://localhost:3000";
+  const origin = process.env.PRODUCTION_SITE_URL
+    ? "https://" + process.env.PRODUCTION_SITE_URL
+    : "http://localhost:3000";
   const code = requestUrl.searchParams.get("code");
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
   const type = requestUrl.searchParams.get("type")?.toString();

@@ -8,10 +8,7 @@ interface LatexProps {
   displayMode?: boolean;
 }
 
-export const Latex: React.FC<LatexProps> = ({
-  latexString,
-  displayMode = false,
-}) => {
+export const Latex: React.FC<LatexProps> = ({ latexString, displayMode = false }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

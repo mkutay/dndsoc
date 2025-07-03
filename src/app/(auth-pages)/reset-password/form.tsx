@@ -1,20 +1,12 @@
-"use client"
+"use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { resetPasswordSchema } from "@/config/auth-schemas";
@@ -32,23 +24,26 @@ export function ResetPasswordForm() {
       confirmPassword: "",
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
     setPending(true);
     const result = await resetPasswordAction(values);
     setPending(false);
 
-    actionResultMatch(result,
-      () => toast({
-        title: "Password Updated",
-        description: "Your password has been updated successfully.",
-        variant: "default",
-      }),
-      (error) => toast({
-        title: "Error Updating Password",
-        description: error.message,
-        variant: "destructive",
-      })
+    actionResultMatch(
+      result,
+      () =>
+        toast({
+          title: "Password Updated",
+          description: "Your password has been updated successfully.",
+          variant: "default",
+        }),
+      (error) =>
+        toast({
+          title: "Error Updating Password",
+          description: error.message,
+          variant: "destructive",
+        }),
     );
   };
 
@@ -63,15 +58,9 @@ export function ResetPasswordForm() {
             <FormItem>
               <FormLabel>New Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Your new password"
-                  {...field}
-                />
+                <Input type="password" placeholder="Your new password" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your new password. It must be at least 6 characters long.
-              </FormDescription>
+              <FormDescription>This is your new password. It must be at least 6 characters long.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -82,25 +71,19 @@ export function ResetPasswordForm() {
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex flex-row justify-between items-center">
-                Confirm Password
-              </FormLabel>
+              <FormLabel className="flex flex-row justify-between items-center">Confirm Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Type again to confirm"
-                  {...field}
-                />
+                <Input type="password" placeholder="Type again to confirm" {...field} />
               </FormControl>
-              <FormDescription>
-                Type your new password again to confirm it.
-              </FormDescription>
+              <FormDescription>Type your new password again to confirm it.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>Submit</Button>
+        <Button type="submit" disabled={pending}>
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

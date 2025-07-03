@@ -6,18 +6,18 @@ export default function Loading() {
       <div className="h-4 w-24">
         <Skeleton className="h-4 w-24" />
       </div>
-      
+
       <div className="mt-2">
         <Skeleton className="lg:h-11 h-9 w-64" />
       </div>
-      
+
       <div className="space-y-6 max-w-prose mt-6">
         <div className="space-y-2">
           <Skeleton className="h-5 w-16" />
           <Skeleton className="h-24 w-full" />
           <Skeleton className="h-4 w-48" />
         </div>
-        
+
         <Skeleton className="h-10 w-24" />
       </div>
     </div>

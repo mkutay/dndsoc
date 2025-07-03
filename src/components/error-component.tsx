@@ -1,16 +1,23 @@
 import { TypographyLarge, TypographyParagraph } from "./typography/paragraph";
 
-export function ErrorComponent({ error, caller, returnNull, silent }: {
-  error: {
-    message: string;
-    code: string;
-  } | string;
+export function ErrorComponent({
+  error,
+  caller,
+  returnNull,
+  silent,
+}: {
+  error:
+    | {
+        message: string;
+        code: string;
+      }
+    | string;
   caller?: string;
   returnNull?: boolean;
   silent?: boolean;
 }) {
-  const paragraph = typeof error === 'string' ? error : error.message;
-  const heading = "Error displaying this component" + (typeof error !== 'string' ? ` (${error.code})` : "");
+  const paragraph = typeof error === "string" ? error : error.message;
+  const heading = "Error displaying this component" + (typeof error !== "string" ? ` (${error.code})` : "");
   if (silent) {
     console.log(`${heading}: ${paragraph}${caller ? ` (caller: ${caller})` : ""}`);
   } else {

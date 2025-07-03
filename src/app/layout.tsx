@@ -2,9 +2,17 @@ import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 import { Metadata } from "next";
-import 'katex/dist/katex.min.css';
+import "katex/dist/katex.min.css";
 
-import { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection } from "@/fonts/fonts";
+import {
+  BookInsanity,
+  MrEaves,
+  NodestoCapsCondensed,
+  ScalySans,
+  ScalySansCaps,
+  SolberaImitation,
+  ZatannaMisdirection,
+} from "@/fonts/fonts";
 import { NavBar } from "@/components/nav-bar/nav-bar";
 import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
@@ -44,7 +52,8 @@ export const metadata: Metadata = {
     template: "%s | KCL Dungeons and Dragons Society",
     default: "King's College London Dungeons and Dragons Society",
   },
-  description: "Everything you need to play Dungeons and Dragons with us! Join our community, manage your characters, and embark on epic adventures.",
+  description:
+    "Everything you need to play Dungeons and Dragons with us! Join our community, manage your characters, and embark on epic adventures.",
   generator: "Next.js",
   applicationName: "KCL DnD",
   referrer: "origin-when-cross-origin",
@@ -65,7 +74,7 @@ export const metadata: Metadata = {
     images: [`${defaultUrl}/logo-light.png`],
   },
   alternates: {
-    canonical: './',
+    canonical: "./",
   },
   robots: {
     index: true,
@@ -82,7 +91,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(sans.variable, serif.variable, mono.variable, BookInsanity.variable, MrEaves.variable, NodestoCapsCondensed.variable, ScalySans.variable, ScalySansCaps.variable, SolberaImitation.variable, ZatannaMisdirection.variable, "font-body")}
+      className={cn(
+        sans.variable,
+        serif.variable,
+        mono.variable,
+        BookInsanity.variable,
+        MrEaves.variable,
+        NodestoCapsCondensed.variable,
+        ScalySans.variable,
+        ScalySansCaps.variable,
+        SolberaImitation.variable,
+        ZatannaMisdirection.variable,
+        "font-body",
+      )}
       suppressHydrationWarning
     >
       <head>
@@ -96,17 +117,10 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <main className="min-h-screen flex flex-col">
             <NavBar />
-            <div className="flex-1">
-              {children}
-            </div>
+            <div className="flex-1">{children}</div>
             <Footer />
           </main>
           <Toaster />

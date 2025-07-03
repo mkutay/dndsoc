@@ -40,20 +40,24 @@ export function ProfileLinksClient({
     achievementsCount: number;
     campaignsCount?: number;
     about: string;
-  }>(hasDM ? {
-    role: "dm",
-    imageUrl: dm.imageUrl,
-    level: dm.level,
-    achievementsCount: dm.achievementsCount,
-    campaignsCount: dm.campaignsCount,
-    about: dm.about,
-  } : {
-    role: "player",
-    imageUrl: player.imageUrl,
-    level: player.level,
-    achievementsCount: player.achievementsCount,
-    about: player.about,
-  });
+  }>(
+    hasDM
+      ? {
+          role: "dm",
+          imageUrl: dm.imageUrl,
+          level: dm.level,
+          achievementsCount: dm.achievementsCount,
+          campaignsCount: dm.campaignsCount,
+          about: dm.about,
+        }
+      : {
+          role: "player",
+          imageUrl: player.imageUrl,
+          level: player.level,
+          achievementsCount: player.achievementsCount,
+          about: player.about,
+        },
+  );
 
   const setDM = () => {
     if (!hasDM) return;
@@ -86,9 +90,7 @@ export function ProfileLinksClient({
           <User size={24} className="mb-[2px]" />
           Your Profile
         </CardTitle>
-        <CardDescription>
-          Your public profile as a {roleText}.
-        </CardDescription>
+        <CardDescription>Your public profile as a {roleText}.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-start gap-4">
@@ -107,49 +109,53 @@ export function ProfileLinksClient({
           )}
           <div>
             <TypographyLarge className="text-xl">{name}</TypographyLarge>
-            <TypographySmall className="text-muted-foreground">
-              Level {profile.level}
-            </TypographySmall>
-            <p className="text-md mt-2">
-              {truncateText(profile.about, 100)}
-            </p>
+            <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
+            <p className="text-md mt-2">{truncateText(profile.about, 100)}</p>
           </div>
         </div>
 
-        {profile.achievementsCount > 0 ? <div className="flex items-center gap-2 px-4 rounded-lg mt-2">
-          <Trophy size={20} className="text-amber-500" />
-          <div className="flex sm:flex-row flex-col gap-2">
-            <TypographySmall className="font-medium uppercase">
-              {profile.achievementsCount} Achievement{profile.achievementsCount !== 1 ? 's' : ''}
-            </TypographySmall>
-            <TypographySmall className="text-muted-foreground">
-              Earned as {roleText}
-            </TypographySmall>
+        {profile.achievementsCount > 0 ? (
+          <div className="flex items-center gap-2 px-4 rounded-lg mt-2">
+            <Trophy size={20} className="text-amber-500" />
+            <div className="flex sm:flex-row flex-col gap-2">
+              <TypographySmall className="font-medium uppercase">
+                {profile.achievementsCount} Achievement{profile.achievementsCount !== 1 ? "s" : ""}
+              </TypographySmall>
+              <TypographySmall className="text-muted-foreground">Earned as {roleText}</TypographySmall>
+            </div>
           </div>
-        </div> : null}
+        ) : null}
 
-        {profile.campaignsCount && Number.isInteger(profile.campaignsCount) && profile.campaignsCount > 0 ? <div className="flex items-center gap-2 px-4 rounded-lg">
-          <Award size={20} className="text-green-500" />
-          <div className="flex sm:flex-row flex-col gap-2">
-            <TypographySmall className="font-medium uppercase">
-              {profile.campaignsCount} Campaign{profile.campaignsCount !== 1 ? 's' : ''}
-            </TypographySmall>
-            <TypographySmall className="text-muted-foreground">
-              Managed as DM
-            </TypographySmall>
+        {profile.campaignsCount && Number.isInteger(profile.campaignsCount) && profile.campaignsCount > 0 ? (
+          <div className="flex items-center gap-2 px-4 rounded-lg">
+            <Award size={20} className="text-green-500" />
+            <div className="flex sm:flex-row flex-col gap-2">
+              <TypographySmall className="font-medium uppercase">
+                {profile.campaignsCount} Campaign{profile.campaignsCount !== 1 ? "s" : ""}
+              </TypographySmall>
+              <TypographySmall className="text-muted-foreground">Managed as DM</TypographySmall>
+            </div>
           </div>
-        </div> : null}
+        ) : null}
       </CardContent>
       <CardFooter className="w-full">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex sm:flex-row flex-col gap-2">
-            {profile.role === "player" && dm ? <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
-              <Gamepad2 size={16} />
-              View as DM
-            </Button> : profile.role !== "player" ? <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setPlayer}>
-              <User size={16} />
-              View as Player
-            </Button> : null}
+            {profile.role === "player" && dm ? (
+              <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
+                <Gamepad2 size={16} />
+                View as DM
+              </Button>
+            ) : profile.role !== "player" ? (
+              <Button
+                variant="outline"
+                className="sm:w-fit w-full flex flex-row items-center gap-1"
+                onClick={setPlayer}
+              >
+                <User size={16} />
+                View as Player
+              </Button>
+            ) : null}
             <Button asChild variant="default" className="w-full">
               <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
                 View {roleText} Profile
@@ -165,4 +171,4 @@ export function ProfileLinksClient({
       </CardFooter>
     </Card>
   );
-};
+}

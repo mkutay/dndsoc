@@ -7,25 +7,25 @@ export default function Loading() {
       <div className="flex flex-col gap-6">
         {/* Image skeleton */}
         <Skeleton className="rounded-lg max-w-2xl w-full mx-auto h-[400px]" />
-        
+
         {/* Party info skeleton */}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           {/* DM info */}
           <Skeleton className="h-5 w-40 mb-1" />
-          
+
           {/* Party name with drop caps styling */}
           <div className="flex flex-row items-start mb-2">
             <Skeleton className="h-20 w-16 mr-2" /> {/* Drop cap */}
             <Skeleton className="h-14 w-64 mt-1" /> {/* Rest of name */}
           </div>
-          
+
           {/* Level */}
           <Skeleton className="h-6 w-24 mb-2" />
-          
+
           {/* About description */}
           <Skeleton className="h-5 w-3/4 mb-2" />
           <Skeleton className="h-5 w-1/2 mb-4" />
-          
+
           {/* Edit button */}
           <Skeleton className="h-9 w-28" />
         </div>

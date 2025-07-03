@@ -1,21 +1,13 @@
 "use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/character-schema";
@@ -32,7 +24,7 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
       name: "",
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof addCharacterSchema>) => {
     setPending(true);
     const result = await insertCharacter(values, playerUuid);
@@ -40,17 +32,19 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
 
     actionResultMatch(
       result,
-      (value) => toast({
-        title: "Success: Character added.",
-        description: "You can now edit the specifics of your character.",
-        variant: "default",
-      }) && redirect(`/characters/${value.shortened}/edit`),
-      (error) => toast({
-        title: "Error: Could not add character.",
-        description: error.message,
-        variant: "destructive",
-      })
-    )
+      (value) =>
+        toast({
+          title: "Success: Character added.",
+          description: "You can now edit the specifics of your character.",
+          variant: "default",
+        }) && redirect(`/characters/${value.shortened}/edit`),
+      (error) =>
+        toast({
+          title: "Error: Could not add character.",
+          description: error.message,
+          variant: "destructive",
+        }),
+    );
   };
 
   return (
@@ -73,8 +67,10 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>Submit</Button>
+        <Button type="submit" disabled={pending}>
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

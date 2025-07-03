@@ -1,18 +1,10 @@
 import { TypographyParagraph } from "./typography/paragraph";
-import { Tables } from "@/types/database.types";
 import { CampaignCard } from "./campaign-card";
+import { Tables } from "@/types/database.types";
 
-export function CampaignCards({
-  campaigns,
-}: {
-  campaigns: Tables<"campaigns">[];
-}) {
+export function CampaignCards({ campaigns }: { campaigns: Tables<"campaigns">[] }) {
   if (campaigns.length === 0) {
-    return (
-      <TypographyParagraph>
-        No campaigns found.
-      </TypographyParagraph>
-    );
+    return <TypographyParagraph>No campaigns found.</TypographyParagraph>;
   }
 
   // sort by start date
@@ -25,11 +17,8 @@ export function CampaignCards({
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
       {campaigns.map((campaign) => (
-        <CampaignCard
-          key={campaign.id}
-          campaign={campaign}
-        />
+        <CampaignCard key={campaign.id} campaign={campaign} />
       ))}
     </div>
-  )
+  );
 }

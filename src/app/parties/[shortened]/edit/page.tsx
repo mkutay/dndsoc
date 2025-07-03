@@ -39,13 +39,17 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const characters = party.character_party.map((characterParty) => characterParty.characters);
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
-    ? "dm"
-    : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+  const ownsAs =
+    dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin"
+      ? "dm"
+      : characters.some((character) => character.player_uuid === auth?.players.id)
+        ? "player"
+        : null;
 
   if (ownsAs === "dm") {
     redirect(`/parties/${shortened}/edit/dm`);

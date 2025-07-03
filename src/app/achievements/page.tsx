@@ -13,12 +13,14 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Achievements",
-  description: "Explore the achievements you can earn in our game. Each achievement has its own unique challenges and rewards.",
+  description:
+    "Explore the achievements you can earn in our game. Each achievement has its own unique challenges and rewards.",
   openGraph: {
     title: "Achievements",
-    description: "Explore the achievements you can earn in our game. Each achievement has its own unique challenges and rewards.",
+    description:
+      "Explore the achievements you can earn in our game. Each achievement has its own unique challenges and rewards.",
   },
-}
+};
 
 export default async function Page() {
   const achievements = await getAllAchievements();
@@ -45,27 +47,21 @@ function AchievementCard({ achievement }: { achievement: Tables<"achievements"> 
         <CardTitle>{achievement.name}</CardTitle>
         <CardDescription className="flex flex-row">
           {points}
-          {difficulty && " "}
-          {difficulty && difficulty}
+          {difficulty ? " " : null}
+          {difficulty ? difficulty : null}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        {truncateText(achievement.description, 100)}
-      </CardContent>
+      <CardContent>{truncateText(achievement.description, 100)}</CardContent>
       <CardFooter className="flex flex-row justify-end">
         <Button asChild size="sm" variant="default">
-          <Link href={`/achievements/${achievement.shortened}`}>
-            See More
-          </Link>
+          <Link href={`/achievements/${achievement.shortened}`}>See More</Link>
         </Button>
       </CardFooter>
     </Card>
   );
 }
 
-const getAllAchievements = () => runQuery((supabase) => supabase
-  .from("achievements")
-  .select("*")
-  .eq("is_hidden", false)
-  .order("points", { ascending: true })
-);
+const getAllAchievements = () =>
+  runQuery((supabase) =>
+    supabase.from("achievements").select("*").eq("is_hidden", false).order("points", { ascending: true }),
+  );

@@ -8,20 +8,8 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { journalAllEditSchema } from "@/config/journal-schema";
@@ -79,17 +67,20 @@ export function JournalEditForm({
     const result = await updateJournalAll(journal.id, data);
     setPending(false);
 
-    actionResultMatch(result,
-      () => toast({
-        title: "Journal updated successfully!",
-        description: "Your journal entry has been updated.",
-        variant: "default",
-      }),
-      (error) => toast({
-        title: "Error updating journal",
-        description: error.message,
-        variant: "destructive",
-      })
+    actionResultMatch(
+      result,
+      () =>
+        toast({
+          title: "Journal updated successfully!",
+          description: "Your journal entry has been updated.",
+          variant: "default",
+        }),
+      (error) =>
+        toast({
+          title: "Error updating journal",
+          description: error.message,
+          variant: "destructive",
+        }),
     );
   };
 
@@ -106,9 +97,7 @@ export function JournalEditForm({
               <FormControl>
                 <Textarea placeholder="I am awesome!" className="w-full min-h-[160px]" {...field} />
               </FormControl>
-              <FormDescription>
-                This is a short excerpt of the journal entry.
-              </FormDescription>
+              <FormDescription>This is a short excerpt of the journal entry.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -121,7 +110,7 @@ export function JournalEditForm({
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input 
+                <Input
                   {...field}
                   placeholder="My Awesome Journal Entry"
                   onChange={(e) => {
@@ -131,9 +120,7 @@ export function JournalEditForm({
                   }}
                 />
               </FormControl>
-              <FormDescription>
-                This is the journal entry title.
-              </FormDescription>
+              <FormDescription>This is the journal entry title.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -148,9 +135,7 @@ export function JournalEditForm({
               <FormControl>
                 <Input placeholder="shoort" {...field} />
               </FormControl>
-              <FormDescription>
-                This is the shortened version of the title, used in URLs.
-              </FormDescription>
+              <FormDescription>This is the shortened version of the title, used in URLs.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -166,33 +151,19 @@ export function JournalEditForm({
                   <FormControl>
                     <Button
                       variant="outline"
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
+                      className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
                       disabled={pending}
                     >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
+                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    captionLayout="dropdown"
-                  />
+                  <Calendar mode="single" selected={field.value} onSelect={field.onChange} captionLayout="dropdown" />
                 </PopoverContent>
               </Popover>
-              <FormDescription>
-                This is the date of the journal entry.
-              </FormDescription>
+              <FormDescription>This is the date of the journal entry.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -206,14 +177,12 @@ export function JournalEditForm({
               name={`entries.${index}.text`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Entry for the Party {allParties.find(p => p.id === entries[index]?.partyId)?.name || "Unknown"}</FormLabel>
+                  <FormLabel>
+                    Entry for the Party {allParties.find((p) => p.id === entries[index]?.partyId)?.name || "Unknown"}
+                  </FormLabel>
                   <FormControl>
                     <div className="relative w-full items-center">
-                      <Textarea
-                        {...field}
-                        disabled={pending}
-                        className="w-full min-h-[160px]"
-                      />
+                      <Textarea {...field} disabled={pending} className="w-full min-h-[160px]" />
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -223,12 +192,14 @@ export function JournalEditForm({
           ))}
         </div>
         <div className="flex flex-row gap-2">
-          <Button type="submit" disabled={pending}>Submit</Button>
+          <Button type="submit" disabled={pending}>
+            Submit
+          </Button>
           <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
             <RefreshCcw />
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

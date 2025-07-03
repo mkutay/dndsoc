@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-import { ReceivedAchievementsCharacter, ReceivedAchievementsDM, ReceivedAchievementsPlayer } from "@/types/full-database.types";
+import {
+  ReceivedAchievementsCharacter,
+  ReceivedAchievementsDM,
+  ReceivedAchievementsPlayer,
+} from "@/types/full-database.types";
 
 export async function AchievementCards({
   receivedAchievements,
@@ -35,16 +39,17 @@ export async function AchievementCards({
           href={`/achievements/${achievement.achievements.shortened}`}
         >
           <div className="font-quotes text-lg">{achievement.achievements.name}</div>
-            <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
+          <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
           <div className="tracking-wide">Received {times[achievement.count]}</div>
         </Link>
       ))}
     </div>
-  )
+  );
 }
 
 // Old card, LOL:
-{/* <Card key={index} className="w-full">
+{
+  /* <Card key={index} className="w-full">
   <CardHeader>
     <CardTitle>{achievement.achievements.name}</CardTitle>
     <CardDescription>
@@ -64,4 +69,5 @@ export async function AchievementCards({
       Received on: {format(achievement.first_received_date, "PP")}
     </TypographyParagraph>}
   </CardFooter>
-</Card> */}
+</Card> */
+}

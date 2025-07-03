@@ -29,11 +29,11 @@ export const sections = [
   { id: "advanced-encounters", title: "Advanced Encounters", icon: Dice5 },
 ] as const;
 
-export type SectionIds = typeof sections[number]['id'];
+export type SectionIds = (typeof sections)[number]["id"];
 
 const NavContent = () => {
   const [activeSection, setActiveSection] = useState("");
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,7 +45,7 @@ const NavContent = () => {
           }
         });
       },
-      { rootMargin: "-50% 0px -50% 0px" } // Adjust as needed to trigger when section is roughly in the middle
+      { rootMargin: "-50% 0px -50% 0px" }, // Adjust as needed to trigger when section is roughly in the middle
     );
 
     sections.forEach((section) => {
@@ -64,15 +64,11 @@ const NavContent = () => {
       });
     };
   }, []);
-  
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed bottom-4 right-4 z-50"
-        >
+        <Button variant="outline" size="icon" className="fixed bottom-4 right-4 z-50">
           <Section className="w-5 h-5" />
         </Button>
       </PopoverTrigger>
@@ -84,12 +80,8 @@ const NavContent = () => {
             onClick={() => {
               const element = document.getElementById(section.id);
               element?.scrollIntoView({ behavior: "smooth", block: "start" });
-              
-              window.history.pushState(
-                {},
-                "",
-                `#${section.id}`
-              );
+
+              window.history.pushState({}, "", `#${section.id}`);
             }}
             className={`flex flex-row items-center gap-2 p-2 rounded-md transition-colors md:text-lg text-base
               ${
@@ -100,7 +92,7 @@ const NavContent = () => {
           >
             {(() => {
               const Icon = section.icon;
-              return <Icon className="w-5 h-5 md:w-7 md:h-7" />
+              return <Icon className="w-5 h-5 md:w-7 md:h-7" />;
             })()}
             <span>{section.title}</span>
           </button>

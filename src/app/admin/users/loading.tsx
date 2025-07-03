@@ -8,7 +8,7 @@ export default function Loading() {
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       {/* Heading placeholder */}
       <Skeleton className="h-12 w-32" />
-      
+
       {/* Grid of skeleton placeholders */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         {placeholders.map((index) => (

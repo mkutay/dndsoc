@@ -14,22 +14,18 @@ export const uploadImageParty = async ({
   file: File;
   partyId: string;
   partyShortened: string;
-}) => resultAsyncToActionResult(
-  upload({
-    blob,
-    file,
-    shortened: partyShortened,
-  })
-    .andThen(({ id }) =>
-      runQuery((supabase) => supabase
-        .from("parties")
-        .update({ image_uuid: id })
-        .eq("id", partyId)
-        .select("name")
-        .single()
-      )
-    )
-)
+}) =>
+  resultAsyncToActionResult(
+    upload({
+      blob,
+      file,
+      shortened: partyShortened,
+    }).andThen(({ id }) =>
+      runQuery((supabase) =>
+        supabase.from("parties").update({ image_uuid: id }).eq("id", partyId).select("name").single(),
+      ),
+    ),
+  );
 
 export const uploadImageCharacter = async ({
   blob,
@@ -41,22 +37,18 @@ export const uploadImageCharacter = async ({
   file: File;
   characterId: string;
   characterShortened: string;
-}) => resultAsyncToActionResult(
-  upload({
-    blob,
-    file,
-    shortened: characterShortened,
-  })
-    .andThen(({ id }) =>
-      runQuery((supabase) => supabase
-        .from("characters")
-        .update({ image_uuid: id })
-        .eq("id", characterId)
-        .select("name")
-        .single()
-      )
-    )
-)
+}) =>
+  resultAsyncToActionResult(
+    upload({
+      blob,
+      file,
+      shortened: characterShortened,
+    }).andThen(({ id }) =>
+      runQuery((supabase) =>
+        supabase.from("characters").update({ image_uuid: id }).eq("id", characterId).select("name").single(),
+      ),
+    ),
+  );
 
 export const uploadImagePlayer = async ({
   blob,
@@ -68,20 +60,16 @@ export const uploadImagePlayer = async ({
   file: File;
   playerId: string;
   playerShortened: string;
-}) => resultAsyncToActionResult(
-  upload({
-    blob,
-    file,
-    shortened: playerShortened,
-  })
-    .andThen(({ id }) =>
-      runQuery((supabase) => supabase
-        .from("players")
-        .update({ image_uuid: id })
-        .eq("id", playerId)
-      )
-    )
-)
+}) =>
+  resultAsyncToActionResult(
+    upload({
+      blob,
+      file,
+      shortened: playerShortened,
+    }).andThen(({ id }) =>
+      runQuery((supabase) => supabase.from("players").update({ image_uuid: id }).eq("id", playerId)),
+    ),
+  );
 
 export const uploadImageDM = async ({
   blob,
@@ -93,17 +81,11 @@ export const uploadImageDM = async ({
   file: File;
   DMId: string;
   DMShortened: string;
-}) => resultAsyncToActionResult(
-  upload({
-    blob,
-    file,
-    shortened: DMShortened,
-  })
-    .andThen(({ id }) =>
-      runQuery((supabase) => supabase
-        .from("dms")
-        .update({ image_uuid: id })
-        .eq("id", DMId)
-      )
-    )
-)
+}) =>
+  resultAsyncToActionResult(
+    upload({
+      blob,
+      file,
+      shortened: DMShortened,
+    }).andThen(({ id }) => runQuery((supabase) => supabase.from("dms").update({ image_uuid: id }).eq("id", DMId))),
+  );

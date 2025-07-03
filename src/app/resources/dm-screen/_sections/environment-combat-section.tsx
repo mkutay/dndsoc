@@ -1,10 +1,4 @@
-import {
-  Sun,
-  Move,
-  Crown,
-  Droplets,
-  TreeDeciduous,
-} from "lucide-react";
+import { Sun, Move, Crown, Droplets, TreeDeciduous } from "lucide-react";
 import {
   GiAcid,
   GiWarhammer,
@@ -26,26 +20,23 @@ import {
   GiScales,
 } from "react-icons/gi";
 
-import {
-  TypographyH2,
-  TypographyH3,
-} from "@/components/typography/headings";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { IconType } from "react-icons";
+import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { Latex } from "@/components/latex";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IconType } from "react-icons";
 import { Badge } from "@/components/ui/badge";
 
 interface EnvironmentCombatSectionProps {
@@ -58,7 +49,7 @@ function LightSources() {
     { source: "Lamp", bright: "15' radius", dim: "+30' radius", duration: "6 hours" },
     { source: "Lantern, bullseye", bright: "60' cone", dim: "+60' cone", duration: "6 hours" },
     { source: "Lantern, hooded", bright: "30' radius", dim: "+30' radius", duration: "6 hours" },
-    { source: "Torch", bright: "20' radius", dim: "+20' radius", duration: "1 hour" }
+    { source: "Torch", bright: "20' radius", dim: "+20' radius", duration: "1 hour" },
   ];
 
   const magicSources = [
@@ -71,7 +62,7 @@ function LightSources() {
     { source: "Light", bright: "20' radius", dim: "+20' radius", duration: "1 hour" },
     { source: "Moonbeam", bright: "—", dim: "5' radius cylinder", duration: "Up to 1 min" },
     { source: "Prismatic Wall", bright: "100'", dim: "+100'", duration: "10 mins" },
-    { source: "Wall of Fire", bright: "60'", dim: "+60'", duration: "Up to 1 min" }
+    { source: "Wall of Fire", bright: "60'", dim: "+60'", duration: "Up to 1 min" },
   ];
 
   return (
@@ -157,20 +148,17 @@ function Jumping() {
       <CardContent>
         <div className="space-y-6">
           <div>
-            <div className="text-xl font-titles-of-tables tracking-tighter mb-2">
-              Long Jump
-            </div>
+            <div className="text-xl font-titles-of-tables tracking-tighter mb-2">Long Jump</div>
             <p>
-              <strong className="font-quotes text-base">With 10&apos; run-up:</strong> 1 foot per point of Strength score
+              <strong className="font-quotes text-base">With 10&apos; run-up:</strong> 1 foot per point of Strength
+              score
             </p>
             <p className="mt-1">
               <strong className="font-quotes text-base">From standing:</strong> Half that distance
             </p>
           </div>
           <div>
-            <div className="text-xl font-titles-of-tables tracking-tighter mb-2">
-              High Jump
-            </div>
+            <div className="text-xl font-titles-of-tables tracking-tighter mb-2">High Jump</div>
             <p>
               <strong className="font-quotes text-base">With 10&apos; run-up:</strong> 3 + Strength modifier (in feet)
             </p>
@@ -178,7 +166,8 @@ function Jumping() {
               <strong className="font-quotes text-base">From standing:</strong> Half that distance
             </p>
             <div className="flex gap-1.5 mt-1">
-              <strong className="font-quotes text-base">Maximum reach:</strong> <Latex latexString="\text{jump height} + \frac{1}{2} \times \text{character height}" />
+              <strong className="font-quotes text-base">Maximum reach:</strong>{" "}
+              <Latex latexString="\text{jump height} + \frac{1}{2} \times \text{character height}" />
             </div>
           </div>
         </div>
@@ -201,13 +190,16 @@ function Suffocating() {
       </CardHeader>
       <CardContent className="space-y-2">
         <TypographyParagraph>
-          <strong className="font-quotes text-lg">Holding Breath:</strong> A creature can hold its breath for 1 + Constitution modifier minutes (minimum 30 seconds).
+          <strong className="font-quotes text-lg">Holding Breath:</strong> A creature can hold its breath for 1 +
+          Constitution modifier minutes (minimum 30 seconds).
         </TypographyParagraph>
         <TypographyParagraph>
-          <strong className="font-quotes text-lg">When breath runs out:</strong> The creature can survive for a number of rounds equal to its Constitution modifier.
+          <strong className="font-quotes text-lg">When breath runs out:</strong> The creature can survive for a number
+          of rounds equal to its Constitution modifier.
         </TypographyParagraph>
         <TypographyParagraph>
-          <strong className="font-quotes text-lg">After that:</strong> At the start of its next turn, it drops to 0 hit points and is dying.
+          <strong className="font-quotes text-lg">After that:</strong> At the start of its next turn, it drops to 0 hit
+          points and is dying.
         </TypographyParagraph>
       </CardContent>
     </Card>
@@ -221,7 +213,7 @@ function SizeCategories() {
     { size: "Medium", space: "5 × 5 ft", hitDie: "d8", examples: "Orc, werewolf" },
     { size: "Large", space: "10 × 10 ft", hitDie: "d10", examples: "Hippogriff, ogre" },
     { size: "Huge", space: "15 × 15 ft", hitDie: "d12", examples: "Fire giant, treant" },
-    { size: "Gargantuan", space: "20 × 20 ft or larger", hitDie: "d20", examples: "Kraken, purple worm" }
+    { size: "Gargantuan", space: "20 × 20 ft or larger", hitDie: "d20", examples: "Kraken, purple worm" },
   ];
 
   return (
@@ -271,24 +263,23 @@ function Concentration() {
         <TypographyParagraph className="text-base">
           Normal activities such as moving or attacking do not interfere with concentration.
         </TypographyParagraph>
-        
+
         <div className="space-y-3">
           <TypographyH3 className="text-xl font-semibold">Concentration can be broken by:</TypographyH3>
           <ul className="list-disc pl-5 space-y-2">
+            <li>Casting another spell that requires concentration</li>
             <li>
-              Casting another spell that requires concentration
+              <strong className="font-quotes text-lg">Taking damage:</strong> CON save (DC = 10 or half damage taken,
+              whichever is higher)
+            </li>
+            <li>Being incapacitated or killed</li>
+            <li>
+              <strong className="font-quotes text-lg">Environmental phenomena:</strong> Wave, loud noise, blinding flash
+              (DC 10 CON save)
             </li>
             <li>
-              <strong className="font-quotes text-lg">Taking damage:</strong> CON save (DC = 10 or half damage taken, whichever is higher)
-            </li>
-            <li>
-              Being incapacitated or killed
-            </li>
-            <li>
-              <strong className="font-quotes text-lg">Environmental phenomena:</strong> Wave, loud noise, blinding flash (DC 10 CON save)
-            </li>
-            <li>
-              <strong className="font-quotes text-lg">Vigorous movement:</strong> Combat, running, climbing (DC 10 CON save)
+              <strong className="font-quotes text-lg">Vigorous movement:</strong> Combat, running, climbing (DC 10 CON
+              save)
             </li>
           </ul>
         </div>
@@ -332,7 +323,7 @@ function RatingXP() {
     { rating: "27", proficiency: "+8", xp: "105,000" },
     { rating: "28", proficiency: "+8", xp: "120,000" },
     { rating: "29", proficiency: "+9", xp: "135,000" },
-    { rating: "30", proficiency: "+9", xp: "155,000" }
+    { rating: "30", proficiency: "+9", xp: "155,000" },
   ];
 
   return (
@@ -378,7 +369,13 @@ function RatingXP() {
   );
 }
 
-function DamageTypeCard({ type, description, icon: IconComponent, details, examples }: {
+function DamageTypeCard({
+  type,
+  description,
+  icon: IconComponent,
+  details,
+  examples,
+}: {
   type: string;
   description: string;
   icon: IconType;
@@ -421,7 +418,7 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          {details && (
+          {details ? (
             <div className="space-y-2">
               <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
                 Additional Details
@@ -435,12 +432,10 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
                 ))}
               </ul>
             </div>
-          )}
-          {examples && (
+          ) : null}
+          {examples ? (
             <div className="space-y-2">
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                Common Sources
-              </h4>
+              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Common Sources</h4>
               <ul className="space-y-2">
                 {examples.map((e, i) => (
                   <li key={i} className="flex items-start gap-2 text-base">
@@ -450,11 +445,9 @@ function DamageTypeCard({ type, description, icon: IconComponent, details, examp
                 ))}
               </ul>
             </div>
-          )}
+          ) : null}
           <div className="pt-4 border-t border-border">
-            <p className="text-xs text-muted-foreground">
-              Reference: &apos;14 PHB, Chapter 9 (Combat)
-            </p>
+            <p className="text-xs text-muted-foreground">Reference: &apos;14 PHB, Chapter 9 (Combat)</p>
           </div>
         </div>
       </DialogContent>
@@ -467,18 +460,19 @@ function DamageTypes() {
     {
       type: "Acid",
       icon: GiAcid,
-      description: "The corrosive spray of a black dragon's breath and the dissolving enzymes secreted by a black pudding deal acid damage.",
+      description:
+        "The corrosive spray of a black dragon's breath and the dissolving enzymes secreted by a black pudding deal acid damage.",
       details: [
         "Corrodes and dissolves materials over time",
         "Often bypasses normal armor defenses",
-        "Can damage equipment and weapons"
+        "Can damage equipment and weapons",
       ],
       examples: [
         "Black dragon breath weapon",
         "Black pudding attacks",
         "Acid splash cantrip",
-        "Vitriolic sphere spell"
-      ]
+        "Vitriolic sphere spell",
+      ],
     },
     {
       type: "Bludgeoning",
@@ -487,30 +481,26 @@ function DamageTypes() {
       details: [
         "Physical damage from blunt impacts",
         "Effective against skeletal creatures",
-        "Can cause knockback effects"
+        "Can cause knockback effects",
       ],
       examples: [
         "Club, mace, warhammer attacks",
         "Falling damage",
         "Crushing walls or boulders",
-        "Constrictor snake grapples"
-      ]
+        "Constrictor snake grapples",
+      ],
     },
     {
       type: "Cold",
       icon: GiIciclesAura,
-      description: "The infernal chill radiating from an ice devil's spear and the frigid blast of a white dragon's breath deal cold damage.",
+      description:
+        "The infernal chill radiating from an ice devil's spear and the frigid blast of a white dragon's breath deal cold damage.",
       details: [
         "Freezing temperatures that harm living tissue",
         "Can slow movement or cause paralysis",
-        "Often resisted by creatures from cold environments"
+        "Often resisted by creatures from cold environments",
       ],
-      examples: [
-        "White dragon breath weapon",
-        "Ice devil weapons",
-        "Cone of cold spell",
-        "Frost giant attacks"
-      ]
+      examples: ["White dragon breath weapon", "Ice devil weapons", "Cone of cold spell", "Frost giant attacks"],
     },
     {
       type: "Fire",
@@ -519,30 +509,21 @@ function DamageTypes() {
       details: [
         "Burning heat that ignites flammable materials",
         "Can cause ongoing burn effects",
-        "One of the most common damage types"
+        "One of the most common damage types",
       ],
-      examples: [
-        "Red dragon breath weapon",
-        "Fireball spell",
-        "Fire elemental attacks",
-        "Burning oil or torches"
-      ]
+      examples: ["Red dragon breath weapon", "Fireball spell", "Fire elemental attacks", "Burning oil or torches"],
     },
     {
       type: "Force",
       icon: GiMagicSwirl,
-      description: "Force is pure magical energy focused into a damaging form. Most effects that deal force damage are spells, including magic missile and spiritual weapon.",
+      description:
+        "Force is pure magical energy focused into a damaging form. Most effects that deal force damage are spells, including magic missile and spiritual weapon.",
       details: [
         "Pure magical energy with no physical form",
         "Rarely resisted by creatures",
-        "Bypasses most forms of damage reduction"
+        "Bypasses most forms of damage reduction",
       ],
-      examples: [
-        "Magic missile spell",
-        "Spiritual weapon spell",
-        "Eldritch blast cantrip",
-        "Disintegrate spell"
-      ]
+      examples: ["Magic missile spell", "Spiritual weapon spell", "Eldritch blast cantrip", "Disintegrate spell"],
     },
     {
       type: "Lightning",
@@ -551,30 +532,21 @@ function DamageTypes() {
       details: [
         "Electrical energy that can chain between targets",
         "Effective in water or against metal armor",
-        "Can cause temporary paralysis"
+        "Can cause temporary paralysis",
       ],
-      examples: [
-        "Blue dragon breath weapon",
-        "Lightning bolt spell",
-        "Storm giant attacks",
-        "Call lightning spell"
-      ]
+      examples: ["Blue dragon breath weapon", "Lightning bolt spell", "Storm giant attacks", "Call lightning spell"],
     },
     {
       type: "Necrotic",
       icon: GiDeathSkull,
-      description: "Necrotic damage, dealt by certain undead and a spell such as chill touch, withers matter and even the soul.",
+      description:
+        "Necrotic damage, dealt by certain undead and a spell such as chill touch, withers matter and even the soul.",
       details: [
         "Withering energy that decays living tissue",
         "Often reduces maximum hit points",
-        "Cannot heal undead creatures"
+        "Cannot heal undead creatures",
       ],
-      examples: [
-        "Vampire bite attacks",
-        "Chill touch cantrip",
-        "Wight life drain",
-        "Blight spell"
-      ]
+      examples: ["Vampire bite attacks", "Chill touch cantrip", "Wight life drain", "Blight spell"],
     },
     {
       type: "Piercing",
@@ -583,14 +555,14 @@ function DamageTypes() {
       details: [
         "Sharp points that penetrate armor and flesh",
         "Can cause bleeding effects",
-        "Effective against lightly armored targets"
+        "Effective against lightly armored targets",
       ],
       examples: [
         "Arrows, crossbow bolts",
         "Spear, rapier, dagger attacks",
         "Monster bite attacks",
-        "Spike growth spell"
-      ]
+        "Spike growth spell",
+      ],
     },
     {
       type: "Poison",
@@ -599,14 +571,9 @@ function DamageTypes() {
       details: [
         "Toxic substances that harm biological functions",
         "Can cause ongoing poison effects",
-        "Many creatures are immune or resistant"
+        "Many creatures are immune or resistant",
       ],
-      examples: [
-        "Green dragon breath weapon",
-        "Snake venomous bites",
-        "Poison spray cantrip",
-        "Cloudkill spell"
-      ]
+      examples: ["Green dragon breath weapon", "Snake venomous bites", "Poison spray cantrip", "Cloudkill spell"],
     },
     {
       type: "Psychic",
@@ -615,46 +582,38 @@ function DamageTypes() {
       details: [
         "Mental attacks that assault the mind directly",
         "Bypasses physical defenses entirely",
-        "Can cause confusion or charm effects"
+        "Can cause confusion or charm effects",
       ],
       examples: [
         "Mind flayer psionic blast",
         "Psychic lance spell",
         "Intellect devourer attacks",
-        "Synaptic static spell"
-      ]
+        "Synaptic static spell",
+      ],
     },
     {
       type: "Radiant",
       icon: GiSunbeams,
-      description: "Radiant damage, dealt by a cleric's flame strike spell or an angel's smiting weapon, sears the flesh like fire and overloads the spirit with power.",
+      description:
+        "Radiant damage, dealt by a cleric's flame strike spell or an angel's smiting weapon, sears the flesh like fire and overloads the spirit with power.",
       details: [
         "Divine light that burns evil creatures",
         "Especially effective against undead and fiends",
-        "Often associated with healing magic"
+        "Often associated with healing magic",
       ],
-      examples: [
-        "Paladin divine smite",
-        "Sacred flame cantrip",
-        "Angel weapon attacks",
-        "Guiding bolt spell"
-      ]
+      examples: ["Paladin divine smite", "Sacred flame cantrip", "Angel weapon attacks", "Guiding bolt spell"],
     },
     {
       type: "Slashing",
       icon: GiSlashedShield,
       description: "Swords, axes, and monsters' claws deal slashing damage.",
-      details: [
-        "Sharp edges that cut and slice",
-        "Can cause bleeding wounds",
-        "Effective against unarmored targets"
-      ],
+      details: ["Sharp edges that cut and slice", "Can cause bleeding wounds", "Effective against unarmored targets"],
       examples: [
         "Sword, axe, scimitar attacks",
         "Monster claw attacks",
         "Whirlwind barbarian ability",
-        "Steel wind strike spell"
-      ]
+        "Steel wind strike spell",
+      ],
     },
     {
       type: "Thunder",
@@ -663,15 +622,10 @@ function DamageTypes() {
       details: [
         "Sonic vibrations that can shatter objects",
         "Often causes knockback effects",
-        "Can deafen targets temporarily"
+        "Can deafen targets temporarily",
       ],
-      examples: [
-        "Thunderwave spell",
-        "Shatter spell",
-        "Storm giant thunderous strikes",
-        "Thunderous smite spell"
-      ]
-    }
+      examples: ["Thunderwave spell", "Shatter spell", "Storm giant thunderous strikes", "Thunderous smite spell"],
+    },
   ];
 
   return (
@@ -693,14 +647,9 @@ function DamageTypes() {
   );
 }
 
-const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
-  id,
-}) => {
+const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({ id }) => {
   return (
-    <section
-      id={id}
-      className="py-12 md:py-18 bg-linear-to-b from-background via-muted/20 to-background"
-    >
+    <section id={id} className="py-12 md:py-18 bg-linear-to-b from-background via-muted/20 to-background">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -742,7 +691,8 @@ const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
                   Light & Vision
                 </p>
                 <p className="text-foreground">
-                  Remember different races have varying darkvision ranges. Use lighting strategically to create tactical advantages and atmospheric tension.
+                  Remember different races have varying darkvision ranges. Use lighting strategically to create tactical
+                  advantages and atmospheric tension.
                 </p>
               </div>
               <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-emerald-200/30 dark:border-emerald-700/30">
@@ -751,7 +701,8 @@ const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
                   Position & Movement
                 </p>
                 <p className="text-foreground">
-                  Encourage tactical positioning with terrain features, environmental cover, and movement-based challenges.
+                  Encourage tactical positioning with terrain features, environmental cover, and movement-based
+                  challenges.
                 </p>
               </div>
               <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-emerald-200/30 dark:border-emerald-700/30">
@@ -760,7 +711,8 @@ const EnvironmentCombatSection: React.FC<EnvironmentCombatSectionProps> = ({
                   Environmental Hazards
                 </p>
                 <p className="text-foreground">
-                  Fire, water, cliffs, weather, and terrain can transform simple encounters into memorable, dynamic challenges.
+                  Fire, water, cliffs, weather, and terrain can transform simple encounters into memorable, dynamic
+                  challenges.
                 </p>
               </div>
             </div>

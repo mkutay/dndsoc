@@ -36,15 +36,11 @@ export default async function Page() {
               <CardDescription>Level {party.level}</CardDescription>
             </CardHeader>
             <CardContent>
-              <TypographyParagraph>
-                {truncateText(party.about, 100)}
-              </TypographyParagraph>
+              <TypographyParagraph>{truncateText(party.about, 100)}</TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
               <Button asChild size="sm" variant="default">
-                <Link href={`/parties/${party.shortened}`}>
-                  View Party
-                </Link>
+                <Link href={`/parties/${party.shortened}`}>View Party</Link>
               </Button>
             </CardFooter>
           </Card>

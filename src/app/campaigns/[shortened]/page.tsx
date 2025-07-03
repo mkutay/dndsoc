@@ -11,13 +11,10 @@ import { runQuery } from "@/utils/supabase-run";
 export const dynamic = "force-dynamic";
 
 export const getCampaign = ({ shortened }: { shortened: string }) =>
-  runQuery((supabase) =>
-    supabase
-      .from("campaigns")
-      .select("*, party_campaigns(*, parties!inner(*))")
-      .eq("shortened", shortened)
-      .single(),
-    "getCampaign"
+  runQuery(
+    (supabase) =>
+      supabase.from("campaigns").select("*, party_campaigns(*, parties!inner(*))").eq("shortened", shortened).single(),
+    "getCampaign",
   );
 
 const cachedGetCampaign = cache(getCampaign);
@@ -48,11 +45,13 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const { shortened } = await params;
 
   const campaigned = await cachedGetCampaign({ shortened });
-  if (campaigned.isErr()) return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
+  if (campaigned.isErr())
+    return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 
   const roled = await getUserRole();
-  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={roled.error} caller="/dms/[username]" />;
+  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={roled.error} caller="/dms/[username]" />;
 
   const auth = roled.isOk() ? roled.value : null;
   const role = auth ? auth.role : null;
@@ -66,7 +65,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         <div className="font-drop-caps font-medium text-7xl">{campaign.name.charAt(0)}</div>
         <div>{campaign.name.slice(1)}</div>
       </h1>
-      <TypographyLead>{format(campaign.start_date, "PP")} - {campaign.end_date ? format(campaign.end_date, "PP") : "Present"}</TypographyLead>
+      <TypographyLead>
+        {format(campaign.start_date, "PP")} - {campaign.end_date ? format(campaign.end_date, "PP") : "Present"}
+      </TypographyLead>
       <TypographyParagraph>{campaign.description}</TypographyParagraph>
       <Parties
         parties={campaign.party_campaigns.map((partyCampaign) => partyCampaign.parties)}

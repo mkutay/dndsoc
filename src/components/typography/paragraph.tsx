@@ -1,45 +1,27 @@
-import { cn } from "@/utils/styling";
 import Link from "next/link";
 import { ComponentProps } from "react";
+import { cn } from "@/utils/styling";
 
-export function TypographyParagraph({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string,
-}) {
+export function TypographyParagraph({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <p className={cn("leading-7 not-first:mt-6", className)}>{children}</p>;
+}
+
+export function TypographyLead({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <p className={cn("text-xl text-muted-foreground", className)}>{children}</p>;
+}
+
+export function TypographyLarge({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("text-lg font-semibold tracking-wider", className)}>{children}</div>;
+}
+
+export function TypographySmall({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className={cn("leading-7 not-first:mt-6", className)}>
-      {children}
-    </p>
+    <small className={cn("text-md font-medium leading-none tracking-wide font-quotes", className)}>{children}</small>
   );
 }
 
-export function TypographyLead({ children, className }: { children: React.ReactNode, className?: string }) {
-  return (
-    <p className={cn("text-xl text-muted-foreground", className)}>
-      {children}
-    </p>
-  )
-}
-
-export function TypographyLarge({ children, className }: { children: React.ReactNode, className?: string }) {
-  return <div className={cn("text-lg font-semibold tracking-wider", className)}>
-    {children}
-  </div>
-}
-
-export function TypographySmall({ children, className }: { children: React.ReactNode, className?: string }) {
-  return (
-    <small className={cn("text-md font-medium leading-none tracking-wide font-quotes", className)}>{children}</small>
-  )
-}
-
-export function TypographyMuted({ children, className }: { children: React.ReactNode, className?: string }) {
-  return (
-    <p className={cn("text-sm text-muted-foreground", className)}>{children}</p>
-  )
+export function TypographyMuted({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <p className={cn("text-sm text-muted-foreground", className)}>{children}</p>;
 }
 
 const linkClasses = {
@@ -55,10 +37,10 @@ export function TypographyLink(props: ComponentProps<typeof Link> & { variant?: 
       className={cn(
         "underline font-medium underline-offset-2 transition-colors",
         linkClasses[props.variant || "primary"],
-        props.className
+        props.className,
       )}
     >
       {props.children}
     </Link>
-  )
+  );
 }

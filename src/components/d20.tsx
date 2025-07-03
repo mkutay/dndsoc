@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { GiDiceTwentyFacesTwenty } from "react-icons/gi";
 
-import { cn } from "@/utils/styling";
 import { D20Dice } from "./d20-3d";
+import { cn } from "@/utils/styling";
 
 interface D20Props {
   className?: string;
@@ -16,9 +16,9 @@ interface D20Props {
 
 const sizeClasses = {
   sm: "w-8 h-8",
-  md: "w-12 h-12", 
+  md: "w-12 h-12",
   lg: "w-16 h-16",
-  xl: "w-24 h-24"
+  xl: "w-24 h-24",
 };
 
 export function D20({ className, size = "md", onRoll, disabled = false, variant = "2d" }: D20Props) {
@@ -28,21 +28,21 @@ export function D20({ className, size = "md", onRoll, disabled = false, variant 
 
   const rollDice = () => {
     if (disabled || isRolling) return;
-    
+
     setIsRolling(true);
     setShowResult(false);
     setResult(null);
-    
+
     // Generate result immediately but delay showing it for animation
     const newResult = Math.floor(Math.random() * 20) + 1;
-    
+
     // Animation duration
     setTimeout(() => {
       setResult(newResult);
       setIsRolling(false);
       setShowResult(true);
       onRoll?.(newResult);
-      
+
       // Hide result after 3 seconds
       setTimeout(() => {
         setShowResult(false);
@@ -71,53 +71,53 @@ export function D20({ className, size = "md", onRoll, disabled = false, variant 
           "focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full",
           "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
           isRolling && "animate-spin cursor-not-allowed",
-          className
+          className,
         )}
         title="Click to roll D20"
       >
-        <GiDiceTwentyFacesTwenty 
+        <GiDiceTwentyFacesTwenty
           className={cn(
             sizeClasses[size],
             "text-primary transition-colors duration-200",
             "hover:text-primary/80",
-            isRolling && "animate-spin"
+            isRolling && "animate-spin",
           )}
         />
-        
+
         {/* Rolling indicator */}
-        {isRolling && (
+        {isRolling ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
           </div>
-        )}
+        ) : null}
       </button>
-      
+
       {/* Result display */}
-      {showResult && result && (
-        <div 
+      {showResult && result ? (
+        <div
           className={cn(
             "absolute -top-8 left-1/2 transform -translate-x-1/2",
             "px-2 py-1 rounded-full bg-background border-2 border-primary",
             "font-bold text-lg animate-fade-in-up shadow-lg",
-            getCriticalClass(result)
+            getCriticalClass(result),
           )}
         >
           {result}
         </div>
-      )}
-      
+      ) : null}
+
       {/* Critical hit/miss indicators */}
-      {showResult && result === 20 && (
+      {showResult && result === 20 ? (
         <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium text-green-600 animate-fade-in-up whitespace-nowrap">
           Critical Success!
         </div>
-      )}
-      
-      {showResult && result === 1 && (
+      ) : null}
+
+      {showResult && result === 1 ? (
         <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium text-red-600 animate-fade-in-up whitespace-nowrap">
           Critical Failure!
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

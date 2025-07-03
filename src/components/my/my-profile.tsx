@@ -3,9 +3,9 @@
 import { Settings, Edit } from "lucide-react";
 import { useState } from "react";
 
+import { UserEditForm } from "./user-edit-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserEditForm } from "./user-edit-form";
 
 interface MyProfileProps {
   user: {
@@ -20,13 +20,7 @@ export function MyProfile({ user }: MyProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
-    return (
-      <UserEditForm 
-        user={user} 
-        onCancel={() => setIsEditing(false)}
-        onSuccess={() => setIsEditing(false)}
-      />
-    );
+    return <UserEditForm user={user} onCancel={() => setIsEditing(false)} onSuccess={() => setIsEditing(false)} />;
   }
 
   return (
@@ -36,9 +30,7 @@ export function MyProfile({ user }: MyProfileProps) {
           <Settings size={24} className="mb-[2px]" />
           Profile Information
         </CardTitle>
-        <CardDescription>
-          Your account information.
-        </CardDescription>
+        <CardDescription>Your account information.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-1">

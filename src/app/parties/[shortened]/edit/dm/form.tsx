@@ -1,21 +1,13 @@
-"use client"
+"use client";
 
 import { Check, ChevronsUpDown, MinusIcon, PlusIcon } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
@@ -25,19 +17,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -135,21 +116,33 @@ export function DMForm({
     },
   });
 
-  const { fields: charactersFields, append: charactersAppend, remove: charactersRemove } = useFieldArray({
+  const {
+    fields: charactersFields,
+    append: charactersAppend,
+    remove: charactersRemove,
+  } = useFieldArray({
     control: form.control,
     name: "characters",
   });
 
-  const { fields: campaignsFields, append: campaignsAppend, remove: campaignsRemove } = useFieldArray({
+  const {
+    fields: campaignsFields,
+    append: campaignsAppend,
+    remove: campaignsRemove,
+  } = useFieldArray({
     control: form.control,
     name: "campaigns",
   });
 
-  const { fields: dmsFields, append: dmsAppend, remove: dmsRemove } = useFieldArray({
+  const {
+    fields: dmsFields,
+    append: dmsAppend,
+    remove: dmsRemove,
+  } = useFieldArray({
     control: form.control,
     name: "dms",
   });
- 
+
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
     setPending(true);
     const result = await updateDMParty(values, partyUuid);
@@ -157,18 +150,18 @@ export function DMForm({
 
     actionResultMatch(
       result,
-      () => 
+      () =>
         toast({
           title: "Update Successful",
           description: "Your party has been updated.",
         }),
-      (error) => 
+      (error) =>
         toast({
           title: "Update Failed",
           description: "Please try again. " + error.message,
           variant: "destructive",
-        })
-    )
+        }),
+    );
   };
 
   return (
@@ -184,9 +177,7 @@ export function DMForm({
               <FormControl>
                 <Input placeholder="Dragonslayers" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your party&apos;s name.
-              </FormDescription>
+              <FormDescription>This is your party&apos;s name.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -199,22 +190,20 @@ export function DMForm({
             <FormItem>
               <FormLabel>Level</FormLabel>
               <FormControl>
-                <Input 
+                <Input
                   placeholder="1"
-                  {...field} 
+                  {...field}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow empty input or valid numbers
-                    if (value === '' || /^\d+$/.test(value)) {
-                      field.onChange(value === '' ? '' : Number(value));
+                    if (value === "" || /^\d+$/.test(value)) {
+                      field.onChange(value === "" ? "" : Number(value));
                     }
                   }}
                   value={field.value}
                 />
               </FormControl>
-              <FormDescription>
-                This is your party&apos;s level.
-              </FormDescription>
+              <FormDescription>This is your party&apos;s level.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -229,9 +218,7 @@ export function DMForm({
               <FormControl>
                 <Textarea placeholder="We are awesome!" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your party&apos;s public about.
-              </FormDescription>
+              <FormDescription>This is your party&apos;s public about.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -249,19 +236,31 @@ export function DMForm({
                     <div className="relative w-full items-center">
                       <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a character..."}
-                        {field.value && (() => {
-                          const character = characters.find((char) => field.value.id === char.id);
-                          return character ? (
-                            <span>
-                              <TypographyLink target="_blank" href={`/characters/${character.shortened}`} variant="default">{character.name}</TypographyLink> (played by <TypographyLink 
-                                href={`/players/${character.players.username}`} 
-                                target="_blank"
-                                variant="default">
-                                {character.players.name}
-                              </TypographyLink>)
-                            </span>
-                          ) : null;
-                        })()}
+                        {field.value
+                          ? (() => {
+                              const character = characters.find((char) => field.value.id === char.id);
+                              return character ? (
+                                <span>
+                                  <TypographyLink
+                                    target="_blank"
+                                    href={`/characters/${character.shortened}`}
+                                    variant="default"
+                                  >
+                                    {character.name}
+                                  </TypographyLink>{" "}
+                                  (played by{" "}
+                                  <TypographyLink
+                                    href={`/players/${character.players.username}`}
+                                    target="_blank"
+                                    variant="default"
+                                  >
+                                    {character.players.name}
+                                  </TypographyLink>
+                                  )
+                                </span>
+                              ) : null;
+                            })()
+                          : null}
                       </div>
                       <Button
                         type="button"
@@ -287,19 +286,15 @@ export function DMForm({
           ))}
           <Dialog open={charactersDialogOpen} onOpenChange={setCharactersDialogOpen}>
             <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2 space-x-1 items-center"
-                disabled={pending}
-              ><PlusIcon size="18px" /><span>Add Character</span></Button>
+              <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
+                <PlusIcon size="18px" />
+                <span>Add Character</span>
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add Character</DialogTitle>
-                <DialogDescription>
-                  You can add a new character to your party.
-                </DialogDescription>
+                <DialogDescription>You can add a new character to your party.</DialogDescription>
               </DialogHeader>
               <FormField
                 control={form.control}
@@ -312,65 +307,83 @@ export function DMForm({
                           <Button
                             variant="outline"
                             role="combobox"
-                            className={cn(
-                              "w-[250px] justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
+                            className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                           >
                             {!field.value && "Select a character..."}
-                            {field.value && (() => {
-                              const character = characters.find((char) => field.value === char.id);
-                              return character ? (
-                                <span>
-                                  <TypographyLink target="_blank" href={`/characters/${character.shortened}`} variant="default">{character.name}</TypographyLink> (played by <TypographyLink 
-                                    href={`/players/${character.players.username}`} 
-                                    target="_blank"
-                                    variant="default">
-                                    {character.players.name}
-                                  </TypographyLink>)
-                                </span>
-                              ) : null;
-                            })()}
+                            {field.value
+                              ? (() => {
+                                  const character = characters.find((char) => field.value === char.id);
+                                  return character ? (
+                                    <span>
+                                      <TypographyLink
+                                        target="_blank"
+                                        href={`/characters/${character.shortened}`}
+                                        variant="default"
+                                      >
+                                        {character.name}
+                                      </TypographyLink>{" "}
+                                      (played by{" "}
+                                      <TypographyLink
+                                        href={`/players/${character.players.username}`}
+                                        target="_blank"
+                                        variant="default"
+                                      >
+                                        {character.players.name}
+                                      </TypographyLink>
+                                      )
+                                    </span>
+                                  ) : null;
+                                })()
+                              : null}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                         <Command>
-                          <CommandInput
-                            placeholder="Search a character..."
-                            className="h-9"
-                          />
+                          <CommandInput placeholder="Search a character..." className="h-9" />
                           <CommandList>
                             <CommandEmpty>No other character found.</CommandEmpty>
                             <CommandGroup>
-                              {characters.map((character) => !form.getValues("characters").some(
-                                  (selectedChar) => selectedChar.id === character.id
-                                ) && (
-                                <CommandItem
-                                  value={character.name}
-                                  key={character.id}
-                                  onSelect={() => {
-                                    form.setValue("selectedCharacter", character.id)
-                                  }}
-                                >
-                                  <span>
-                                    <TypographyLink target="_blank" href={`/characters/${character.shortened}`} variant="default">{character.name}</TypographyLink> (played by <TypographyLink
-                                      href={`/players/${character.players.username}`}
-                                      target="_blank"
-                                      variant="default">
-                                        {character.players.name}</TypographyLink>)
-                                  </span>
-                                  <Check
-                                    className={cn(
-                                      "ml-auto",
-                                      character.id === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
+                              {characters.map(
+                                (character) =>
+                                  !form
+                                    .getValues("characters")
+                                    .some((selectedChar) => selectedChar.id === character.id) && (
+                                    <CommandItem
+                                      value={character.name}
+                                      key={character.id}
+                                      onSelect={() => {
+                                        form.setValue("selectedCharacter", character.id);
+                                      }}
+                                    >
+                                      <span>
+                                        <TypographyLink
+                                          target="_blank"
+                                          href={`/characters/${character.shortened}`}
+                                          variant="default"
+                                        >
+                                          {character.name}
+                                        </TypographyLink>{" "}
+                                        (played by{" "}
+                                        <TypographyLink
+                                          href={`/players/${character.players.username}`}
+                                          target="_blank"
+                                          variant="default"
+                                        >
+                                          {character.players.name}
+                                        </TypographyLink>
+                                        )
+                                      </span>
+                                      <Check
+                                        className={cn(
+                                          "ml-auto",
+                                          character.id === field.value ? "opacity-100" : "opacity-0",
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  ),
+                              )}
                             </CommandGroup>
                           </CommandList>
                         </Command>
@@ -390,7 +403,9 @@ export function DMForm({
                             form.setValue("selectedCharacter", "");
                           }}
                           disabled={pending || form.getValues("characters").length === characters.length}
-                        >Add</Button>
+                        >
+                          Add
+                        </Button>
                       </div>
                     </DialogFooter>
                   </FormItem>
@@ -412,14 +427,22 @@ export function DMForm({
                     <div className="relative w-full items-center">
                       <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a character..."}
-                        {field.value && (() => {
-                          const campaign = campaigns.find((campaign) => field.value.id === campaign.id);
-                          return campaign ? (
-                            <span>
-                              <TypographyLink target="_blank" href={`/campaigns/${campaign.shortened}`} variant="default">{campaign.name}</TypographyLink>
-                            </span>
-                          ) : null;
-                        })()}
+                        {field.value
+                          ? (() => {
+                              const campaign = campaigns.find((campaign) => field.value.id === campaign.id);
+                              return campaign ? (
+                                <span>
+                                  <TypographyLink
+                                    target="_blank"
+                                    href={`/campaigns/${campaign.shortened}`}
+                                    variant="default"
+                                  >
+                                    {campaign.name}
+                                  </TypographyLink>
+                                </span>
+                              ) : null;
+                            })()
+                          : null}
                       </div>
                       <Button
                         type="button"
@@ -445,19 +468,15 @@ export function DMForm({
           ))}
           <Dialog open={campaignsDialogOpen} onOpenChange={setCampaignsDialogOpen}>
             <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2 space-x-1 items-center"
-                disabled={pending}
-              ><PlusIcon size="18px" /><span>Add Campaign</span></Button>
+              <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
+                <PlusIcon size="18px" />
+                <span>Add Campaign</span>
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add Campaign</DialogTitle>
-                <DialogDescription>
-                  You can select a new campaign to add to your party.
-                </DialogDescription>
+                <DialogDescription>You can select a new campaign to add to your party.</DialogDescription>
               </DialogHeader>
               <FormField
                 control={form.control}
@@ -470,56 +489,65 @@ export function DMForm({
                           <Button
                             variant="outline"
                             role="combobox"
-                            className={cn(
-                              "w-[250px] justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
+                            className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                           >
                             {!field.value && "Select a campaign..."}
-                            {field.value && (() => {
-                              const campaign = campaigns.find((campaign) => field.value === campaign.id);
-                              return campaign ? (
-                                <span>
-                                  <TypographyLink target="_blank" href={`/campaigns/${campaign.shortened}`} variant="default">{campaign.name}</TypographyLink>
-                                </span>
-                              ) : null;
-                            })()}
+                            {field.value
+                              ? (() => {
+                                  const campaign = campaigns.find((campaign) => field.value === campaign.id);
+                                  return campaign ? (
+                                    <span>
+                                      <TypographyLink
+                                        target="_blank"
+                                        href={`/campaigns/${campaign.shortened}`}
+                                        variant="default"
+                                      >
+                                        {campaign.name}
+                                      </TypographyLink>
+                                    </span>
+                                  ) : null;
+                                })()
+                              : null}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                         <Command>
-                          <CommandInput
-                            placeholder="Search a DM..."
-                            className="h-9"
-                          />
+                          <CommandInput placeholder="Search a DM..." className="h-9" />
                           <CommandList>
                             <CommandEmpty>No other campaign found.</CommandEmpty>
                             <CommandGroup>
-                              {campaigns.map((campaign) => !form.getValues("campaigns").some(
-                                  (selectedCampaign) => selectedCampaign.id === campaign.id
-                                ) && (
-                                <CommandItem
-                                  value={campaign.name}
-                                  key={campaign.id}
-                                  onSelect={() => {
-                                    form.setValue("selectedCampaign", campaign.id)
-                                  }}
-                                >
-                                  <span>
-                                    <TypographyLink target="_blank" href={`/campaigns/${campaign.shortened}`} variant="default">{campaign.name}</TypographyLink>
-                                  </span>
-                                  <Check
-                                    className={cn(
-                                      "ml-auto",
-                                      campaign.id === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
+                              {campaigns.map(
+                                (campaign) =>
+                                  !form
+                                    .getValues("campaigns")
+                                    .some((selectedCampaign) => selectedCampaign.id === campaign.id) && (
+                                    <CommandItem
+                                      value={campaign.name}
+                                      key={campaign.id}
+                                      onSelect={() => {
+                                        form.setValue("selectedCampaign", campaign.id);
+                                      }}
+                                    >
+                                      <span>
+                                        <TypographyLink
+                                          target="_blank"
+                                          href={`/campaigns/${campaign.shortened}`}
+                                          variant="default"
+                                        >
+                                          {campaign.name}
+                                        </TypographyLink>
+                                      </span>
+                                      <Check
+                                        className={cn(
+                                          "ml-auto",
+                                          campaign.id === field.value ? "opacity-100" : "opacity-0",
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  ),
+                              )}
                             </CommandGroup>
                           </CommandList>
                         </Command>
@@ -539,7 +567,9 @@ export function DMForm({
                             form.setValue("selectedCampaign", "");
                           }}
                           disabled={pending || form.getValues("campaigns").length === campaigns.length}
-                        >Add</Button>
+                        >
+                          Add
+                        </Button>
                       </div>
                     </DialogFooter>
                   </FormItem>
@@ -561,14 +591,18 @@ export function DMForm({
                     <div className="relative w-full items-center">
                       <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
                         {!field.value && "Select a DM..."}
-                        {field.value && (() => {
-                          const dm = DMs.find((dm) => field.value.id === dm.id);
-                          return dm ? (
-                            <span>
-                              <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
-                            </span>
-                          ) : null;
-                        })()}
+                        {field.value
+                          ? (() => {
+                              const dm = DMs.find((dm) => field.value.id === dm.id);
+                              return dm ? (
+                                <span>
+                                  <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">
+                                    {dm.name}
+                                  </TypographyLink>
+                                </span>
+                              ) : null;
+                            })()
+                          : null}
                       </div>
                       <Button
                         type="button"
@@ -594,19 +628,15 @@ export function DMForm({
           ))}
           <Dialog open={DMsDialogOpen} onOpenChange={setDMsDialogOpen}>
             <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2 space-x-1 items-center"
-                disabled={pending}
-              ><PlusIcon size="18px" /><span>Add DM</span></Button>
+              <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
+                <PlusIcon size="18px" />
+                <span>Add DM</span>
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add DM</DialogTitle>
-                <DialogDescription>
-                  You can select a DM to add to your party.
-                </DialogDescription>
+                <DialogDescription>You can select a DM to add to your party.</DialogDescription>
               </DialogHeader>
               <FormField
                 control={form.control}
@@ -619,56 +649,52 @@ export function DMForm({
                           <Button
                             variant="outline"
                             role="combobox"
-                            className={cn(
-                              "w-[250px] justify-between",
-                              !field.value && "text-muted-foreground"
-                            )}
+                            className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
                           >
                             {!field.value && "Select a DM..."}
-                            {field.value && (() => {
-                              const dm = DMs.find((dm) => field.value === dm.id);
-                              return dm ? (
-                                <span>
-                                  <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
-                                </span>
-                              ) : null;
-                            })()}
+                            {field.value
+                              ? (() => {
+                                  const dm = DMs.find((dm) => field.value === dm.id);
+                                  return dm ? (
+                                    <span>
+                                      <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">
+                                        {dm.name}
+                                      </TypographyLink>
+                                    </span>
+                                  ) : null;
+                                })()
+                              : null}
                             <ChevronsUpDown className="opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-[250px] p-0 pointer-events-auto">
                         <Command>
-                          <CommandInput
-                            placeholder="Search a campaign..."
-                            className="h-9"
-                          />
+                          <CommandInput placeholder="Search a campaign..." className="h-9" />
                           <CommandList>
                             <CommandEmpty>No other DM found.</CommandEmpty>
                             <CommandGroup>
-                              {DMs.map((dm) => !form.getValues("dms").some(
-                                  (selectedDM) => selectedDM.id === dm.id
-                                ) && (
-                                <CommandItem
-                                  value={dm.name}
-                                  key={dm.id}
-                                  onSelect={() => {
-                                    form.setValue("selectedDM", dm.id)
-                                  }}
-                                >
-                                  <span>
-                                    <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">{dm.name}</TypographyLink>
-                                  </span>
-                                  <Check
-                                    className={cn(
-                                      "ml-auto",
-                                      dm.id === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
+                              {DMs.map(
+                                (dm) =>
+                                  !form.getValues("dms").some((selectedDM) => selectedDM.id === dm.id) && (
+                                    <CommandItem
+                                      value={dm.name}
+                                      key={dm.id}
+                                      onSelect={() => {
+                                        form.setValue("selectedDM", dm.id);
+                                      }}
+                                    >
+                                      <span>
+                                        <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">
+                                          {dm.name}
+                                        </TypographyLink>
+                                      </span>
+                                      <Check
+                                        className={cn("ml-auto", dm.id === field.value ? "opacity-100" : "opacity-0")}
+                                      />
+                                    </CommandItem>
+                                  ),
+                              )}
                             </CommandGroup>
                           </CommandList>
                         </Command>
@@ -688,7 +714,9 @@ export function DMForm({
                             form.setValue("selectedDM", "");
                           }}
                           disabled={pending || form.getValues("dms").length === DMs.length}
-                        >Add</Button>
+                        >
+                          Add
+                        </Button>
                       </div>
                     </DialogFooter>
                   </FormItem>
@@ -697,8 +725,10 @@ export function DMForm({
             </DialogContent>
           </Dialog>
         </div>
-        <Button type="submit" disabled={pending}>Submit</Button>
+        <Button type="submit" disabled={pending}>
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

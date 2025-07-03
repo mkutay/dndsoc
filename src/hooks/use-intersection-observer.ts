@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export function useIntersectionObserver(threshold = 0.1) {
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -9,14 +9,14 @@ export function useIntersectionObserver(threshold = 0.1) {
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
       },
-      { threshold }
+      { threshold },
     );
 
     if (ref.current) {
       observer.observe(ref.current);
     }
 
-    const current = ref.current
+    const current = ref.current;
 
     return () => {
       if (current) {

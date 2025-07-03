@@ -1,11 +1,11 @@
 import { cache } from "react";
 
+import { AdminRoleEditForm } from "./role-form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { getPlayerByUsername } from "@/lib/players";
 import { getRole } from "@/lib/roles";
-import { AdminRoleEditForm } from "./role-form";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +45,9 @@ export default async function Page({ params }: { params: Promise<{ username: str
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <TypographyH1>{name} ({username})</TypographyH1>
+      <TypographyH1>
+        {name} ({username})
+      </TypographyH1>
       {role.value.role === "admin" && (
         <TypographyLarge className="mt-2">NOTE: You cannot edit an admin.</TypographyLarge>
       )}

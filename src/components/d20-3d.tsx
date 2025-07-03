@@ -22,9 +22,9 @@ type FaceData = {
 
 const sizeMap = {
   sm: { scale: 0.8, canvas: "w-20 h-20" },
-  md: { scale: 1,   canvas: "w-32 h-32" },
+  md: { scale: 1, canvas: "w-32 h-32" },
   lg: { scale: 1.2, canvas: "w-40 h-40" },
-  xl: { scale: 1.5, canvas: "w-48 h-48" }
+  xl: { scale: 1.5, canvas: "w-48 h-48" },
 };
 
 // Build each triangular face (centroid + outward normal), then
@@ -36,14 +36,11 @@ function createIcosahedronFaces(): FaceData[] {
 
   // 1) gather raw centroids & normals
   const raw = Array.from({ length: faceCount }, (_, i) => {
-    const a = new THREE.Vector3().fromBufferAttribute(pos, i*3+0);
-    const b = new THREE.Vector3().fromBufferAttribute(pos, i*3+1);
-    const c = new THREE.Vector3().fromBufferAttribute(pos, i*3+2);
+    const a = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 0);
+    const b = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 1);
+    const c = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 2);
     const centroid = new THREE.Vector3().add(a).add(b).add(c).divideScalar(3);
-    const normal = new THREE.Vector3()
-      .subVectors(b, a)
-      .cross(new THREE.Vector3().subVectors(c, a))
-      .normalize();
+    const normal = new THREE.Vector3().subVectors(b, a).cross(new THREE.Vector3().subVectors(c, a)).normalize();
     // ensure it points outward
     if (normal.dot(centroid) < 0) normal.negate();
     return { centroid, normal, index: i };
@@ -54,7 +51,7 @@ function createIcosahedronFaces(): FaceData[] {
   const opposite = new Array<number>(faceCount);
   for (let i = 0; i < faceCount; i++) {
     if (used[i]) continue;
-    for (let j = i+1; j < faceCount; j++) {
+    for (let j = i + 1; j < faceCount; j++) {
       if (!used[j] && raw[i].normal.dot(raw[j].normal) < -0.9999) {
         used[i] = used[j] = true;
         opposite[i] = j;
@@ -77,21 +74,16 @@ function createIcosahedronFaces(): FaceData[] {
   }
 
   geom.dispose();
-  return raw.map(f => ({
+  return raw.map((f) => ({
     centroid: f.centroid,
     normal: f.normal,
-    number: numMap[f.index]
+    number: numMap[f.index],
   }));
 }
 
-export function D20Dice({
-  className,
-  size = "md",
-  onRoll,
-  disabled = false
-}: D20DiceProps) {
+export function D20Dice({ className, size = "md", onRoll, disabled = false }: D20DiceProps) {
   const [isRolling, setIsRolling] = useState(false);
-  const [result, setResult] = useState<number|null>(null);
+  const [result, setResult] = useState<number | null>(null);
   const [hasRolled, setHasRolled] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -119,15 +111,13 @@ export function D20Dice({
           className={cn(
             canvas,
             "cursor-pointer flex items-center justify-center",
-            "bg-primary/10 rounded-lg border-2 border-primary/20"
+            "bg-primary/10 rounded-lg border-2 border-primary/20",
           )}
           onClick={rollDice}
         >
           <span className="text-primary font-bold">D20</span>
         </div>
-        <div
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground text-center whitespace-nowrap"
-        >
+        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground text-center whitespace-nowrap">
           {isRolling ? "Rolling..." : "Click to roll"}
         </div>
       </div>
@@ -142,7 +132,7 @@ export function D20Dice({
           gl={{ antialias: true, alpha: true }}
           style={{ background: "transparent" }}
           onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-          onError={e => {
+          onError={(e) => {
             console.error("Canvas error:", e);
             setHasError(true);
           }}
@@ -172,7 +162,7 @@ function Scene({
   isRolling,
   result,
   onRollComplete,
-  scale
+  scale,
 }: {
   faces: FaceData[];
   isRolling: boolean;
@@ -184,20 +174,10 @@ function Scene({
     <>
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 5, 5]} intensity={1.2} />
-      <directionalLight
-        position={[-3, -3, -3]}
-        intensity={0.4}
-        color="#e0e7ff"
-      />
+      <directionalLight position={[-3, -3, -3]} intensity={0.4} color="#e0e7ff" />
       <pointLight position={[0, 0, 5]} intensity={0.3} color="#8B5CF6" />
 
-      <D20Mesh
-        faces={faces}
-        isRolling={isRolling}
-        result={result}
-        onRollComplete={onRollComplete}
-        scale={scale}
-      />
+      <D20Mesh faces={faces} isRolling={isRolling} result={result} onRollComplete={onRollComplete} scale={scale} />
     </>
   );
 }
@@ -207,7 +187,7 @@ function D20Mesh({
   isRolling,
   result,
   onRollComplete,
-  scale
+  scale,
 }: {
   faces: FaceData[];
   isRolling: boolean;
@@ -231,24 +211,14 @@ function D20Mesh({
       finishedRef.current = false;
 
       // random spin axis/count
-      spinAxis.current.set(
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1,
-        Math.random() * 2 - 1
-      ).normalize();
+      spinAxis.current.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).normalize();
       spinCount.current = 4 + Math.random() * 6;
 
       // compute final orientation: face.normal -> camera direction
       const face = faces.find((f) => f.number === result)!;
       const camDir = camera.position.clone().normalize();
-      const mapQ = new THREE.Quaternion().setFromUnitVectors(
-        face.normal,
-        camDir
-      );
-      const twistQ = new THREE.Quaternion().setFromAxisAngle(
-        camDir,
-        Math.random() * Math.PI * 2
-      );
+      const mapQ = new THREE.Quaternion().setFromUnitVectors(face.normal, camDir);
+      const twistQ = new THREE.Quaternion().setFromAxisAngle(camDir, Math.random() * Math.PI * 2);
       finalQuat.current.copy(twistQ).multiply(mapQ);
     }
   }, [isRolling, result, faces, camera]);
@@ -267,10 +237,7 @@ function D20Mesh({
 
         // 2) add decaying spin
         const angle = (1 - ease) * spinCount.current * Math.PI * 2;
-        const spinQ = new THREE.Quaternion().setFromAxisAngle(
-          spinAxis.current,
-          angle
-        );
+        const spinQ = new THREE.Quaternion().setFromAxisAngle(spinAxis.current, angle);
         q.multiply(spinQ);
         grp.quaternion.copy(q);
       } else if (!finishedRef.current) {
@@ -286,31 +253,18 @@ function D20Mesh({
       <group ref={groupRef}>
         <mesh>
           <icosahedronGeometry args={[1, 0]} />
-          <meshStandardMaterial
-            color="#8B52A6"
-            metalness={0.1}
-            roughness={0.7}
-            toneMapped={false}
-          />
+          <meshStandardMaterial color="#8B52A6" metalness={0.1} roughness={0.7} toneMapped={false} />
         </mesh>
 
         {faces.map((face) => {
           // base text position (just above triangle plane)
-          const textPos = face.centroid
-            .clone()
-            .addScaledVector(face.normal, 0.001);
+          const textPos = face.centroid.clone().addScaledVector(face.normal, 0.001);
 
           // align text +Z to face normal
-          const textQuat = new THREE.Quaternion().setFromUnitVectors(
-            new THREE.Vector3(0, 0, 1),
-            face.normal
-          );
+          const textQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), face.normal);
 
           // if 6 or 9, append a combining dot-below (U+0323)
-          const label =
-            face.number === 6 || face.number === 9
-              ? `${face.number}.`
-              : `${face.number}`;
+          const label = face.number === 6 || face.number === 9 ? `${face.number}.` : `${face.number}`;
 
           return (
             <Text

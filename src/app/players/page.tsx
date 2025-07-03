@@ -54,26 +54,19 @@ function PlayerCard({ player }: { player: Player }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <TypographyParagraph>
-          {truncateText(player.about, 100)}
-        </TypographyParagraph>
+        <TypographyParagraph>{truncateText(player.about, 100)}</TypographyParagraph>
       </CardContent>
       <CardFooter className="flex flex-row justify-end">
         <Button asChild size="sm" variant="default">
-          <Link href={`/players/${player.users.username}`}>
-            View Profile
-          </Link>
+          <Link href={`/players/${player.users.username}`}>View Profile</Link>
         </Button>
       </CardFooter>
     </Card>
   );
 }
 
-const getPlayers = () => 
+const getPlayers = () =>
   runQuery<Player[]>(
-    supabase => 
-      supabase
-        .from("players")
-        .select("*, users(*), received_achievements_player(*, achievements(*))"),
-    "getPlayers"
+    (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
+    "getPlayers",
   );

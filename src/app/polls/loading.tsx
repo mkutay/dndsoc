@@ -5,10 +5,10 @@ export default function Loading() {
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       {/* Page title skeleton */}
       <Skeleton className="h-12 w-24" />
-      
+
       {/* Create Poll button skeleton (for admin users) */}
       {/* <Skeleton className="h-10 w-40 mt-4" /> */}
-      
+
       <div className="mt-6 space-y-6">
         {/* Poll items skeleton */}
         {Array.from({ length: 3 }).map((_, index) => (
@@ -17,7 +17,7 @@ export default function Loading() {
             <div className="space-y-2">
               <Skeleton className="h-10 w-3/4" />
             </div>
-            
+
             {/* Poll options skeleton */}
             <div className="pl-5 space-y-2">
               {Array.from({ length: 3 }).map((_, optionIndex) => (
@@ -27,10 +27,10 @@ export default function Loading() {
                 </div>
               ))}
             </div>
-            
+
             {/* See More button skeleton */}
             <Skeleton className="h-9 w-24" />
-            
+
             {/* Separator line (except for last item) */}
             {index < 2 && <Skeleton className="h-0.5 w-full mt-6" />}
           </div>

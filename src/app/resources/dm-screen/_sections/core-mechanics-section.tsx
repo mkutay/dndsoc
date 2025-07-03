@@ -5,16 +5,9 @@ import React, { useState } from "react";
 import { GiDiceTwentyFacesOne } from "react-icons/gi";
 import { Users, Sparkles, DicesIcon } from "lucide-react";
 
-import {
-  TypographyH2,
-} from "@/components/typography/headings";
+import { TypographyH2 } from "@/components/typography/headings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -63,21 +56,14 @@ function CharacterAdvancement() {
           <table className="w-full">
             <thead>
               <tr className="bg-card text-muted-foreground">
-                <th className="px-4 py-2 text-left font-medium">
-                  Experience
-                </th>
+                <th className="px-4 py-2 text-left font-medium">Experience</th>
                 <th className="px-4 py-2 text-left font-medium">Level</th>
-                <th className="px-4 py-2 text-left font-medium">
-                  Proficiency Bonus
-                </th>
+                <th className="px-4 py-2 text-left font-medium">Proficiency Bonus</th>
               </tr>
             </thead>
             <tbody>
               {levels.map((row, i) => (
-                <tr
-                  key={i}
-                  className={i % 2 === 1 ? "bg-card" : "bg-muted/10"}
-                >
+                <tr key={i} className={i % 2 === 1 ? "bg-card" : "bg-muted/10"}>
                   <td className="px-4 py-2">{row[0]}</td>
                   <td className="px-4 py-2">{row[1]}</td>
                   <td className="px-4 py-2">{row[2]}</td>
@@ -88,7 +74,7 @@ function CharacterAdvancement() {
         </ScrollArea>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function AbilityScoresModifiers() {
@@ -123,9 +109,7 @@ function AbilityScoresModifiers() {
         />
         <div className="text-xl font-quotes flex flex-row justify-between items-center">
           <p>Modifier: {modifier ? modifier : "NaN"}</p>
-          <Latex
-            latexString="\left\lfloor \frac{\text{score} - 10}{2} \right\rfloor"
-          />
+          <Latex latexString="\left\lfloor \frac{\text{score} - 10}{2} \right\rfloor" />
         </div>
       </CardContent>
     </Card>
@@ -144,27 +128,24 @@ function MagicSpecialRules() {
       <CardContent>
         <Accordion type="multiple" className="w-full">
           <AccordionItem value="magical-attack-bonus">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Magical Attack Bonus
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Magical Attack Bonus</AccordionTrigger>
             <AccordionContent>
               <TypographyParagraph>
-                Ability Modifier + Proficiency Bonus
-                (<Link
+                Ability Modifier + Proficiency Bonus (
+                <Link
                   href="https://5e.tools/quickreference.html#bookref-quick,2,advantage%20and%20disadvantage"
                   target="_blank"
                   className="text-primary hover:text-primary/80 transition-colors italic"
                 >
                   Disadvantage
-                </Link> if casting within 5 ft. of an enemy)
+                </Link>{" "}
+                if casting within 5 ft. of an enemy)
               </TypographyParagraph>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="spell-save-dc">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Casting a Spell
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Casting a Spell</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-row gap-2">
                 <Button asChild size="badge" className="text-xs rounded-full py-0.5 px-2.5 font-quotes">
@@ -172,11 +153,9 @@ function MagicSpecialRules() {
                     See Spells
                   </Link>
                 </Button>
-                <Badge variant="outline">
-                  PHB &apos;14. p. 202
-                </Badge>
+                <Badge variant="outline">PHB &apos;14. p. 202</Badge>
               </div>
-              
+
               <div className="space-y-4 mt-4 tracking-wide">
                 <div className="space-y-1">
                   <p className="font-semibold text-base font-quotes">Spell Save DC:</p>
@@ -191,9 +170,16 @@ function MagicSpecialRules() {
                 <div className="space-y-1">
                   <p className="font-semibold text-base font-quotes">Components:</p>
                   <ul className="text-sm list-disc list-inside ml-2">
-                    <li><strong className="tracking-widest">V</strong> (Verbal): Requires speech (not gagged/silenced).</li>
-                    <li><strong className="tracking-widest">S</strong> (Somatic): Requires free hand for gestures.</li>
-                    <li><strong className="tracking-widest">M</strong> (Material): Requires component pouch/focus or specific items.</li>
+                    <li>
+                      <strong className="tracking-widest">V</strong> (Verbal): Requires speech (not gagged/silenced).
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">S</strong> (Somatic): Requires free hand for gestures.
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">M</strong> (Material): Requires component pouch/focus or
+                      specific items.
+                    </li>
                   </ul>
                   <p className="text-sm font-quotes">
                     <u className="underline-offset-2">NOTE</u>: You need ALL components of the spell.
@@ -203,10 +189,11 @@ function MagicSpecialRules() {
                 <div className="space-y-1">
                   <p className="font-semibold text-base font-quotes">Casting Times:</p>
                   <p>
-                    <strong className="tracking-widest">Action</strong>, <strong className="tracking-widest">
-                    Bonus Action</strong>, <strong className="tracking-widest">Reaction</strong>,
-                    or <strong className="tracking-widest">Longer</strong>, which requires
-                    concentration; failure = no spell slot lost.
+                    <strong className="tracking-widest">Action</strong>,{" "}
+                    <strong className="tracking-widest">Bonus Action</strong>,{" "}
+                    <strong className="tracking-widest">Reaction</strong>, or{" "}
+                    <strong className="tracking-widest">Longer</strong>, which requires concentration; failure = no
+                    spell slot lost.
                   </p>
                 </div>
 
@@ -216,18 +203,34 @@ function MagicSpecialRules() {
                     <li>Only one concentration spell at a time.</li>
                     <li>CON save on damage: DC = 10 or ½ damage (whichever higher).</li>
                     <li>Broken by: casting another concentration spell, incapacitated, death.</li>
-                    <li>Or some other environmental phenomena, such as a wave crashing over you while you&apos;re on a storm-tossed ship.</li>
+                    <li>
+                      Or some other environmental phenomena, such as a wave crashing over you while you&apos;re on a
+                      storm-tossed ship.
+                    </li>
                   </ul>
                 </div>
 
                 <div className="space-y-1">
                   <p className="font-semibold text-base font-quotes">Areas of Effect:</p>
                   <ul className="text-sm list-disc list-inside ml-2">
-                    <li><strong className="tracking-widest">Cone:</strong> Originates from caster, width = distance from origin. Size ÷10 targets.</li>
-                    <li><strong className="tracking-widest">Cube:</strong> Origin on any face of cube. Size ÷ 5 targets.</li>
-                    <li><strong className="tracking-widest">Cylinder:</strong> Origin at center of base circle. Radius ÷10 targets.</li>
-                    <li><strong className="tracking-widest">Line:</strong> Straight path from origin. Length ÷ 30 targets.</li>
-                    <li><strong className="tracking-widest">Sphere:</strong> Origin at center, extends in all directions. Radius ÷ 5 targets.</li>
+                    <li>
+                      <strong className="tracking-widest">Cone:</strong> Originates from caster, width = distance from
+                      origin. Size ÷10 targets.
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">Cube:</strong> Origin on any face of cube. Size ÷ 5 targets.
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">Cylinder:</strong> Origin at center of base circle. Radius ÷10
+                      targets.
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">Line:</strong> Straight path from origin. Length ÷ 30 targets.
+                    </li>
+                    <li>
+                      <strong className="tracking-widest">Sphere:</strong> Origin at center, extends in all directions.
+                      Radius ÷ 5 targets.
+                    </li>
                   </ul>
                 </div>
 
@@ -243,14 +246,30 @@ function MagicSpecialRules() {
                 <div className="bg-muted/30 rounded space-y-1">
                   <p className="font-semibold text-base font-quotes">School Quick Reference:</p>
                   <div className="grid grid-cols-2 gap-1 text-sm px-7">
-                    <span><strong className="tracking-widest">Abjuration:</strong> Protection</span>
-                    <span><strong className="tracking-widest">Conjuration:</strong> Transport/Summon</span>
-                    <span><strong className="tracking-widest">Divination:</strong> Information</span>
-                    <span><strong className="tracking-widest">Enchantment:</strong> Mind Control</span>
-                    <span><strong className="tracking-widest">Evocation:</strong> Energy/Damage</span>
-                    <span><strong className="tracking-widest">Illusion:</strong> Deception</span>
-                    <span><strong className="tracking-widest">Necromancy:</strong> Life/Death</span>
-                    <span><strong className="tracking-widest">Transmutation:</strong> Change Properties</span>
+                    <span>
+                      <strong className="tracking-widest">Abjuration:</strong> Protection
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Conjuration:</strong> Transport/Summon
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Divination:</strong> Information
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Enchantment:</strong> Mind Control
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Evocation:</strong> Energy/Damage
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Illusion:</strong> Deception
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Necromancy:</strong> Life/Death
+                    </span>
+                    <span>
+                      <strong className="tracking-widest">Transmutation:</strong> Change Properties
+                    </span>
                   </div>
                 </div>
               </div>
@@ -258,140 +277,136 @@ function MagicSpecialRules() {
           </AccordionItem>
 
           <AccordionItem value="scrolls">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Scrolls
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Scrolls</AccordionTrigger>
             <AccordionContent>
               <ul className="list-disc list-inside ml-4">
-                <li>
-                  Casting a Higher-Level Spell: DC = 10 + Spell Level
-                </li>
-                <li>
-                  Copying Scroll Spells into spell book: INT (Arcana)
-                  check DC = 10 + Spell Level.
-                </li>
-                <li>
-                  In either case, the scroll spell is destroyed on a
-                  failure.
-                </li>
+                <li>Casting a Higher-Level Spell: DC = 10 + Spell Level</li>
+                <li>Copying Scroll Spells into spell book: INT (Arcana) check DC = 10 + Spell Level.</li>
+                <li>In either case, the scroll spell is destroyed on a failure.</li>
               </ul>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="contests">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Contests
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Contests</AccordionTrigger>
             <AccordionContent>
-              <Badge  variant="outline">
-                PHB &apos;14. p. 174
-              </Badge>
+              <Badge variant="outline">PHB &apos;14. p. 174</Badge>
               <TypographyParagraph>
-                Both participants in a contest make ability checks appropriate to their efforts. They apply all appropriate bonuses and penalties, but instead of comparing the total to a DC, they compare the totals of their two checks. The participant with the higher check total wins the contest. That character or monster either succeeds at the action or prevents the other one from succeeding.
+                Both participants in a contest make ability checks appropriate to their efforts. They apply all
+                appropriate bonuses and penalties, but instead of comparing the total to a DC, they compare the totals
+                of their two checks. The participant with the higher check total wins the contest. That character or
+                monster either succeeds at the action or prevents the other one from succeeding.
               </TypographyParagraph>
               <TypographyParagraph>
-                If the contest results in a tie, the situation remains the same as it was before the contest. Thus, one contestant might win the contest by default. If two characters tie in a contest to snatch a ring off the floor, neither character grabs it. In a contest between a monster trying to open a door and an adventurer trying to keep the door closed, a tie means that the door remains shut.
+                If the contest results in a tie, the situation remains the same as it was before the contest. Thus, one
+                contestant might win the contest by default. If two characters tie in a contest to snatch a ring off the
+                floor, neither character grabs it. In a contest between a monster trying to open a door and an
+                adventurer trying to keep the door closed, a tie means that the door remains shut.
               </TypographyParagraph>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="working-together">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Working Together
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Working Together</AccordionTrigger>
             <AccordionContent>
-              <Badge  variant="outline">
-                PHB &apos;14. p. 175
-              </Badge>
+              <Badge variant="outline">PHB &apos;14. p. 175</Badge>
               <TypographyParagraph>
-                Sometimes two or more characters team up to attempt a task. The character who&apos;s leading the effort — or the one with the highest
-                ability modifier — can make an ability check with advantage, reflecting the help provided by the other characters. In combat,
-                this requires the <Link
+                Sometimes two or more characters team up to attempt a task. The character who&apos;s leading the effort
+                — or the one with the highest ability modifier — can make an ability check with advantage, reflecting
+                the help provided by the other characters. In combat, this requires the{" "}
+                <Link
                   href="/resources/quick-reference"
                   target="_blank"
                   className="text-primary hover:text-primary/80 transition-colors italic"
-                >Help</Link> action.
+                >
+                  Help
+                </Link>{" "}
+                action.
               </TypographyParagraph>
               <TypographyParagraph>
-                A character can only provide help if the task is one that they could attempt alone. For example,
-                trying to open a lock requires proficiency with thieves&apos; tools, so a character who lacks that proficiency
-                can&apos;t help another character in that task. Moreover, a character can help only when two or more individuals
-                working together would actually be productive. Some tasks, such as threading a needle, are no easier with help.
+                A character can only provide help if the task is one that they could attempt alone. For example, trying
+                to open a lock requires proficiency with thieves&apos; tools, so a character who lacks that proficiency
+                can&apos;t help another character in that task. Moreover, a character can help only when two or more
+                individuals working together would actually be productive. Some tasks, such as threading a needle, are
+                no easier with help.
               </TypographyParagraph>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="food-water">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Food & Water
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Food & Water</AccordionTrigger>
             <AccordionContent>
-              <Badge  variant="outline">
-                PHB &apos;14. p. 185
-              </Badge>
+              <Badge variant="outline">PHB &apos;14. p. 185</Badge>
               <TypographyParagraph>
-                Characters who don&apos;t eat or drink suffer the effects of <Link
+                Characters who don&apos;t eat or drink suffer the effects of{" "}
+                <Link
                   href="/resources/quick-reference#conditions"
                   target="_blank"
                   className="text-primary hover:text-primary/80 transition-colors italic"
-                >exhaustion</Link>. Exhaustion caused by lack of food or water can&apos;t be removed until the character eats and drinks the full required amount. 
+                >
+                  exhaustion
+                </Link>
+                . Exhaustion caused by lack of food or water can&apos;t be removed until the character eats and drinks
+                the full required amount.
               </TypographyParagraph>
               <TypographyParagraph>
-                A character needs one pound of food per day. A character can go without food for a number of days
-                equal to 3 + their CON modifier (minimum 1). At the end of each day beyond that limit,
-                a character automatically suffers one level of exhaustion.
+                A character needs one pound of food per day. A character can go without food for a number of days equal
+                to 3 + their CON modifier (minimum 1). At the end of each day beyond that limit, a character
+                automatically suffers one level of exhaustion.
               </TypographyParagraph>
               <TypographyParagraph>
-                A character needs one gallon of water per day, or two gallons per day if the weather is hot. A character who drinks only half
-                that much water must succeed on a DC 15 CON saving throw or suffer one level of exhaustion at the end of the day.
-                A character with access to even less water automatically suffers one level of exhaustion at the end of the day.
-                If the character already has one or more levels of exhaustion, the character takes two levels in either case.
+                A character needs one gallon of water per day, or two gallons per day if the weather is hot. A character
+                who drinks only half that much water must succeed on a DC 15 CON saving throw or suffer one level of
+                exhaustion at the end of the day. A character with access to even less water automatically suffers one
+                level of exhaustion at the end of the day. If the character already has one or more levels of
+                exhaustion, the character takes two levels in either case.
               </TypographyParagraph>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="falling">
-            <AccordionTrigger className="text-xl font-bold font-quotes">
-              Falling
-            </AccordionTrigger>
+            <AccordionTrigger className="text-xl font-bold font-quotes">Falling</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-row gap-2">
-                <Badge  variant="outline">
-                  XGE p. 77
-                </Badge>
-                <Badge  variant="outline">
-                  PHB &apos;14. p. 183
-                </Badge>
+                <Badge variant="outline">XGE p. 77</Badge>
+                <Badge variant="outline">PHB &apos;14. p. 183</Badge>
               </div>
-              
+
               <div className="mt-6 space-y-4">
                 <TypographyParagraph>
-                  <strong className="font-quotes text-base">Basic Rule:</strong> 1d6 bludgeoning damage per 10 feet fallen (max 20d6). Land <Link
+                  <strong className="font-quotes text-base">Basic Rule:</strong> 1d6 bludgeoning damage per 10 feet
+                  fallen (max 20d6). Land{" "}
+                  <Link
                     href="/resources/quick-reference#conditions"
                     target="_blank"
                     className="text-primary hover:text-primary/80 transition-colors italic"
                   >
-                  prone
-                  </Link> unless damage is avoided.
+                    prone
+                  </Link>{" "}
+                  unless damage is avoided.
                 </TypographyParagraph>
 
                 <div className="space-y-2">
                   <strong className="font-quotes text-base">Rate of Falling (Optional)</strong>
                   <TypographyParagraph>
-                    When falling from great height, descend up to 500 feet instantly, then 500 feet at the end of each subsequent turn until the fall ends.
+                    When falling from great height, descend up to 500 feet instantly, then 500 feet at the end of each
+                    subsequent turn until the fall ends.
                   </TypographyParagraph>
                 </div>
 
                 <div className="space-y-2">
                   <strong className="font-quotes text-base">Flying Creatures (Optional)</strong>
                   <TypographyParagraph>
-                    Flying creatures fall if knocked prone, speed reduced to 0, or lose ability to move (unless hovering or magically held aloft).
+                    Flying creatures fall if knocked prone, speed reduced to 0, or lose ability to move (unless hovering
+                    or magically held aloft).
                   </TypographyParagraph>
                   <TypographyParagraph>
-                    <strong className="font-quotes">Damage Reduction:</strong> Subtract current flying speed from fall distance before calculating damage.
+                    <strong className="font-quotes">Damage Reduction:</strong> Subtract current flying speed from fall
+                    distance before calculating damage.
                   </TypographyParagraph>
                   <TypographyParagraph>
-                    <strong className="font-quotes">Recovery:</strong> Prone flying creatures can spend half their flying speed to halt the fall and counter prone condition.
+                    <strong className="font-quotes">Recovery:</strong> Prone flying creatures can spend half their
+                    flying speed to halt the fall and counter prone condition.
                   </TypographyParagraph>
                 </div>
               </div>
@@ -437,13 +452,17 @@ const CoreMechanicsSection: React.FC<CoreMechanicsSectionProps> = ({ id }) => {
                 </div>
                 <div className="space-y-2">
                   <p className="font-quotes text-lg underline underline-offset-2">Inspiration:</p>
-                  <p>Award for great roleplay, clever solutions. Gain advantage on attack rolls, ability checks, and saving throws. <Link
-                    href="https://5e.tools/variantrules.html#inspiration_dmg"
-                    target="_blank"
-                    className="text-primary hover:text-primary/80 transition-colors italic"
-                  >
-                    Learn more.
-                  </Link></p>
+                  <p>
+                    Award for great roleplay, clever solutions. Gain advantage on attack rolls, ability checks, and
+                    saving throws.{" "}
+                    <Link
+                      href="https://5e.tools/variantrules.html#inspiration_dmg"
+                      target="_blank"
+                      className="text-primary hover:text-primary/80 transition-colors italic"
+                    >
+                      Learn more.
+                    </Link>
+                  </p>
                   <p className="font-quotes text-lg underline underline-offset-2">Passive Checks:</p>
                   <p>10 + modifier + proficiency (if applicable).</p>
                 </div>

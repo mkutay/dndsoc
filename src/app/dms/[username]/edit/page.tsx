@@ -1,13 +1,13 @@
 import { forbidden } from "next/navigation";
 import { cache } from "react";
 
+import { UploadWrapper } from "./upload-wrapper";
+import { DMEditForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { UploadWrapper } from "./upload-wrapper";
 import { getDMByUsername } from "@/lib/dms";
 import { getUserRole } from "@/lib/roles";
-import { DMEditForm } from "./form";
 
 export const dynamic = "force-dynamic";
 

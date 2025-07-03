@@ -7,9 +7,9 @@ import { signUpFormSchema } from "@/config/auth-schemas";
 import { parseSchema } from "@/utils/parse-schema";
 import { signUpUser } from "@/lib/auth";
 
-export const signUpAction = async (values: z.infer<typeof signUpFormSchema>) => 
+export const signUpAction = async (values: z.infer<typeof signUpFormSchema>) =>
   resultAsyncToActionResult(
     parseSchema(signUpFormSchema, values)
       .asyncAndThen(() => signUpUser(values))
-      .map((user) => ({ email: user.email }))
+      .map((user) => ({ email: user.email })),
   );

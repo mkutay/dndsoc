@@ -7,13 +7,7 @@ import { Parties } from "@/components/parties";
 import { getParties } from "@/lib/parties";
 import { ErrorPage } from "@/components/error-page";
 
-export async function MyParties({
-  parties,
-  dmUuid,
-}: {
-  parties: Tables<"parties">[];
-  dmUuid: string;
-}) {
+export async function MyParties({ parties, dmUuid }: { parties: Tables<"parties">[]; dmUuid: string }) {
   const allParties = await getParties();
   if (allParties.isErr()) return <ErrorPage error={allParties.error} caller="/components/my/my-parties.tsx" />;
 
@@ -43,12 +37,7 @@ export async function MyParties({
           Parties You DM ({parties.length})
         </h3>
       </div>
-      <Parties
-        ownsDM={true}
-        parties={parties}
-        allParties={allParties.value}
-        DMUuid={dmUuid}
-      />
+      <Parties ownsDM={true} parties={parties} allParties={allParties.value} DMUuid={dmUuid} />
     </div>
   );
 }

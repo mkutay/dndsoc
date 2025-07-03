@@ -2,13 +2,13 @@
 
 import { useOptimistic } from "react";
 
+import { PartyCard } from "../party-card";
+import { AddPartyButton } from "./add-party-button";
+import { CreatePartyButton } from "./create-party-button";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Tables } from "@/types/database.types";
 import { useToast } from "@/hooks/use-toast";
-import { AddPartyButton } from "./add-party-button";
-import { CreatePartyButton } from "./create-party-button";
 import { removeCampaignFromParty } from "@/server/campaigns";
-import { PartyCard } from "../party-card";
 
 type Party = Tables<"parties">;
 
@@ -29,13 +29,21 @@ export function Parties({
 
   const [optimisticParties, setOptimisticParties] = useOptimistic(
     parties,
-    (currentState, action: {
-      type: "add"; party: Party;
-    } | {
-      type: "remove"; partyId: string;
-    }) => action.type === "add"
-      ? [...currentState, action.party]
-      : currentState.filter((party) => party.id !== action.partyId),
+    (
+      currentState,
+      action:
+        | {
+            type: "add";
+            party: Party;
+          }
+        | {
+            type: "remove";
+            partyId: string;
+          },
+    ) =>
+      action.type === "add"
+        ? [...currentState, action.party]
+        : currentState.filter((party) => party.id !== action.partyId),
   );
 
   // sort by name
@@ -78,14 +86,16 @@ export function Parties({
             removeText="Remove this party from the campaign."
           />
         ))}
-        {isAdmin && <CreatePartyButton campaignUuid={campaignUuid} />}
-        {isAdmin && <AddPartyButtonWrapper
-          campaignUuid={campaignUuid}
-          allParties={allParties}
-          setOptimisticParties={setOptimisticParties}
-          optimisticParties={optimisticParties}
-          shortened={shortened}
-        />}
+        {isAdmin ? <CreatePartyButton campaignUuid={campaignUuid} /> : null}
+        {isAdmin ? (
+          <AddPartyButtonWrapper
+            campaignUuid={campaignUuid}
+            allParties={allParties}
+            setOptimisticParties={setOptimisticParties}
+            optimisticParties={optimisticParties}
+            shortened={shortened}
+          />
+        ) : null}
       </div>
     </div>
   );
@@ -100,11 +110,17 @@ function AddPartyButtonWrapper({
 }: {
   campaignUuid: string;
   allParties: Party[] | undefined;
-  setOptimisticParties: (action: {
-    type: "add"; party: Party;
-  } | {
-    type: "remove"; partyId: string;
-  }) => void;
+  setOptimisticParties: (
+    action:
+      | {
+          type: "add";
+          party: Party;
+        }
+      | {
+          type: "remove";
+          partyId: string;
+        },
+  ) => void;
   optimisticParties: Party[];
   shortened: string;
 }) {
@@ -118,5 +134,5 @@ function AddPartyButtonWrapper({
       parties={parties}
       setOptimisticParties={setOptimisticParties}
     />
-  )
+  );
 }

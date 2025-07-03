@@ -7,15 +7,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
@@ -39,7 +31,7 @@ export function CreatePoll() {
   const form = useForm<z.infer<typeof createPollSchema>>({
     resolver: zodResolver(createPollSchema),
     defaultValues: {
-      question: ""
+      question: "",
     },
   });
 
@@ -48,7 +40,8 @@ export function CreatePoll() {
     const result = await createPoll(data);
     setIsPending(false);
 
-    actionResultMatch(result,
+    actionResultMatch(
+      result,
       (shortened) => {
         toast({
           title: "Success: Poll created",
@@ -64,27 +57,21 @@ export function CreatePoll() {
           description: error.message,
           variant: "destructive",
         });
-      }
+      },
     );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="default"
-          type="button"
-          className="w-fit mt-4"
-        >
+        <Button variant="default" type="button" className="w-fit mt-4">
           Create a New Poll
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a New Poll</DialogTitle>
-          <DialogDescription>
-            This will create a new poll that you can edit further.
-          </DialogDescription>
+          <DialogDescription>This will create a new poll that you can edit further.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -98,21 +85,14 @@ export function CreatePoll() {
                   <FormControl>
                     <Input placeholder="New Poll" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is the question or title of your poll.
-                  </FormDescription>
+                  <FormDescription>This is the question or title of your poll.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
               <div className="w-full flex flex-row justify-end">
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="default"
-                  disabled={isPending}
-                >
+                <Button type="submit" variant="default" size="default" disabled={isPending}>
                   Create
                 </Button>
               </div>

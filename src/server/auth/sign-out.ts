@@ -11,17 +11,17 @@ type SignOutError = {
   code: "DATABASE_ERROR";
 };
 
-export const signOutAction = async () => resultAsyncToActionResult(
-  createClient()
-  .andThen((supabase) =>
-    ResultAsync.fromSafePromise(supabase.auth.signOut()),
-  )
-  .andThen((response) => !response.error
-    ? okAsync()
-    : errAsync({
-        message: response.error.message,
-        code: "DATABASE_ERROR",
-      } as SignOutError)
-  )
-  .andTee(() => redirect("/"))
-)
+export const signOutAction = async () =>
+  resultAsyncToActionResult(
+    createClient()
+      .andThen((supabase) => ResultAsync.fromSafePromise(supabase.auth.signOut()))
+      .andThen((response) =>
+        !response.error
+          ? okAsync()
+          : errAsync({
+              message: response.error.message,
+              code: "DATABASE_ERROR",
+            } as SignOutError),
+      )
+      .andTee(() => redirect("/")),
+  );

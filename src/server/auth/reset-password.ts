@@ -21,14 +21,15 @@ export const resetPasswordAction = async (values: z.infer<typeof resetPasswordSc
         fromSafePromise(
           supabase.auth.updateUser({
             password: values.newPassword,
-          })
-        )
+          }),
+        ),
       )
-      .andThen((result) => !result.error
-        ? okAsync()
-        : errAsync({
-            message: "Failed to reset password (supabase): " + result.error.message,
-            code: "DATABASE_ERROR",
-          } as ResetPasswordError)
-      )
+      .andThen((result) =>
+        !result.error
+          ? okAsync()
+          : errAsync({
+              message: "Failed to reset password (supabase): " + result.error.message,
+              code: "DATABASE_ERROR",
+            } as ResetPasswordError),
+      ),
   );

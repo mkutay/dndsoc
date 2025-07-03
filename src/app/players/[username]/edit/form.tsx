@@ -1,20 +1,12 @@
-"use client"
+"use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { playersEditSchema } from "@/config/player-edit-schema";
@@ -32,7 +24,7 @@ export function PlayerEditForm({ player }: { player: Player }) {
       about: player.about,
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof playersEditSchema>) => {
     setPending(true);
     const result = await updatePlayer(values, player.id);
@@ -40,18 +32,18 @@ export function PlayerEditForm({ player }: { player: Player }) {
 
     actionResultMatch(
       result,
-      () => 
+      () =>
         toast({
           title: "Update Successful",
           description: "Your profile has been updated.",
         }),
-      (error) => 
+      (error) =>
         toast({
           title: "Update Failed",
           description: "Please try again. " + error.message,
           variant: "destructive",
-        })
-    )
+        }),
+    );
   };
 
   return (
@@ -67,15 +59,15 @@ export function PlayerEditForm({ player }: { player: Player }) {
               <FormControl>
                 <Textarea placeholder="I am awesome!" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public about.
-              </FormDescription>
+              <FormDescription>This is your public about.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>Submit</Button>
+        <Button type="submit" disabled={pending}>
+          Submit
+        </Button>
       </form>
     </Form>
-  )
+  );
 }

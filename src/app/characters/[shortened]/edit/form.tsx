@@ -1,21 +1,13 @@
-"use client"
+"use client";
 
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useState } from "react";
 import { MinusIcon, PlusIcon, RefreshCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +17,7 @@ import { actionResultMatch } from "@/types/error-typing";
 import { updateCharacter } from "@/server/characters";
 
 export function CharacterEditForm({
-  character
+  character,
 }: {
   character: {
     races: {
@@ -42,7 +34,7 @@ export function CharacterEditForm({
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
 
-  const classes = character.classes.map((cls) => ({ value: cls.name }))
+  const classes = character.classes.map((cls) => ({ value: cls.name }));
 
   const form = useForm<z.infer<typeof characterEditSchema>>({
     resolver: zodResolver(characterEditSchema),
@@ -58,23 +50,26 @@ export function CharacterEditForm({
     control: form.control,
     name: "classes",
   });
- 
+
   const onSubmit = async (values: z.infer<typeof characterEditSchema>) => {
     setPending(true);
     const result = await updateCharacter(values, character.shortened);
     setPending(false);
 
-    actionResultMatch(result,
-      () => toast({
-        title: "Update Successful",
-        description: "Your profile has been updated.",
-      }),
-      (error) => toast({
-        title: "Update Failed",
-        description: "Please try again. " + error.message,
-        variant: "destructive",
-      })
-    )
+    actionResultMatch(
+      result,
+      () =>
+        toast({
+          title: "Update Successful",
+          description: "Your profile has been updated.",
+        }),
+      (error) =>
+        toast({
+          title: "Update Failed",
+          description: "Please try again. " + error.message,
+          variant: "destructive",
+        }),
+    );
   };
 
   return (
@@ -90,9 +85,7 @@ export function CharacterEditForm({
               <FormControl>
                 <Textarea placeholder="I am awesome!" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public about.
-              </FormDescription>
+              <FormDescription>This is your public about.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -105,22 +98,20 @@ export function CharacterEditForm({
             <FormItem>
               <FormLabel>Level</FormLabel>
               <FormControl>
-                <Input 
+                <Input
                   placeholder="1"
-                  {...field} 
+                  {...field}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow empty input or valid numbers
-                    if (value === '' || /^\d+$/.test(value)) {
-                      field.onChange(value === '' ? '' : Number(value));
+                    if (value === "" || /^\d+$/.test(value)) {
+                      field.onChange(value === "" ? "" : Number(value));
                     }
                   }}
                   value={field.value}
                 />
               </FormControl>
-              <FormDescription>
-                This is your character&apos;s level.
-              </FormDescription>
+              <FormDescription>This is your character&apos;s level.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -135,9 +126,7 @@ export function CharacterEditForm({
               <FormControl>
                 <Input placeholder="Human" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your character&apos;s race.
-              </FormDescription>
+              <FormDescription>This is your character&apos;s race.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -195,15 +184,20 @@ export function CharacterEditForm({
               append({ value: "" });
             }}
             disabled={pending}
-          ><PlusIcon size="18px" /><span>Add Class</span></Button>
+          >
+            <PlusIcon size="18px" />
+            <span>Add Class</span>
+          </Button>
         </div>
         <div className="flex flex-row gap-2">
-          <Button type="submit" disabled={pending}>Submit</Button>
+          <Button type="submit" disabled={pending}>
+            Submit
+          </Button>
           <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
             <RefreshCcw />
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

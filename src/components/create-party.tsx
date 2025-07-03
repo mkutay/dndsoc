@@ -7,15 +7,7 @@ import { redirect } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import {
   Dialog,
   DialogContent,
@@ -58,11 +50,12 @@ export function CreateParty() {
           setOpen(false);
           redirect(`/parties/${value.shortened}/edit/dm`);
         },
-        (error) => toast({
-          title: "Error: Could not create party.",
-          description: error.message,
-          variant: "destructive",
-        })
+        (error) =>
+          toast({
+            title: "Error: Could not create party.",
+            description: error.message,
+            variant: "destructive",
+          }),
       );
     });
   };
@@ -76,17 +69,13 @@ export function CreateParty() {
           className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
           asChild
         >
-          <Card className="text-3xl font-book-card-titles tracking-widest">
-            Create a New Party
-          </Card>
+          <Card className="text-3xl font-book-card-titles tracking-widest">Create a New Party</Card>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create New Party</DialogTitle>
-          <DialogDescription>
-            You can create a new party to be a DM for!
-          </DialogDescription>
+          <DialogDescription>You can create a new party to be a DM for!</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -101,8 +90,7 @@ export function CreateParty() {
                     <Input placeholder="The Dragonslayers" {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is your parties name. You can&apos;t change this after
-                    submitting.
+                    This is your parties name. You can&apos;t change this after submitting.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

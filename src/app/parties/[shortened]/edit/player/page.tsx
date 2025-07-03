@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
+import { PlayerForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { getPartyByShortened } from "@/lib/parties";
 import { getPlayerRoleUser } from "@/lib/players";
-import { PlayerForm } from "./form";
 
 const cachedGetParty = cache(getPartyByShortened);
 
@@ -35,20 +35,25 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   const result = await cachedGetParty({ shortened });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/player/page.tsx" isNotFound />;
+  if (result.isErr())
+    return <ErrorPage error={result.error} caller="/parties/[shortened]/edit/player/page.tsx" isNotFound />;
   const party = result.value;
 
   const dmedBy = party.dm_party.map((dmParty) => dmParty.dms);
   const characters = party.character_party.map((characterParty) => characterParty.characters);
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/player/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/parties/[shortened]/edit/player/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsAs = ((dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)) || role === "admin")
-    ? "dm"
-    : ((characters.some((character) => character.player_uuid === auth?.players.id)) ? "player" : null);
+  const ownsAs =
+    dmedBy.some((dm) => dm.auth_user_uuid === auth?.auth_user_uuid) || role === "admin"
+      ? "dm"
+      : characters.some((character) => character.player_uuid === auth?.players.id)
+        ? "player"
+        : null;
 
   if (ownsAs === "dm") {
     redirect(`/parties/${shortened}/edit/dm`);
@@ -64,5 +69,5 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyH1>Edit Your Party</TypographyH1>
       <PlayerForm about={party.about} partyUuid={party.id} />
     </div>
-  )
+  );
 }

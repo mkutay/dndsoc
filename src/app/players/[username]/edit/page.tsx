@@ -1,11 +1,11 @@
 import { forbidden } from "next/navigation";
 import { cache } from "react";
 
+import { UploadWrapper } from "./upload-wrapper";
+import { PlayerEditForm } from "./form";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { UploadWrapper } from "./upload-wrapper";
-import { PlayerEditForm } from "./form";
 import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
@@ -40,7 +40,8 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const player = result.value;
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/players/[username]/edit/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/players/[username]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;

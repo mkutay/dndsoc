@@ -5,26 +5,18 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
 
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { RefreshCcw } from "lucide-react";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Tables } from "@/types/database.types";
 import { journalPartyEntryEditSchema } from "@/config/journal-schema";
 import { actionResultMatch } from "@/types/error-typing";
 import { updateJournalPartyEntry } from "@/server/journal";
 import { Button } from "@/components/ui/button";
-import { RefreshCcw } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 export function PartyEntryForm({
-  entry
+  entry,
 }: {
   entry: Tables<"party_entries"> & {
     parties: Tables<"parties">;
@@ -46,17 +38,20 @@ export function PartyEntryForm({
     const result = await updateJournalPartyEntry(entry.journal.id, entry.parties.id, data);
     setPending(false);
 
-    actionResultMatch(result,
-      () => toast({
-        title: "Journal updated successfully!",
-        description: "Your journal entry has been updated.",
-        variant: "default",
-      }),
-      (error) => toast({
-        title: "Error updating journal",
-        description: error.message,
-        variant: "destructive",
-      })
+    actionResultMatch(
+      result,
+      () =>
+        toast({
+          title: "Journal updated successfully!",
+          description: "Your journal entry has been updated.",
+          variant: "default",
+        }),
+      (error) =>
+        toast({
+          title: "Error updating journal",
+          description: error.message,
+          variant: "destructive",
+        }),
     );
   };
 
@@ -81,12 +76,14 @@ export function PartyEntryForm({
           )}
         />
         <div className="flex flex-row gap-2">
-          <Button type="submit" disabled={pending}>Submit</Button>
+          <Button type="submit" disabled={pending}>
+            Submit
+          </Button>
           <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
             <RefreshCcw />
           </Button>
         </div>
       </form>
     </Form>
-  )
+  );
 }

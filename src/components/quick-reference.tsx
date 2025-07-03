@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function ReferenceCard({ item }: { item: ReferenceItem }) {
   const IconComponent = iconMap[item.icon] || GiJuggler;
-  
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -21,11 +21,9 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
               <IconComponent className="w-10 h-10 text-primary group-hover:scale-110 transition-transform duration-300" />
               <div className="flex-1">
                 <div className="text-2xl">{item.title}</div>
-                {item.subtitle && (
-                  <div className="text-base font-quotes text-muted-foreground tracking-tight">
-                    {item.subtitle}
-                  </div>
-                )}
+                {item.subtitle ? (
+                  <div className="text-base font-quotes text-muted-foreground tracking-tight">{item.subtitle}</div>
+                ) : null}
               </div>
             </CardTitle>
           </CardHeader>
@@ -42,24 +40,18 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
             <IconComponent className="w-10 h-10 text-primary" />
             <div>
               <div>{item.title}</div>
-              {item.subtitle && (
-                <div className="text-base text-muted-foreground font-quotes">
-                  {item.subtitle}
-                </div>
-              )}
+              {item.subtitle ? (
+                <div className="text-base text-muted-foreground font-quotes">{item.subtitle}</div>
+              ) : null}
             </div>
           </DialogTitle>
-          <DialogDescription>
-            {item.description}
-          </DialogDescription>
+          <DialogDescription>{item.description}</DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-4">
           {item.bullets.length > 0 && (
             <div className="space-y-2">
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                Details
-              </h4>
+              <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">Details</h4>
               <ul className="space-y-2">
                 {item.bullets.map((bullet, index) => (
                   <li key={index} className="flex items-start gap-2 text-base">
@@ -70,11 +62,9 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
               </ul>
             </div>
           )}
-          
+
           <div className="pt-5 border-t border-border">
-            <Badge variant="secondary">
-              {item.reference}
-            </Badge>
+            <Badge variant="secondary">{item.reference}</Badge>
           </div>
         </div>
       </DialogContent>
@@ -82,15 +72,15 @@ export function ReferenceCard({ item }: { item: ReferenceItem }) {
   );
 }
 
-export function ReferenceSection({ 
-  title, 
-  icon: IconComponent, 
-  data, 
-  description 
-}: { 
-  title: string; 
-  icon: IconType; 
-  data: ReferenceItem[]; 
+export function ReferenceSection({
+  title,
+  icon: IconComponent,
+  data,
+  description,
+}: {
+  title: string;
+  icon: IconType;
+  data: ReferenceItem[];
   description?: string;
 }) {
   return (
@@ -102,13 +92,13 @@ export function ReferenceSection({
               <IconComponent className="w-8 h-8 md:w-10 md:h-10" />
               {title}
             </TypographyH2>
-            {description && (
+            {description ? (
               <TypographyParagraph className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {description}
               </TypographyParagraph>
-            )}
+            ) : null}
           </div>
-          
+
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {data.map((item, index) => (
               <ReferenceCard key={index} item={item} />

@@ -1,14 +1,14 @@
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
+import { UploadWrapper } from "./upload-wrapper";
+import { CharacterEditForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { formatClasses, formatRaces } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
-import { UploadWrapper } from "./upload-wrapper";
 import { getPlayerRoleUser } from "@/lib/players";
-import { CharacterEditForm } from "./form";
 
 export const dynamic = "force-dynamic";
 
@@ -37,21 +37,21 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   };
 }
 
-export default async function Page({ params }: 
-  { params: Promise<{ shortened: string }> }
-) {
+export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
   const result = await cachedGetCharacter({ shortened });
 
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/edit/page.tsx" isNotFound />;
+  if (result.isErr())
+    return <ErrorPage error={result.error} caller="/characters/[shortened]/edit/page.tsx" isNotFound />;
   const character = result.value;
 
   const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN") return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/edit/page.tsx" />;
+  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
+    return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/edit/page.tsx" />;
 
   const auth = combinedAuth.isOk() ? combinedAuth.value : null;
   const role = auth ? auth.roles?.role : null;
-  const ownsCharacter = (character.player_uuid === auth?.players.id) || role === "admin";
+  const ownsCharacter = character.player_uuid === auth?.players.id || role === "admin";
 
   if (!ownsCharacter) redirect(`/characters/${shortened}`);
 
@@ -60,7 +60,9 @@ export default async function Page({ params }:
       <TypographyLink href={`/characters/${shortened}`} className="tracking-wide font-quotes">
         Go Back
       </TypographyLink>
-      <TypographyH1 className="mt-0.5">Edit <span className="text-primary">{character.name}</span>&apos;s Page</TypographyH1>
+      <TypographyH1 className="mt-0.5">
+        Edit <span className="text-primary">{character.name}</span>&apos;s Page
+      </TypographyH1>
       <UploadWrapper characterId={character.id} characterShortened={character.shortened} />
       <CharacterEditForm character={character} />
     </div>

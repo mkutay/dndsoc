@@ -27,17 +27,9 @@ export const actionErr = <E>(error: E): ActionErr<never, E> => ({
 /**
  * Converts a `ResultAsync<T,E>` to a `<ActionResult<T,E>`.
  */
-export type ResultAsyncToActionResult<T> = [T] extends [
-  ResultAsync<infer D, infer E>,
-]
-  ? ActionResult<D, E>
-  : never;
+export type ResultAsyncToActionResult<T> = [T] extends [ResultAsync<infer D, infer E>] ? ActionResult<D, E> : never;
 
-export type ActionResultToResult<T> = [T] extends [
-  ActionResult<infer D, infer E>,
-]
-  ? Result<D, E>
-  : never;
+export type ActionResultToResult<T> = [T] extends [ActionResult<infer D, infer E>] ? Result<D, E> : never;
 
 /**
  * Converts an `ActionResult<T,E>` to a `Result<T,E>`.
@@ -96,5 +88,4 @@ export const actionResultMatch = <T, E>(
   result: ActionResult<T, E>,
   onOk: (value: T) => void,
   onErr: (error: E) => void,
-) =>
-  result.ok ? onOk(result.value) : onErr(result.error);
+) => (result.ok ? onOk(result.value) : onErr(result.error));

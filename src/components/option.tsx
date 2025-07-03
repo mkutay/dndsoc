@@ -3,12 +3,12 @@
 import { CheckIcon, CircleIcon } from "lucide-react";
 import { useState } from "react";
 
-import { actionResultMatch } from "@/types/error-typing";
-import { useToast } from "@/hooks/use-toast";
-import { voteOnPoll } from "@/server/polls";
 import { TypographyLarge, TypographySmall } from "./typography/paragraph";
 import { TypographyHr } from "./typography/blockquote";
 import { Button } from "./ui/button";
+import { actionResultMatch } from "@/types/error-typing";
+import { useToast } from "@/hooks/use-toast";
+import { voteOnPoll } from "@/server/polls";
 
 export function Options({
   options,
@@ -17,7 +17,7 @@ export function Options({
   expired,
 }: {
   options: {
-    id: string,
+    id: string;
     text: string;
     votes: number;
   }[];
@@ -34,7 +34,8 @@ export function Options({
 
     if (votedOptionId !== optionId) {
       voteOnPoll({ optionId, pollId }).then((result) => {
-        actionResultMatch(result, 
+        actionResultMatch(
+          result,
           () => {
             setVotedOptionId(optionId);
           },
@@ -44,12 +45,13 @@ export function Options({
               description: error.message,
               variant: "destructive",
             });
-          }
+          },
         );
       });
     } else {
       voteOnPoll({ optionId, pollId }).then((result) => {
-        actionResultMatch(result, 
+        actionResultMatch(
+          result,
           () => {
             setVotedOptionId(null);
           },
@@ -59,19 +61,19 @@ export function Options({
               description: error.message,
               variant: "destructive",
             });
-          }
+          },
         );
       });
     }
 
     setPending(false);
-  }
+  };
 
   const optionsNodes: React.ReactNode[] = [];
   for (let i = 0; i < options.length; i++) {
     const option = options[i];
     let currentVoteCount = option.votes;
-    
+
     // Calculate vote changes based on original vs current vote
     // If this option is currently voted for but wasn't originally, +1
     if (votedOptionId === option.id && votedId !== option.id) {
@@ -81,7 +83,7 @@ export function Options({
     if (votedId === option.id && votedOptionId !== option.id) {
       currentVoteCount -= 1;
     }
-    
+
     optionsNodes.push(
       <div key={option.id} className="flex flex-col gap-2">
         <Option
@@ -93,19 +95,15 @@ export function Options({
           onVote={() => onVote(option.id)}
           pending={pending}
         />
-      </div>
+      </div>,
     );
 
     if (i !== options.length - 1) {
       optionsNodes.push(<TypographyHr key={`hr-${option.id}`} />);
     }
-  };
+  }
 
-  return (
-    <div className="flex flex-col gap-6 mt-6">
-      {optionsNodes}
-    </div>
-  )
+  return <div className="flex flex-col gap-6 mt-6">{optionsNodes}</div>;
 }
 
 export function Option({
@@ -115,7 +113,7 @@ export function Option({
   votedOptionId,
   expired,
   onVote,
-  pending
+  pending,
 }: {
   optionId: string;
   optionText: string;
@@ -130,23 +128,29 @@ export function Option({
 
   return (
     <div className="flex flex-col gap-2 max-w-prose">
-      <TypographyLarge className="text-xl font-normal pl-6 py-2 border-l-2 border-border">
-        {optionText}
-      </TypographyLarge>
+      <TypographyLarge className="text-xl font-normal pl-6 py-2 border-l-2 border-border">{optionText}</TypographyLarge>
       <TypographySmall className="text-lg">VOTES: {voteCount}</TypographySmall>
       <Button
         className="w-[100px] mt-3 flex flex-row gap-2 items-center"
         variant={voted ? "secondary" : "default"}
-        onClick={votedOptionId !== undefined ? onVote : () => {
-          toast({
-            title: "You must be logged in to vote!",
-            description: "Please log in to cast your vote.",
-            variant: "destructive",
-          });
-        }}
+        onClick={
+          votedOptionId !== undefined
+            ? onVote
+            : () => {
+                toast({
+                  title: "You must be logged in to vote!",
+                  description: "Please log in to cast your vote.",
+                  variant: "destructive",
+                });
+              }
+        }
         disabled={pending || expired}
       >
-        {voted ? <CheckIcon className="w-4 h-4" strokeWidth="2.5px" /> : <CircleIcon className="w-4 h-4" strokeWidth="2.5px" />}
+        {voted ? (
+          <CheckIcon className="w-4 h-4" strokeWidth="2.5px" />
+        ) : (
+          <CircleIcon className="w-4 h-4" strokeWidth="2.5px" />
+        )}
         {voted ? "Voted" : "Vote!"}
       </Button>
     </div>
