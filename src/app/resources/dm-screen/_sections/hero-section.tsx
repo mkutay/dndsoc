@@ -37,6 +37,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ id }) => {
           <div className="flex md:hidden justify-center">
             <D20Dice size="lg" />
           </div>
+
+          <p className="text-sm md:text-base text-muted-foreground mt-20 font-quotes">
+            P.S. You can quick select from the thing-y on the bottom right corner of the screen.
+          </p>
         </div>
       </div>
     </section>

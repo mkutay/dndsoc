@@ -68,8 +68,8 @@ const NavContent = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" className="fixed bottom-4 right-4 z-50">
-          <Section className="w-5 h-5" />
+        <Button variant="default" size="lgIcon" className="fixed bottom-4 right-4 z-50 cursor-pointer">
+          <Section className="w-6 h-6" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="mr-4 flex flex-col gap-1">
@@ -81,7 +81,7 @@ const NavContent = () => {
               const element = document.getElementById(section.id);
               element?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-              window.history.pushState({}, "", `#${section.id}`);
+              window.history.replaceState({}, "", `#${section.id}`);
             }}
             className={`flex flex-row items-center gap-2 p-2 rounded-md transition-colors md:text-lg text-base
               ${
