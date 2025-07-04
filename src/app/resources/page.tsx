@@ -359,11 +359,6 @@ export default function ResourcesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
-                <div className="w-3 h-3 bg-primary/60 rounded-full animate-pulse delay-100"></div>
-                <div className="w-3 h-3 bg-primary/30 rounded-full animate-pulse delay-200"></div>
-              </div>
               <h2 className="tracking-wide text-3xl md:text-4xl font-bold mb-4 font-headings md:flex flex-none flex-row gap-2 justify-center items-center border-border border-b-4 w-fit mx-auto px-10 pb-3">
                 <GiCurlyMask className="md:h-12 md:w-12 h-8 w-8 float-left" />
                 Character Inspiration Gallery
@@ -880,11 +875,6 @@ export default function ResourcesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
-                <div className="w-3 h-3 bg-primary/60 rounded-full animate-pulse delay-100"></div>
-                <div className="w-3 h-3 bg-primary-30 rounded-full animate-pulse delay-200"></div>
-              </div>
               <h2 className="flex flex-row gap-4 text-3xl md:text-4xl font-bold mb-4 font-headings justify-center">
                 <GiDiceSixFacesThree />
                 D&D Terms & Jargon
