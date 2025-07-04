@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Login() {
+export default async function Login({ searchParams }: { searchParams: Promise<{ redirect?: string }> }) {
+  const { redirect } = await searchParams;
   return (
     <div className="flex flex-col max-w-prose">
       <TypographyH1>Sign In</TypographyH1>
@@ -26,7 +27,7 @@ export default function Login() {
         </TypographyLink>
       </TypographyParagraph>
       <div className="flex flex-col gap-2 mt-4">
-        <SignInForm />
+        <SignInForm redirect={redirect} />
       </div>
     </div>
   );

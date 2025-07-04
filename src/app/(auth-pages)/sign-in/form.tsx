@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -14,9 +15,10 @@ import { actionResultMatch } from "@/types/error-typing";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { signInAction } from "@/server/auth/sign-in";
 
-export function SignInForm() {
+export function SignInForm({ redirect }: { redirect?: string }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
@@ -34,7 +36,11 @@ export function SignInForm() {
     actionResultMatch(
       result,
       () => {
-        window.location.replace("/my");
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/my");
+        }
       },
       (error) =>
         toast({
