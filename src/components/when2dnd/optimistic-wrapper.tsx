@@ -61,7 +61,7 @@ export function OptimisticWrapper({
   pollId: string;
   dateRange: { from: Date; to: Date };
   createdAt: Date;
-  deadline?: Date;
+  deadline: Date | undefined;
   title: string;
   userVotes: {
     from: Date;
