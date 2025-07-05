@@ -149,7 +149,7 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
       body = String(extendedError.message);
     }
 
-    if (!body) {
+    if (!body || body === "undefined") {
       return null;
     }
 
