@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       achievements: {
@@ -175,7 +200,7 @@ export type Database = {
           image_uuid: string | null
           level: number
           name: string
-          player_uuid: string | null
+          player_uuid: string
           shortened: string
         }
         Insert: {
@@ -184,7 +209,7 @@ export type Database = {
           image_uuid?: string | null
           level?: number
           name?: string
-          player_uuid?: string | null
+          player_uuid: string
           shortened: string
         }
         Update: {
@@ -193,7 +218,7 @@ export type Database = {
           image_uuid?: string | null
           level?: number
           name?: string
-          player_uuid?: string | null
+          player_uuid?: string
           shortened?: string
         }
         Relationships: [
@@ -285,7 +310,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "dms_auth_user_uuid_fkey1"
+            foreignKeyName: "dms_auth_user_uuid_fkey"
             columns: ["auth_user_uuid"]
             isOneToOne: true
             referencedRelation: "users"
@@ -694,7 +719,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "roles_auth_user_uuid_fkey1"
+            foreignKeyName: "roles_auth_user_uuid_fkey"
             columns: ["auth_user_uuid"]
             isOneToOne: true
             referencedRelation: "users"
@@ -725,21 +750,21 @@ export type Database = {
       }
       votes: {
         Row: {
-          auth_user_uuid: string
+          auth_user_uuid: string | null
           created_at: string
           id: string
           option_id: string
           poll_id: string
         }
         Insert: {
-          auth_user_uuid?: string
+          auth_user_uuid?: string | null
           created_at?: string
           id?: string
           option_id: string
           poll_id: string
         }
         Update: {
-          auth_user_uuid?: string
+          auth_user_uuid?: string | null
           created_at?: string
           id?: string
           option_id?: string
@@ -747,7 +772,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "votes_auth_user_uuid_fkey"
+            foreignKeyName: "votes_auth_user_uuid_fkey1"
             columns: ["auth_user_uuid"]
             isOneToOne: false
             referencedRelation: "users"
@@ -765,6 +790,103 @@ export type Database = {
             columns: ["poll_id"]
             isOneToOne: false
             referencedRelation: "polls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      when2dnd_polls: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          date_from: string
+          date_to: string
+          deadline: string | null
+          id: string
+          title: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          date_from: string
+          date_to: string
+          deadline?: string | null
+          id?: string
+          title: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          date_from?: string
+          date_to?: string
+          deadline?: string | null
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "when2dnd_poll_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "when2dnd_poll_created_by_fkey1"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["auth_user_uuid"]
+          },
+        ]
+      }
+      when2dnd_votes: {
+        Row: {
+          auth_user_uuid: string | null
+          created_at: string
+          end: string
+          id: string
+          start: string
+          when2dnd_poll_id: string
+        }
+        Insert: {
+          auth_user_uuid?: string | null
+          created_at?: string
+          end: string
+          id?: string
+          start: string
+          when2dnd_poll_id?: string
+        }
+        Update: {
+          auth_user_uuid?: string | null
+          created_at?: string
+          end?: string
+          id?: string
+          start?: string
+          when2dnd_poll_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "when2dnd_votes_auth_user_uuid_fkey"
+            columns: ["auth_user_uuid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "when2dnd_votes_auth_user_uuid_fkey1"
+            columns: ["auth_user_uuid"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "when2dnd_votes_when2dnd_poll_id_fkey"
+            columns: ["when2dnd_poll_id"]
+            isOneToOne: false
+            referencedRelation: "when2dnd_polls"
             referencedColumns: ["id"]
           },
         ]
@@ -908,6 +1030,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       achievement_type: ["dm", "player", "character"],
