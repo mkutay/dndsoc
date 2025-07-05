@@ -4,7 +4,7 @@ import { useFieldArray, useForm, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, RotateCcw, Trash } from "lucide-react";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, startTransition } from "react";
 import type { z } from "zod";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -160,6 +160,7 @@ function DateTimeSelection({
 }
 
 export function PollVoteForm({
+  code,
   authUserUuid,
   pollId,
   dateRange,
@@ -167,7 +168,10 @@ export function PollVoteForm({
   deadline,
   title,
   votes,
+  onOptimisticUpdate,
+  onOptimisticRevert,
 }: {
+  code: string;
   authUserUuid: string;
   pollId: string;
   dateRange: { from: Date; to: Date };
@@ -177,8 +181,9 @@ export function PollVoteForm({
   votes: {
     from: Date;
     to: Date;
-    id: string;
   }[];
+  onOptimisticUpdate?: (votes: { from: Date; to: Date }[]) => void;
+  onOptimisticRevert?: () => void;
 }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
@@ -213,26 +218,42 @@ export function PollVoteForm({
 
   const onSubmit = async (values: z.infer<typeof pollVoteFormSchema>) => {
     setPending(true);
+
+    // Optimistically update the UI immediately
+    const newVotes = values.dateSelections.flatMap((selection) =>
+      selection.times.map((time) => ({
+        from: time.from,
+        to: time.to,
+      })),
+    );
+
+    startTransition(() => {
+      onOptimisticUpdate?.(newVotes);
+    });
+
     const result = await addVoteToWhen2DnDPoll(values, {
       pollId,
       authUserUuid,
+      code,
     });
     setPending(false);
 
     actionResultMatch(
       result,
-      () => {
+      () =>
         toast({
           title: "Vote submitted successfully!",
           description: "Your availability has been recorded.",
-        });
-        window.location.reload();
-      },
+        }),
       (error) => {
         toast({
           title: "Error submitting vote",
           description: error.message,
           variant: "destructive",
+        });
+        // On error, revert the optimistic update
+        startTransition(() => {
+          onOptimisticRevert?.();
         });
       },
     );

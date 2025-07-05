@@ -1,13 +1,13 @@
+import { createHash } from "crypto";
 import Link from "next/link";
 import { Edit } from "lucide-react";
 
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
-import { PollVoteForm } from "@/components/when2dnd/poll-vote-form";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
-import { VotedTime } from "@/components/when2dnd/voted-time";
+import { OptimisticWrapper } from "@/components/when2dnd/optimistic-wrapper";
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
@@ -41,27 +41,24 @@ export default async function Page({ params }: { params: Promise<{ code: string 
           </div>
         ) : null}
       </div>
-      <VotedTime
-        votes={poll.value.when2dnd_votes.map((vote) => ({
+      <OptimisticWrapper
+        code={code}
+        allVotes={poll.value.when2dnd_votes.map((vote) => ({
           from: new Date(vote.start),
           to: new Date(vote.end),
-          userUuid: vote.auth_user_uuid,
-          id: vote.id,
+          userHash: vote.auth_user_uuid ? createHash("sha256").update(vote.auth_user_uuid).digest("hex") : null,
         }))}
-      />
-      <PollVoteForm
         title={poll.value.title}
         dateRange={{ from: new Date(poll.value.date_from), to: new Date(poll.value.date_to) }}
         deadline={poll.value.deadline ? new Date(poll.value.deadline) : undefined}
         pollId={poll.value.id}
         createdAt={new Date(poll.value.created_at)}
         authUserUuid={user.value.auth_user_uuid}
-        votes={poll.value.when2dnd_votes
+        userVotes={poll.value.when2dnd_votes
           .filter((vote) => vote.auth_user_uuid === user.value.auth_user_uuid)
           .map((vote) => ({
             from: new Date(vote.start),
             to: new Date(vote.end),
-            id: vote.id,
           }))}
       />
     </div>

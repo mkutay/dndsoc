@@ -3,6 +3,7 @@
 import { errAsync, okAsync } from "neverthrow";
 import { z } from "zod";
 
+import { revalidatePath } from "next/cache";
 import { createPollFormSchema, editPollFormSchema, pollVoteFormSchema } from "@/config/when2dnd";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { parseSchema } from "@/utils/parse-schema";
@@ -53,7 +54,7 @@ type AddError = {
 
 export const addVoteToWhen2DnDPoll = async (
   values: z.infer<typeof pollVoteFormSchema>,
-  { pollId, authUserUuid }: { pollId: string; authUserUuid: string },
+  { pollId, authUserUuid, code }: { pollId: string; authUserUuid: string; code: string },
 ) =>
   resultAsyncToActionResult(
     parseSchema(pollVoteFormSchema, values)
@@ -93,5 +94,9 @@ export const addVoteToWhen2DnDPoll = async (
             ),
           ),
         ),
-      ),
+      )
+      .andThen(() => {
+        revalidatePath(`/when2dnd/${code}`);
+        return okAsync();
+      }),
   );

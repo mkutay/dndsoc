@@ -2,7 +2,6 @@
 
 import { format, startOfDay, differenceInMinutes } from "date-fns";
 import { GiArrowCluster } from "react-icons/gi";
-import { useMemo } from "react";
 
 import { TypographyHr } from "@/components/typography/blockquote";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,11 +28,10 @@ export function VotedTime({
   votes: {
     from: Date;
     to: Date;
-    userUuid: string | null;
-    id: string;
+    userHash: string | null;
   }[];
 }) {
-  const dayAvailability = useMemo(() => {
+  const dayAvailability = (() => {
     if (votes.length === 0) return [];
 
     // Group votes by day
@@ -58,7 +56,7 @@ export function VotedTime({
         const timeSlots = mergeTimeSlots(dayVotes);
 
         // Get unique participants for this day
-        const uniqueParticipants = new Set(dayVotes.map((vote) => vote.userUuid).filter(Boolean)).size;
+        const uniqueParticipants = new Set(dayVotes.map((vote) => vote.userHash).filter(Boolean)).size;
 
         return {
           date,
@@ -69,12 +67,12 @@ export function VotedTime({
       .sort((a, b) => a.date.getTime() - b.date.getTime());
 
     return availability;
-  }, [votes]);
+  })();
 
-  const totalUniqueParticipants = useMemo(() => {
-    const uniqueIds = new Set(votes.map((vote) => vote.userUuid).filter(Boolean));
+  const totalUniqueParticipants = (() => {
+    const uniqueIds = new Set(votes.map((vote) => vote.userHash).filter(Boolean));
     return uniqueIds.size;
-  }, [votes]);
+  })();
 
   if (votes.length === 0) {
     return (
@@ -198,13 +196,13 @@ function TimeSlotBadge({ slot, totalParticipants }: { slot: TimeSlot; totalParti
 }
 
 // Helper function to merge overlapping time slots and count participants
-function mergeTimeSlots(votes: { from: Date; to: Date; userUuid: string | null; id: string }[]): TimeSlot[] {
+function mergeTimeSlots(votes: { from: Date; to: Date; userHash: string | null }[]): TimeSlot[] {
   if (votes.length === 0) return [];
 
   // Get all unique time points (start and end times)
   const timePoints = new Set<number>();
   votes.forEach((vote) => {
-    if (vote.userUuid) {
+    if (vote.userHash) {
       timePoints.add(vote.from.getTime());
       timePoints.add(vote.to.getTime());
     }
@@ -223,8 +221,8 @@ function mergeTimeSlots(votes: { from: Date; to: Date; userUuid: string | null; 
     // Count unique participants available during this interval
     const availableUsers = new Set(
       votes
-        .filter((vote) => vote.userUuid && vote.from <= intervalStart && vote.to >= intervalEnd)
-        .map((vote) => vote.userUuid),
+        .filter((vote) => vote.userHash && vote.from <= intervalStart && vote.to >= intervalEnd)
+        .map((vote) => vote.userHash),
     );
     const participants = availableUsers.size;
 
