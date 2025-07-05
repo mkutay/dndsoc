@@ -4,7 +4,7 @@ import { useFieldArray, useForm, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, RotateCcw, Trash } from "lucide-react";
 import { format } from "date-fns";
-import { useState, startTransition } from "react";
+import { useState, startTransition, useRef, useEffect, useCallback } from "react";
 import type { z } from "zod";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,12 +26,14 @@ function DateTimeSelection({
   date,
   onRemoveDate,
   pending,
+  onOptimisticUpdate,
 }: {
   control: Control<z.infer<typeof pollVoteFormSchema>>;
   dateIndex: number;
   date: Date;
   onRemoveDate: () => void;
   pending: boolean;
+  onOptimisticUpdate?: () => void;
 }) {
   const {
     fields: timeFields,
@@ -53,6 +55,9 @@ function DateTimeSelection({
       from: startTime,
       to: endTime,
     });
+
+    // Trigger optimistic update after adding time slot
+    setTimeout(() => onOptimisticUpdate?.(), 0);
   };
 
   return (
@@ -92,6 +97,8 @@ function DateTimeSelection({
                               from: newDate,
                               to: field.value.to,
                             });
+                            // Trigger optimistic update after time change
+                            setTimeout(() => onOptimisticUpdate?.(), 0);
                           }
                         }}
                         className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
@@ -116,6 +123,8 @@ function DateTimeSelection({
                               from: field.value.from,
                               to: newDate,
                             });
+                            // Trigger optimistic update after time change
+                            setTimeout(() => onOptimisticUpdate?.(), 0);
                           }
                         }}
                         className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
@@ -132,7 +141,11 @@ function DateTimeSelection({
             type="button"
             variant="destructive"
             size="icon"
-            onClick={() => timeRemove(timeIndex)}
+            onClick={() => {
+              timeRemove(timeIndex);
+              // Trigger optimistic update after removing time slot
+              setTimeout(() => onOptimisticUpdate?.(), 0);
+            }}
             disabled={pending}
           >
             <Trash className="h-[18px] w-[18px]" />
@@ -187,6 +200,7 @@ export function PollVoteForm({
 }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const hasInitialized = useRef(false);
 
   const form = useForm<z.infer<typeof pollVoteFormSchema>>({
     resolver: zodResolver(pollVoteFormSchema),
@@ -215,6 +229,29 @@ export function PollVoteForm({
     control: form.control,
     name: "dateSelections",
   });
+
+  // Helper function to get current votes from form and trigger optimistic update
+  const triggerOptimisticUpdateFromForm = useCallback(() => {
+    const currentValues = form.getValues();
+    const currentVotes = currentValues.dateSelections.flatMap((selection) =>
+      selection.times.map((time) => ({
+        from: time.from,
+        to: time.to,
+      })),
+    );
+
+    startTransition(() => {
+      onOptimisticUpdate?.(currentVotes);
+    });
+  }, [form, onOptimisticUpdate]);
+
+  // Initialize optimistic state on mount
+  useEffect(() => {
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      triggerOptimisticUpdateFromForm();
+    }
+  }, [triggerOptimisticUpdateFromForm]);
 
   const onSubmit = async (values: z.infer<typeof pollVoteFormSchema>) => {
     setPending(true);
@@ -262,6 +299,10 @@ export function PollVoteForm({
   const onSelectionChange = (selections: Date[] | undefined) => {
     if (!selections) {
       dateSelectionReplace([]);
+      // Optimistically update to show no votes for this user
+      startTransition(() => {
+        onOptimisticUpdate?.([]);
+      });
       return;
     }
 
@@ -288,6 +329,18 @@ export function PollVoteForm({
       });
 
     dateSelectionReplace(newDateSelections);
+
+    // Optimistically update the votes based on current selections
+    const optimisticVotes = newDateSelections.flatMap((selection) =>
+      selection.times.map((time) => ({
+        from: time.from,
+        to: time.to,
+      })),
+    );
+
+    startTransition(() => {
+      onOptimisticUpdate?.(optimisticVotes);
+    });
   };
 
   return (
@@ -347,8 +400,11 @@ export function PollVoteForm({
                       onRemoveDate={() => {
                         const newSelections = dateSelectionFields.filter((_, i) => i !== index);
                         dateSelectionReplace(newSelections);
+                        // Trigger optimistic update after removing a date
+                        setTimeout(() => triggerOptimisticUpdateFromForm(), 0);
                       }}
                       pending={pending}
+                      onOptimisticUpdate={triggerOptimisticUpdateFromForm}
                     />
                   ))}
                 </div>
@@ -366,6 +422,11 @@ export function PollVoteForm({
               disabled={pending}
               onClick={() => {
                 form.reset();
+                // Trigger optimistic update to revert to original votes after reset
+                startTransition(() => {
+                  const originalVotes = votes;
+                  onOptimisticUpdate?.(originalVotes);
+                });
               }}
               className="ml-2"
             >

@@ -1,7 +1,7 @@
 "use client";
 
+import { createHash } from "crypto";
 import { useOptimistic } from "react";
-
 import { PollVoteForm } from "./poll-vote-form";
 import { VotedTime } from "./voted-time";
 
@@ -27,7 +27,7 @@ function optimisticReducer(state: Vote[], action: OptimisticAction): Vote[] {
       // Remove existing votes from this user
       const filteredVotes = state.filter((vote) => vote.userHash !== action.userHash);
 
-      // Add new votes from this user
+      // Add new votes from this user (could be empty array for unselecting)
       const newVotes = action.votes.map((vote) => ({
         from: vote.from,
         to: vote.to,
@@ -41,6 +41,9 @@ function optimisticReducer(state: Vote[], action: OptimisticAction): Vote[] {
       if (action.originalVotes) {
         return action.originalVotes;
       }
+      return state;
+
+    default:
       return state;
   }
 }
@@ -75,11 +78,14 @@ export function OptimisticWrapper({
 }) {
   const [optimisticVotes, addOptimisticVote] = useOptimistic(allVotes, optimisticReducer);
 
+  // Hash the authUserUuid to match the userHash format in allVotes
+  const hashedUserUuid = createHash("sha256").update(authUserUuid).digest("hex");
+
   const handleOptimisticUpdate = (votes: { from: Date; to: Date }[]) => {
     addOptimisticVote({
       type: "ADD_VOTES",
       votes,
-      userHash: authUserUuid,
+      userHash: hashedUserUuid,
     });
   };
 
@@ -87,7 +93,7 @@ export function OptimisticWrapper({
     addOptimisticVote({
       type: "REVERT_VOTES",
       votes: [],
-      userHash: authUserUuid,
+      userHash: hashedUserUuid,
       originalVotes: allVotes,
     });
   };
