@@ -88,6 +88,7 @@ export const addVoteToWhen2DnDPoll = async (
             values.dateSelections.flatMap((selection) =>
               selection.times.map((time) => ({
                 when2dnd_poll_id: pollId,
+                auth_user_uuid: authUserUuid,
                 start: time.from.toISOString(),
                 end: time.to.toISOString(),
               })),
