@@ -14,15 +14,15 @@ export default async function Page({ params }: { params: Promise<{ code: string 
     return user.error.code === "NOT_LOGGED_IN" ? forbidden() : <ErrorPage error={user.error} />;
   }
 
-  const isDM = user.value.role === "dm" || user.value.role === "admin";
-  if (!isDM) {
-    return forbidden();
-  }
-
   const poll = await getWhen2DnDPollFromCode(code);
   if (poll.isErr()) return <ErrorPage error={poll.error} />;
 
-  if (poll.value.created_by !== user.value.auth_user_uuid) return forbidden();
+  const isDM =
+    (user.value.role === "dm" && poll.value.created_by === user.value.auth_user_uuid) || user.value.role === "admin";
+
+  if (!isDM) {
+    return forbidden();
+  }
 
   return (
     <div className="lg:max-w-6xl max-w-prose mx-auto px-4 my-12">
