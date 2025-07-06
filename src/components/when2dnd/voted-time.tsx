@@ -151,7 +151,9 @@ function DayAvailabilityCard({ day, totalParticipants }: { day: DayAvailability;
   return (
     <div className="border-l-4 border-l-primary border px-5 py-4 rounded-lg">
       <div className="flex flex-wrap gap-1 items-center justify-between">
-        <CardTitle className="text-2xl">{format(day.date, "EEEE, MMMM do")}</CardTitle>
+        <TypographyH3 className="text-card-foreground mb-2 flex gap-2 font-headings">
+          {format(day.date, "EEEE, MMMM do")}
+        </TypographyH3>
         <div className="flex items-center gap-2">
           <Badge variant={availabilityPercentage === 100 ? "default" : "secondary"}>
             {day.totalParticipants}/{totalParticipants} available
