@@ -12,7 +12,7 @@ export function TypographyH2({ children, className }: { children: React.ReactNod
   return (
     <h2
       className={cn(
-        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-wide first:mt-0 font-headings",
+        "scroll-m-20 border-b border-border pb-2 text-3xl font-semibold tracking-wide first:mt-0 font-headings",
         className,
       )}
     >
