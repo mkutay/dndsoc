@@ -40,7 +40,11 @@ export const signUpFormSchema = z.object({
     .startsWith("K", "K-number must start with 'K'."),
   username: usernameSchema,
   name: nameSchema,
-  email: emailSchema.endsWith("@kcl.ac.uk", "Email must end with '@kcl.ac.uk'."),
+  email: emailSchema.refine(
+    // For testing purposes:
+    (email) => email.endsWith("@kcl.ac.uk") || email.endsWith("@mkutay.dev"),
+    "Email must end with '@kcl.ac.uk'.",
+  ),
   password: passwordSchema,
 });
 
