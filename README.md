@@ -26,9 +26,15 @@ It provides a centralised platform for:
 ### Prerequisites
 
 - [Bun](https://bun.sh/) (recommended) or Node.js 18+
-- Supabase CLI
+- Docker; you can use [Docker Desktop](https://www.docker.com/products/docker-desktop) or [Orb](https://orbstack.dev)
 
 ### Development Setup
+
+0. **Start Docker**
+   Make sure Docker is running on your machine. If you're using Orb, you can start it with:
+   ```bash
+   orb start
+   ```
 
 1. **Clone the repository**
    ```bash
@@ -43,8 +49,8 @@ It provides a centralised platform for:
 
 3. **Setup DB**
    ```bash
-   supabase start
-   supabase db reset --local
+   bunx supabase start
+   bunx supabase db reset --local
    ```
 
    This starts up the Supabase local server with the migrations under
@@ -72,6 +78,16 @@ It provides a centralised platform for:
    
    ```bash
    BUILDING=true bun run build
+   ```
+
+7. **Run the production server**
+   ```bash
+   bun start
+   ```
+
+8. **Close the Supabase server**
+   ```bash
+   bunx supabase stop
    ```
 
 ## Architecture & Code Quality
@@ -125,7 +141,6 @@ src/
 ├── components/          # Reusable UI components (your spell components)
 │   ├── ui/              # Base UI primitives (the fundamental elements)
 │   ├── typography/      # Typography components (the scribes' tools)
-│   └── [feature]/       # Feature-specific components (specialized gear)
 ├── config/              # Configuration and schemas (the rule books)
 ├── fonts/               # Custom D&D themed fonts (ancient scripts)
 ├── lib/                 # Client-side database operations (your utility spells)
@@ -142,7 +157,7 @@ If you have changed the schema of the DB, then make sure to run the following co
 add the new changes into the repo. 
 
 ```bash
-supabase db diff -f add_new_feature
+bunx supabase db diff -f add_new_feature
 ```
 
 After that, you are welcome to create a PR, where I'll review your changes.
