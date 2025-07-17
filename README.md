@@ -31,23 +31,24 @@ It provides a centralised platform for:
 ### Development Setup
 
 0. **Start Docker**
+
    Make sure Docker is running on your machine. If you're using Orb, you can start it with:
    ```bash
    orb start
    ```
 
-1. **Clone the repository**
+2. **Clone the repository**
    ```bash
    git clone https://github.com/mkutay/dndsoc.git
    cd dndsoc
    ```
 
-2. **Install dependencies**
+3. **Install dependencies**
    ```bash
    bun install
    ```
 
-3. **Setup DB**
+4. **Setup DB**
    ```bash
    bunx supabase start
    bunx supabase db reset --local
@@ -59,7 +60,7 @@ It provides a centralised platform for:
    You can sign in with three accounts to test the system out: `admin@kcl.ac.uk`, `player@kcl.ac.uk`,
    and `dm@kcl.ac.uk`, with the password of `123456`. Obviously, this is just sample information and is not _real_.
 
-4. **Environment Variables**
+5. **Environment Variables**
 
    Populate `.env.example` file in `.env.local` with the information given by the `supabase start` command.
 
@@ -67,12 +68,12 @@ It provides a centralised platform for:
    cp .env.example .env.local
    ```
 
-5. **Start the development server**
+6. **Start the development server**
    ```bash
    bun dev
    ```
 
-6. **Build for production** 
+7. **Build for production** 
 
    Test the types and run the linter to check for errors overall.
    
@@ -80,12 +81,12 @@ It provides a centralised platform for:
    bun run build
    ```
 
-7. **Run the production server**
+8. **Run the production server**
    ```bash
    bun start
    ```
 
-8. **Close the Supabase server**
+9. **Close the Supabase server**
    ```bash
    bunx supabase stop
    ```
