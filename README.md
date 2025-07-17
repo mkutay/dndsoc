@@ -77,7 +77,7 @@ It provides a centralised platform for:
    Test the types and run the linter to check for errors overall.
    
    ```bash
-   BUILDING=true bun run build
+   bun run build
    ```
 
 7. **Run the production server**
