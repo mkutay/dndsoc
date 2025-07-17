@@ -26,7 +26,7 @@ export const exchangeCodeForSession = (code: string) =>
 
 type GetUserError = {
   message: string;
-  code: "DATABASE_ERROR" | "USER_NOT_FOUND";
+  code: "DATABASE_ERROR" | "NOT_LOGGED_IN";
 };
 
 export const getUser = () =>
@@ -35,10 +35,15 @@ export const getUser = () =>
     .andThen((response) =>
       !response.error
         ? okAsync(response.data)
-        : errAsync({
-            message: "Failed to get user (in supabase): " + response.error.message,
-            code: "DATABASE_ERROR",
-          } as GetUserError),
+        : response.error.message.includes("session missing")
+          ? errAsync({
+              message: "Failed to get user (in supabase): " + response.error.message,
+              code: "NOT_LOGGED_IN",
+            } as GetUserError)
+          : errAsync({
+              message: "Failed to get user (in supabase): " + response.error.message,
+              code: "DATABASE_ERROR",
+            } as GetUserError),
     )
     .map((data) => data.user);
 
