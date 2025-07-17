@@ -4,8 +4,6 @@ import { SignInForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Sign In To Your Account",
   description: "Sign in to your account to access your profile and settings.",

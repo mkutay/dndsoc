@@ -6,8 +6,6 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getUser } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: "Reset Password",
   description: "Reset your password to access your account.",
