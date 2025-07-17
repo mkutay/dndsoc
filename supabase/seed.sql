@@ -19,6 +19,12 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Data for Name: audit_log_entries; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
+--
+
+
+
+--
 -- Data for Name: flow_state; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
@@ -29,9 +35,9 @@ SET row_security = off;
 --
 
 INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") VALUES
-	('00000000-0000-0000-0000-000000000000', '261d7c3d-2110-4817-9cf4-216d9f91c11c', 'authenticated', 'authenticated', 'dm@kcl.ac.uk', '$2a$10$SK.O5Y6x1CdWTHz7jm25xuBpyrcSviepZvcjc2/4z000460/6el.m', '2025-06-14 18:56:31.80452+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-06-14 18:57:04.957522+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "261d7c3d-2110-4817-9cf4-216d9f91c11c", "name": "DM", "email": "dm@kcl.ac.uk", "knumber": "K87654321", "username": "u-dm", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:56:31.80221+00', '2025-06-14 18:57:04.958245+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'authenticated', 'authenticated', 'admin@kcl.ac.uk', '$2a$10$OWTk1knl5PmUzSBYPa3L4.7Cd7cwZEEDSwbyaaWqAkjf5iqlQmkVy', '2025-06-14 18:48:31.935074+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-06-14 18:50:47.395362+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc", "name": "Admin", "email": "admin@kcl.ac.uk", "knumber": "K12345678", "username": "u-admin", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:48:31.931167+00', '2025-06-14 18:50:47.396254+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '8925dfd6-2ef1-4311-933a-b9037d612649', 'authenticated', 'authenticated', 'player@kcl.ac.uk', '$2a$10$cSNlg209lufdMx1Fjlo2ZuVoUmkLOfYVh1XV5.pg78sS/E8Aodq0O', '2025-06-14 18:57:46.924803+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-06-14 18:57:56.493258+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "8925dfd6-2ef1-4311-933a-b9037d612649", "name": "Player", "email": "player@kcl.ac.uk", "knumber": "K98765432", "username": "u-player", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:57:46.922871+00', '2025-06-14 18:57:56.494151+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
+	('00000000-0000-0000-0000-000000000000', '261d7c3d-2110-4817-9cf4-216d9f91c11c', 'authenticated', 'authenticated', 'dm@kcl.ac.uk', '$2a$10$SK.O5Y6x1CdWTHz7jm25xuBpyrcSviepZvcjc2/4z000460/6el.m', '2025-06-14 18:56:31.80452+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-17 15:52:59.144755+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "261d7c3d-2110-4817-9cf4-216d9f91c11c", "name": "DM", "email": "dm@kcl.ac.uk", "knumber": "K87654321", "username": "u-dm", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:56:31.80221+00', '2025-07-17 15:52:59.145636+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'authenticated', 'authenticated', 'admin@kcl.ac.uk', '$2a$10$OWTk1knl5PmUzSBYPa3L4.7Cd7cwZEEDSwbyaaWqAkjf5iqlQmkVy', '2025-06-14 18:48:31.935074+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-17 16:11:34.663362+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc", "name": "Admin", "email": "admin@kcl.ac.uk", "knumber": "K12345678", "username": "u-admin", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:48:31.931167+00', '2025-07-17 16:11:34.664189+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '8925dfd6-2ef1-4311-933a-b9037d612649', 'authenticated', 'authenticated', 'player@kcl.ac.uk', '$2a$10$cSNlg209lufdMx1Fjlo2ZuVoUmkLOfYVh1XV5.pg78sS/E8Aodq0O', '2025-06-14 18:57:46.924803+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-17 16:18:26.10167+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "8925dfd6-2ef1-4311-933a-b9037d612649", "name": "Player", "email": "player@kcl.ac.uk", "knumber": "K98765432", "username": "u-player", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:57:46.922871+00', '2025-07-17 18:17:34.054788+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
 
 --
@@ -54,18 +60,14 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 -- Data for Name: sessions; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "factor_id", "aal", "not_after", "refreshed_at", "user_agent", "ip", "tag") VALUES
-	('66030b08-9134-4d0c-9694-51866313e425', '8925dfd6-2ef1-4311-933a-b9037d612649', '2025-06-14 18:57:46.926384+00', '2025-06-14 18:57:46.926384+00', NULL, 'aal1', NULL, NULL, 'node', '192.168.65.1', NULL),
-	('97c7124f-6e47-4685-a200-326b055b5c40', '8925dfd6-2ef1-4311-933a-b9037d612649', '2025-06-14 18:57:56.493283+00', '2025-06-14 18:57:56.493283+00', NULL, 'aal1', NULL, NULL, 'node', '192.168.65.1', NULL);
+
 
 
 --
 -- Data for Name: mfa_amr_claims; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "authentication_method", "id") VALUES
-	('66030b08-9134-4d0c-9694-51866313e425', '2025-06-14 18:57:46.927183+00', '2025-06-14 18:57:46.927183+00', 'password', '9b4b3fa4-7c61-428a-ad49-dd1c98b401cb'),
-	('97c7124f-6e47-4685-a200-326b055b5c40', '2025-06-14 18:57:56.49427+00', '2025-06-14 18:57:56.49427+00', 'password', '04356607-0acf-4a67-99be-2dcf360c0621');
+
 
 
 --
@@ -90,9 +92,6 @@ INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "
 -- Data for Name: refresh_tokens; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") VALUES
-	('00000000-0000-0000-0000-000000000000', 358, 'rhmfbcldraxl', '8925dfd6-2ef1-4311-933a-b9037d612649', false, '2025-06-14 18:57:46.926671+00', '2025-06-14 18:57:46.926671+00', NULL, '66030b08-9134-4d0c-9694-51866313e425'),
-	('00000000-0000-0000-0000-000000000000', 359, '463zmxcp23ya', '8925dfd6-2ef1-4311-933a-b9037d612649', false, '2025-06-14 18:57:56.493657+00', '2025-06-14 18:57:56.493657+00', NULL, '97c7124f-6e47-4685-a200-326b055b5c40');
 
 
 --
@@ -293,9 +292,33 @@ INSERT INTO "public"."campaigns" ("id", "name", "description", "start_date", "en
 
 
 --
+-- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id", "type") VALUES
+	('profile-images', 'profile-images', NULL, '2025-07-17 18:34:37.80411+00', '2025-07-17 18:34:37.80411+00', true, false, 31457280, '{image/*}', NULL, 'STANDARD');
+
+
+--
+-- Data for Name: objects; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+INSERT INTO "storage"."objects" ("id", "bucket_id", "name", "owner", "created_at", "updated_at", "last_accessed_at", "metadata", "version", "owner_id", "user_metadata", "level") VALUES
+	('d4b45746-f0c8-462d-b53a-7404862b6034', 'profile-images', 'character.png', NULL, '2025-07-17 18:46:12.658554+00', '2025-07-17 18:49:31.561726+00', '2025-07-17 18:46:12.658554+00', '{"eTag": "\"afad4e76753a428cee36bce026168d45\"", "size": 34532, "mimetype": "image/png", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.553Z", "contentLength": 34532, "httpStatusCode": 200}', 'd3cd86f5-40a4-48e9-85c6-201cba2b948a', NULL, '{}', 1),
+	('513bb4b3-cba1-456f-8e19-c40797625fee', 'profile-images', 'player.jpg', NULL, '2025-07-17 18:46:12.668287+00', '2025-07-17 18:49:31.573543+00', '2025-07-17 18:46:12.668287+00', '{"eTag": "\"4f4f49808898ffa4a7d1a066f0b00744\"", "size": 508839, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.560Z", "contentLength": 508839, "httpStatusCode": 200}', '1fb1421e-2f3f-4fe6-a5ad-c094f26ac644', NULL, '{}', 1),
+	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'profile-images', 'dm.jpg', NULL, '2025-07-17 18:46:12.673913+00', '2025-07-17 18:49:31.584914+00', '2025-07-17 18:46:12.673913+00', '{"eTag": "\"480349c6591e906bf073cd330940bf61\"", "size": 1151404, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.561Z", "contentLength": 1151404, "httpStatusCode": 200}', 'de376ff0-b8d4-4da6-abd3-a8bf1fa1a9cc', NULL, '{}', 1),
+	('8516f20e-c458-491a-aff4-3816d44a64d3', 'profile-images', 'party.jpg', NULL, '2025-07-17 18:49:31.60679+00', '2025-07-17 18:49:31.60679+00', '2025-07-17 18:49:31.60679+00', '{"eTag": "\"50f75a54e63004df26d9e2e56b86a7bb\"", "size": 1849824, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.560Z", "contentLength": 1849824, "httpStatusCode": 200}', '1969328c-6670-487c-b853-30f69da305f7', NULL, '{}', 1);
+
+
+--
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."images" ("id", "name") VALUES
+	('513bb4b3-cba1-456f-8e19-c40797625fee', 'player.jpg'),
+	('d4b45746-f0c8-462d-b53a-7404862b6034', 'character.png'),
+	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'dm.jpg'),
+	('8516f20e-c458-491a-aff4-3816d44a64d3', 'party.jpg');
 
 
 --
@@ -325,7 +348,7 @@ INSERT INTO "public"."roles" ("auth_user_uuid", "role") VALUES
 INSERT INTO "public"."players" ("auth_user_uuid", "level", "id", "about", "image_uuid") VALUES
 	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 1, '535577b6-bb06-4508-938a-2c4e81c0903b', 'This site is so cool, huh!', NULL),
 	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 1, '6b9acd55-90d6-4699-b544-cce825a62e50', 'Bird person.', NULL),
-	('8925dfd6-2ef1-4311-933a-b9037d612649', 1, '8f42867b-912f-4833-839b-d237470f9983', 'Hi! I’m Kutay (he/him), a four-year D&D vet who loves deep role-play, tactical combat, and crafting homebrew lore. Reliable, communicative, and always ready to dive into the next adventure!', NULL);
+	('8925dfd6-2ef1-4311-933a-b9037d612649', 1, '8f42867b-912f-4833-839b-d237470f9983', 'Hi! I’m Kutay (he/him), a four-year D&D vet who loves deep role-play, tactical combat, and crafting homebrew lore. Reliable, communicative, and always ready to dive into the next adventure!', '513bb4b3-cba1-456f-8e19-c40797625fee');
 
 
 --
@@ -334,9 +357,9 @@ INSERT INTO "public"."players" ("auth_user_uuid", "level", "id", "about", "image
 
 INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shortened", "about", "image_uuid") VALUES
 	('6d38cbea-8f5e-47c5-8381-4e1172717804', '8f42867b-912f-4833-839b-d237470f9983', 'Giant Lizard', 1, 'giant', 'Testing...', NULL),
-	('c81fa02c-c726-49ae-9d47-6582db4e2e0f', '8f42867b-912f-4833-839b-d237470f9983', 'Lizzie', 20, 'lizzie', 'WOO it works. EZ', NULL),
-	('923e4548-143e-4285-bb3d-b298231919bd', '8f42867b-912f-4833-839b-d237470f9983', 'Ulry Flutemane', 20, 'ulry', 'Ulry Flutemane, a veteran of the Silver Legion, wields his ancestral greatsword and Lionheart Stance to sway the tide of any battle. Clad in gleaming plate and crowned with golden hair, he roams the realm to defend the helpless and test his steel against worthy foes.', NULL),
-	('4a20df58-e808-4646-96f7-b89978db36b5', '6b9acd55-90d6-4699-b544-cce825a62e50', 'Pluviam', 2, 'pluviam', 'I am an amazing half orc. I help everyone in need.', NULL);
+	('4a20df58-e808-4646-96f7-b89978db36b5', '6b9acd55-90d6-4699-b544-cce825a62e50', 'Pluviam', 2, 'pluviam', 'I am an amazing half orc. I help everyone in need.', NULL),
+	('923e4548-143e-4285-bb3d-b298231919bd', '8f42867b-912f-4833-839b-d237470f9983', 'Ulry Flutemane', 20, 'ulry', 'Ulry Flutemane, a veteran of the Silver Legion, wields his ancestral greatsword and Lionheart Stance to sway the tide of any battle. Clad in gleaming plate and crowned with golden hair, he roams the realm to defend the helpless and test his steel against worthy foes.', 'd4b45746-f0c8-462d-b53a-7404862b6034'),
+	('c81fa02c-c726-49ae-9d47-6582db4e2e0f', '8f42867b-912f-4833-839b-d237470f9983', 'Lizzie', 20, 'lizzie', 'WOO it works. EZ', 'd4b45746-f0c8-462d-b53a-7404862b6034');
 
 
 --
@@ -373,7 +396,7 @@ INSERT INTO "public"."character_class" ("character_id", "class_id") VALUES
 INSERT INTO "public"."parties" ("id", "name", "shortened", "level", "about", "image_uuid") VALUES
 	('3ca41630-fcc5-498b-ad54-353405f3160b', 'The Wizardries', 'the-wizardries', 1, '', NULL),
 	('83f7489c-5594-4c62-8cc7-3c10fc383d44', 'Dragon Slayers', 'dragon-slayers', 1, 'WHATEVER', NULL),
-	('7b72e056-d45e-4854-889d-345dbafd01c1', 'Two and a Half Man Party', 'two-and-a-half-man-party', 1, 'Two and a Half Man Party unites the stalwart swordsman Eamon Underwood, the bookish arcanist Corwin Ashweave and the half-elven bard Aedan Silverstring in a trio bound by coin, camaraderie and a taste for mischief, carving their legend across the realms—one daring misadventure (and inevitable tavern brawl) at a time.', NULL);
+	('7b72e056-d45e-4854-889d-345dbafd01c1', 'Two and a Half Man Party', 'two-and-a-half-man-party', 1, 'Two and a Half Man Party unites the stalwart swordsman Eamon Underwood, the bookish arcanist Corwin Ashweave and the half-elven bard Aedan Silverstring in a trio bound by coin, camaraderie and a taste for mischief, carving their legend across the realms—one daring misadventure (and inevitable tavern brawl) at a time.', '8516f20e-c458-491a-aff4-3816d44a64d3');
 
 
 --
@@ -422,7 +445,7 @@ INSERT INTO "public"."character_race" ("character_id", "race_id") VALUES
 
 INSERT INTO "public"."dms" ("auth_user_uuid", "level", "id", "about", "image_uuid") VALUES
 	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 1, '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'hello! THIS IS ME THE ADMIN', NULL),
-	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 20, '8913c906-bbb1-426a-a9ce-ef9134fb828f', 'An admin, a DM.', NULL);
+	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 20, '8913c906-bbb1-426a-a9ce-ef9134fb828f', 'An admin, a DM.', 'ff8ea5e5-472f-4c10-a5df-1741a9b5782b');
 
 
 --
@@ -523,8 +546,18 @@ INSERT INTO "public"."votes" ("option_id", "auth_user_uuid", "created_at", "poll
 	('5e454636-2b76-486b-b338-f3a0d89bf6e3', '8925dfd6-2ef1-4311-933a-b9037d612649', '2025-06-14 11:31:29.946549+00', '6d9215bd-fa2d-4115-bf60-90dbc0654602', '12a5eeaf-b700-4d71-9f90-8aec7b022f1d');
 
 
+--
+-- Data for Name: when2dnd_polls; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 INSERT INTO "public"."when2dnd_polls" ("id", "created_at", "created_by", "deadline", "code", "date_from", "date_to", "title") VALUES
-	('4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-04 14:53:36.117348+00', '261d7c3d-2110-4817-9cf4-216d9f91c11c', null, 'abcd-efgh-jklm-nopq', '2025-07-15 21:00:00+00', '2025-07-24 20:59:59.999+00', '123');
+	('4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-04 14:53:36.117348+00', '261d7c3d-2110-4817-9cf4-216d9f91c11c', NULL, 'abcd-efgh-jklm-nopq', '2025-07-15 21:00:00+00', '2025-07-24 20:59:59.999+00', '123'),
+	('6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-17 13:23:40.331735+00', '261d7c3d-2110-4817-9cf4-216d9f91c11c', '2025-07-23 21:00:00', '3j2u-3t53-6u1c-3b6r', '2025-07-16 21:00:00+00', '2025-08-02 20:59:59.999+00', 'Planning Session');
+
+
+--
+-- Data for Name: when2dnd_votes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
 INSERT INTO "public"."when2dnd_votes" ("id", "created_at", "auth_user_uuid", "when2dnd_poll_id", "start", "end") VALUES
 	('0de418c8-74d1-4ba2-b0cb-11cec47c9bf4', '2025-07-05 13:32:06.658461+00', '261d7c3d-2110-4817-9cf4-216d9f91c11c', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-19 14:01:00+00', '2025-07-19 15:00:00+00'),
@@ -532,14 +565,67 @@ INSERT INTO "public"."when2dnd_votes" ("id", "created_at", "auth_user_uuid", "wh
 	('3ec932b1-14e2-4c95-866e-360316f18fa2', '2025-07-05 13:32:06.658461+00', '261d7c3d-2110-4817-9cf4-216d9f91c11c', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-19 06:00:00+00', '2025-07-19 14:00:00+00'),
 	('75f686c5-b239-448f-9628-19823c7968b0', '2025-07-05 13:45:04.130298+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-19 12:00:00+00', '2025-07-19 14:00:00+00'),
 	('801f63e6-3ece-4d03-a011-e87daaa18482', '2025-07-05 13:45:04.130298+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-24 06:00:00+00', '2025-07-24 07:00:00+00'),
-	('e3389de5-de5a-471d-82d8-6f228bfdc345', '2025-07-05 13:45:04.130298+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-24 09:00:00+00', '2025-07-24 14:00:00+00');
+	('e3389de5-de5a-471d-82d8-6f228bfdc345', '2025-07-05 13:45:04.130298+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '4c131199-196a-476a-83ea-4ebe1c28a25a', '2025-07-24 09:00:00+00', '2025-07-24 14:00:00+00'),
+	('2339af79-42c9-4207-ab41-1665216ea128', '2025-07-17 16:18:09.2072+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-26 06:00:00+00', '2025-07-26 07:00:00+00'),
+	('3df230dc-783d-4ba5-a210-bc6c3bfc34ac', '2025-07-17 16:18:09.2072+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-26 07:00:00+00', '2025-07-26 14:00:00+00'),
+	('f21f2ac4-e03b-4814-9ec3-a97ebdd72954', '2025-07-17 16:18:37.236029+00', '8925dfd6-2ef1-4311-933a-b9037d612649', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-25 06:00:00+00', '2025-07-25 14:00:00+00'),
+	('d9ca3b32-2259-4694-86c3-4dd97e283bf1', '2025-07-17 16:18:37.236029+00', '8925dfd6-2ef1-4311-933a-b9037d612649', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-26 06:00:00+00', '2025-07-26 14:00:00+00');
+
+
+--
+-- Data for Name: buckets_analytics; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: iceberg_namespaces; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: iceberg_tables; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: prefixes; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: s3_multipart_uploads; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: s3_multipart_uploads_parts; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
+--
+
+
+
+--
+-- Data for Name: hooks; Type: TABLE DATA; Schema: supabase_functions; Owner: supabase_functions_admin
+--
+
 
 
 --
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 359, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 405, true);
+
+
+--
+-- Name: hooks_id_seq; Type: SEQUENCE SET; Schema: supabase_functions; Owner: supabase_functions_admin
+--
+
+SELECT pg_catalog.setval('"supabase_functions"."hooks_id_seq"', 1, false);
 
 
 --
