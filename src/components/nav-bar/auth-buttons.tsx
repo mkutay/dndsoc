@@ -3,19 +3,13 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { signOutAction } from "@/server/auth/sign-out";
+import { useAuth } from "@/hooks/use-auth";
 
-export function AuthButtons({ loggedIn, setLoggedIn }: { loggedIn: boolean; setLoggedIn: (value: boolean) => void }) {
-  return loggedIn ? (
-    <Button
-      variant="outline"
-      type="submit"
-      size="sm"
-      onClick={async () => {
-        setLoggedIn(false);
-        await signOutAction();
-      }}
-    >
+export function AuthButtons() {
+  const { isLoggedIn, signOut } = useAuth();
+
+  return isLoggedIn ? (
+    <Button variant="outline" type="submit" size="sm" onClick={signOut} className="cursor-pointer">
       Sign out
     </Button>
   ) : (

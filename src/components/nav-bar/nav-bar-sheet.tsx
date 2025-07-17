@@ -8,19 +8,19 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Button } from "@/components/ui/button";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { siteConfig } from "@/config/site";
-import { signOutAction } from "@/server/auth/sign-out";
+import { useAuth } from "@/hooks/use-auth";
 
-export function NavBarSheet({ loggedIn, setLoggedIn }: { loggedIn: boolean; setLoggedIn: (value: boolean) => void }) {
+export function NavBarSheet() {
   const [open, setOpen] = useState(false);
+  const { isLoggedIn, signOut } = useAuth();
 
   const handleLinkClick = () => {
     setOpen(false);
   };
 
-  const onSubmit = async () => {
+  const handleSignOut = async () => {
     handleLinkClick();
-    setLoggedIn(false);
-    await signOutAction();
+    await signOut();
   };
 
   return (
@@ -43,8 +43,8 @@ export function NavBarSheet({ loggedIn, setLoggedIn }: { loggedIn: boolean; setL
             </Button>
           ))}
           <TypographyHr />
-          {loggedIn ? (
-            <Button variant="secondary" type="submit" className="w-full" onClick={onSubmit}>
+          {isLoggedIn ? (
+            <Button variant="secondary" type="submit" className="w-full cursor-pointer" onClick={handleSignOut}>
               Sign out
             </Button>
           ) : (
