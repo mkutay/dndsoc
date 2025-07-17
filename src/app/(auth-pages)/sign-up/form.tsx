@@ -36,9 +36,9 @@ export function SignUpForm() {
 
     actionResultMatch(
       result,
-      (value) => {
+      () => {
         toast({
-          title: "Verification Email Sent to " + value.email,
+          title: "Verification Email Sent to " + values.email,
           description: "Please check your email to verify your account.",
           variant: "default",
         });

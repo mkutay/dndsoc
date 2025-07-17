@@ -2,6 +2,8 @@
 
 import { z } from "zod";
 
+import { okAsync } from "neverthrow";
+
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signUpFormSchema } from "@/config/auth-schemas";
 import { parseSchema } from "@/utils/parse-schema";
@@ -11,5 +13,5 @@ export const signUpAction = async (values: z.infer<typeof signUpFormSchema>) =>
   resultAsyncToActionResult(
     parseSchema(signUpFormSchema, values)
       .asyncAndThen(() => signUpUser(values))
-      .map((user) => ({ email: user.email })),
+      .andThen(() => okAsync()),
   );

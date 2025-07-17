@@ -1,5 +1,6 @@
 import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { getOrigin } from "./origin";
 import { insertUser } from "./users";
 import { insertRole } from "./roles";
@@ -22,6 +23,23 @@ export const exchangeCodeForSession = (code: string) =>
             message: "Failed to exchange code for session (in supabase): " + response.error.message,
             code: "DATABASE_ERROR",
           } as ExchangeCodeError),
+    );
+
+type VerifyOtpError = {
+  message: string;
+  code: "DATABASE_ERROR";
+};
+
+export const verifyOtp = ({ type, tokenHash }: { type: EmailOtpType; tokenHash: string }) =>
+  createClient()
+    .andThen((supabase) => fromSafePromise(supabase.auth.verifyOtp({ type, token_hash: tokenHash })))
+    .andThen((response) =>
+      !response.error
+        ? okAsync(response.data)
+        : errAsync({
+            message: "Failed to verify OTP (in supabase): " + response.error.message,
+            code: "DATABASE_ERROR",
+          } as VerifyOtpError),
     );
 
 type GetUserError = {
@@ -103,7 +121,7 @@ export const signUpUser = ({
           email,
           password,
           options: {
-            emailRedirectTo: `${origin}/auth/callback?type=signup`,
+            emailRedirectTo: `${origin}/my`,
             data: {
               username,
               knumber,

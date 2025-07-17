@@ -105,9 +105,9 @@ objects_path = "./images"
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "http://127.0.0.1:3000"
+site_url = "http://localhost:3000"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://127.0.0.1:3000"]
+additional_redirect_urls = ["http://localhost:3000/auth/callback", "http://localhost:3000/**"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # If disabled, the refresh token will never expire.
@@ -156,7 +156,7 @@ enable_signup = true
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
@@ -165,6 +165,26 @@ max_frequency = "1s"
 otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
+
+[auth.email.template.invite]
+subject = "You have been invited"
+content_path = "./public/templates/invite.html"
+
+[auth.email.template.confirmation]
+subject = "Confirm your email address"
+content_path = "./public/templates/confirmation.html"
+
+[auth.email.template.email_change]
+subject = "Confirm your email address change"
+content_path = "./public/templates/email_change.html"
+
+[auth.email.template.magic_link]
+subject = "Sign in to your account"
+content_path = "./public/templates/magic_link.html"
+
+[auth.email.template.recovery]
+subject = "Recover your account"
+content_path = "./public/templates/recovery.html"
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]

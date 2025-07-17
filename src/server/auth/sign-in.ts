@@ -7,8 +7,6 @@ import { resultAsyncToActionResult } from "@/types/error-typing";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { createClient } from "@/utils/supabase/server";
 import { parseSchema } from "@/utils/parse-schema";
-import { completeSignUp } from "@/lib/auth";
-import { getUserByAuthUuid } from "@/lib/users";
 
 type SignInError = {
   message: string;
@@ -35,7 +33,8 @@ export const signInAction = async (values: z.infer<typeof signInFormSchema>) =>
               code: "DATABASE_ERROR",
             } as SignInError),
       )
-      .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
-      .orElse((userError) => (userError.code === "NOT_FOUND" ? completeSignUp() : errAsync(userError)))
+      // Probably no need for these, as the user is created with the redirect from the email confirmation, see: app/auth/confirm/route.ts
+      // .andThen((authUserUuid) => getUserByAuthUuid({ authUserUuid }))
+      // .orElse((userError) => (userError.code === "NOT_FOUND" ? completeSignUp() : errAsync(userError)))
       .andThen(() => okAsync()),
   );
