@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/button";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
 import { OptimisticWrapper } from "@/components/when2dnd/optimistic-wrapper";
+import { ForbiddenSignInButton } from "@/components/forbidden-sign-in-button";
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
 
   const user = await getUserRole();
   if (user.isErr()) {
-    return user.error.code === "NOT_LOGGED_IN" ? <NotSignedIn code={code} /> : <ErrorPage error={user.error} />;
+    return user.error.code === "NOT_LOGGED_IN" ? <NotSignedIn /> : <ErrorPage error={user.error} />;
   }
 
   const poll = await getPollWithVotes({ code });
@@ -65,7 +66,7 @@ export default async function Page({ params }: { params: Promise<{ code: string 
   );
 }
 
-function NotSignedIn({ code }: { code: string }) {
+function NotSignedIn() {
   return (
     <div className="lg:max-w-6xl max-w-prose mx-auto px-4 my-12">
       <div className="max-w-prose">
@@ -74,9 +75,7 @@ function NotSignedIn({ code }: { code: string }) {
           The easiest way to schedule your Dungeons & Dragons sessions.
         </p>
         <p className="mt-6 text-lg">If you were given this link by your DM, you can sign in to vote on the poll.</p>
-        <Button asChild className="mt-8">
-          <Link href={`/sign-in?redirect=/when2dnd/${code}`}>Sign In to Get Started</Link>
-        </Button>
+        <ForbiddenSignInButton className="mt-8">Sign In to Get Started!</ForbiddenSignInButton>
       </div>
     </div>
   );
