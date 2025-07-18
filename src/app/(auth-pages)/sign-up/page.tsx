@@ -22,8 +22,8 @@ export default function SignUp() {
       <div className="absolute inset-0 z-0">
         <LiquidChrome interactive={false} />
       </div>
-      <div className="absolute top-4 left-4 z-10 shadow-md rounded-full">
-        <Logo className="backdrop-blur-sm md:py-6 md:px-8 py-3 px-4 rounded-full" />
+      <div className="absolute top-4 z-10 shadow-md rounded-full">
+        <Logo className="backdrop-blur-sm py-3 px-4 rounded-full" disableText />
       </div>
       <div className="relative z-10 w-full max-w-md shadow-2xl">
         <Card>
@@ -41,16 +41,10 @@ export default function SignUp() {
           </CardContent>
         </Card>
       </div>
-      <div className="text-muted-foreground text-center text-xs font-quotes text-balance absolute bottom-4 z-10">
+      <div className="text-primary text-center text-xs font-quotes text-balance absolute bottom-4 z-10">
         By clicking continue, you agree to our{" "}
-        <TypographyLink href="/terms-of-service" variant="muted">
-          Terms of Service
-        </TypographyLink>{" "}
-        and{" "}
-        <TypographyLink href="/privacy-policy" variant="muted">
-          Privacy Policy
-        </TypographyLink>
-        .
+        <TypographyLink href="/terms-of-service">Terms of Service</TypographyLink> and{" "}
+        <TypographyLink href="/privacy-policy">Privacy Policy</TypographyLink>.
       </div>
     </div>
   );

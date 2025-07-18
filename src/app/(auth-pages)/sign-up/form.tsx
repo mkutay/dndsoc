@@ -61,9 +61,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input placeholder="Awesome" {...field} />
               </FormControl>
-              <FormDescription>
-                You can only contain letters, numbers, and underscores. You cannot change it later.
-              </FormDescription>
+              <FormDescription>You cannot change it later.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -108,7 +106,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input type="password" placeholder="Your password" {...field} />
               </FormControl>
-              <FormDescription>Must be at least 6 characters long.</FormDescription>
+              {/* <FormDescription>Must be at least 6 characters long.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}

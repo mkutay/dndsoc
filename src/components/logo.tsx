@@ -6,7 +6,7 @@ import lightLogo from "@/public/logo-light.png";
 import darkLogo from "@/public/logo-dark.png";
 import { cn } from "@/utils/styling";
 
-export function Logo({ className }: { className?: string }) {
+export function Logo({ className, disableText }: { className?: string; disableText?: boolean }) {
   return (
     <Link
       href="/"
@@ -25,7 +25,7 @@ export function Logo({ className }: { className?: string }) {
         alt="Logo: A dragon holding a d20 on its tongue"
         className="rounded-full h-12 w-12 hidden dark:flex"
       />
-      {siteConfig.name}
+      {disableText ? null : siteConfig.name}
     </Link>
   );
 }
