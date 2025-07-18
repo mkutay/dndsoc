@@ -34,7 +34,6 @@ export function UserEditForm({
   const form = useForm<z.infer<typeof userEditSchema>>({
     resolver: zodResolver(userEditSchema),
     defaultValues: {
-      username: user.username,
       name: user.name,
     },
   });
@@ -67,13 +66,13 @@ export function UserEditForm({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Edit size={20} />
-          Edit Profile
+          Edit Account
         </CardTitle>
-        <CardDescription>Update your username and display name.</CardDescription>
+        <CardDescription>Update your account settings.</CardDescription>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 flex flex-col justify-between">
+          <CardContent>
             <FormField
               control={form.control}
               name="name"
@@ -85,23 +84,6 @@ export function UserEditForm({
                     <Input placeholder="Kutay" {...field} />
                   </FormControl>
                   <FormDescription>This is your public display name.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              disabled={pending}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="awesome" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    This is your username. It can only contain letters, numbers, and underscores.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

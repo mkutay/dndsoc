@@ -58,6 +58,5 @@ export const resetPasswordSchema = z
   });
 
 export const userEditSchema = z.object({
-  username: usernameSchema,
   name: nameSchema,
 });

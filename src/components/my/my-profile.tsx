@@ -28,7 +28,7 @@ export function MyProfile({ user }: MyProfileProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Settings size={24} className="mb-[2px]" />
-          Profile Information
+          Account
         </CardTitle>
         <CardDescription>Your account information.</CardDescription>
       </CardHeader>

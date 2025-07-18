@@ -14,7 +14,6 @@ export const updateUser = async (values: z.infer<typeof userEditSchema>, authUse
         supabase
           .from("users")
           .update({
-            username: values.username,
             name: values.name,
           })
           .eq("auth_user_uuid", authUserUuid),
