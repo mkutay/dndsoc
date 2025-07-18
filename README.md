@@ -154,11 +154,14 @@ src/
 
 Contributions are welcome! Please be respectful and follow obvious design patterns.
 
-If you have changed the schema of the DB, then make sure to run the following command to
-add the new changes into the repo. 
+If you have changed the schema of the DB, then make sure to run the following two commands to
+add the new changes (as Supabase migration and database types) into the repo.
 
 ```bash
 bunx supabase db diff -f add_new_feature
+```
+```bash
+bunx supabase gen types --lang typescript --local > src/types/database.types.ts
 ```
 
 After that, you are welcome to create a PR, where I'll review your changes.
