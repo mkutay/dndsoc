@@ -1,8 +1,9 @@
 import { type Metadata } from "next";
 
 import { ForgotPasswordForm } from "./form";
-import { TypographyH1 } from "@/components/typography/headings";
-import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Dither from "@/components/reactbits/dithering";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   title: "Forgot Your Password?",
@@ -15,18 +16,25 @@ export const metadata: Metadata = {
 
 export default function ForgotPassword() {
   return (
-    <div className="flex flex-col max-w-prose">
-      <div>
-        <TypographyH1>Forgot Password?</TypographyH1>
-        <TypographyParagraph>
-          Already have an account?{" "}
-          <TypographyLink variant="primary" href="/sign-in">
-            Sign in
-          </TypographyLink>
-        </TypographyParagraph>
+    <div className="relative flex min-h-svh w-full items-center justify-center p-2 sm:p-4 md:p-10">
+      <div className="absolute inset-0 z-0">
+        <Dither enableMouseInteraction={false} />
       </div>
-      <div className="flex flex-col gap-2 mt-4">
-        <ForgotPasswordForm />
+      <div className="absolute top-8 mx-auto z-10 shadow-md rounded-full">
+        <Logo className="backdrop-blur-sm py-3 px-4 rounded-full" disableText />
+      </div>
+      <div className="relative z-10 w-full max-w-md shadow-2xl">
+        <Card>
+          <CardHeader>
+            <h1>
+              <CardTitle>Forgot Your Password</CardTitle>
+            </h1>
+            <CardDescription>Please enter your email address.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ForgotPasswordForm />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

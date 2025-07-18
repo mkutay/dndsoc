@@ -1,9 +1,10 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -16,6 +17,7 @@ import { resetPasswordAction } from "@/server/auth/reset-password";
 export function ResetPasswordForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
@@ -32,12 +34,16 @@ export function ResetPasswordForm() {
 
     actionResultMatch(
       result,
-      () =>
+      () => {
         toast({
           title: "Password Updated",
           description: "Your password has been updated successfully.",
           variant: "default",
-        }),
+        });
+        setTimeout(() => {
+          router.push("/my");
+        }, 1500);
+      },
       (error) =>
         toast({
           title: "Error Updating Password",
@@ -49,7 +55,7 @@ export function ResetPasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="newPassword"
@@ -60,7 +66,7 @@ export function ResetPasswordForm() {
               <FormControl>
                 <Input type="password" placeholder="Your new password" {...field} />
               </FormControl>
-              <FormDescription>This is your new password. It must be at least 6 characters long.</FormDescription>
+              <FormDescription>Must be at least 6 characters long.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -80,7 +86,7 @@ export function ResetPasswordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full">
           Submit
         </Button>
       </form>

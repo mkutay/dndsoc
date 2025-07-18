@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
 import { type Metadata } from "next";
+import { Suspense } from "react";
 
 import { ResetPasswordForm } from "./form";
-import { TypographyParagraph } from "@/components/typography/paragraph";
-import { TypographyH1 } from "@/components/typography/headings";
-import { getUser } from "@/lib/auth";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Reset Password",
@@ -15,17 +13,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ResetPassword() {
-  const user = await getUser();
-  if (user.isErr() || !user.value) redirect("/sign-in");
-
+export default function ResetPassword() {
   return (
-    <div className="flex flex-col max-w-prose">
-      <TypographyH1>Reset Password</TypographyH1>
-      <TypographyParagraph>Please enter your new password below.</TypographyParagraph>
-      <div className="flex flex-col gap-2 mt-4">
-        <ResetPasswordForm />
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <h1>
+          <CardTitle>Reset Password</CardTitle>
+        </h1>
+        <CardDescription>Please enter your new password below.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Suspense>
+          <ResetPasswordForm />
+        </Suspense>
+      </CardContent>
+    </Card>
   );
 }
