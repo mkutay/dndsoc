@@ -28,7 +28,9 @@ export default function Login() {
       <div className="relative z-10 w-full max-w-md shadow-2xl">
         <Card>
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <h1>
+              <CardTitle>Sign In</CardTitle>
+            </h1>
             <CardDescription>Please enter your email and password to sign in.</CardDescription>
           </CardHeader>
           <CardContent>

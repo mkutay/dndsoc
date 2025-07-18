@@ -28,7 +28,9 @@ export default function SignUp() {
       <div className="relative z-10 w-full max-w-md shadow-2xl">
         <Card>
           <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
+            <h1>
+              <CardTitle>Sign Up</CardTitle>
+            </h1>
             <CardDescription>Please enter your information to sign up.</CardDescription>
           </CardHeader>
           <CardContent>
