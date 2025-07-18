@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { SignUpForm } from "./form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyLink } from "@/components/typography/paragraph";
-import LiquidChrome from "@/components/reactbits/liquid-chrome";
+import Balatro from "@/components/reactbits/balatro";
 import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
@@ -20,10 +20,10 @@ export default function SignUp() {
   return (
     <div className="relative flex min-h-svh w-full items-center justify-center p-2 sm:p-4 md:p-10">
       <div className="absolute inset-0 z-0">
-        <LiquidChrome interactive={false} />
+        <Balatro isRotate={false} mouseInteraction={false} pixelFilter={2000} />
       </div>
       <div className="absolute top-4 z-10 shadow-md rounded-full">
-        <Logo className="backdrop-blur-sm py-3 px-4 rounded-full" disableText />
+        <Logo className="backdrop-blur-sm py-3 px-4 rounded-full" />
       </div>
       <div className="relative z-10 w-full max-w-md shadow-2xl">
         <Card>
