@@ -143,6 +143,7 @@ export const signUpUser = ({
               username,
               knumber,
               name,
+              siteUrl: origin, // Here, for preview and production deployments
             },
           },
         }),
