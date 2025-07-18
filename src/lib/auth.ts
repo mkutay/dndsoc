@@ -94,6 +94,7 @@ export const completeSignUp = () => {
       username: user.user_metadata.username,
       knumber: user.user_metadata.knumber,
       name: user.user_metadata.name,
+      email: user.user_metadata.email,
       auth_user_uuid: user.id,
     }),
   );
@@ -142,6 +143,7 @@ export const signUpUser = ({
               knumber,
               name: username, // For now, we use username as the name
               siteUrl: origin, // Here, for preview and production deployments
+              email,
             },
           },
         }),

@@ -62,11 +62,9 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 
 
 
-
 --
 -- Data for Name: mfa_amr_claims; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
-
 
 
 
@@ -304,10 +302,10 @@ INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_a
 --
 
 INSERT INTO "storage"."objects" ("id", "bucket_id", "name", "owner", "created_at", "updated_at", "last_accessed_at", "metadata", "version", "owner_id", "user_metadata", "level") VALUES
-	('d4b45746-f0c8-462d-b53a-7404862b6034', 'profile-images', 'character.png', NULL, '2025-07-17 18:46:12.658554+00', '2025-07-17 18:49:31.561726+00', '2025-07-17 18:46:12.658554+00', '{"eTag": "\"afad4e76753a428cee36bce026168d45\"", "size": 34532, "mimetype": "image/png", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.553Z", "contentLength": 34532, "httpStatusCode": 200}', 'd3cd86f5-40a4-48e9-85c6-201cba2b948a', NULL, '{}', 1),
-	('513bb4b3-cba1-456f-8e19-c40797625fee', 'profile-images', 'player.jpg', NULL, '2025-07-17 18:46:12.668287+00', '2025-07-17 18:49:31.573543+00', '2025-07-17 18:46:12.668287+00', '{"eTag": "\"4f4f49808898ffa4a7d1a066f0b00744\"", "size": 508839, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.560Z", "contentLength": 508839, "httpStatusCode": 200}', '1fb1421e-2f3f-4fe6-a5ad-c094f26ac644', NULL, '{}', 1),
-	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'profile-images', 'dm.jpg', NULL, '2025-07-17 18:46:12.673913+00', '2025-07-17 18:49:31.584914+00', '2025-07-17 18:46:12.673913+00', '{"eTag": "\"480349c6591e906bf073cd330940bf61\"", "size": 1151404, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.561Z", "contentLength": 1151404, "httpStatusCode": 200}', 'de376ff0-b8d4-4da6-abd3-a8bf1fa1a9cc', NULL, '{}', 1),
-	('8516f20e-c458-491a-aff4-3816d44a64d3', 'profile-images', 'party.jpg', NULL, '2025-07-17 18:49:31.60679+00', '2025-07-17 18:49:31.60679+00', '2025-07-17 18:49:31.60679+00', '{"eTag": "\"50f75a54e63004df26d9e2e56b86a7bb\"", "size": 1849824, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-17T18:49:31.560Z", "contentLength": 1849824, "httpStatusCode": 200}', '1969328c-6670-487c-b853-30f69da305f7', NULL, '{}', 1);
+	('d4b45746-f0c8-462d-b53a-7404862b6034', 'profile-images', 'character.png', NULL, '2025-07-17 18:46:12.658554+00', '2025-07-18 22:08:40.433642+00', '2025-07-17 18:46:12.658554+00', '{"eTag": "\"afad4e76753a428cee36bce026168d45\"", "size": 34532, "mimetype": "image/png", "cacheControl": "max-age=3600", "lastModified": "2025-07-18T22:08:40.423Z", "contentLength": 34532, "httpStatusCode": 200}', '211ea2c1-1284-4482-997a-de80df4a158e', NULL, '{}', 1),
+	('513bb4b3-cba1-456f-8e19-c40797625fee', 'profile-images', 'player.jpg', NULL, '2025-07-17 18:46:12.668287+00', '2025-07-18 22:08:40.443424+00', '2025-07-17 18:46:12.668287+00', '{"eTag": "\"4f4f49808898ffa4a7d1a066f0b00744\"", "size": 508839, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-18T22:08:40.432Z", "contentLength": 508839, "httpStatusCode": 200}', 'b35c88ee-175b-471a-a7e7-e5057a4bca26', NULL, '{}', 1),
+	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'profile-images', 'dm.jpg', NULL, '2025-07-17 18:46:12.673913+00', '2025-07-18 22:08:40.45188+00', '2025-07-17 18:46:12.673913+00', '{"eTag": "\"480349c6591e906bf073cd330940bf61\"", "size": 1151404, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-18T22:08:40.434Z", "contentLength": 1151404, "httpStatusCode": 200}', '35c04362-888e-4b2d-aabf-5a770f978697', NULL, '{}', 1),
+	('8516f20e-c458-491a-aff4-3816d44a64d3', 'profile-images', 'party.jpg', NULL, '2025-07-17 18:49:31.60679+00', '2025-07-18 22:08:40.457684+00', '2025-07-17 18:49:31.60679+00', '{"eTag": "\"50f75a54e63004df26d9e2e56b86a7bb\"", "size": 1849824, "mimetype": "image/jpeg", "cacheControl": "max-age=3600", "lastModified": "2025-07-18T22:08:40.434Z", "contentLength": 1849824, "httpStatusCode": 200}', 'dab6a4f2-94fd-42f4-b429-155c76618d3f', NULL, '{}', 1);
 
 
 --
@@ -325,10 +323,10 @@ INSERT INTO "public"."images" ("id", "name") VALUES
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."users" ("auth_user_uuid", "knumber", "username", "name") VALUES
-	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'K12345678', 'u-admin', 'Admin'),
-	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 'K87654321', 'u-dm', 'DM'),
-	('8925dfd6-2ef1-4311-933a-b9037d612649', 'K98765432', 'u-player', 'Player');
+INSERT INTO "public"."users" ("auth_user_uuid", "knumber", "username", "name", "email") VALUES
+	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'K12345678', 'u-admin', 'Admin', 'admin@kcl.ac.uk'),
+	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 'K87654321', 'u-dm', 'DM', 'dm@kcl.ac.uk'),
+	('8925dfd6-2ef1-4311-933a-b9037d612649', 'K98765432', 'u-player', 'Player', 'player@kcl.ac.uk');
 
 
 --

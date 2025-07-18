@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
@@ -26,7 +26,7 @@ export function SignInForm() {
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
@@ -59,15 +59,15 @@ export function SignInForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="email"
+          name="identifier"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Identifier</FormLabel>
               <FormControl>
-                <Input placeholder="first.second@kcl.ac.uk" {...field} />
+                <Input placeholder="first.second@kcl.ac.uk/Awesome" {...field} />
               </FormControl>
-              {/* <FormDescription>This is your KCL email address.</FormDescription> */}
+              <FormDescription>Use your KCL email address, your username, or your K-Number to sign in.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -92,7 +92,7 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending} className="w-full">
+        <Button type="submit" disabled={pending} className="w-full mt-4">
           Submit
         </Button>
       </form>
