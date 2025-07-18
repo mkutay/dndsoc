@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
@@ -17,6 +17,7 @@ import { signUpAction } from "@/server/auth/sign-up";
 export function SignUpForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
@@ -37,14 +38,7 @@ export function SignUpForm() {
     actionResultMatch(
       result,
       () => {
-        toast({
-          title: "Verification Email Sent to " + values.email,
-          description: "Please check your email to verify your account.",
-          variant: "default",
-        });
-        setTimeout(() => {
-          redirect("/sign-in");
-        }, 3000);
+        router.push(`/confirmation-sent?email=${encodeURIComponent(values.email)}`);
       },
       (error) =>
         toast({

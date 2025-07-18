@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -15,7 +15,10 @@ import { actionResultMatch } from "@/types/error-typing";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { signInAction } from "@/server/auth/sign-in";
 
-export function SignInForm({ redirect }: { redirect?: string }) {
+export function SignInForm() {
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const router = useRouter();
