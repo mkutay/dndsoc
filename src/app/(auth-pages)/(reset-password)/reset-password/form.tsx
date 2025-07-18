@@ -86,7 +86,7 @@ export function ResetPasswordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending} className="w-full">
+        <Button type="submit" disabled={pending} className="w-full mt-4">
           Submit
         </Button>
       </form>

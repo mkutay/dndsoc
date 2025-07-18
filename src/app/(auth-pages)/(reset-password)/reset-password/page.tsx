@@ -1,5 +1,4 @@
 import { type Metadata } from "next";
-import { Suspense } from "react";
 
 import { ResetPasswordForm } from "./form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,9 +22,7 @@ export default function ResetPassword() {
         <CardDescription>Please enter your new password below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Suspense>
-          <ResetPasswordForm />
-        </Suspense>
+        <ResetPasswordForm />
       </CardContent>
     </Card>
   );
