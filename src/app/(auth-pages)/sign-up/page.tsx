@@ -43,9 +43,8 @@ export default function SignUp() {
           </CardContent>
         </Card>
       </div>
-      <div className="text-primary text-center text-xs font-quotes text-balance absolute bottom-4 z-10">
-        By clicking continue, you agree to our{" "}
-        <TypographyLink href="/terms-of-service">Terms of Service</TypographyLink> and{" "}
+      <div className="text-primary text-center text-sm font-quotes text-balance absolute bottom-4 z-10">
+        By continuing, you agree to our <TypographyLink href="/terms-of-service">Terms of Service</TypographyLink> and{" "}
         <TypographyLink href="/privacy-policy">Privacy Policy</TypographyLink>.
       </div>
     </div>
