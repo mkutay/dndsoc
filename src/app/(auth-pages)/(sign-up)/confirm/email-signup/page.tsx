@@ -40,12 +40,12 @@ export default async function Page({
     <Card>
       <CardHeader>
         <h1>
-          <CardTitle>Account Confirmed!</CardTitle>
+          <CardTitle>Confirm Your Account</CardTitle>
         </h1>
       </CardHeader>
       <CardContent>
         <TypographyParagraph>
-          Click the button below to go to your dashboard and start your adventure!
+          Click the button below to confirm your account and go to your dashboard.
         </TypographyParagraph>
       </CardContent>
       <CardFooter>
