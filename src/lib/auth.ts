@@ -25,6 +25,23 @@ export const exchangeCodeForSession = (code: string) =>
           } as ExchangeCodeError),
     );
 
+// Sends a confirmation email to the user after signing up, only if there is an inital sign up being done.
+// Otherwise, it does nothing, and doesn't return an error.
+export const resendConfirmationEmail = ({ email, redirectTo }: { email: string; redirectTo: string }) =>
+  createClient()
+    .andThen((supabase) =>
+      fromSafePromise(
+        supabase.auth.resend({
+          type: "signup",
+          email: email,
+          options: {
+            emailRedirectTo: redirectTo,
+          },
+        }),
+      ),
+    )
+    .andThen(() => okAsync());
+
 type VerifyOtpError = {
   message: string;
   code: "DATABASE_ERROR";
@@ -126,6 +143,7 @@ export const signUpUser = ({
               username,
               knumber,
               name,
+              siteUrl: origin, // Here, for preview and production deployments
             },
           },
         }),
