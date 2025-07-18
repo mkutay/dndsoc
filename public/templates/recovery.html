@@ -5,7 +5,11 @@
 
 <p>Follow this link to reset the password for DnD Society App:</p>
 
-<p><a href="{{ .ConfirmationURL }}">Reset Password</a></p>
+{{ if .Data.siteUrl }}
+<p><a href="{{ .Data.siteUrl }}/confirm/reset-password?token_hash={{ .TokenHash }}&type=recovery">Reset Password</a></p>
+{{ else }}
+<p><a href="{{ .SiteURL }}/confirm/reset-password?token_hash={{ .TokenHash }}&type=recovery">Reset Password</a></p>
+{{ end }}
 
 </body>
 </html>

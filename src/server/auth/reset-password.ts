@@ -16,7 +16,7 @@ type ResetPasswordError = {
 export const resetPasswordAction = async (values: z.infer<typeof resetPasswordSchema>) =>
   resultAsyncToActionResult(
     parseSchema(resetPasswordSchema, values)
-      .asyncAndThen(() => createClient())
+      .asyncAndThen(createClient)
       .andThen((supabase) =>
         fromSafePromise(
           supabase.auth.updateUser({

@@ -13,9 +13,7 @@ import {
   SolberaImitation,
   ZatannaMisdirection,
 } from "@/fonts/fonts";
-import { NavBar } from "@/components/nav-bar/nav-bar";
 import { Toaster } from "@/components/ui/toaster";
-import { Footer } from "@/components/footer";
 import { cn } from "@/utils/styling";
 import "@/app/globals.css";
 import { env } from "@/env";
@@ -117,11 +115,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <main className="min-h-screen flex flex-col">
-            <NavBar />
-            <div className="flex-1">{children}</div>
-            <Footer />
-          </main>
+          <main className="min-h-screen flex flex-col">{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>

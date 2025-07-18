@@ -10,20 +10,17 @@ export async function GET(request: Request) {
   const origin = env.NEXT_PUBLIC_SITE_URL;
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? origin;
+  const next = searchParams.get("next");
 
   // Verify OTP and log in
-  if (tokenHash && type) {
+  if (tokenHash && type === "email") {
     const verified = await verifyOtp({ type, tokenHash });
     if (verified.isErr()) {
       const errorMessage = "Error exchanging code for session: " + verified.error.message;
       console.error(errorMessage);
       return NextResponse.redirect(`${origin}/error?error=Could not verify. Maybe the link is expired?`);
     }
-  }
 
-  // Complete sign up process
-  if (type === "email") {
     const completed = await completeSignUp();
     if (completed.isErr()) {
       const errorMessage = "Error completing sign up: " + completed.error.message;

@@ -1,9 +1,11 @@
 import { type Metadata } from "next";
-
 import { Suspense } from "react";
+
 import { SignInForm } from "./form";
-import { TypographyH1 } from "@/components/typography/headings";
-import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { TypographyLink } from "@/components/typography/paragraph";
+import LiquidChrome from "@/components/reactbits/liquid-chrome";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   title: "Sign In To Your Account",
@@ -16,18 +18,30 @@ export const metadata: Metadata = {
 
 export default function Login() {
   return (
-    <div className="flex flex-col max-w-prose">
-      <TypographyH1>Sign In</TypographyH1>
-      <TypographyParagraph>
-        Don&apos;t have an account?{" "}
-        <TypographyLink variant="primary" href="/sign-up">
-          Sign Up
-        </TypographyLink>
-      </TypographyParagraph>
-      <div className="flex flex-col gap-2 mt-4">
-        <Suspense>
-          <SignInForm />
-        </Suspense>
+    <div className="relative flex min-h-svh w-full items-center justify-center p-2 sm:p-4 md:p-10">
+      <div className="absolute inset-0 z-0">
+        <LiquidChrome interactive={false} />
+      </div>
+      <div className="absolute top-8 mx-auto z-10 shadow-md rounded-full">
+        <Logo className="backdrop-blur-sm p-4 rounded-full" />
+      </div>
+      <div className="relative z-10 w-full max-w-md shadow-2xl">
+        <Card>
+          <CardHeader>
+            <h1>
+              <CardTitle>Sign In</CardTitle>
+            </h1>
+            <CardDescription>Please enter your email and password to sign in.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense>
+              <SignInForm />
+            </Suspense>
+            <div className="mt-4 text-center text-sm font-quotes">
+              Don&apos;t have an account? <TypographyLink href="/sign-up">Sign up</TypographyLink>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
