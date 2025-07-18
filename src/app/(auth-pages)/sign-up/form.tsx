@@ -51,18 +51,18 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Your Name</FormLabel>
+              <FormLabel>Your Public Name</FormLabel>
               <FormControl>
                 <Input placeholder="Kutay" {...field} />
               </FormControl>
-              <FormDescription>This is your public display name. You can change it later.</FormDescription>
+              {/* <FormDescription>You can change it later.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -78,8 +78,7 @@ export function SignUpForm() {
                 <Input placeholder="awesome" {...field} />
               </FormControl>
               <FormDescription>
-                This is your username. It can only contain letters, numbers, and underscores. You cannot change it
-                later.
+                You can only contain letters, numbers, and underscores. You cannot change it later.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -95,7 +94,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input placeholder="K12345678" {...field} />
               </FormControl>
-              <FormDescription>This is your K-Number.</FormDescription>
+              {/* <FormDescription>This is your K-Number.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -110,7 +109,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input placeholder="first.second@kcl.ac.uk" {...field} />
               </FormControl>
-              <FormDescription>This is your KCL email address.</FormDescription>
+              {/* <FormDescription>This is your KCL email address.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -125,12 +124,12 @@ export function SignUpForm() {
               <FormControl>
                 <Input type="password" placeholder="Your password" {...field} />
               </FormControl>
-              <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription>
+              <FormDescription>Must be at least 6 characters long.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full">
           Submit
         </Button>
       </form>
