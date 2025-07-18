@@ -23,7 +23,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
       <TypographyH1>Confirmation Email Sent</TypographyH1>
       {email ? (
         <TypographyParagraph>
-          To confirm your account, you need to click on the link sent to your email at {email}, and follow the
+          To confirm your account, you need to click on the link sent to your email at <b>{email}</b>, and follow the
           instructions. If you have already confirmed your account, you can directly sign in.
         </TypographyParagraph>
       ) : (

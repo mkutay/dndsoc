@@ -19,7 +19,7 @@ export default function Page() {
     <div className="flex flex-col max-w-prose">
       <TypographyH1>Confirm Your Account</TypographyH1>
       <TypographyParagraph>
-        Click the button below to confirm your account. If you have already confirmed your account, you can{" "}
+        Click the button below to confirm your account. If you have already confirmed your account, you can just{" "}
         <TypographyLink href="/sign-in">sign in</TypographyLink>.
       </TypographyParagraph>
       <Suspense>
