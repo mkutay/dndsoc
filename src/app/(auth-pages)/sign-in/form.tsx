@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
@@ -67,7 +67,7 @@ export function SignInForm() {
               <FormControl>
                 <Input placeholder="first.second@kcl.ac.uk" {...field} />
               </FormControl>
-              <FormDescription>This is your KCL email address.</FormDescription>
+              {/* <FormDescription>This is your KCL email address.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -80,19 +80,19 @@ export function SignInForm() {
             <FormItem>
               <FormLabel className="flex flex-row justify-between items-center">
                 Password
-                <TypographyLink className="text-xs" variant="muted" href="/forgot-password" tabIndex={-1}>
+                <TypographyLink className="text-xs font-quotes" variant="muted" href="/forgot-password" tabIndex={-1}>
                   Forgot your password?
                 </TypographyLink>
               </FormLabel>
               <FormControl>
                 <Input type="password" placeholder="Your password" {...field} />
               </FormControl>
-              <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription>
+              {/* <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full">
           Submit
         </Button>
       </form>

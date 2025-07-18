@@ -4,12 +4,16 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import lightLogo from "@/public/logo-light.png";
 import darkLogo from "@/public/logo-dark.png";
+import { cn } from "@/utils/styling";
 
-export function Logo() {
+export function Logo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      className="flex flex-row items-center gap-2 text-primary hover:text-primary/80 transition-all font-bold text-xl font-headings"
+      className={cn(
+        "flex flex-row items-center gap-2 text-primary hover:text-primary/80 transition-all font-bold text-xl font-headings",
+        className,
+      )}
     >
       <Image
         src={lightLogo}
