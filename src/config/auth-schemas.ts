@@ -39,7 +39,6 @@ export const signUpFormSchema = z.object({
     .length(9, "K-number must be have 8 digits and start with 'K'.")
     .startsWith("K", "K-number must start with 'K'."),
   username: usernameSchema,
-  name: nameSchema,
   email: emailSchema.refine(
     // For testing purposes:
     (email) => email.endsWith("@kcl.ac.uk") || email.endsWith("@mkutay.dev"),

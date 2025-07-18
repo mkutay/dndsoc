@@ -123,13 +123,11 @@ export const signUpUser = ({
   password,
   username,
   knumber,
-  name,
 }: {
   email: string;
   password: string;
   username: string;
   knumber: string;
-  name: string;
 }) =>
   ResultAsync.combine([getOrigin(), createClient()])
     .andThen(([origin, supabase]) =>
@@ -142,7 +140,7 @@ export const signUpUser = ({
             data: {
               username,
               knumber,
-              name,
+              name: username, // For now, we use username as the name
               siteUrl: origin, // Here, for preview and production deployments
             },
           },

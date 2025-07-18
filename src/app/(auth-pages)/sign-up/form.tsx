@@ -26,7 +26,6 @@ export function SignUpForm() {
       knumber: "",
       email: "",
       password: "",
-      name: "",
     },
   });
 
@@ -54,28 +53,13 @@ export function SignUpForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
-          disabled={pending}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Your Public Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Kutay" {...field} />
-              </FormControl>
-              {/* <FormDescription>You can change it later.</FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="username"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="awesome" {...field} />
+                <Input placeholder="Awesome" {...field} />
               </FormControl>
               <FormDescription>
                 You can only contain letters, numbers, and underscores. You cannot change it later.
