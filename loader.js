@@ -1,5 +1,7 @@
 'use client';
 
+import { env } from '@/env';
+
 export default function myImageLoader({ src, width, quality }) {
   const isLocal = !src.startsWith('http');
   const query = new URLSearchParams();
@@ -13,7 +15,7 @@ export default function myImageLoader({ src, width, quality }) {
   if (width) query.set('width', width);
   if (quality) query.set('quality', quality);
 
-  if (process.env.NODE_ENV === 'development' || process.env.SITE_URL === "http://localhost:3000") {
+  if (env.NEXT_PUBLIC_NODE_ENV === 'development' || env.NEXT_PUBLIC_SITE_URL === "http://localhost:3000") {
     return src;
   }
 

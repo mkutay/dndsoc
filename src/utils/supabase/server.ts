@@ -40,7 +40,7 @@ type CreateClientError = {
 
 export const createClient = () =>
   ResultAsync.fromPromise(
-    process.env.MODE === "test" || env.BUILDING === "true" ? createBasicClient() : createAsyncClient(),
+    env.MODE === "test" || env.BUILDING === "true" ? createBasicClient() : createAsyncClient(),
     (error) =>
       ({
         message: "Failed to create Supabase client." + error,

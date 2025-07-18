@@ -20,7 +20,7 @@ import { cn } from "@/utils/styling";
 import "@/app/globals.css";
 import { env } from "@/env";
 
-const defaultUrl = env.SITE_URL;
+const defaultUrl = env.NEXT_PUBLIC_SITE_URL;
 
 const sans = Libre_Baskerville({
   subsets: ["latin"],
