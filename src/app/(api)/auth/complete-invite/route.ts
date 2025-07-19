@@ -14,7 +14,6 @@ export async function GET(request: Request) {
   // Verify OTP and redirect accordingly
   if (tokenHash && type === "invite") {
     const verified = await verifyOtp({ type, tokenHash });
-    console.warn(type, tokenHash, verified);
     if (verified.isErr()) {
       const errorMessage = "Error exchanging code for session: " + verified.error.message;
       console.error(errorMessage);
