@@ -169,6 +169,25 @@ export function DMForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
         <FormField
           control={form.control}
+          name="image"
+          disabled={pending}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Group Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
+                />
+              </FormControl>
+              <FormDescription>Upload a new image for your party.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="name"
           disabled={pending}
           render={({ field }) => (
@@ -223,7 +242,7 @@ export function DMForm({
             </FormItem>
           )}
         />
-        <div>
+        <div className="space-y-2">
           {charactersFields.map((field, index) => (
             <FormField
               control={form.control}
@@ -414,7 +433,7 @@ export function DMForm({
             </DialogContent>
           </Dialog>
         </div>
-        <div>
+        <div className="space-y-2">
           {campaignsFields.map((field, index) => (
             <FormField
               control={form.control}
@@ -578,7 +597,7 @@ export function DMForm({
             </DialogContent>
           </Dialog>
         </div>
-        <div>
+        <div className="space-y-2">
           {dmsFields.map((field, index) => (
             <FormField
               control={form.control}

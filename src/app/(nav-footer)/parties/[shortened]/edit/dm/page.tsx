@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { ResultAsync } from "neverthrow";
 import { cache } from "react";
 
-import { UploadWrapper } from "./upload-wrapper";
 import { DMForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -113,7 +112,6 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyH1>
         Edit Party <span className="text-primary">{party.name}</span>
       </TypographyH1>
-      <UploadWrapper partyId={party.id} partyShortened={party.shortened} />
       <DMForm
         about={party.about}
         name={party.name}

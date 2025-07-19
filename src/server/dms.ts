@@ -9,19 +9,32 @@ import { playersEditSchema } from "@/config/player-edit-schema";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { DMEditSchema } from "@/config/dms";
+import { uploadImageDM } from "@/lib/storage";
 
 export const updateDM = async (values: z.infer<typeof DMEditSchema>, dmUuid: string) =>
   resultAsyncToActionResult(
-    parseSchema(playersEditSchema, values).asyncAndThen(() =>
-      runQuery((supabase) =>
-        supabase
-          .from("dms")
-          .update({
-            about: values.about,
-          })
-          .eq("id", dmUuid),
+    parseSchema(playersEditSchema, values)
+      .asyncAndThen(() =>
+        runQuery((supabase) =>
+          supabase
+            .from("dms")
+            .update({
+              about: values.about,
+            })
+            .eq("id", dmUuid)
+            .select("users(username)")
+            .single(),
+        ),
+      )
+      .andThen(({ users }) =>
+        values.avatar
+          ? uploadImageDM({
+              file: values.avatar,
+              shortened: users.username,
+              DMId: dmUuid,
+            })
+          : okAsync(),
       ),
-    ),
   );
 
 export const removePartyFromDM = async ({

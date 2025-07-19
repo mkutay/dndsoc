@@ -1,12 +1,11 @@
 import { forbidden } from "next/navigation";
 import { cache } from "react";
 
-import { UploadWrapper } from "./upload-wrapper";
 import { PlayerEditForm } from "./form";
+import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
-import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +54,6 @@ export default async function Page({ params }: { params: Promise<{ username: str
         Go Back
       </TypographyLink>
       <TypographyH1 className="mt-0.5">Edit Your Public Player Page</TypographyH1>
-      <UploadWrapper playerId={player.id} playerShortened={player.users.username} />
       <PlayerEditForm player={player} />
     </div>
   );

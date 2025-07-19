@@ -11,6 +11,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
 import { deleteCharacterClass } from "@/lib/characters";
 import { deleteCharacterRace, upsertCharacterRace, upsertRace } from "@/lib/races";
+import { uploadImageCharacter } from "@/lib/storage";
 
 export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>, playerUuid: string) =>
   resultAsyncToActionResult(
@@ -40,7 +41,7 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
     supabase.from("characters").select("*, races(*), classes(*)").eq("shortened", characterShortened).single(),
   );
 
-  const charactersResult = parseSchema(characterEditSchema, values).asyncAndThen(() =>
+  const parsed = parseSchema(characterEditSchema, values).asyncAndThrough(() =>
     runQuery(
       (supabase) =>
         supabase
@@ -54,15 +55,19 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
     ),
   );
 
-  const characterClassResult = character.andThen((character) =>
-    updateClasses({ classes: values.classes, characterId: character.id }),
-  );
+  const result = ResultAsync.combine([character, parsed])
+    .andThrough(([character, parsed]) => updateClasses({ classes: parsed.classes, characterId: character.id }))
+    .andThrough(([character, parsed]) => updateRace({ race: parsed.race, characterId: character.id }))
+    .andThen(([{ id }]) =>
+      values.avatar
+        ? uploadImageCharacter({
+            file: values.avatar,
+            shortened: characterShortened,
+            characterId: id,
+          })
+        : okAsync(),
+    );
 
-  const characterRaceResult = character.andThen((character) =>
-    updateRace({ race: values.race, characterId: character.id }),
-  );
-
-  const result = ResultAsync.combine([charactersResult, characterClassResult, characterRaceResult]);
   return resultAsyncToActionResult(result);
 }
 

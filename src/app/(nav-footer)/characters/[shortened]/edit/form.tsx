@@ -77,6 +77,25 @@ export function CharacterEditForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
         <FormField
           control={form.control}
+          name="avatar"
+          disabled={pending}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Avatar</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
+                />
+              </FormControl>
+              <FormDescription>Upload a new image for your character.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="about"
           disabled={pending}
           render={({ field }) => (
@@ -131,7 +150,7 @@ export function CharacterEditForm({
             </FormItem>
           )}
         />
-        <div>
+        <div className="space-y-2">
           {fields.map((field, index) => (
             <FormField
               control={form.control}

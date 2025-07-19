@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { actionResultMatch } from "@/types/error-typing";
 import { DMEditSchema } from "@/config/dms";
 import { updateDM } from "@/server/dms";
+import { Input } from "@/components/ui/input";
 
 export function DMEditForm({ dm }: { dm: { id: string; about: string } }) {
   const { toast } = useToast();
@@ -48,6 +49,25 @@ export function DMEditForm({ dm }: { dm: { id: string; about: string } }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
+        <FormField
+          control={form.control}
+          name="avatar"
+          disabled={pending}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Avatar</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
+                />
+              </FormControl>
+              <FormDescription>Upload a new image for your profile.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="about"

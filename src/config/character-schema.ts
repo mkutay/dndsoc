@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { imageSchema } from "./avatar-upload-schema";
+
 export const characterEditSchema = z.object({
   about: z.string().max(1000, "About must be 1000 characters or less."),
   level: z
@@ -15,6 +17,7 @@ export const characterEditSchema = z.object({
       }),
     )
     .min(1, "At least one class is required."),
+  avatar: imageSchema.optional(),
 });
 
 export const addCharacterSchema = z.object({

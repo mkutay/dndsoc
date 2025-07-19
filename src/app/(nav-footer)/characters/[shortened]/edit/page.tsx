@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
-import { UploadWrapper } from "./upload-wrapper";
 import { CharacterEditForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -63,7 +62,6 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyH1 className="mt-0.5">
         Edit <span className="text-primary">{character.name}</span>&apos;s Page
       </TypographyH1>
-      <UploadWrapper characterId={character.id} characterShortened={character.shortened} />
       <CharacterEditForm character={character} />
     </div>
   );

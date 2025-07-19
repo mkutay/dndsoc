@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageSchema } from "./avatar-upload-schema";
 
 const aboutSchema = z.string().max(1000, "About must be 1000 characters or less.");
 const nameSchema = z.string().min(1, "Name is required.").max(60, "Name must be less than 60 characters.");
@@ -44,6 +45,7 @@ export const partyDMEditSchema = z.object({
   selectedCharacter: z.string().optional(), // For the combobox
   selectedCampaign: z.string().optional(), // For the combobox
   selectedDM: z.string().optional(), // For the combobox
+  image: imageSchema.optional(),
 });
 
 export const createPartySchema = z.object({

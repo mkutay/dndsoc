@@ -8,8 +8,10 @@ import { partyDMEditSchema, partyPlayerEditSchema, createPartySchema } from "@/c
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { convertToShortened } from "@/utils/formatting";
 import { parseSchema } from "@/utils/parse-schema";
-import { runQuery } from "@/utils/supabase-run";
+import { runQuery, supabaseRun } from "@/utils/supabase-run";
 import { getDMUser } from "@/lib/dms";
+import { createClient } from "@/utils/supabase/server";
+import { uploadImageParty } from "@/lib/storage";
 
 export const insertParty = async (values: z.infer<typeof createPartySchema>) =>
   resultAsyncToActionResult(
@@ -97,77 +99,80 @@ export const insertPartyWithCampaign = async (values: z.infer<typeof createParty
 export const updateDMParty = async (values: z.infer<typeof partyDMEditSchema>, partyUuid: string) =>
   resultAsyncToActionResult(
     parseSchema(partyDMEditSchema, values)
-      .asyncAndThen(() =>
-        runQuery(
-          (supabase) =>
-            supabase
-              .from("parties")
-              .update({
-                about: values.about,
-                level: values.level,
-                name: values.name,
-                shortened: convertToShortened(values.name),
-              })
-              .eq("id", partyUuid),
+      .asyncAndThen(createClient)
+      .andThrough((supabase) =>
+        supabaseRun(
+          supabase
+            .from("parties")
+            .update({
+              about: values.about,
+              level: values.level,
+              name: values.name,
+              shortened: convertToShortened(values.name),
+            })
+            .eq("id", partyUuid),
           "updateDMParty",
         ),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) => supabase.from("character_party").delete().eq("party_id", partyUuid),
+      .andThrough((supabase) =>
+        supabaseRun(
+          supabase.from("character_party").delete().eq("party_id", partyUuid),
           "updateDMParty (character_party delete)",
         ),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) =>
-            supabase.from("character_party").upsert(
-              values.characters.map((character) => ({
-                character_id: character.id,
-                party_id: partyUuid,
-              })),
-              { onConflict: "character_id, party_id", ignoreDuplicates: false },
-            ),
+      .andThrough((supabase) =>
+        supabaseRun(
+          supabase.from("character_party").upsert(
+            values.characters.map((character) => ({
+              character_id: character.id,
+              party_id: partyUuid,
+            })),
+            { onConflict: "character_id, party_id", ignoreDuplicates: false },
+          ),
           "updateDMParty (character_party upsert)",
         ),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) => supabase.from("dm_party").delete().eq("party_id", partyUuid),
-          "updateDMParty (dm_party delete)",
-        ),
+      .andThrough((supabase) =>
+        supabaseRun(supabase.from("dm_party").delete().eq("party_id", partyUuid), "updateDMParty (dm_party delete)"),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) =>
-            supabase.from("dm_party").upsert(
-              values.dms.map((dm) => ({
-                dm_id: dm.id,
-                party_id: partyUuid,
-              })),
-              { onConflict: "dm_id, party_id", ignoreDuplicates: false },
-            ),
+      .andThrough((supabase) =>
+        supabaseRun(
+          supabase.from("dm_party").upsert(
+            values.dms.map((dm) => ({
+              dm_id: dm.id,
+              party_id: partyUuid,
+            })),
+            { onConflict: "dm_id, party_id", ignoreDuplicates: false },
+          ),
           "updateDMParty (dm_party upsert)",
         ),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) => supabase.from("party_campaigns").delete().eq("party_id", partyUuid),
+      .andThrough((supabase) =>
+        supabaseRun(
+          supabase.from("party_campaigns").delete().eq("party_id", partyUuid),
           "updateDMParty (party_campaigns delete)",
         ),
       )
-      .andThen(() =>
-        runQuery(
-          (supabase) =>
-            supabase.from("party_campaigns").upsert(
-              values.campaigns.map((campaign) => ({
-                campaign_id: campaign.id,
-                party_id: partyUuid,
-              })),
-              { onConflict: "campaign_id, party_id", ignoreDuplicates: false },
-            ),
+      .andThen((supabase) =>
+        supabaseRun(
+          supabase.from("party_campaigns").upsert(
+            values.campaigns.map((campaign) => ({
+              campaign_id: campaign.id,
+              party_id: partyUuid,
+            })),
+            { onConflict: "campaign_id, party_id", ignoreDuplicates: false },
+          ),
           "updateDMParty (party_campaigns upsert)",
         ),
+      )
+      .andThen(() =>
+        values.image
+          ? uploadImageParty({
+              file: values.image,
+              shortened: convertToShortened(values.name),
+              partyId: partyUuid,
+            })
+          : okAsync(),
       ),
   );
 

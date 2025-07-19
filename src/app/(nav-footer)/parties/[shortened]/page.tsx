@@ -92,9 +92,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
             height={1000}
             className="rounded-lg max-w-2xl lg:mx-auto mx-0 w-full"
           />
-        ) : (
-          <div className="rounded-lg bg-border max-w-2xl w-full mx-auto h-[400px]"></div>
-        )}
+        ) : null}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           {dmedBy.length !== 0 && (
             <TypographySmall className="text-muted-foreground">

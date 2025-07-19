@@ -10,7 +10,7 @@ const entryTextSchema = z
 export const journalAllEditSchema = z.object({
   excerpt: titleSchema,
   date: z.date({
-    required_error: "Date is required.",
+    error: (issue) => (issue.input === undefined ? "Date is required." : "Invalid date format."),
   }),
   title: z.string().min(1, "Title is required.").max(100, "Title must be 100 characters or less."),
   shortened: z

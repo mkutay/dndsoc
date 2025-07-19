@@ -1,7 +1,6 @@
 import { forbidden } from "next/navigation";
 import { cache } from "react";
 
-import { UploadWrapper } from "./upload-wrapper";
 import { DMEditForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
@@ -52,7 +51,6 @@ export default async function Page({ params }: { params: Promise<{ username: str
         Go back
       </TypographyLink>
       <TypographyH1 className="mt-0.5">Edit Your Public DM Page</TypographyH1>
-      <UploadWrapper DMId={dm.value.id} DMShortened={dm.value.users.username} />
       <DMEditForm dm={dm.value} />
     </div>
   );
