@@ -36,16 +36,12 @@ export const upload = ({ blob, file, shortened }: { blob: Blob; file: File; shor
           } as UploadError)
         : okAsync(response.data),
     )
-    .andThen((data) =>
+    .andThrough((data) =>
       runQuery((supabase) =>
-        supabase
-          .from("images")
-          .insert({
-            id: data.path,
-            name: data.path,
-          })
-          .select("*")
-          .single(),
+        supabase.from("images").insert({
+          id: data.id,
+          name: data.path,
+        }),
       ),
     );
 

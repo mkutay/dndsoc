@@ -30,12 +30,11 @@ export function UploadImage({ onImageUpload }: { onImageUpload: (blob: Blob, fil
       <Input type="file" accept="image/*" onChange={handleFileSelect} />
       {selected ? (
         <Button
-          onClick={() => {
+          onClick={async () => {
             setLoading(true);
-            onImageUpload(selected.blob, selected.file).then(() => {
-              setSelected(null);
-              setLoading(false);
-            });
+            await onImageUpload(selected.blob, selected.file);
+            setSelected(null);
+            setLoading(false);
           }}
           disabled={loading}
         >
