@@ -90,16 +90,12 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 -- Data for Name: one_time_tokens; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "relates_to", "created_at", "updated_at") VALUES
-	('885c72e4-6b74-4e19-9c69-6798bf8c17b7', 'c5c0e843-3387-46d2-bafb-ccbbdd33cbd7', 'confirmation_token', 'b7fc974fa1c318521e835ad9547caffc53fe223d6728a1293505b6b7', 'this@is.a.test', '2025-07-19 16:28:12.910148', '2025-07-19 16:28:12.910148');
 
 
 --
 -- Data for Name: refresh_tokens; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
 
-INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "revoked", "created_at", "updated_at", "parent", "session_id") VALUES
-	('00000000-0000-0000-0000-000000000000', 414, '7nypfhd6t3mk', 'c6411966-9bfa-4860-a7be-40eeedad4168', false, '2025-07-19 16:31:07.912439+00', '2025-07-19 16:31:07.912439+00', NULL, '8f0862b4-008f-4932-949e-67299b23d9ba');
 
 
 --
