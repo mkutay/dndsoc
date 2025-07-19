@@ -62,6 +62,7 @@ export function PlayerEditForm({ player }: { player: Player }) {
                   type="file"
                   accept="image/*"
                   onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
+                  disabled={field.disabled}
                 />
               </FormControl>
               <FormDescription>Upload a new image for your profile.</FormDescription>
