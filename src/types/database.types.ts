@@ -76,6 +76,54 @@ export type Database = {
         }
         Relationships: []
       }
+      associates_requests: {
+        Row: {
+          created_at: string
+          decision_by: string | null
+          email: string
+          id: string
+          name: string
+          notes: string
+          status: Database["public"]["Enums"]["request_status"]
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          decision_by?: string | null
+          email: string
+          id?: string
+          name: string
+          notes?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          decision_by?: string | null
+          email?: string
+          id?: string
+          name?: string
+          notes?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "associates_requests_decision_by_fkey"
+            columns: ["decision_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "associates_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           description: string
@@ -731,21 +779,21 @@ export type Database = {
         Row: {
           auth_user_uuid: string
           email: string
-          knumber: string
+          knumber: string | null
           name: string
           username: string
         }
         Insert: {
           auth_user_uuid?: string
           email: string
-          knumber: string
+          knumber?: string | null
           name?: string
           username: string
         }
         Update: {
           auth_user_uuid?: string
           email?: string
-          knumber?: string
+          knumber?: string | null
           name?: string
           username?: string
         }
@@ -919,6 +967,7 @@ export type Database = {
     Enums: {
       achievement_type: "dm" | "player" | "character"
       difficulty: "easy" | "medium" | "hard" | "impossible"
+      request_status: "approved" | "denied" | "pending"
       role: "admin" | "dm" | "player"
     }
     CompositeTypes: {
@@ -1052,6 +1101,7 @@ export const Constants = {
     Enums: {
       achievement_type: ["dm", "player", "character"],
       difficulty: ["easy", "medium", "hard", "impossible"],
+      request_status: ["approved", "denied", "pending"],
       role: ["admin", "dm", "player"],
     },
   },

@@ -3,9 +3,15 @@
 
 <h2>You have been invited to DnD Soc!</h2>
 
-<p>You have been invited to create a user on {{ .SiteURL }}. Follow this link to accept the invite:</p>
+<p>You have been invited to create a user on the DnD Soc App. Follow this link to accept the invite:</p>
 
-<p><a href="{{ .ConfirmationURL }}">Accept the invite</a></p>
+<p>
+  {{ if .Data.siteUrl }}
+  <a href="{{ .Data.siteUrl }}/confirm/invite?token_hash={{ .TokenHash }}&type=invite">Accept the invite</a>
+  {{ else }}
+  <a href="{{ .SiteURL }}/confirm/invite?token_hash={{ .TokenHash }}&type=invite">Accept the invite</a>
+  {{ end }}
+</p>
 
 </body>
 </html>

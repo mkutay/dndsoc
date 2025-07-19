@@ -10,35 +10,35 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
-import { signUpFormSchema } from "@/config/auth-schemas";
+import { associatesSignUpFormSchema } from "@/config/auth-schemas";
 import { actionResultMatch } from "@/types/error-typing";
-import { signUpAction } from "@/server/auth/sign-up";
+import { associatesSignUpAction } from "@/server/auth/sign-up";
 import { TypographyLink } from "@/components/typography/paragraph";
+import { Textarea } from "@/components/ui/textarea";
 
 export function SignUpForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof signUpFormSchema>>({
-    resolver: zodResolver(signUpFormSchema),
+  const form = useForm<z.infer<typeof associatesSignUpFormSchema>>({
+    resolver: zodResolver(associatesSignUpFormSchema),
     defaultValues: {
-      username: "",
-      knumber: "",
       email: "",
-      password: "",
+      name: "",
+      notes: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof associatesSignUpFormSchema>) => {
     setPending(true);
-    const result = await signUpAction(values);
+    const result = await associatesSignUpAction(values);
     setPending(false);
 
     actionResultMatch(
       result,
       () => {
-        router.push(`/confirmation-sent?email=${encodeURIComponent(values.email)}`);
+        router.push(`/request-sent?email=${encodeURIComponent(values.email)}`);
       },
       (error) =>
         toast({
@@ -54,30 +54,14 @@ export function SignUpForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Awesome" {...field} />
+                <Input placeholder="Your name" {...field} />
               </FormControl>
-              <FormDescription>You cannot change it later.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="knumber"
-          disabled={pending}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>K-Number</FormLabel>
-              <FormControl>
-                <Input placeholder="K12345678" {...field} />
-              </FormControl>
-              {/* <FormDescription>This is your K-Number.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -90,17 +74,12 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel className="flex flex-row justify-between items-center">
                 Email
-                <TypographyLink
-                  className="text-xs font-quotes"
-                  variant="muted"
-                  href="/associates-sign-up"
-                  tabIndex={-1}
-                >
-                  Don&apos;t have a KCL email?
+                <TypographyLink className="text-xs font-quotes" variant="muted" href="/sign-up" tabIndex={-1}>
+                  Have a KCL email?
                 </TypographyLink>
               </FormLabel>
               <FormControl>
-                <Input placeholder="first.second@kcl.ac.uk" {...field} />
+                <Input placeholder="hello@example.com" {...field} />
               </FormControl>
               {/* <FormDescription>This is your KCL email address.</FormDescription> */}
               <FormMessage />
@@ -109,15 +88,15 @@ export function SignUpForm() {
         />
         <FormField
           control={form.control}
-          name="password"
+          name="notes"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Notes</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Your password" {...field} />
+                <Textarea placeholder="I am from... I like to play DnD because..." {...field} />
               </FormControl>
-              {/* <FormDescription>Must be at least 6 characters long.</FormDescription> */}
+              <FormDescription>Any other information that will help us in your submission.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

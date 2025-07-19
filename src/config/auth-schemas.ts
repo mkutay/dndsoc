@@ -49,6 +49,12 @@ export const signUpFormSchema = z.object({
   password: passwordSchema,
 });
 
+export const associatesSignUpFormSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  notes: z.string().max(1000, "Notes section must not exceed 1000 characters.").optional(),
+});
+
 export const resetPasswordSchema = z
   .object({
     newPassword: passwordSchema,
@@ -61,4 +67,9 @@ export const resetPasswordSchema = z
 
 export const userEditSchema = z.object({
   name: nameSchema,
+});
+
+export const completeInviteSchema = z.object({
+  password: passwordSchema,
+  username: usernameSchema,
 });

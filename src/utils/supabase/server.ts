@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { type Database } from "@/types/database.types";
 import { env } from "@/env";
 
-export const createAsyncClient = async () => {
+export const createPublicClientAsync = async () => {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
@@ -30,8 +30,32 @@ export const createAsyncClient = async () => {
   });
 };
 
-const createBasicClient = async () =>
-  supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
+export const createPublicClient = () =>
+  ResultAsync.fromPromise(
+    createPublicClientAsync(),
+    (error) =>
+      ({
+        message: "Failed to create Supabase public client." + error,
+        code: "SUPABASE_CLIENT_ERROR",
+      }) as CreateClientError,
+  );
+
+export const createServiceClient = () =>
+  ResultAsync.fromPromise(
+    Promise.resolve(
+      supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }),
+    ),
+    (error) =>
+      ({
+        message: "Failed to create Supabase service client." + error,
+        code: "SUPABASE_CLIENT_ERROR",
+      }) as CreateClientError,
+  );
 
 type CreateClientError = {
   message: string;
@@ -39,11 +63,4 @@ type CreateClientError = {
 };
 
 export const createClient = () =>
-  ResultAsync.fromPromise(
-    env.MODE === "test" || env.BUILDING === "true" ? createBasicClient() : createAsyncClient(),
-    (error) =>
-      ({
-        message: "Failed to create Supabase client." + error,
-        code: "SUPABASE_CLIENT_ERROR",
-      }) as CreateClientError,
-  );
+  env.MODE === "test" || env.BUILDING === "true" ? createServiceClient() : createPublicClient();

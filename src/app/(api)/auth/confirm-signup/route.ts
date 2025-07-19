@@ -1,4 +1,5 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { errAsync, okAsync } from "neverthrow";
 import { NextResponse } from "next/server";
 
 import { completeSignUp, verifyOtp } from "@/lib/auth";
@@ -14,18 +15,11 @@ export async function GET(request: Request) {
 
   // Verify OTP and log in
   if (tokenHash && type === "email") {
-    const verified = await verifyOtp({ type, tokenHash });
-    if (verified.isErr()) {
-      const errorMessage = "Error exchanging code for session: " + verified.error.message;
-      console.error(errorMessage);
-      return NextResponse.redirect(`${origin}/error?error=Could not verify. Maybe the link is expired?`);
-    }
-
-    const completed = await completeSignUp();
+    const completed = await complete(type, tokenHash);
     if (completed.isErr()) {
       const errorMessage = "Error completing sign up: " + completed.error.message;
       console.error(errorMessage);
-      return NextResponse.redirect(`${origin}/error?error=Could not complete sign up. Maybe duplicate information?`);
+      return NextResponse.redirect(`${origin}/error?error=${completed.error.message}`);
     }
   }
 
@@ -40,3 +34,16 @@ export async function GET(request: Request) {
   // URL to redirect to after sign up process completes
   return NextResponse.redirect(`${origin}/my`);
 }
+
+const complete = (type: EmailOtpType, tokenHash: string) =>
+  verifyOtp({ type, tokenHash })
+    .andThen((response) => {
+      if (!response.user) {
+        return errAsync({
+          code: "OTP_VERIFICATION_FAILURE" as const,
+          message: "Could not verify the given OTP. Maybe the link expired?",
+        });
+      }
+      return okAsync(response.user);
+    })
+    .andThen(completeSignUp);

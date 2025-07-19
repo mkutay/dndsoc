@@ -18,19 +18,19 @@ export default function SignUp() {
     <Card>
       <CardHeader>
         <h1>
-          <CardTitle>Sign Up</CardTitle>
+          <CardTitle>Associates&apos; Sign Up</CardTitle>
         </h1>
         {/* <CardDescription>Please enter your information to sign up.</CardDescription> */}
       </CardHeader>
       <CardContent>
         <SignUpForm />
       </CardContent>
-      <CardFooter className="flex flex-col gap-3">
+      <CardFooter className="flex flex-col gap-2">
         <div className="w-full text-center text-sm font-quotes">
           Already have an account? <TypographyLink href="/sign-in">Sign in</TypographyLink>
         </div>
         {/* <div className="w-full text-center text-sm font-quotes">
-          Not a KCL student? <TypographyLink href="/associates-sign-up">Join as an associate</TypographyLink>
+          Are a KCL student? <TypographyLink href="/sign-up">Sign up</TypographyLink>
         </div> */}
       </CardFooter>
     </Card>

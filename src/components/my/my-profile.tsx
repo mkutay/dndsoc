@@ -11,7 +11,7 @@ interface MyProfileProps {
   user: {
     username: string;
     name: string;
-    knumber: string;
+    knumber: string | null;
     auth_user_uuid: string;
   };
 }

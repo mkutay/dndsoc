@@ -4,12 +4,12 @@ import { Logo } from "@/components/logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative flex min-h-svh w-full items-center justify-center p-2 sm:p-4 md:p-10">
+    <div className="relative flex flex-col min-h-svh w-full items-center justify-center px-2 sm:px-4 md:px-10">
       <div className="absolute inset-0 z-0">
         <Balatro isRotate={false} mouseInteraction={false} pixelFilter={2000} />
       </div>
       <div className="absolute top-4 z-10 shadow-md rounded-full">
-        <Logo className="backdrop-blur-sm p-4 rounded-full" />
+        <Logo className="backdrop-blur-sm p-3 rounded-full" />
       </div>
       <div className="relative z-10 w-full max-w-md shadow-2xl">{children}</div>
       <div className="text-primary text-center text-sm font-quotes text-balance absolute bottom-4 z-10">

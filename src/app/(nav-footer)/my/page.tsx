@@ -9,6 +9,7 @@ import { ProfileLinks } from "@/components/my/profile-links";
 import { MyProfile } from "@/components/my/my-profile";
 import { MyCharacters } from "@/components/my/my-characters";
 import { MyParties } from "@/components/my/my-parties";
+import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,7 @@ export default async function Page() {
         {partiesDM.value.length !== 0 && (
           <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0].dm_party[0].dm_id} />
         )}
+        {role === "admin" && <MyAssociatesRequests />}
       </div>
     </div>
   );
