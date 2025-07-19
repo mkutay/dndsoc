@@ -7,7 +7,7 @@ import type z from "zod";
 import { completeInviteSchema } from "@/config/auth-schemas";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { createClient } from "@/utils/supabase/server";
-import { runQuery } from "@/utils/supabase-run";
+import { runQuery, runServiceQuery } from "@/utils/supabase-run";
 import { completeSignUp, verifyOtp } from "@/lib/auth";
 import { parseSchema } from "@/utils/parse-schema";
 
@@ -19,7 +19,8 @@ type CompleteInviteError = {
 export const completeInviteAction = async (values: z.infer<typeof completeInviteSchema>, tokenHash: string) =>
   resultAsyncToActionResult(
     parseSchema(completeInviteSchema, values)
-      .asyncAndThen(() => verifyOtp({ type: "invite", tokenHash }))
+      .asyncAndThen(checkUniqueness)
+      .andThen(() => verifyOtp({ type: "invite", tokenHash }))
       .map((response) => response.user)
       .andThen((user) =>
         user
@@ -56,4 +57,20 @@ export const completeInviteAction = async (values: z.infer<typeof completeInvite
 const updateAssociatesRequestsTable = (user: User) =>
   runQuery((supabase) =>
     supabase.from("associates_requests").update({ user_id: user.id }).eq("id", user.user_metadata.requestId),
+  );
+
+type CheckUniquenessError = {
+  message: string;
+  code: "UNIQUE_VIOLATION";
+};
+
+const checkUniqueness = (values: z.infer<typeof completeInviteSchema>) =>
+  runServiceQuery((supabase) => supabase.from("users").select("*").or(`username.eq.${values.username}`)).andThen(
+    (data) =>
+      data.length !== 0
+        ? errAsync({
+            message: "Username or K-Number already exists.",
+            code: "UNIQUE_VIOLATION",
+          } as CheckUniquenessError)
+        : okAsync(),
   );
