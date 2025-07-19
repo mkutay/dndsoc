@@ -13,6 +13,7 @@ interface MyProfileProps {
     name: string;
     knumber: string | null;
     auth_user_uuid: string;
+    email: string;
   };
 }
 
@@ -32,7 +33,7 @@ export function MyProfile({ user }: MyProfileProps) {
         </CardTitle>
         <CardDescription>Your account information.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="grid xs:grid-cols-2 grod-cols-1 gap-4">
         <div className="space-y-1">
           <p className="text-lg font-normal tracking-wide">Display Name</p>
           <p className="text-sm text-muted-foreground font-quotes uppercase">{user.name}</p>
@@ -44,6 +45,10 @@ export function MyProfile({ user }: MyProfileProps) {
         <div className="space-y-1">
           <p className="text-md font-medium">K–Number</p>
           <p className="text-sm text-muted-foreground font-quotes uppercase">{user.knumber}</p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-md font-medium">Email</p>
+          <p className="text-sm text-muted-foreground font-quotes uppercase">{user.email}</p>
         </div>
       </CardContent>
       <CardFooter>
