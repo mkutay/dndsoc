@@ -1,6 +1,6 @@
 import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 
-import type { EmailOtpType } from "@supabase/supabase-js";
+import type { EmailOtpType, User } from "@supabase/supabase-js";
 import { getOrigin } from "./origin";
 import { insertUser } from "./users";
 import { insertRole } from "./roles";
@@ -86,32 +86,29 @@ export const getUser = () =>
  * Signed up and authenticated user, so insert role and player into database
  * by getting the userid from the username.
  */
-export const completeSignUp = () => {
-  const user = getUser();
-
-  const insertedUser = user.andThen((user) =>
-    insertUser({
-      username: user.user_metadata.username,
-      knumber: user.user_metadata.knumber,
-      name: user.user_metadata.name,
-      auth_user_uuid: user.id,
-    }),
-  );
-
-  const insertedRole = insertedUser.andThen((user) =>
-    insertRole({
-      role: "player",
-      auth_user_uuid: user.auth_user_uuid,
-    }),
-  );
-
-  return insertedRole.andThen((user) =>
-    insertPlayer({
-      auth_user_uuid: user.auth_user_uuid,
-      level: 1,
-    }),
-  );
-};
+export const completeSignUp = (user: User) =>
+  okAsync(user)
+    .andThrough((user) =>
+      insertUser({
+        username: user.user_metadata.username,
+        knumber: user.user_metadata.knumber ?? null,
+        name: user.user_metadata.name,
+        email: user.user_metadata.email,
+        auth_user_uuid: user.id,
+      }),
+    )
+    .andThrough((user) =>
+      insertRole({
+        role: "player",
+        auth_user_uuid: user.id,
+      }),
+    )
+    .andThrough((user) =>
+      insertPlayer({
+        auth_user_uuid: user.id,
+        level: 1,
+      }),
+    );
 
 type SignUpUserError = {
   message: string;
@@ -123,13 +120,11 @@ export const signUpUser = ({
   password,
   username,
   knumber,
-  name,
 }: {
   email: string;
   password: string;
   username: string;
   knumber: string;
-  name: string;
 }) =>
   ResultAsync.combine([getOrigin(), createClient()])
     .andThen(([origin, supabase]) =>
@@ -142,8 +137,9 @@ export const signUpUser = ({
             data: {
               username,
               knumber,
-              name,
+              name: username, // For now, we use username as the name
               siteUrl: origin, // Here, for preview and production deployments
+              email,
             },
           },
         }),

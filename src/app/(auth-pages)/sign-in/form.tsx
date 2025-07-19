@@ -26,7 +26,7 @@ export function SignInForm() {
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
@@ -59,15 +59,15 @@ export function SignInForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name="email"
+          name="identifier"
           disabled={pending}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Identifier</FormLabel>
               <FormControl>
-                <Input placeholder="first.second@kcl.ac.uk" {...field} />
+                <Input placeholder="first.second@kcl.ac.uk/Awesome" {...field} />
               </FormControl>
-              <FormDescription>This is your KCL email address.</FormDescription>
+              <FormDescription>Use your KCL email address, your username, or your K-Number to sign in.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -80,19 +80,19 @@ export function SignInForm() {
             <FormItem>
               <FormLabel className="flex flex-row justify-between items-center">
                 Password
-                <TypographyLink className="text-xs" variant="muted" href="/forgot-password" tabIndex={-1}>
+                <TypographyLink className="text-xs font-quotes" variant="muted" href="/forgot-password" tabIndex={-1}>
                   Forgot your password?
                 </TypographyLink>
               </FormLabel>
               <FormControl>
                 <Input type="password" placeholder="Your password" {...field} />
               </FormControl>
-              <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription>
+              {/* <FormDescription>This is your password. It must be at least 6 characters long.</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending}>
+        <Button type="submit" disabled={pending} className="w-full mt-4">
           Submit
         </Button>
       </form>

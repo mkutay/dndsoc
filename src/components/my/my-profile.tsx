@@ -11,7 +11,7 @@ interface MyProfileProps {
   user: {
     username: string;
     name: string;
-    knumber: string;
+    knumber: string | null;
     auth_user_uuid: string;
   };
 }
@@ -28,7 +28,7 @@ export function MyProfile({ user }: MyProfileProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Settings size={24} className="mb-[2px]" />
-          Profile Information
+          Account
         </CardTitle>
         <CardDescription>Your account information.</CardDescription>
       </CardHeader>

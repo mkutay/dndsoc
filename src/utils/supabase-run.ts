@@ -1,7 +1,7 @@
 import { type PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient, createServiceClient } from "@/utils/supabase/server";
 import { type Database } from "@/types/database.types";
 
 export type SupabaseQueryError = {
@@ -25,3 +25,6 @@ export const supabaseRun = <T>(query: PromiseLike<PostgrestSingleResponse<T>>, c
 
 export const runQuery = <T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) =>
   createClient().andThen((client) => supabaseRun(queryBuilder(client), caller));
+
+export const runServiceQuery = <T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) =>
+  createServiceClient().andThen((client) => supabaseRun(queryBuilder(client), caller));

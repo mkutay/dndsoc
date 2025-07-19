@@ -33,7 +33,7 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <Sword size={20} />
+        <Sword size={28} />
         <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
           Your Characters ({characters.length})
         </h3>

@@ -2,20 +2,14 @@ import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 
 type User = Tables<"users">;
-type UserArgument = {
-  username: string;
-  knumber: string;
-  name: string;
-  auth_user_uuid: string;
-};
 
 type GetUserByAuthUuidError = {
   message: string;
   code: "NOT_FOUND";
 };
 
-export const insertUser = (user: UserArgument) =>
-  runQuery<User>((supabase) => supabase.from("users").insert(user).select("*").single());
+export const insertUser = (user: User) =>
+  runQuery((supabase) => supabase.from("users").insert(user).select("*").single());
 
 export const getUserByAuthUuid = ({ authUserUuid }: { authUserUuid: string }) =>
   runQuery((supabase) => supabase.from("users").select("*").eq("auth_user_uuid", authUserUuid).single()).mapErr(
