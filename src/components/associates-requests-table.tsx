@@ -238,7 +238,7 @@ export function AssociatesRequestsTable({ requests }: AssociatesRequestsTablePro
               <TableCell className="text-center">
                 {request.user ? (
                   <TypographyLink
-                    href={`/player/${request.user.username}`}
+                    href={`/players/${request.user.username}`}
                     className="flex items-center justify-center gap-2 text-sm"
                     target="_blank"
                   >
