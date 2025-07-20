@@ -246,7 +246,7 @@ export default function ResourcesPage() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild className="w-full group-hover:bg-primary/90">
-                    <Link href="https://5e.tools" target="_blank">
+                    <Link href="https://2014.5e.tools" target="_blank">
                       <Globe className="w-4 h-4 mr-2" />
                       Visit 5e.tools
                       <ExternalLink className="w-4 h-4 ml-2" />

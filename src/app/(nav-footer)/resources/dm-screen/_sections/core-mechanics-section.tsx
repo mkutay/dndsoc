@@ -133,7 +133,7 @@ function MagicSpecialRules() {
               <TypographyParagraph>
                 Ability Modifier + Proficiency Bonus (
                 <Link
-                  href="https://5e.tools/quickreference.html#bookref-quick,2,advantage%20and%20disadvantage"
+                  href="https://2014.5e.tools/quickreference.html#bookref-quick,2,advantage%20and%20disadvantage"
                   target="_blank"
                   className="text-primary hover:text-primary/80 transition-colors italic"
                 >
@@ -149,7 +149,7 @@ function MagicSpecialRules() {
             <AccordionContent>
               <div className="flex flex-row gap-2">
                 <Button asChild size="badge" className="text-xs rounded-full py-0.5 px-2.5 font-quotes">
-                  <Link href="https://5e.tools/book.html#PHB,11" target="_blank">
+                  <Link href="https://2014.5e.tools/book.html#PHB,11" target="_blank">
                     See Spells
                   </Link>
                 </Button>
@@ -456,7 +456,7 @@ const CoreMechanicsSection: React.FC<CoreMechanicsSectionProps> = ({ id }) => {
                     Award for great roleplay, clever solutions. Gain advantage on attack rolls, ability checks, and
                     saving throws.{" "}
                     <Link
-                      href="https://5e.tools/variantrules.html#inspiration_dmg"
+                      href="https://2014.5e.tools/variantrules.html#inspiration_dmg"
                       target="_blank"
                       className="text-primary hover:text-primary/80 transition-colors italic"
                     >

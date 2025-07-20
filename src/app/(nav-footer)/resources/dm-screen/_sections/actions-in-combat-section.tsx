@@ -74,7 +74,7 @@ const ActionsInCombatSection: React.FC<ActionsInCombatSectionProps> = ({ id }) =
                     your max HP, you die. Otherwise, you fall unconscious (death saving throws). With a DC 10 Medicine
                     check, one can stabilise you.{" "}
                     <Link
-                      href="https://5e.tools/quickreference.html#bookref-quick,3,damage%20and%20healing"
+                      href="https://2014.5e.tools/quickreference.html#bookref-quick,3,damage%20and%20healing"
                       target="_blank"
                       className="text-primary hover:text-primary/80 transition-colors italic"
                     >
@@ -95,7 +95,7 @@ const ActionsInCombatSection: React.FC<ActionsInCombatSectionProps> = ({ id }) =
                     movement equal to half of your speed. Can be controlled if trained, otherwise it acts on its own
                     initiative.{" "}
                     <Link
-                      href="https://5e.tools/quickreference.html#bookref-quick,3,mounted%20combat"
+                      href="https://2014.5e.tools/quickreference.html#bookref-quick,3,mounted%20combat"
                       target="_blank"
                       className="text-primary hover:text-primary/80 transition-colors italic"
                     >
