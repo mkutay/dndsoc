@@ -388,18 +388,18 @@ INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shorte
 --
 
 INSERT INTO "public"."classes" ("id", "name", "rules_url") VALUES
-	('92f68d53-350f-431d-80e3-348cbe368478', 'Monk', 'https://5e.tools/classes.html#monk_phb'),
-	('39a102d1-3f4d-403a-959c-4964d62bfc65', 'Fighter', 'https://5e.tools/classes.html#fighter_phb'),
-	('eb16ca0b-3431-430d-85f9-6e1324cfbf43', 'Wizard', 'https://5e.tools/classes.html#wizard_phb'),
-	('a2acc211-d2ca-45c8-a917-ea1be560279d', 'Rogue', 'https://5e.tools/classes.html#rogue_phb'),
-	('c08989a8-fc4f-49bf-83ad-d3ec15e8ff19', 'Cleric', 'https://5e.tools/classes.html#cleric_phb'),
-	('f66f6340-70af-4d83-beb8-d6daa8fc0f7d', 'Paladin', 'https://5e.tools/classes.html#paladin_phb'),
-	('445ea976-b746-4293-b3f8-86c6ddd8a150', 'Ranger', 'https://5e.tools/classes.html#ranger_phb'),
-	('ad97176a-9517-491c-9b77-0a95c97aad40', 'Bard', 'https://5e.tools/classes.html#bard_phb'),
-	('9fdcd293-0646-4869-986e-bf584705b2ed', 'Druid', 'https://5e.tools/classes.html#druid_phb'),
-	('4a635d16-f9b8-4d8c-acb1-c062699b4fbf', 'Sorcerer', 'https://5e.tools/classes.html#sorcerer_phb'),
-	('83abf98b-2dd1-49e1-b5db-5bc1340e5030', 'Warlock', 'https://5e.tools/classes.html#warlock_phb'),
-	('f5be59a6-96ba-4691-8a9f-a2ae3cbc9758', 'Barbarian', 'https://5e.tools/classes.html#barbarian_phb');
+	('92f68d53-350f-431d-80e3-348cbe368478', 'Monk', 'https://2014.5e.tools/classes.html#monk_phb'),
+	('39a102d1-3f4d-403a-959c-4964d62bfc65', 'Fighter', 'https://2014.5e.tools/classes.html#fighter_phb'),
+	('eb16ca0b-3431-430d-85f9-6e1324cfbf43', 'Wizard', 'https://2014.5e.tools/classes.html#wizard_phb'),
+	('a2acc211-d2ca-45c8-a917-ea1be560279d', 'Rogue', 'https://2014.5e.tools/classes.html#rogue_phb'),
+	('c08989a8-fc4f-49bf-83ad-d3ec15e8ff19', 'Cleric', 'https://2014.5e.tools/classes.html#cleric_phb'),
+	('f66f6340-70af-4d83-beb8-d6daa8fc0f7d', 'Paladin', 'https://2014.5e.tools/classes.html#paladin_phb'),
+	('445ea976-b746-4293-b3f8-86c6ddd8a150', 'Ranger', 'https://2014.5e.tools/classes.html#ranger_phb'),
+	('ad97176a-9517-491c-9b77-0a95c97aad40', 'Bard', 'https://2014.5e.tools/classes.html#bard_phb'),
+	('9fdcd293-0646-4869-986e-bf584705b2ed', 'Druid', 'https://2014.5e.tools/classes.html#druid_phb'),
+	('4a635d16-f9b8-4d8c-acb1-c062699b4fbf', 'Sorcerer', 'https://2014.5e.tools/classes.html#sorcerer_phb'),
+	('83abf98b-2dd1-49e1-b5db-5bc1340e5030', 'Warlock', 'https://2014.5e.tools/classes.html#warlock_phb'),
+	('f5be59a6-96ba-4691-8a9f-a2ae3cbc9758', 'Barbarian', 'https://2014.5e.tools/classes.html#barbarian_phb');
 
 
 --
@@ -438,18 +438,18 @@ INSERT INTO "public"."character_party" ("party_id", "character_id") VALUES
 --
 
 INSERT INTO "public"."races" ("id", "name", "rules_url") VALUES
-	('88b9763c-9f12-476e-8a28-faff78ff9ab2', 'Half-Orc', 'https://5e.tools/races.html#half-orc_phb'),
-	('6296a44b-3236-4668-99f2-4ab0897c2e7a', 'Tiefling', 'https://5e.tools/races.html#tiefling_phb'),
-	('b9595c49-fd03-4bef-921f-2dd3fd4928ac', 'Aasimar', 'https://5e.tools/races.html#aasimar_vgm'),
-	('3b33071c-7717-4273-b8e3-0f3aebeaef8e', 'Tabaxi', 'https://5e.tools/races.html#tabaxi_vgm'),
-	('04964be6-33e6-4189-b1a7-6daf00a017f5', 'Triton', 'https://5e.tools/races.html#triton_vgm'),
-	('fb7ec8a4-5002-4d9c-814a-f7a54b3af448', 'Human', 'https://5e.tools/races.html#human_phb'),
-	('cec219fd-b92c-48aa-bd26-1ff5381d5718', 'Elf', 'https://5e.tools/races.html#elf_phb'),
-	('65c1a061-c78b-4671-813a-ff06ce8d7097', 'Dwarf', 'https://5e.tools/races.html#dwarf_phb'),
-	('0e5f30b2-2803-4016-b256-3f109155f1e6', 'Halfling', 'https://5e.tools/races.html#halfling_phb'),
-	('de121870-7e1d-4ab8-b44f-8338a308437c', 'Dragonborn', 'https://5e.tools/races.html#dragonborn_phb'),
-	('7eab9e2f-62e7-40e4-96d7-b41cf7e7f207', 'Gnome', 'https://5e.tools/races.html#gnome_phb'),
-	('581d9959-ef15-4e55-85f5-fb3cdc0d07f0', 'Half-Elf', 'https://5e.tools/races.html#half-elf_phb');
+	('88b9763c-9f12-476e-8a28-faff78ff9ab2', 'Half-Orc', 'https://2014.5e.tools/races.html#half-orc_phb'),
+	('6296a44b-3236-4668-99f2-4ab0897c2e7a', 'Tiefling', 'https://2014.5e.tools/races.html#tiefling_phb'),
+	('b9595c49-fd03-4bef-921f-2dd3fd4928ac', 'Aasimar', 'https://2014.5e.tools/races.html#aasimar_vgm'),
+	('3b33071c-7717-4273-b8e3-0f3aebeaef8e', 'Tabaxi', 'https://2014.5e.tools/races.html#tabaxi_vgm'),
+	('04964be6-33e6-4189-b1a7-6daf00a017f5', 'Triton', 'https://2014.5e.tools/races.html#triton_vgm'),
+	('fb7ec8a4-5002-4d9c-814a-f7a54b3af448', 'Human', 'https://2014.5e.tools/races.html#human_phb'),
+	('cec219fd-b92c-48aa-bd26-1ff5381d5718', 'Elf', 'https://2014.5e.tools/races.html#elf_phb'),
+	('65c1a061-c78b-4671-813a-ff06ce8d7097', 'Dwarf', 'https://2014.5e.tools/races.html#dwarf_phb'),
+	('0e5f30b2-2803-4016-b256-3f109155f1e6', 'Halfling', 'https://2014.5e.tools/races.html#halfling_phb'),
+	('de121870-7e1d-4ab8-b44f-8338a308437c', 'Dragonborn', 'https://2014.5e.tools/races.html#dragonborn_phb'),
+	('7eab9e2f-62e7-40e4-96d7-b41cf7e7f207', 'Gnome', 'https://2014.5e.tools/races.html#gnome_phb'),
+	('581d9959-ef15-4e55-85f5-fb3cdc0d07f0', 'Half-Elf', 'https://2014.5e.tools/races.html#half-elf_phb');
 
 
 --
