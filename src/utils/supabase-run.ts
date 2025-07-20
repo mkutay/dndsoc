@@ -615,9 +615,9 @@ export const PostgreSQLErrorMessages: Record<PostgreSQLErrorCode, string> = {
   XX002: "Index corrupted",
 };
 
-export type SupabaseQueryError = {
+export type SupabaseQueryError<T extends string> = {
   message: string;
-  code: "DATABASE_ERROR";
+  code: T;
   postgres: {
     code: PostgreSQLErrorCode;
     message: string;
@@ -626,27 +626,85 @@ export type SupabaseQueryError = {
 
 export type QueryBuilder<R> = (client: SupabaseClient<Database>) => PromiseLike<R>;
 
-/* for general queries */
-export const handleSupabaseResponse = <T>(
+// Overload 1: Handles calls WITH a 'caller' argument.
+// It uses a template literal type to create the specific error code.
+export function handleSupabaseResponse<T, U extends string>(
+  response: PostgrestSingleResponse<T>,
+  caller: U,
+): ResultAsync<T, SupabaseQueryError<`DATABASE_ERROR_${U}`>>;
+
+// Overload 2: Handles calls WITHOUT a 'caller' argument.
+// It uses a specific literal type for the error code.
+export function handleSupabaseResponse<T>(
+  response: PostgrestSingleResponse<T>,
+): ResultAsync<T, SupabaseQueryError<"DATABASE_ERROR">>;
+
+// Implementation: This single implementation satisfies both overloads.
+// Its signature is general enough to cover both cases.
+export function handleSupabaseResponse<T, U extends string>(
   { error, data }: PostgrestSingleResponse<T>,
-  caller?: string,
-): ResultAsync<T, SupabaseQueryError> =>
-  !error
-    ? okAsync(data as T)
-    : errAsync({
-        message: `Database query failed${caller ? ` in ${caller}` : ""}`,
-        code: "DATABASE_ERROR",
-        postgres: {
-          code: error.code as PostgreSQLErrorCode,
-          message: PostgreSQLErrorMessages[error.code as PostgreSQLErrorCode] || error.message,
-        },
-      });
+  caller?: U,
+): ResultAsync<T, SupabaseQueryError<U extends string ? `DATABASE_ERROR_${U}` : "DATABASE_ERROR">> {
+  if (!error) {
+    return okAsync(data as T);
+  }
 
-export const supabaseRun = <T>(query: PromiseLike<PostgrestSingleResponse<T>>, caller?: string) =>
-  fromSafePromise(query).andThen((response) => handleSupabaseResponse(response, caller));
+  return errAsync({
+    message: `Database query failed${caller ? ` in ${caller}` : ""}`,
+    code: (caller ? `DATABASE_ERROR_${caller}` : "DATABASE_ERROR") as U extends string
+      ? `DATABASE_ERROR_${U}`
+      : "DATABASE_ERROR",
+    postgres: {
+      code: error.code as PostgreSQLErrorCode,
+      message: PostgreSQLErrorMessages[error.code as PostgreSQLErrorCode] || error.message,
+    },
+  });
+}
 
-export const runQuery = <T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) =>
-  createClient().andThen((client) => supabaseRun(queryBuilder(client), caller));
+// Overloaded supabaseRun function to preserve literal types
+export function supabaseRun<T, U extends string>(
+  query: PromiseLike<PostgrestSingleResponse<T>>,
+  caller: U,
+): ResultAsync<T, SupabaseQueryError<`DATABASE_ERROR_${U}`>>;
 
-export const runServiceQuery = <T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) =>
-  createServiceClient().andThen((client) => supabaseRun(queryBuilder(client), caller));
+export function supabaseRun<T>(
+  query: PromiseLike<PostgrestSingleResponse<T>>,
+): ResultAsync<T, SupabaseQueryError<"DATABASE_ERROR">>;
+
+export function supabaseRun<T>(query: PromiseLike<PostgrestSingleResponse<T>>, caller?: string) {
+  return fromSafePromise(query).andThen((response) =>
+    caller ? handleSupabaseResponse(response, caller) : handleSupabaseResponse(response),
+  );
+}
+
+// Overloaded runQuery function to preserve literal types
+export function runQuery<T, U extends string>(
+  queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>,
+  caller: U,
+): ResultAsync<T, SupabaseQueryError<`DATABASE_ERROR_${U}`>>;
+
+export function runQuery<T>(
+  queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>,
+): ResultAsync<T, SupabaseQueryError<"DATABASE_ERROR">>;
+
+export function runQuery<T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) {
+  return createClient().andThen((client) =>
+    caller ? supabaseRun(queryBuilder(client), caller) : supabaseRun(queryBuilder(client)),
+  );
+}
+
+// Overloaded runServiceQuery function to preserve literal types
+export function runServiceQuery<T, U extends string>(
+  queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>,
+  caller: U,
+): ResultAsync<T, SupabaseQueryError<`DATABASE_ERROR_${U}`>>;
+
+export function runServiceQuery<T>(
+  queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>,
+): ResultAsync<T, SupabaseQueryError<"DATABASE_ERROR">>;
+
+export function runServiceQuery<T>(queryBuilder: QueryBuilder<PostgrestSingleResponse<T>>, caller?: string) {
+  return createServiceClient().andThen((client) =>
+    caller ? supabaseRun(queryBuilder(client), caller) : supabaseRun(queryBuilder(client)),
+  );
+}

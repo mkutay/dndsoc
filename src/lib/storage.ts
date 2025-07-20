@@ -46,6 +46,7 @@ export const upload = ({ file, shortened, folder }: { file: File; shortened: str
           id: data.id,
           name: data.path,
         }),
+        "IMAGES_RELATION_INSERT",
       ),
     )
     .map(({ data }) => ({
