@@ -36,7 +36,12 @@ export default async function Page() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <ProfileLinks role={role} user={user.users} />
-        <MyProfile user={user.users} />
+        <MyProfile
+          username={user.users.username}
+          knumber={user.users.knumber}
+          name={user.users.name}
+          email={user.users.email}
+        />
       </div>
 
       <div className="mt-10 space-y-10">

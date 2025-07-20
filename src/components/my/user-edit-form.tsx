@@ -16,15 +16,11 @@ import { updateUser } from "@/server/users";
 import { actionResultToResult } from "@/types/error-typing";
 
 export function UserEditForm({
-  user,
+  name,
   onCancel,
   onSuccess,
 }: {
-  user: {
-    auth_user_uuid: string;
-    username: string;
-    name: string;
-  };
+  name: string;
   onCancel?: () => void;
   onSuccess?: () => void;
 }) {
@@ -34,20 +30,20 @@ export function UserEditForm({
   const form = useForm<z.infer<typeof userEditSchema>>({
     resolver: zodResolver(userEditSchema),
     defaultValues: {
-      name: user.name,
+      name,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof userEditSchema>) => {
     setPending(true);
-    const result = actionResultToResult(await updateUser(values, user.auth_user_uuid));
+    const result = actionResultToResult(await updateUser(values));
     setPending(false);
 
     result.match(
       () => {
         toast({
           title: "Update Successful",
-          description: "Your information has been updated. Refresh to see changes.",
+          description: "Your information has been updated.",
         });
         onSuccess?.();
       },

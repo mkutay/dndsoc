@@ -7,21 +7,21 @@ import { UserEditForm } from "./user-edit-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface MyProfileProps {
-  user: {
-    username: string;
-    name: string;
-    knumber: string | null;
-    auth_user_uuid: string;
-    email: string;
-  };
-}
-
-export function MyProfile({ user }: MyProfileProps) {
+export function MyProfile({
+  username,
+  knumber,
+  name,
+  email,
+}: {
+  username: string;
+  name: string;
+  knumber: string | null;
+  email: string;
+}) {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
-    return <UserEditForm user={user} onCancel={() => setIsEditing(false)} onSuccess={() => setIsEditing(false)} />;
+    return <UserEditForm name={name} onCancel={() => setIsEditing(false)} onSuccess={() => setIsEditing(false)} />;
   }
 
   return (
@@ -36,19 +36,19 @@ export function MyProfile({ user }: MyProfileProps) {
       <CardContent className="grid xs:grid-cols-2 grod-cols-1 gap-4">
         <div className="space-y-1">
           <p className="text-lg font-normal tracking-wide">Display Name</p>
-          <p className="text-sm text-muted-foreground font-quotes uppercase">{user.name}</p>
+          <p className="text-sm text-muted-foreground font-quotes uppercase">{name}</p>
         </div>
         <div className="space-y-1">
           <p className="text-md font-medium">Username</p>
-          <p className="text-sm text-muted-foreground font-quotes uppercase">@{user.username}</p>
+          <p className="text-sm text-muted-foreground font-quotes uppercase">@{username}</p>
         </div>
         <div className="space-y-1">
-          <p className="text-md font-medium">K–Number</p>
-          <p className="text-sm text-muted-foreground font-quotes uppercase">{user.knumber}</p>
+          <p className="text-md font-medium">K—Number</p>
+          <p className="text-sm text-muted-foreground font-quotes uppercase">{knumber}</p>
         </div>
         <div className="space-y-1">
           <p className="text-md font-medium">Email</p>
-          <p className="text-sm text-muted-foreground font-quotes uppercase">{user.email}</p>
+          <p className="text-sm text-muted-foreground font-quotes uppercase">{email}</p>
         </div>
       </CardContent>
       <CardFooter>
