@@ -1,29 +1,11 @@
 import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
-
 import type { EmailOtpType, User } from "@supabase/supabase-js";
+
 import { getOrigin } from "./origin";
-import { insertUser } from "./users";
 import { insertRole } from "./roles";
 import { insertPlayer } from "./players";
 import { createClient } from "@/utils/supabase/server";
-
-type ExchangeCodeError = {
-  message: string;
-  code: "DATABASE_ERROR";
-};
-
-// This function exchanges an auth code for the user's session.
-export const exchangeCodeForSession = (code: string) =>
-  createClient()
-    .andThen((supabase) => fromSafePromise(supabase.auth.exchangeCodeForSession(code)))
-    .andThen((response) =>
-      !response.error
-        ? okAsync()
-        : errAsync({
-            message: "Failed to exchange code for session (in supabase): " + response.error.message,
-            code: "DATABASE_ERROR",
-          } as ExchangeCodeError),
-    );
+import { runQuery } from "@/utils/supabase-run";
 
 // Sends a confirmation email to the user after signing up, only if there is an inital sign up being done.
 // Otherwise, it does nothing, and doesn't return an error.
@@ -50,13 +32,13 @@ type VerifyOtpError = {
 export const verifyOtp = ({ type, tokenHash }: { type: EmailOtpType; tokenHash: string }) =>
   createClient()
     .andThen((supabase) => fromSafePromise(supabase.auth.verifyOtp({ type, token_hash: tokenHash })))
-    .andThen((response) =>
-      !response.error
-        ? okAsync(response.data)
-        : errAsync({
-            message: "Failed to verify OTP (in supabase): " + response.error.message,
-            code: "DATABASE_ERROR",
-          } as VerifyOtpError),
+    .andThen((response) => (!response.error ? okAsync(response.data) : errAsync(response.error)))
+    .mapErr(
+      (error) =>
+        ({
+          message: "Failed to verify OTP (in supabase): " + error.message,
+          code: "DATABASE_ERROR",
+        }) as VerifyOtpError,
     );
 
 type GetUserError = {
@@ -67,18 +49,17 @@ type GetUserError = {
 export const getUser = () =>
   createClient()
     .andThen((supabase) => fromSafePromise(supabase.auth.getUser()))
-    .andThen((response) =>
-      !response.error
-        ? okAsync(response.data)
-        : response.error.message.includes("session missing")
-          ? errAsync({
-              message: "Failed to get user (in supabase): " + response.error.message,
-              code: "NOT_LOGGED_IN",
-            } as GetUserError)
-          : errAsync({
-              message: "Failed to get user (in supabase): " + response.error.message,
-              code: "DATABASE_ERROR",
-            } as GetUserError),
+    .andThen((response) => (!response.error ? okAsync(response.data) : errAsync(response.error)))
+    .mapErr((error) =>
+      error.message.includes("session missing")
+        ? ({
+            message: "Failed to get user (in supabase): " + error.message,
+            code: "NOT_LOGGED_IN",
+          } as GetUserError)
+        : ({
+            message: "Failed to get user (in supabase): " + error.message,
+            code: "DATABASE_ERROR",
+          } as GetUserError),
     )
     .map((data) => data.user);
 
@@ -87,23 +68,26 @@ export const getUser = () =>
  * by getting the userid from the username.
  */
 export const completeSignUp = (user: User) =>
-  okAsync(user)
-    .andThrough((user) =>
-      insertUser({
+  runQuery((supabase) =>
+    supabase
+      .from("users")
+      .insert({
         username: user.user_metadata.username,
         knumber: user.user_metadata.knumber ?? null,
         name: user.user_metadata.name,
         email: user.user_metadata.email,
         auth_user_uuid: user.id,
-      }),
-    )
-    .andThrough((user) =>
+      })
+      .select("*")
+      .single(),
+  )
+    .andThen(() =>
       insertRole({
         role: "player",
         auth_user_uuid: user.id,
       }),
     )
-    .andThrough((user) =>
+    .andThen(() =>
       insertPlayer({
         auth_user_uuid: user.id,
         level: 1,
@@ -138,7 +122,7 @@ export const signUpUser = ({
               username,
               knumber,
               name: username, // For now, we use username as the name
-              siteUrl: origin, // Here, for preview and production deployments
+              siteUrl: origin, // For preview and production deployments
               email,
             },
           },

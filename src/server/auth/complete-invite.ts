@@ -69,7 +69,7 @@ const checkUniqueness = (values: z.infer<typeof completeInviteSchema>) =>
     (data) =>
       data.length !== 0
         ? errAsync({
-            message: "Username or K-Number already exists.",
+            message: "Username already exists.",
             code: "UNIQUE_VIOLATION",
           } as CheckUniquenessError)
         : okAsync(),

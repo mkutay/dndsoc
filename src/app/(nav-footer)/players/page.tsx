@@ -66,7 +66,7 @@ function PlayerCard({ player }: { player: Player }) {
 }
 
 const getPlayers = () =>
-  runQuery<Player[]>(
+  runQuery<Player[], "GET_PLAYERS">(
     (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
-    "getPlayers",
+    "GET_PLAYERS",
   );

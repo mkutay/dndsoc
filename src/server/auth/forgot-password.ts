@@ -1,6 +1,6 @@
 "use server";
 
-import { errAsync, okAsync, ResultAsync } from "neverthrow";
+import { errAsync, fromSafePromise, okAsync } from "neverthrow";
 import { z } from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
@@ -17,14 +17,13 @@ export const forgotPasswordAction = async (values: z.infer<typeof forgotPassword
   resultAsyncToActionResult(
     parseSchema(forgotPasswordFormSchema, values)
       .asyncAndThen(createClient)
-      .andThen((supabase) =>
-        ResultAsync.fromSafePromise(supabase.auth.resetPasswordForEmail(values.email)).andThen((result) =>
-          !result.error
-            ? okAsync()
-            : errAsync({
-                message: "Failed to reset password (in supabase): " + result.error.message,
-                code: "DATABASE_ERROR",
-              } as ForgotPasswordError),
-        ),
+      .andThen((supabase) => fromSafePromise(supabase.auth.resetPasswordForEmail(values.email)))
+      .andThen((result) =>
+        !result.error
+          ? okAsync()
+          : errAsync({
+              message: "Failed to reset password (in supabase): " + result.error.message,
+              code: "DATABASE_ERROR",
+            } as ForgotPasswordError),
       ),
   );
