@@ -1,11 +1,6 @@
-import { type Tables } from "@/types/database.types";
-
-export function formatClasses(classes: Tables<"classes">[] | { name: string }[]) {
-  return classes.map((cls) => cls.name).join(", ");
-}
-
-export function formatRaces(races: Tables<"races">[] | { name: string }[]) {
-  return races.map((race) => race.name).join(", ");
+export function formatList(items: string[] | { name: string }[], separator = ", ") {
+  if (items.length === 0) return "";
+  return items.map((item) => (typeof item === "string" ? item : item.name)).join(separator);
 }
 
 // No numbers, no spaces, no special characters

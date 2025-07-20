@@ -1,7 +1,6 @@
 import { Sword } from "lucide-react";
 import Link from "next/link";
 
-import { ErrorPage } from "../error-page";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ErrorPage } from "@/components/error-page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { type Tables } from "@/types/database.types";
-import { formatClasses, formatRaces, truncateText } from "@/utils/formatting";
+import { formatList, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
 import { getPlayerRoleUser } from "@/lib/players";
 
@@ -48,9 +48,9 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
                 {(character.classes.length > 0 || character.races.length > 0) && (
                   <>
                     {" · "}
-                    {character.classes.length > 0 && formatClasses(character.classes)}
+                    {character.classes.length > 0 && formatList(character.classes)}
                     {character.classes.length > 0 && character.races.length > 0 && " · "}
-                    {character.races.length > 0 && formatRaces(character.races)}
+                    {character.races.length > 0 && formatList(character.races)}
                   </>
                 )}
               </CardDescription>

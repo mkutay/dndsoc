@@ -4,7 +4,7 @@ import { cache } from "react";
 import { CharacterEditForm } from "./form";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyLink } from "@/components/typography/paragraph";
-import { formatClasses, formatRaces } from "@/utils/formatting";
+import { formatList } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
 import { getPlayerRoleUser } from "@/lib/players";
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const classes = character.classes;
   const races = character.races;
   const name = character.name;
-  const description = `Some statistics about character ${name}: Level ${level} · ${formatClasses(classes)} · ${formatRaces(races)}`;
+  const description = `Some statistics about character ${name}: Level ${level} · ${formatList(classes)} · ${formatList(races)}`;
   const title = `Edit Character ${name}`;
 
   return {

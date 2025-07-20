@@ -5,7 +5,7 @@ import { cache } from "react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
-import { formatClasses, formatRaces } from "@/utils/formatting";
+import { formatList } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const classes = character.classes;
   const races = character.races;
   const name = character.name;
-  const description = `Some statistics about character ${name}: Level ${level} · ${formatClasses(classes)} · ${formatRaces(races)}`;
+  const description = `Some statistics about character ${name}: Level ${level} · ${formatList(classes)} · ${formatList(races)}`;
   const title = `Character ${name}`;
 
   const imageUrlResult = character.image_uuid
@@ -105,9 +105,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           <div className="flex flex-row">
             <TypographyLarge>Level {character.level}</TypographyLarge>
             {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-px" />}
-            {character.classes.length !== 0 && <TypographyLarge>{formatClasses(character.classes)}</TypographyLarge>}
+            {character.classes.length !== 0 && <TypographyLarge>{formatList(character.classes)}</TypographyLarge>}
             {character.classes.length !== 0 && character.races.length !== 0 && <Dot className="mt-px" />}
-            {character.races.length !== 0 && <TypographyLarge>{formatRaces(character.races)}</TypographyLarge>}
+            {character.races.length !== 0 && <TypographyLarge>{formatList(character.races)}</TypographyLarge>}
           </div>
           {character.about && character.about.length !== 0 ? (
             <TypographyLead className="indent-6">{character.about}</TypographyLead>
