@@ -20,6 +20,7 @@ COPY . .
 
 # Copy environment file for build
 COPY .env* ./
+COPY .env-pr-* ./
 
 # Set build flag
 ENV BUILDING=true
