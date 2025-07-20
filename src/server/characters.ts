@@ -119,10 +119,7 @@ export const removeCharacterFromParty = async ({
     runQuery(
       (supabase) => supabase.from("character_party").delete().eq("party_id", partyId).eq("character_id", characterId),
       "removeCharacterFromParty",
-    ).andThen(() => {
-      revalidatePath(`/parties/${shortened}`, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(`/parties/${shortened}`, "page")),
   );
 
 export const addCharacterToParty = async ({
@@ -142,8 +139,5 @@ export const addCharacterToParty = async ({
           character_id: characterId,
         }),
       "addCharacterToParty",
-    ).andThen(() => {
-      revalidatePath(`/parties/${shortened}`, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(`/parties/${shortened}`, "page")),
   );

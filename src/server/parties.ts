@@ -193,8 +193,5 @@ export const addPartyToCampaign = async ({
           campaign_id: campaignId,
         }),
       "addPartyToCampaign",
-    ).andThen(() => {
-      revalidatePath(`/campaigns/${shortened}`, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(`/campaigns/${shortened}`, "page")),
   );

@@ -1,7 +1,7 @@
 "use server";
 
-import { okAsync } from "neverthrow";
 import { revalidatePath } from "next/cache";
+
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { runQuery } from "@/utils/supabase-run";
 
@@ -18,10 +18,7 @@ export const removeCampaignFromParty = async ({
     runQuery(
       (supabase) => supabase.from("party_campaigns").delete().eq("party_id", partyId).eq("campaign_id", campaignId),
       "removeCampaignFromParty",
-    ).andThen(() => {
-      revalidatePath(`/parties/${shortened}`, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(`/parties/${shortened}`, "page")),
   );
 
 // There is no validation that the ids are correct
@@ -42,8 +39,5 @@ export const addCampaignToParty = async ({
           campaign_id: campaignId,
         }),
       "addCampaignToParty",
-    ).andThen(() => {
-      revalidatePath(`/parties/${shortened}`, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(`/parties/${shortened}`, "page")),
   );

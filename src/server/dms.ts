@@ -73,8 +73,5 @@ export const addPartyToDM = async ({
           dm_id: dmUuid,
         })
         .select(),
-    ).andThen(() => {
-      revalidatePath(revalidate, "page");
-      return okAsync();
-    }),
+    ).andTee(() => revalidatePath(revalidate, "page")),
   );
