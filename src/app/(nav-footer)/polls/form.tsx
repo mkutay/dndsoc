@@ -20,7 +20,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { createPollSchema } from "@/config/poll-schema";
 import { createPoll } from "@/server/polls";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 import { Input } from "@/components/ui/input";
 
 export function CreatePoll() {
@@ -37,11 +37,10 @@ export function CreatePoll() {
 
   const onSubmit = async (data: z.infer<typeof createPollSchema>) => {
     setIsPending(true);
-    const result = await createPoll(data);
+    const result = actionResultToResult(await createPoll(data));
     setIsPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       (shortened) => {
         toast({
           title: "Success: Poll created",

@@ -17,8 +17,8 @@ import { useToast } from "@/hooks/use-toast";
 import { createPollFormSchema } from "@/config/when2dnd";
 import { cn } from "@/utils/styling";
 import { createWhen2DnDPoll } from "@/server/when2dnd";
-import { actionResultMatch } from "@/types/error-typing";
 import { getEndOfDate, getMidnightOfDate } from "@/utils/formatting";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CreatePollForm({ authUserUuid }: { authUserUuid: string }) {
   const { toast } = useToast();
@@ -38,11 +38,10 @@ export function CreatePollForm({ authUserUuid }: { authUserUuid: string }) {
 
   const onSubmit = async (values: z.infer<typeof createPollFormSchema>) => {
     setPending(true);
-    const result = await createWhen2DnDPoll(values, authUserUuid);
+    const result = actionResultToResult(await createWhen2DnDPoll(values, authUserUuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       ({ code }) => {
         toast({
           title: "Poll created",

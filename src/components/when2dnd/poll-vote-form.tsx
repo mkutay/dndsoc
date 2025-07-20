@@ -17,8 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addVoteToWhen2DnDPoll } from "@/server/when2dnd";
-import { actionResultMatch } from "@/types/error-typing";
 import { getMidnightOfDate } from "@/utils/formatting";
+import { actionResultToResult } from "@/types/error-typing";
 
 function DateTimeSelection({
   control,
@@ -275,8 +275,7 @@ export function PollVoteForm({
     });
     setPending(false);
 
-    actionResultMatch(
-      result,
+    actionResultToResult(result).match(
       () =>
         toast({
           title: "Vote submitted successfully!",

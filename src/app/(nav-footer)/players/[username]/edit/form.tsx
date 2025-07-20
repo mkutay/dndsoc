@@ -11,9 +11,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { playersEditSchema } from "@/config/player-edit-schema";
 import { type Player } from "@/types/full-database.types";
-import { actionResultMatch } from "@/types/error-typing";
 import { updatePlayer } from "@/server/players";
 import { Input } from "@/components/ui/input";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function PlayerEditForm({ player }: { player: Player }) {
   const { toast } = useToast();
@@ -28,11 +28,10 @@ export function PlayerEditForm({ player }: { player: Player }) {
 
   const onSubmit = async (values: z.infer<typeof playersEditSchema>) => {
     setPending(true);
-    const result = await updatePlayer(values, player.id);
+    const result = actionResultToResult(await updatePlayer(values, player.id));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Update Successful",

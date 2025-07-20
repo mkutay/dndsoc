@@ -11,8 +11,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { completeInviteSchema } from "@/config/auth-schemas";
-import { actionResultMatch } from "@/types/error-typing";
 import { completeInviteAction } from "@/server/auth/complete-invite";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CompleteInviteForm({ tokenHash }: { tokenHash: string }) {
   const { toast } = useToast();
@@ -29,11 +29,10 @@ export function CompleteInviteForm({ tokenHash }: { tokenHash: string }) {
 
   const onSubmit = async (values: z.infer<typeof completeInviteSchema>) => {
     setPending(true);
-    const result = await completeInviteAction(values, tokenHash);
+    const result = actionResultToResult(await completeInviteAction(values, tokenHash));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         toast({
           title: "Creation Completed!",

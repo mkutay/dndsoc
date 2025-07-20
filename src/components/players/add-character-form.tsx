@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,13 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addCharacterSchema } from "@/config/character-schema";
-import { actionResultMatch } from "@/types/error-typing";
 import { insertCharacter } from "@/server/characters";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof addCharacterSchema>>({
     resolver: zodResolver(addCharacterSchema),
@@ -27,17 +28,18 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
 
   const onSubmit = async (values: z.infer<typeof addCharacterSchema>) => {
     setPending(true);
-    const result = await insertCharacter(values, playerUuid);
+    const result = actionResultToResult(await insertCharacter(values, playerUuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
-      (value) =>
+    result.match(
+      (value) => {
         toast({
           title: "Success: Character added.",
           description: "You can now edit the specifics of your character.",
           variant: "default",
-        }) && redirect(`/characters/${value.shortened}/edit`),
+        });
+        router.push(`/characters/${value.shortened}/edit`);
+      },
       (error) =>
         toast({
           title: "Error: Could not add character.",

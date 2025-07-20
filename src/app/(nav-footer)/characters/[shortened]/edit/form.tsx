@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { characterEditSchema } from "@/config/character-schema";
 import { cn } from "@/utils/styling";
-import { actionResultMatch } from "@/types/error-typing";
 import { updateCharacter } from "@/server/characters";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CharacterEditForm({
   character,
@@ -53,11 +53,10 @@ export function CharacterEditForm({
 
   const onSubmit = async (values: z.infer<typeof characterEditSchema>) => {
     setPending(true);
-    const result = await updateCharacter(values, character.shortened);
+    const result = actionResultToResult(await updateCharacter(values, character.shortened));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Update Successful",

@@ -10,7 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 import { forgotPasswordAction } from "@/server/auth/forgot-password";
 
 export function ForgotPasswordForm() {
@@ -26,11 +26,10 @@ export function ForgotPasswordForm() {
 
   const onSubmit = async (values: z.infer<typeof forgotPasswordFormSchema>) => {
     setPending(true);
-    const result = await forgotPasswordAction(values);
+    const result = actionResultToResult(await forgotPasswordAction(values));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Password Reset Email Sent",

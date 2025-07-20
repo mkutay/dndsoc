@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { associatesSignUpFormSchema } from "@/config/auth-schemas";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 import { associatesSignUpAction } from "@/server/auth/sign-up";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,11 +32,10 @@ export function SignUpForm() {
 
   const onSubmit = async (values: z.infer<typeof associatesSignUpFormSchema>) => {
     setPending(true);
-    const result = await associatesSignUpAction(values);
+    const result = actionResultToResult(await associatesSignUpAction(values));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         router.push(`/request-sent?email=${encodeURIComponent(values.email)}`);
       },

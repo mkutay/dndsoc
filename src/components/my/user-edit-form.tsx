@@ -12,8 +12,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { userEditSchema } from "@/config/auth-schemas";
-import { actionResultMatch } from "@/types/error-typing";
 import { updateUser } from "@/server/users";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function UserEditForm({
   user,
@@ -40,11 +40,10 @@ export function UserEditForm({
 
   const onSubmit = async (values: z.infer<typeof userEditSchema>) => {
     setPending(true);
-    const result = await updateUser(values, user.auth_user_uuid);
+    const result = actionResultToResult(await updateUser(values, user.auth_user_uuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         toast({
           title: "Update Successful",

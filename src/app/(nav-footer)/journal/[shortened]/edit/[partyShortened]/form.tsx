@@ -10,10 +10,10 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from "@/hooks/use-toast";
 import { type Tables } from "@/types/database.types";
 import { journalPartyEntryEditSchema } from "@/config/journal-schema";
-import { actionResultMatch } from "@/types/error-typing";
 import { updateJournalPartyEntry } from "@/server/journal";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function PartyEntryForm({
   entry,
@@ -35,11 +35,10 @@ export function PartyEntryForm({
 
   const onSubmit = async (data: z.infer<typeof journalPartyEntryEditSchema>) => {
     setPending(true);
-    const result = await updateJournalPartyEntry(entry.journal.id, entry.parties.id, data);
+    const result = actionResultToResult(await updateJournalPartyEntry(entry.journal.id, entry.parties.id, data));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Journal updated successfully!",

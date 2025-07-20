@@ -25,9 +25,9 @@ import { journalCreateSchema } from "@/config/journal-schema";
 import { Input } from "@/components/ui/input";
 import { type Tables } from "@/types/database.types";
 import { createJournal } from "@/server/journal";
-import { actionResultMatch } from "@/types/error-typing";
 import { cn } from "@/utils/styling";
 import { TypographyLink } from "@/components/typography/paragraph";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] }) {
   const { toast } = useToast();
@@ -44,11 +44,10 @@ export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] 
 
   const onSubmit = async (data: z.infer<typeof journalCreateSchema>) => {
     setIsPending(true);
-    const result = await createJournal(data);
+    const result = actionResultToResult(await createJournal(data));
     setIsPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       (shortened) => {
         toast({
           title: "Success: Journal created",

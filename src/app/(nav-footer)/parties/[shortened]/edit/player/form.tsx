@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 import { partyPlayerEditSchema } from "@/config/parties";
 import { updatePlayerParty } from "@/server/parties";
 
@@ -26,11 +26,10 @@ export function PlayerForm({ about, partyUuid }: { about: string; partyUuid: str
 
   const onSubmit = async (values: z.infer<typeof partyPlayerEditSchema>) => {
     setPending(true);
-    const result = await updatePlayerParty(values, partyUuid);
+    const result = actionResultToResult(await updatePlayerParty(values, partyUuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Update Successful",

@@ -9,10 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
 import { DMEditSchema } from "@/config/dms";
 import { updateDM } from "@/server/dms";
 import { Input } from "@/components/ui/input";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function DMEditForm({ dm }: { dm: { id: string; about: string } }) {
   const { toast } = useToast();
@@ -27,11 +27,10 @@ export function DMEditForm({ dm }: { dm: { id: string; about: string } }) {
 
   const onSubmit = async (values: z.infer<typeof DMEditSchema>) => {
     setPending(true);
-    const result = await updateDM(values, dm.id);
+    const result = actionResultToResult(await updateDM(values, dm.id));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Update Successful",

@@ -6,9 +6,9 @@ import { useState } from "react";
 import { TypographyLarge, TypographySmall } from "./typography/paragraph";
 import { TypographyHr } from "./typography/blockquote";
 import { Button } from "./ui/button";
-import { actionResultMatch } from "@/types/error-typing";
 import { useToast } from "@/hooks/use-toast";
 import { voteOnPoll } from "@/server/polls";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function Options({
   options,
@@ -34,8 +34,7 @@ export function Options({
 
     if (votedOptionId !== optionId) {
       voteOnPoll({ optionId, pollId }).then((result) => {
-        actionResultMatch(
-          result,
+        actionResultToResult(result).match(
           () => {
             setVotedOptionId(optionId);
           },
@@ -50,8 +49,7 @@ export function Options({
       });
     } else {
       voteOnPoll({ optionId, pollId }).then((result) => {
-        actionResultMatch(
-          result,
+        actionResultToResult(result).match(
           () => {
             setVotedOptionId(null);
           },

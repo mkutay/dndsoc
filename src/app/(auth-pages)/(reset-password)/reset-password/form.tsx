@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { resetPasswordSchema } from "@/config/auth-schemas";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 import { resetPasswordAction } from "@/server/auth/reset-password";
 
 export function ResetPasswordForm() {
@@ -29,11 +29,10 @@ export function ResetPasswordForm() {
 
   const onSubmit = async (values: z.infer<typeof resetPasswordSchema>) => {
     setPending(true);
-    const result = await resetPasswordAction(values);
+    const result = actionResultToResult(await resetPasswordAction(values));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         toast({
           title: "Password Updated",

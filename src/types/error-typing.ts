@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { err, ok, Result, ResultAsync } from "neverthrow";
 
-// These are needed for the `createAction()` method to work.
-// neverthrow results can not be sent over the wire in server actions.
+// Veverthrow results can not be sent over the wire in server actions.
 
 export type ActionResult<T, E> = ActionOk<T, E> | ActionErr<T, E>;
 
@@ -10,6 +9,7 @@ export type ActionOk<T, E> = {
   ok: true;
   value: T;
 };
+
 export const actionOk = <T>(value: T): ActionOk<T, never> => ({
   ok: true,
   value,
@@ -19,20 +19,14 @@ export type ActionErr<T, E> = {
   ok: false;
   error: E;
 };
+
 export const actionErr = <E>(error: E): ActionErr<never, E> => ({
   ok: false,
   error,
 });
 
 /**
- * Converts a `ResultAsync<T,E>` to a `<ActionResult<T,E>`.
- */
-export type ResultAsyncToActionResult<T> = [T] extends [ResultAsync<infer D, infer E>] ? ActionResult<D, E> : never;
-
-export type ActionResultToResult<T> = [T] extends [ActionResult<infer D, infer E>] ? Result<D, E> : never;
-
-/**
- * Converts an `ActionResult<T,E>` to a `Result<T,E>`.
+ * Converts an `ActionResult<T, E>` to a `Result<T, E>`.
  */
 export const actionResultToResult = <
   R extends ActionResult<any, any>,
@@ -48,7 +42,7 @@ export const actionResultToResult = <
 };
 
 /**
- * Converts a `ResultAsync<T,E>` to an `ActionResult<T,E>` by awaiting the ResultAsync.
+ * Converts a `ResultAsync<T, E>` to an `ActionResult<T, E>` by awaiting the ResultAsync.
  */
 export const resultAsyncToActionResult = async <
   R extends ResultAsync<any, any>,
@@ -63,29 +57,3 @@ export const resultAsyncToActionResult = async <
   }
   return actionErr(result.error);
 };
-
-/**
- * Converts a `Result<T,E>` to an `ActionResult<T,E>`.
- */
-export const resultToActionResult = <
-  R extends Result<any, any>,
-  T = R extends Result<infer T, any> ? T : never,
-  E = R extends Result<any, infer E> ? E : never,
->(
-  result: R,
-): ActionResult<T, E> => {
-  if (result.isOk()) {
-    return actionOk(result.value);
-  }
-  return actionErr(result.error);
-};
-
-/**
- * Matches on the `ActionResult<T,E>` type and calls the appropriate callback.
- * Similar to ResultAsync.match
- */
-export const actionResultMatch = <T, E>(
-  result: ActionResult<T, E>,
-  onOk: (value: T) => void,
-  onErr: (error: E) => void,
-) => (result.ok ? onOk(result.value) : onErr(result.error));

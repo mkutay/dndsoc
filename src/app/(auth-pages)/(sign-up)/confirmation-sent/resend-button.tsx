@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { resendSignUpEmailConfirmationAction } from "@/server/auth/sign-up";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function ResendButton({ email }: { email: string }) {
   const [loading, setLoading] = useState(false);
@@ -17,10 +17,9 @@ export function ResendButton({ email }: { email: string }) {
       disabled={loading}
       onClick={async () => {
         setLoading(true);
-        const result = await resendSignUpEmailConfirmationAction(email);
+        const result = actionResultToResult(await resendSignUpEmailConfirmationAction(email));
         setLoading(false);
-        actionResultMatch(
-          result,
+        result.match(
           () =>
             toast({
               title: "Confirmation Email Resent",

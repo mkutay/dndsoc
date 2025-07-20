@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/utils/styling";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { editPoll } from "@/server/polls";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function EditPoll({
   poll,
@@ -52,11 +52,10 @@ export function EditPoll({
 
   const onSubmit = async (data: z.infer<typeof editPollSchema>) => {
     setPending(true);
-    const result = await editPoll(poll.id, data);
+    const result = actionResultToResult(await editPoll(poll.id, data));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         toast({
           title: "Poll Updated",

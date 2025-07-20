@@ -3,20 +3,21 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
 import { createPartySchema } from "@/config/parties";
 import { insertPartyWithCampaign } from "@/server/parties";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CreatePartyForm({ campaignUuid }: { campaignUuid: string }) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof createPartySchema>>({
     resolver: zodResolver(createPartySchema),
@@ -27,17 +28,19 @@ export function CreatePartyForm({ campaignUuid }: { campaignUuid: string }) {
 
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     setPending(true);
-    const result = await insertPartyWithCampaign(values, campaignUuid);
+    const result = actionResultToResult(await insertPartyWithCampaign(values, campaignUuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
-      (value) =>
+    result.match(
+      (value) => {
         toast({
           title: "Success: Party created.",
           description: "You can now edit the specifics of your party.",
           variant: "default",
-        }) && redirect(`/parties/${value.shortened}/edit/dm`),
+        });
+
+        router.push(`/parties/${value.shortened}/edit/dm`);
+      },
       (error) =>
         toast({
           title: "Error: Could not create party.",

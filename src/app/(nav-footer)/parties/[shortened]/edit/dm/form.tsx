@@ -24,9 +24,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { partyDMEditSchema } from "@/config/parties";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
 import { cn } from "@/utils/styling";
 import { updateDMParty } from "@/server/parties";
+import { actionResultToResult } from "@/types/error-typing";
 
 type Campaign = {
   description: string;
@@ -145,11 +145,10 @@ export function DMForm({
 
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
     setPending(true);
-    const result = await updateDMParty(values, partyUuid);
+    const result = actionResultToResult(await updateDMParty(values, partyUuid));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Update Successful",

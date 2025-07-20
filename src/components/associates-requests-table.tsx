@@ -30,7 +30,7 @@ import type { Tables } from "@/types/database.types";
 import { TypographyLink, TypographyParagraph } from "@/components/typography/paragraph";
 import { approveAssociatesRequest, rejectAssociatesRequest } from "@/server/associates-requests";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 
 type AssociatesRequest = Tables<"associates_requests"> & {
   decision_by_user: Tables<"users"> | null;
@@ -47,11 +47,10 @@ export function AssociatesRequestsTable({ requests }: AssociatesRequestsTablePro
 
   const handleApprove = async (id: string) => {
     setLoading(true);
-    const result = await approveAssociatesRequest({ id });
+    const result = actionResultToResult(await approveAssociatesRequest({ id }));
     setLoading(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Request approved successfully",
@@ -68,11 +67,10 @@ export function AssociatesRequestsTable({ requests }: AssociatesRequestsTablePro
 
   const handleReject = async (id: string) => {
     setLoading(true);
-    const result = await rejectAssociatesRequest({ id });
+    const result = actionResultToResult(await rejectAssociatesRequest({ id }));
     setLoading(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Request denied",

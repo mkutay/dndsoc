@@ -20,7 +20,7 @@ import { cn } from "@/utils/styling";
 import { TypographyLarge } from "@/components/typography/paragraph";
 import { Calendar } from "@/components/ui/calendar";
 import { updateJournalAll } from "@/server/journal";
-import { actionResultMatch } from "@/types/error-typing";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function JournalEditForm({
   journal,
@@ -64,11 +64,10 @@ export function JournalEditForm({
 
   const onSubmit = async (data: z.infer<typeof journalAllEditSchema>) => {
     setPending(true);
-    const result = await updateJournalAll(journal.id, data);
+    const result = actionResultToResult(await updateJournalAll(journal.id, data));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () =>
         toast({
           title: "Journal updated successfully!",

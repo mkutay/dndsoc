@@ -19,9 +19,9 @@ import {
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { actionResultMatch } from "@/types/error-typing";
 import { createPartySchema } from "@/config/parties";
 import { insertParty } from "@/server/parties";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function CreateParty() {
   const { toast } = useToast();
@@ -37,10 +37,9 @@ export function CreateParty() {
 
   const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
     startTransition(async () => {
-      const result = await insertParty(values);
+      const result = actionResultToResult(await insertParty(values));
 
-      actionResultMatch(
-        result,
+      result.match(
         (value) => {
           toast({
             title: "Success: Party created.",

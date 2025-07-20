@@ -16,8 +16,8 @@ import { useToast } from "@/hooks/use-toast";
 import { editPollFormSchema } from "@/config/when2dnd";
 import { cn } from "@/utils/styling";
 import { editWhen2DnDPoll } from "@/server/when2dnd";
-import { actionResultMatch } from "@/types/error-typing";
 import { getEndOfDate, getMidnightOfDate } from "@/utils/formatting";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function EditPollForm({
   title,
@@ -44,11 +44,10 @@ export function EditPollForm({
 
   const onSubmit = async (values: z.infer<typeof editPollFormSchema>) => {
     setPending(true);
-    const result = await editWhen2DnDPoll(values, pollId);
+    const result = actionResultToResult(await editWhen2DnDPoll(values, pollId));
     setPending(false);
 
-    actionResultMatch(
-      result,
+    result.match(
       () => {
         toast({
           title: "Poll Updated",
