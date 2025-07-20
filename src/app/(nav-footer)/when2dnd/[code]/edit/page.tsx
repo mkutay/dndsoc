@@ -1,11 +1,11 @@
 import { forbidden } from "next/navigation";
 import Link from "next/link";
 
-import { getWhen2DnDPollFromCode } from "@/lib/when2dnd";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
 import { EditPollForm } from "@/components/when2dnd/edit-poll-form";
+import { runQuery } from "@/utils/supabase-run";
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
@@ -45,3 +45,6 @@ export default async function Page({ params }: { params: Promise<{ code: string 
     </div>
   );
 }
+
+export const getWhen2DnDPollFromCode = (code: string) =>
+  runQuery((supabase) => supabase.from("when2dnd_polls").select("*").eq("code", code).single());

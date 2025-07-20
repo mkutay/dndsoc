@@ -20,7 +20,7 @@ import { createWhen2DnDPoll } from "@/server/when2dnd";
 import { getEndOfDate, getMidnightOfDate } from "@/utils/formatting";
 import { actionResultToResult } from "@/types/error-typing";
 
-export function CreatePollForm({ authUserUuid }: { authUserUuid: string }) {
+export function CreatePollForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const router = useRouter();
@@ -38,7 +38,7 @@ export function CreatePollForm({ authUserUuid }: { authUserUuid: string }) {
 
   const onSubmit = async (values: z.infer<typeof createPollFormSchema>) => {
     setPending(true);
-    const result = actionResultToResult(await createWhen2DnDPoll(values, authUserUuid));
+    const result = actionResultToResult(await createWhen2DnDPoll(values));
     setPending(false);
 
     result.match(

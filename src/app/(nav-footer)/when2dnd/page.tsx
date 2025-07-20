@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CreatePollForm } from "@/components/when2dnd/create-poll-form";
@@ -7,6 +8,15 @@ import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "@/components/typography/headings";
 import { EnterCodeForm } from "@/components/when2dnd/enter-code-form";
 import { TypographyParagraph } from "@/components/typography/paragraph";
+
+export const metadata: Metadata = {
+  title: "When2DnD - Schedule Your D&D Sessions",
+  description: "The easiest way to schedule your Dungeons & Dragons sessions.",
+  openGraph: {
+    title: "When2DnD - Schedule Your D&D Sessions",
+    description: "The easiest way to schedule your Dungeons & Dragons sessions.",
+  },
+};
 
 export default async function Page() {
   const user = await getUserRole();
@@ -23,7 +33,7 @@ export default async function Page() {
         <p className="text-xl font-quotes text-muted-foreground mt-2">
           The easiest way to schedule your Dungeons & Dragons sessions.
         </p>
-        <CreatePollForm authUserUuid={user.value.auth_user_uuid} />
+        <CreatePollForm />
       </div>
     );
   }
