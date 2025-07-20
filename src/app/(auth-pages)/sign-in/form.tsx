@@ -56,7 +56,7 @@ export function SignInForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="identifier"
@@ -92,7 +92,7 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending} className="w-full mt-4">
+        <Button type="submit" disabled={pending} className="w-full">
           Submit
         </Button>
       </form>

@@ -17,12 +17,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>Your Request is On its Way</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">Your Request is On its Way</CardTitle>
         </h1>
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
         {email ? (
           <TypographyParagraph>
             Your request to sign up is on its way to us. Once approved, you will receive an email at <i>{email}</i> with

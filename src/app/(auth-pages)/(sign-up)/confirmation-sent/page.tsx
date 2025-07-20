@@ -20,12 +20,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>Confirmation Email Sent</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">Confirmation Email Sent</CardTitle>
         </h1>
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-2">
         {email ? (
           <TypographyParagraph>
             To confirm your account, you need to click on the link sent to your email at <i>{email}</i>. If you have
@@ -45,9 +45,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
           (ps. With some email providers, it may take a few minutes for the email to arrive.)
         </TypographyParagraph>
       </CardContent>
-      <CardFooter className="flex flex-row gap-2">
-        <Button className="w-fit" variant="default">
-          <Link href="/sign-in">Continue to Sign In</Link>
+      <CardFooter className="md:p-6 md:pt-0 p-3 flex flex-row gap-2">
+        <Button className="w-full" variant="default">
+          <Link href="/sign-in">Sign In</Link>
         </Button>
         {email ? <ResendButton email={email} /> : null}
       </CardFooter>

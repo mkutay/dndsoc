@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { Suspense } from "react";
 
 import { SignInForm } from "./form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyLink } from "@/components/typography/paragraph";
 import LiquidChrome from "@/components/reactbits/liquid-chrome";
 import { Logo } from "@/components/logo";
@@ -27,20 +27,21 @@ export default function Login() {
       </div>
       <div className="relative z-10 w-full max-w-md shadow-2xl">
         <Card>
-          <CardHeader>
+          <CardHeader className="md:p-6 p-3">
             <h1>
-              <CardTitle>Sign In</CardTitle>
+              <CardTitle className="md:text-left text-center md:pt-0 pt-1">Sign In</CardTitle>
             </h1>
-            <CardDescription>Please enter your email and password to sign in.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
             <Suspense>
               <SignInForm />
             </Suspense>
-            <div className="mt-4 text-center text-sm font-quotes">
+          </CardContent>
+          <CardFooter className="md:p-6 md:pt-0 p-3 pt-0">
+            <div className="w-full text-center text-sm font-quotes">
               Don&apos;t have an account? <TypographyLink href="/sign-up">Sign up</TypographyLink>
             </div>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </div>

@@ -15,13 +15,13 @@ export const metadata: Metadata = {
 export default function ResetPassword() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>Reset Password</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">Reset Password</CardTitle>
         </h1>
         <CardDescription>Please enter your new password below.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
         <ResetPasswordForm />
       </CardContent>
     </Card>

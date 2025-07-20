@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { forgotPasswordFormSchema } from "@/config/auth-schemas";
 import { useToast } from "@/hooks/use-toast";
@@ -59,12 +59,12 @@ export function ForgotPasswordForm() {
               <FormControl>
                 <Input placeholder="first.second@kcl.ac.uk" {...field} />
               </FormControl>
-              {/* <FormDescription>This is your KCL email address.</FormDescription> */}
+              <FormDescription>Enter the email address you&apos;ve used when signing up.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending} className="w-full mt-4">
+        <Button type="submit" disabled={pending} className="w-full">
           Submit
         </Button>
       </form>

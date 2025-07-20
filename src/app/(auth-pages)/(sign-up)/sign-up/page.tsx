@@ -16,22 +16,18 @@ export const metadata: Metadata = {
 export default function SignUp() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>Sign Up</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">Sign Up</CardTitle>
         </h1>
-        {/* <CardDescription>Please enter your information to sign up.</CardDescription> */}
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
         <SignUpForm />
       </CardContent>
-      <CardFooter className="flex flex-col gap-3">
+      <CardFooter className="md:p-6 md:pt-0 p-3 pt-0">
         <div className="w-full text-center text-sm font-quotes">
           Already have an account? <TypographyLink href="/sign-in">Sign in</TypographyLink>
         </div>
-        {/* <div className="w-full text-center text-sm font-quotes">
-          Not a KCL student? <TypographyLink href="/associates-sign-up">Join as an associate</TypographyLink>
-        </div> */}
       </CardFooter>
     </Card>
   );

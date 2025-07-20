@@ -23,10 +23,12 @@ export default async function Page({
   if (!tokenHash || type !== "invite") {
     return (
       <Card>
-        <CardHeader>
-          <h1>Invalid Request</h1>
+        <CardHeader className="md:p-6 p-3">
+          <h1>
+            <CardTitle className="md:text-left text-center md:pt-0 pt-1">Invalid Request</CardTitle>
+          </h1>
         </CardHeader>
-        <CardContent>
+        <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
           <p>Please ensure you have a valid invite link.</p>
         </CardContent>
       </Card>
@@ -35,15 +37,15 @@ export default async function Page({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>The Final Step</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">The Final Step</CardTitle>
         </h1>
         <CardDescription>
           Fill your information to complete the sign-up process and access our services.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
         <CompleteInviteForm tokenHash={tokenHash} />
       </CardContent>
     </Card>

@@ -13,8 +13,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="relative z-10 w-full max-w-md shadow-2xl">{children}</div>
       <div className="text-primary text-center text-sm font-quotes text-balance absolute bottom-4 z-10">
-        By continuing, you agree to our <TypographyLink href="/terms-of-service">Terms of Service</TypographyLink> and{" "}
-        <TypographyLink href="/privacy-policy">Privacy Policy</TypographyLink>.
+        By continuing, you agree to our{" "}
+        <TypographyLink href="/terms-of-service" target="_blank">
+          Terms of Service
+        </TypographyLink>{" "}
+        and{" "}
+        <TypographyLink href="/privacy-policy" target="_blank">
+          Privacy Policy
+        </TypographyLink>
+        .
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export function ResendButton({ email }: { email: string }) {
 
   return (
     <Button
-      className="w-fit"
+      className="w-full"
       variant="outline"
       disabled={loading}
       onClick={async () => {
@@ -35,7 +35,7 @@ export function ResendButton({ email }: { email: string }) {
         );
       }}
     >
-      Resend Confirmation Email
+      Resend
     </Button>
   );
 }

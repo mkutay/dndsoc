@@ -41,15 +41,15 @@ export default async function Page({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="md:p-6 p-3">
         <h1>
-          <CardTitle>Email Confirmed!</CardTitle>
+          <CardTitle className="md:text-left text-center md:pt-0 pt-1">Email Confirmed!</CardTitle>
         </h1>
       </CardHeader>
-      <CardContent>
+      <CardContent className="md:p-6 md:pt-0 p-3 pt-0">
         <TypographyParagraph>Click the button below to continue to reset your password.</TypographyParagraph>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="md:p-6 md:pt-0 p-3 pt-0">
         <Suspense>
           <ConfirmButton pathname={pathname} />
         </Suspense>
