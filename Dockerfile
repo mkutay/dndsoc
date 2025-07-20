@@ -19,8 +19,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Copy environment file for build
+RUN mv $(ls .env-pr-*) .env
 COPY .env* ./
-COPY .env-pr-* ./
+# COPY .env-pr-* ./
 
 # Set build flag
 ENV BUILDING=true
