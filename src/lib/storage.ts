@@ -2,51 +2,55 @@ import { errAsync, fromSafePromise, ok, okAsync } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createClientSync } from "@/utils/supabase/client";
-import { runQuery } from "@/utils/supabase-run";
+import { runQuery, supabaseRun } from "@/utils/supabase-run";
 
 export const getPublicUrl = ({ path }: { path: string }) => {
   if (path.startsWith("http")) return ok(path);
 
-  return createClientSync().andThen((supabase) =>
-    ok(supabase.storage.from("profile-images").getPublicUrl(path).data.publicUrl),
+  return createClientSync().map(
+    (supabase) => supabase.storage.from("profile-images").getPublicUrl(path).data.publicUrl,
   );
 };
 
 export const getPublicUrlByUuid = ({ imageUuid }: { imageUuid: string }) => {
-  return runQuery((supabase) => supabase.from("images").select("*").eq("id", imageUuid).single()).andThen((result) =>
-    getPublicUrl({ path: result.name }),
+  return runQuery((supabase) => supabase.from("images").select("name").eq("id", imageUuid).single()).andThen(
+    ({ name }) => getPublicUrl({ path: name }),
   );
 };
 
-type UploadError = {
+type StorageUploadError = {
   message: string;
   code: "STORAGE_UPLOAD_ERROR";
 };
 
-export const upload = ({ file, shortened, folder }: { file: File; shortened: string; folder: string }) => {
-  const filename = folder + "/" + shortened + "-" + crypto.randomUUID() + "-" + file.name;
-
-  const storage = createClient()
-    .andThen((supabase) => fromSafePromise(supabase.storage.from("profile-images").upload(filename, file)))
-    .andThen((response) =>
+export const upload = ({ file, shortened, folder }: { file: File; shortened: string; folder: string }) =>
+  createClient()
+    .andThen((supabase) =>
+      fromSafePromise(
+        supabase.storage
+          .from("profile-images")
+          .upload(folder + "/" + shortened + "-" + crypto.randomUUID() + "-" + file.name, file),
+      ).map((response) => ({ response, supabase })),
+    )
+    .andThen(({ response, supabase }) =>
       response.error
         ? errAsync({
             message: `Failed to upload image: ${response.error.message}.`,
             code: "STORAGE_UPLOAD_ERROR",
-          } as UploadError)
-        : okAsync(response.data),
+          } as StorageUploadError)
+        : okAsync({ data: response.data, supabase }),
     )
-    .andThrough((data) =>
-      runQuery((supabase) =>
+    .andThrough(({ data, supabase }) =>
+      supabaseRun(
         supabase.from("images").insert({
           id: data.id,
           name: data.path,
         }),
       ),
-    );
-
-  return storage;
-};
+    )
+    .map(({ data }) => ({
+      id: data.id,
+    }));
 
 export const uploadImagePlayer = ({
   image,
