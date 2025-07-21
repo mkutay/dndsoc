@@ -1,5 +1,5 @@
 import { TypographyH1 } from "@/components/typography/headings";
-import { D20Dice } from "@/components/d20-3d";
+import { D20Dice } from "@/components/dice/d20-3d";
 import { AnimatedDice } from "@/components/animated-dice";
 import { TypographyLead } from "@/components/typography/paragraph";
 

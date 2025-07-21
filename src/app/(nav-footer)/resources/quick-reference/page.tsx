@@ -16,7 +16,7 @@ import {
 import { TypographyH1, TypographyH2, TypographyH3 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
-import { D20Dice } from "@/components/d20-3d";
+import { D20Dice } from "@/components/dice/d20-3d";
 import { ReferenceCard, ReferenceSection } from "@/components/quick-reference";
 
 export const metadata: Metadata = {

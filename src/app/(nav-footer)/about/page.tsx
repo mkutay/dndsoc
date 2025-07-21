@@ -23,7 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { AnimatedDice } from "@/components/animated-dice";
 import { Button } from "@/components/ui/button";
-import { D20Dice } from "@/components/d20-3d";
+import { D20Dice } from "@/components/dice/d20-3d";
 
 export const metadata: Metadata = {
   title: "About Us",

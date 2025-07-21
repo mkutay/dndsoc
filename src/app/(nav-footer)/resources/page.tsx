@@ -24,7 +24,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { TypographyH1, TypographyH2 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
-import { D20Dice } from "@/components/d20-3d";
+import { D20Dice } from "@/components/dice/d20-3d";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {

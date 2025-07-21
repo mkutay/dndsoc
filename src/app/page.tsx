@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { D20Dice } from "@/components/d20-3d";
+import { D20Dice } from "@/components/dice/d20-3d";
 import { TypographyH1, TypographyH3 } from "@/components/typography/headings";
 import { TypographyParagraph, TypographyLead } from "@/components/typography/paragraph";
 import { AnimatedDice } from "@/components/animated-dice";
