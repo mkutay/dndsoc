@@ -25,7 +25,6 @@ const nameSchema = z
   .max(60, "Name must be at most 60 characters long.");
 
 export const emailSchema = z
-  .string()
   .email("Email must be a valid email address.")
   .max(100, "Email must be at most 100 characters long.");
 
@@ -61,7 +60,7 @@ export const resetPasswordSchema = z
     confirmPassword: passwordSchema,
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Both passwords must match.",
+    error: "Both passwords must match.",
     path: ["confirmPassword"],
   });
 

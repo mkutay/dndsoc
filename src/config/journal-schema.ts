@@ -27,7 +27,7 @@ export const journalAllEditSchema = z.object({
         text: entryTextSchema,
       }),
     )
-    .min(1, "At least one entry is required."),
+    .nonempty("At least one entry is required."),
 });
 
 export const journalPartyEntryEditSchema = z.object({
@@ -36,5 +36,5 @@ export const journalPartyEntryEditSchema = z.object({
 
 export const journalCreateSchema = z.object({
   title: titleSchema,
-  campaignId: z.string().uuid("Campaign is required."),
+  campaignId: z.uuid("Campaign is required."),
 });

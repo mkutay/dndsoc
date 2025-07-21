@@ -17,7 +17,7 @@ export const editPollSchema = createPollSchema.extend({
     .array(
       z.object({
         text: z.string().min(1, "Option text is required.").max(250, "Option text must be 250 characters or less."),
-        id: z.string().uuid().optional(),
+        id: z.uuid().optional(),
       }),
     )
     .min(2, "At least two options are required."),

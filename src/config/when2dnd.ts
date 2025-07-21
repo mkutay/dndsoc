@@ -14,7 +14,7 @@ const baseDateRangeSchema = z
     ),
   })
   .refine((data) => data.from <= data.to, {
-    message: "Start date must be before end date.",
+    error: "Start date must be before end date.",
     path: ["to"],
   });
 
@@ -45,7 +45,7 @@ export const pollVoteFormSchema = z
     dateRange: baseDateRangeSchema.and(
       z.object({
         from: z.date().min(getMidnightOfDate(new Date(Date.now() - 3 * 7 * 24 * 60 * 60 * 1000)), {
-          message: "Start date must be within three weeks from today.",
+          error: "Start date must be within three weeks from today.",
         }),
       }),
     ),
@@ -61,28 +61,14 @@ export const pollVoteFormSchema = z
                   to: z.date(),
                 })
                 .refine(({ from, to }) => from < to, {
-                  message: "Start time must be before end time.",
+                  error: "Start time must be before end time.",
                 })
                 .refine(({ from, to }) => new Date(from).toDateString() === new Date(to).toDateString(), {
-                  message: "Start and end times must be on the same day.",
+                  error: "Start and end times must be on the same day.",
                 }),
             )
-            .min(1, {
-              message: "At least one time selection is required for each date.",
-            }),
+            .nonempty("At least one time selection is required for each date."),
         })
-        // .refine(
-        //   ({ date, times }) => {
-        //     const dateStart = getMidnightOfDate(date);
-        //     const dateEnd = getEndOfDate(date);
-        //     return times.every(
-        //       ({ from, to }) => from >= dateStart && from <= dateEnd && to >= dateStart && to <= dateEnd,
-        //     );
-        //   },
-        //   {
-        //     message: "All time selections must be within the selected date.",
-        //   },
-        // )
         .refine(
           ({ times }) => {
             // Check for overlapping time ranges
@@ -98,13 +84,13 @@ export const pollVoteFormSchema = z
             return true;
           },
           {
-            message: "Time selections cannot overlap on the same date.",
+            error: "Time selections cannot overlap on the same date.",
           },
         ),
     ),
   })
   .refine((data) => data.dateSelections.every(({ date }) => date >= data.dateRange.from && date <= data.dateRange.to), {
-    message: "All date selections must be within the specified date range.",
+    error: "All date selections must be within the specified date range.",
   })
   .refine(
     (data) => {
@@ -112,6 +98,6 @@ export const pollVoteFormSchema = z
       return uniqueDates.size === data.dateSelections.length;
     },
     {
-      message: "Duplicate date selections are not allowed.",
+      error: "Duplicate date selections are not allowed.",
     },
   );

@@ -16,7 +16,7 @@ export const characterEditSchema = z.object({
         value: z.string().min(1, "Class is required."),
       }),
     )
-    .min(1, "At least one class is required."),
+    .nonempty("At least one class is required."),
   avatar: imageSchema.optional(),
 });
 
