@@ -30,6 +30,15 @@ export const createPublicClientAsync = async () => {
   });
 };
 
+export const createServiceClientAsync = async () => {
+  return supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+};
+
 export const createPublicClient = () =>
   ResultAsync.fromPromise(
     createPublicClientAsync(),
@@ -42,14 +51,7 @@ export const createPublicClient = () =>
 
 export const createServiceClient = () =>
   ResultAsync.fromPromise(
-    Promise.resolve(
-      supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }),
-    ),
+    createServiceClientAsync(),
     (error) =>
       ({
         message: "Failed to create Supabase service client." + error,
