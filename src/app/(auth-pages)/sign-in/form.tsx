@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { signInAction } from "@/server/auth/sign-in";
+import { actionResultToResult } from "@/types/error-typing";
 
 export function SignInForm() {
   const searchParams = useSearchParams();
@@ -32,22 +33,24 @@ export function SignInForm() {
 
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
-    const result = await signInAction(values);
+    const result = actionResultToResult(await signInAction(values));
     setPending(false);
 
-    if (result._tag === "Failure") {
-      toast({
-        title: "Sign In Failed",
-        description: "Please try again. " + result.value,
-        variant: "destructive",
-      });
-    } else {
-      if (redirect) {
-        router.push(redirect);
-      } else {
-        router.push("/my");
-      }
-    }
+    result.match(
+      () => {
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/my");
+        }
+      },
+      (error) =>
+        toast({
+          title: "Sign In Failed",
+          description: "Please try again. " + error.message,
+          variant: "destructive",
+        }),
+    );
   };
 
   return (
@@ -63,7 +66,7 @@ export function SignInForm() {
               <FormControl>
                 <Input placeholder="first.second@kcl.ac.uk/Awesome" {...field} />
               </FormControl>
-              <FormDescription>Use your KCL email address, your username, or your K-Number to sign in.</FormDescription>
+              <FormDescription>Use your KCL email address or your username to sign in.</FormDescription>
               <FormMessage />
             </FormItem>
           )}

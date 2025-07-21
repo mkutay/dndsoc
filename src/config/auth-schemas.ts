@@ -33,7 +33,7 @@ export const forgotPasswordFormSchema = z.object({
 });
 
 export const signInFormSchema = z.object({
-  identifier: z.union([kNumberSchema, emailSchema, usernameSchema]),
+  identifier: z.union([emailSchema, usernameSchema]),
   password: passwordSchema,
 });
 

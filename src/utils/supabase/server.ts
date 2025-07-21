@@ -1,11 +1,5 @@
-import {
-  PostgrestError,
-  SupabaseClient,
-  createClient as supaCreateClient,
-  type PostgrestSingleResponse,
-} from "@supabase/supabase-js";
+import { createClient as supaCreateClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
-import { Effect, Context, Data } from "effect";
 import { ResultAsync } from "neverthrow";
 import { cookies } from "next/headers";
 
@@ -67,30 +61,3 @@ type CreateClientError = {
 
 export const createClient = () =>
   env.MODE === "test" || env.BUILDING === "true" ? createServiceClient() : createPublicClient();
-
-export class SupabaseClientError extends Data.TaggedError("SupabaseClientError")<{
-  message: string;
-}> {}
-
-export class Supabase extends Context.Tag("SupabaseClient")<
-  Supabase,
-  {
-    readonly createClient: Effect.Effect<SBC, SupabaseClientError>;
-  }
->() {}
-
-export type SBC = SupabaseClient<Database>;
-
-export const createClientEffect = Effect.tryPromise({
-  try: () => createPublicClientAsync(),
-  catch: (error) => new SupabaseClientError({ message: "Failed to create Supabase client: " + error }),
-});
-
-export const run = <A, E>(
-  query: () => PromiseLike<PostgrestSingleResponse<A>>,
-  onError: (err: PostgrestError) => Effect.Effect<never, E>,
-) =>
-  Effect.gen(function* () {
-    const { data, error } = yield* Effect.promise(() => query());
-    return error ? yield* onError(error) : data;
-  });
