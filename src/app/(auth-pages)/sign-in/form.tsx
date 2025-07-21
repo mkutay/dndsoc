@@ -13,7 +13,6 @@ import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { TypographyLink } from "@/components/typography/paragraph";
 import { signInAction } from "@/server/auth/sign-in";
-import { actionResultToResult } from "@/types/error-typing";
 
 export function SignInForm() {
   const searchParams = useSearchParams();
@@ -33,24 +32,22 @@ export function SignInForm() {
 
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
-    const result = actionResultToResult(await signInAction(values));
+    const result = await signInAction(values);
     setPending(false);
 
-    result.match(
-      () => {
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/my");
-        }
-      },
-      (error) =>
-        toast({
-          title: "Sign In Failed",
-          description: "Please try again. " + error.message,
-          variant: "destructive",
-        }),
-    );
+    if (result._tag === "Failure") {
+      toast({
+        title: "Sign In Failed",
+        description: "Please try again. " + result.value,
+        variant: "destructive",
+      });
+    } else {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/my");
+      }
+    }
   };
 
   return (

@@ -19,5 +19,6 @@
   "eslint.workingDirectories": ["."],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

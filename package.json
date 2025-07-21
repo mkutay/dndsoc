@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@effect/language-service": "^0.27.2",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -37,6 +38,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.6.1",
+    "effect": "^3.16.16",
     "gsap": "^3.13.0",
     "katex": "^0.16.22",
     "lucide-react": "^0.468.0",
