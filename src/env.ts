@@ -6,6 +6,8 @@ export const env = createEnv({
     SUPABASE_SERVICE_KEY: z.string().min(1),
     BUILDING: z.enum(["true", "false"]).default("false"),
     MODE: z.string().optional(),
+    WHATSAPP_LINK: z.url().optional(),
+    DISCORD_LINK: z.url().optional(),
   },
 
   /**
@@ -33,6 +35,8 @@ export const env = createEnv({
     BUILDING: process.env.BUILDING,
     MODE: process.env.MODE,
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
+    WHATSAPP_LINK: process.env.WHATSAPP_LINK,
+    DISCORD_LINK: process.env.DISCORD_LINK,
   },
 
   /**

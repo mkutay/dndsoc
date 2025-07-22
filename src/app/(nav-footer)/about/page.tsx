@@ -12,6 +12,7 @@ import {
   Globe,
   DicesIcon,
   Star,
+  Mail,
 } from "lucide-react";
 import { DiscordLogoIcon } from "@radix-ui/react-icons";
 import { type Metadata } from "next";
@@ -91,9 +92,9 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph>
-                    To create an inclusive, welcoming, and creative community at King&apos;s College London where
-                    students of all experience levels can discover the joy of the game Dungeons and Dragons, and find a
-                    place of comfort and belonging.
+                    To create an inclusive, welcoming, and creative community at King’s College London where students of
+                    all experience levels can discover the joy of the game Dungeons and Dragons, and find a place of
+                    comfort and belonging.
                   </TypographyParagraph>
                 </CardContent>
               </Card>
@@ -107,8 +108,9 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph>
-                    To be the heart of Dungeons and Dragons gaming at KCL, where every member feels belonged to tell
-                    their story, whether as a player or as a dungeon master.
+                    To establish a self-sustaining hub for Dungeons and Dragons at King’s College London, where the
+                    community endures beyond any individual, empowering all members to tell their stories as players or
+                    Dungeon Masters.
                   </TypographyParagraph>
                 </CardContent>
               </Card>
@@ -118,7 +120,10 @@ export default function AboutPage() {
       </section>
 
       {/* Society Leadership Section */}
-      <section className="py-12 md:py-18 bg-linear-to-b from-bg-background via-bg-muted/40 to-bg-background">
+      <section
+        className="py-12 md:py-18 bg-linear-to-b from-bg-background via-bg-muted/40 to-bg-background"
+        id="committee-and-leadership"
+      >
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
@@ -128,23 +133,23 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 md:mb-8 mb-6">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Crown className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <Crown className="w-8 h-8 text-primary float-start" />
                     President (Kutay)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="text-base">
-                    Leading the society with passion and vision, our president oversees all operations and ensures our
-                    community thrives.
+                    Leading the society with passion and vision, our president oversees all operations and ensures that
+                    our community thrives.
                   </TypographyParagraph>
                 </CardContent>
               </Card>
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <DicesIcon className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <DicesIcon className="w-8 h-8 text-primary float-start" />
                     Treasurer (Kai)
                   </CardTitle>
                 </CardHeader>
@@ -158,8 +163,8 @@ export default function AboutPage() {
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <Calendar className="w-8 h-8 text-primary float-start" />
                     Events Officer (Maryam)
                   </CardTitle>
                 </CardHeader>
@@ -173,52 +178,53 @@ export default function AboutPage() {
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Instagram className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <Instagram className="w-8 h-8 text-primary float-start" />
                     Social Media Officer
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="text-base">
-                    Keeping our community connected through social media, sharing highlights from our adventures.
+                    Keeping our community connected through social media, sharing highlights from our adventures and
+                    activities, and promoting upcoming events.
                   </TypographyParagraph>
                 </CardContent>
               </Card>
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <BookOpen className="w-8 h-8 text-primary float-start" />
                     Newsletter Officer (Mark)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="text-base">
                     Creating newsletters to keep our community informed about upcoming events, campaign updates, and
-                    society news. Through our website!
+                    society news. Through our website and social media!
                   </TypographyParagraph>
                 </CardContent>
               </Card>
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    Charity Officer
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <Sparkles className="w-8 h-8 text-primary float-start" />
+                    Charity Officer (Fraser)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <TypographyParagraph className="text-base">
                     Organising charitable initiatives and fundraising events to give back to the community while having
-                    fun with our fellow society members.
+                    fun with our society.
                   </TypographyParagraph>
                 </CardContent>
               </Card>
 
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <Users className="w-5 h-5 text-primary" />
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <Users className="w-8 h-8 text-primary float-start" />
                     Wellbeing Lead
                   </CardTitle>
                 </CardHeader>
@@ -232,9 +238,9 @@ export default function AboutPage() {
 
               <Card className="hover:shadow-lg transition-shadow lg:col-span-2">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    Dungeon Masters
+                  <CardTitle className="text-3xl flex items-start gap-2">
+                    <BookOpen className="w-8 h-8 text-primary float-start" />
+                    Dungeon Masters (Gunes, Joshua, Jules, Weixian, and more!)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -248,34 +254,30 @@ export default function AboutPage() {
             </div>
 
             <div className="flex sm:flex-row flex-col gap-6 md:gap-8">
-              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 md:p-6 w-full">
+              <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 md:p-6 sm:w-2/3 w-full">
                 <TypographyH3 className="text-3xl tracking-wider font-bold mb-3 text-blue-800 dark:text-blue-200">
                   <Star className="inline-block w-6 h-6 mr-2 mb-1" />
                   We Need Your Help
                 </TypographyH3>
-                <TypographyParagraph className="text-blue-800 dark:text-blue-200 mb-4">
+                <TypographyParagraph className="text-blue-800 dark:text-blue-200 mb-4 text-lg">
                   As we strive to be one of the biggest and most vibrant societies at KCL, we need passionate members to
                   help us grow! We&apos;re actively looking for volunteers to fill these exciting positions:
                 </TypographyParagraph>
-                <div className="grid md:grid-cols-2 gap-3 mb-4 text-lg">
-                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                <div className="flex flex-row flex-wrap text-center justify-center gap-3 mb-4 text-lg">
+                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200 mx-auto">
                     <Instagram className="w-4 h-4" />
-                    <span className="font-medium">Social Media Officer</span>
+                    <span className="font-medium text-xl">Social Media Officer</span>
                   </div>
-                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200 mx-auto">
                     <BookOpen className="w-4 h-4" />
-                    <span className="font-medium">Dungeon Masters</span>
+                    <span className="font-medium text-xl">Dungeon Masters</span>
                   </div>
-                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
-                    <Sparkles className="w-4 h-4" />
-                    <span className="font-medium">Charity Officer</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                  <div className="flex items-center gap-2 text-blue-800 dark:text-blue-200 mx-auto">
                     <Users className="w-4 h-4" />
-                    <span className="font-medium">Wellbeing Lead</span>
+                    <span className="font-medium text-xl">Wellbeing Lead</span>
                   </div>
                 </div>
-                <TypographyParagraph className="text-blue-800 dark:text-blue-200 mb-0">
+                <TypographyParagraph className="text-blue-800 dark:text-blue-200 mb-0 text-lg">
                   <span className="uppercase font-bold tracking-widest font-quotes text-xl mr-2">
                     Especially our awesome DMs!
                   </span>
@@ -285,9 +287,10 @@ export default function AboutPage() {
               </div>
 
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 md:p-6 sm:w-1/3 w-full">
-                <TypographyParagraph className="text-xl text-amber-800 dark:text-amber-200">
-                  <strong>Note:</strong> Some leadership details may change as we prepare for the upcoming academic
-                  year. We&apos;ll keep this page updated with any modifications to our team structure.
+                <TypographyParagraph className="text-lg text-amber-800 dark:text-amber-200">
+                  <strong className="font-quotes">Note:</strong> Some leadership details may change as we prepare for
+                  the upcoming academic year. We&apos;ll keep this page updated with any modifications to our team
+                  structure.
                 </TypographyParagraph>
               </div>
             </div>
@@ -312,7 +315,7 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
+                  <TypographyParagraph className="text-lg">
                     Most of our sessions take place across King&apos;s College London campuses, providing convenient
                     access for all students. The exact location will be communicated with you as the year approaches.
                   </TypographyParagraph>
@@ -327,7 +330,7 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
+                  <TypographyParagraph className="text-lg">
                     We also do occasional online sessions at individual parties&apos; discretions, perfect for
                     continuing adventures during holidays or when in-person sessions are inconvenient.
                   </TypographyParagraph>
@@ -355,7 +358,7 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
+                  <TypographyParagraph className="text-lg">
                     This website serves as a digital companion to enhance your D&D experience. Obviously, it&apos;s{" "}
                     <span className="font-bold font-quotes">not</span> a replacement for the magic of sitting around a
                     table with dice, character sheets, pen, and paper. Instead, it&apos;s designed to help our community
@@ -365,7 +368,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow sm:w-1/2 w-full">
+              <Card className="hover:shadow-lg transition-shadow sm:w-1/2 w-full justify-start">
                 <CardHeader>
                   <CardTitle className="text-3xl flex items-center gap-3">
                     <Users className="w-6 h-6 text-primary text-lg" />
@@ -373,13 +376,13 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>
+                  <TypographyParagraph className="text-lg">
                     As our society grows, so will this platform. We&apos;re committed to making it a hub for our
                     community, and we are always open to suggestions and improvements. Having this website open source
                     allows everyone to contribute. Even <span className="font-quotes text-2xl">you</span>, yes you,
                     reading this right now!
                   </TypographyParagraph>
-                  <TypographyParagraph>
+                  <TypographyParagraph className="text-lg">
                     For more information, check out our{" "}
                     <Link
                       href="https://github.com/mkutay/dndsoc"
@@ -409,14 +412,14 @@ export default function AboutPage() {
       {/* KCLSU & Connect Section */}
       <section className="py-12 md:py-18">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <TypographyH2 className="text-4xl md:text-5xl font-bold text-center mb-12 font-headings border-b-2 md:border-b-4 border-secondary pb-3 px-12 w-fit mx-auto">
               Part of KCLSU
             </TypographyH2>
 
             <Card className="hover:shadow-lg transition-shadow mb-16 max-w-2xl mx-auto">
               <CardContent className="p-6 md:p-8">
-                <TypographyParagraph className="text-center text-lg mb-6">
+                <TypographyParagraph className="text-center text-xl mb-6">
                   We&apos;re proud to be an official society under the King&apos;s College London Students&apos; Union
                   (KCLSU), ensuring we meet the highest standards for student activities and providing you with a safe,
                   inclusive environment to explore the world of DnD.
@@ -436,7 +439,7 @@ export default function AboutPage() {
 
             <TypographyH3 className="text-3xl md:text-4xl font-bold text-center mb-8">Connect With Us</TypographyH3>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-4 gap-6">
               <Card className="hover:shadow-lg transition-shadow text-center">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-center gap-2">
@@ -445,11 +448,13 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph className="text-sm mb-4">
+                  <TypographyParagraph className="text-lg mb-4">
                     Join our WhatsApp group for quick updates and casual conversations.
                   </TypographyParagraph>
-                  <Button variant="outline" size="sm" disabled>
-                    Link Coming Soon
+                  <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
+                    <Link href="/api/join?social=whatsapp" target="_blank">
+                      Go Join!
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -462,11 +467,13 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph className="text-sm mb-4">
+                  <TypographyParagraph className="text-lg mb-4">
                     Our main hub for voice chats, event coordination, and community discussions.
                   </TypographyParagraph>
-                  <Button variant="outline" size="sm" disabled>
-                    Link Coming Soon
+                  <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
+                    <Link href="https://www.instagram.com/kcl_dnd" target="_blank">
+                      Go!
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -479,11 +486,32 @@ export default function AboutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph className="text-sm mb-4">
+                  <TypographyParagraph className="text-lg mb-4">
                     Follow us for photos from sessions, character art, and society highlights.
                   </TypographyParagraph>
-                  <Button variant="outline" size="sm" disabled>
-                    Link Coming Soon
+                  <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
+                    <Link href="/api/join?social=discord" target="_blank">
+                      Go Follow!
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow text-center">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-center gap-2">
+                    <Mail className="w-6 h-6" />
+                    Email
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="text-lg mb-4">
+                    For inquiries, feedback, or to get involved, feel free to reach out via email.
+                  </TypographyParagraph>
+                  <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
+                    <Link href="mailto:hello@kcldnd.uk" target="_blank">
+                      hello@kcldnd.uk
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -496,7 +524,10 @@ export default function AboutPage() {
       <section className="py-12 md:py-18 bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
           <TypographyH2 className="font-headings text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-primary-foreground border-none">
-            Ready to Join YOUR Adventure?
+            <span className="font-drop-caps font-normal">r</span>eady to{" "}
+            <span className="font-drop-caps font-normal">J</span>oin YOUR{" "}
+            <span className="font-drop-caps font-normal">A</span>
+            dventure?
           </TypographyH2>
           <TypographyParagraph className="text-lg md:text-xl mb-6 md:mb-8 max-w-2xl mx-auto opacity-90">
             Whether you&apos;re a seasoned veteran or someone who&apos;s never touched a d20, there&apos;s a place for
