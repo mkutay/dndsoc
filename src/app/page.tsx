@@ -104,7 +104,7 @@ export default function Home() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <TypographyParagraph className="mb-4">
+                    <TypographyParagraph className="mb-4 text-lg tracking-wide">
                       Well... Welcome to our society, adventurer! We&apos;ll help you create your first character, learn
                       the rules, and join your first adventure. Don&apos;t worry if you&apos;re joining later in the
                       year, we are always looking for new players!
@@ -127,7 +127,7 @@ export default function Home() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <TypographyParagraph className="mb-4">
+                    <TypographyParagraph className="mb-4 text-lg tracking-wide">
                       Bring your expertise to our community! Share your knowledge, mentor newcomers, or help us run
                       campaigns and events! We value your experience and would love to have you as part of our society.
                       Or, you could just join a campaign and have fun!
@@ -149,12 +149,16 @@ export default function Home() {
                 <TypographyH3 className="text-2xl md:text-3xl font-bold mb-4">
                   Open Source & Community Driven
                 </TypographyH3>
-                <TypographyParagraph className="text-base md:text-lg mb-6 max-w-2xl mx-auto">
+                <TypographyParagraph className="text-base md:text-lg mb-6 max-w-2xl mx-auto tracking-wide">
                   Built with love by society members, for society members. This platform is completely open source and
                   continuously improved by our society&apos;s nerds (that also includes me, the president).
                 </TypographyParagraph>
                 <Button asChild variant="outline" size="lg">
-                  <Link href="https://github.com/mkutay/dndsoc" target="_blank" className="flex items-center gap-2">
+                  <Link
+                    href="https://github.com/mkutay/dndsoc"
+                    target="_blank"
+                    className="flex items-center gap-2 font-quotes"
+                  >
                     <Github className="w-4 md:w-5 h-4 md:h-5" />
                     View on GitHub
                   </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Sword, Crown, BookOpen, Trophy, Vote } from "lucide-react";
+import { Sword, Crown, BookOpen, Trophy, Vote, LibraryBig, Calendar, HandCoins } from "lucide-react";
 
 import { FeatureCard } from "@/components/feature-card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
@@ -36,7 +36,7 @@ export function FeaturesSection() {
           <FeatureCard
             icon={Trophy}
             title="Achievements"
-            description="Earn and showcase achievements for your characters and personal milestones in the society. We have them for DMs too!"
+            description="Earn and showcase achievements for your characters. We have them for DMs too! And maybe some secret ones..."
             href="/achievements"
             delay={150}
           />
@@ -60,6 +60,27 @@ export function FeaturesSection() {
             description="Follow epic storylines, track important events, and never miss a session with our campaign and journal pages."
             href="/campaigns"
             delay={300}
+          />
+          <FeatureCard
+            icon={LibraryBig}
+            title="Extensive Resource Library"
+            description="Access a wealth of resources, including rulebooks, guides, and homebrew content to enhance your gaming experience."
+            href="/resources"
+            delay={350}
+          />
+          <FeatureCard
+            icon={Calendar}
+            title="When2DnD"
+            description="Schedule your sessions with ease using our When2DnD integration, ensuring everyone is on the same page. (WIP)"
+            href="/when2dnd"
+            delay={400}
+          />
+          <FeatureCard
+            icon={HandCoins}
+            title="Trading System"
+            description="Trade items, resources, and treasures with other players, from different parties. (Coming soon!)"
+            href="#"
+            delay={450}
           />
         </div>
       </div>
