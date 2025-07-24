@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import { TypographyH2 } from "../typography/headings";
-import { TypographyParagraph } from "../typography/paragraph";
-import { Button } from "../ui/button";
-import { ErrorPage } from "../error-page";
 import { AddThingy } from "./add-thingy";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { runQuery } from "@/utils/supabase-run";
+import { ErrorPage } from "@/components/error-page";
+import { TypographyH2 } from "@/components/typography/headings";
+import { TypographyParagraph } from "@/components/typography/paragraph";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export async function CharacterThingies({
   ownsCharacter,
@@ -19,7 +19,9 @@ export async function CharacterThingies({
   if (result.isErr()) {
     return <ErrorPage error={result.error} caller="character-thingies.tsx" />;
   }
-  if (result.value.length === 0) return null;
+
+  if (result.value.length === 0 && !ownsCharacter) return null;
+
   return (
     <div className="mt-6">
       <TypographyH2>Character Thingies</TypographyH2>
