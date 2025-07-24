@@ -1,4 +1,5 @@
 import { errAsync, okAsync } from "neverthrow";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
 
@@ -22,7 +23,7 @@ export const dynamic = "force-dynamic";
 const cachedGetDM = cache(getDMByUsername);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
   const result = await cachedGetDM({ username });
   if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
@@ -101,6 +102,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
           ownsDM={ownsDM}
           parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
           allParties={parties?.value}
+          revalidate="/dms/[username]"
         />
       </div>
       <Campaigns DMUuid={dm.id} />
@@ -141,7 +143,7 @@ function DMAchievements({ receivedAchievements }: { receivedAchievements: Receiv
   );
 }
 
-export const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
+const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
   runQuery(
     (supabase) =>
       supabase

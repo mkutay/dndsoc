@@ -46,9 +46,7 @@ export default async function Page() {
 
       <div className="mt-10 space-y-10">
         <MyCharacters characters={characters.value} />
-        {partiesDM.value.length !== 0 && (
-          <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0].dm_party[0].dm_id} />
-        )}
+        <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0]?.dm_party[0].dm_id} />
         {role === "admin" && <MyAssociatesRequests />}
       </div>
     </div>

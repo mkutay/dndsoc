@@ -18,11 +18,13 @@ export function Parties({
   parties,
   ownsDM,
   allParties,
+  revalidate,
 }: {
   DMUuid: string;
   parties: Party[];
   ownsDM: boolean;
   allParties: Party[] | undefined;
+  revalidate: string;
 }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -50,7 +52,7 @@ export function Parties({
       const result = await removePartyFromDM({
         partyId: party.id,
         dmUuid: DMUuid,
-        revalidate: "/dms/[username]",
+        revalidate,
       });
 
       if (!result.ok) {
@@ -70,7 +72,7 @@ export function Parties({
       const result = await addPartyToDM({
         dmUuid: DMUuid,
         partyId: party.id,
-        revalidate: `/dms/[username]`,
+        revalidate,
       });
 
       if (!result.ok) {

@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ export function CreateParty() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof createPartySchema>>({
     resolver: zodResolver(createPartySchema),
@@ -35,9 +36,10 @@ export function CreateParty() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createPartySchema>) => {
+  const onSubmit = (values: z.infer<typeof createPartySchema>) => {
     startTransition(async () => {
       const result = actionResultToResult(await insertParty(values));
+      setOpen(false);
 
       result.match(
         (value) => {
@@ -46,8 +48,7 @@ export function CreateParty() {
             description: "You can now edit the specifics of your party.",
             variant: "default",
           });
-          setOpen(false);
-          redirect(`/parties/${value.shortened}/edit/dm`);
+          router.push(`/parties/${value.shortened}/edit/dm`);
         },
         (error) =>
           toast({
