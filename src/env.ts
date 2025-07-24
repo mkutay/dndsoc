@@ -8,6 +8,7 @@ export const env = createEnv({
     MODE: z.string().optional(),
     WHATSAPP_LINK: z.url().optional(),
     DISCORD_LINK: z.url().optional(),
+    DATABASE_URL: z.string(),
   },
 
   /**
@@ -37,6 +38,7 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     WHATSAPP_LINK: process.env.WHATSAPP_LINK,
     DISCORD_LINK: process.env.DISCORD_LINK,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
 
   /**

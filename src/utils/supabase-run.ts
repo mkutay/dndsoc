@@ -621,6 +621,11 @@ export type SupabaseQueryError<T extends string> = {
   postgres: {
     code: PostgreSQLErrorCode;
     message: string;
+    hint?: string;
+    details?: string;
+    cause?: unknown;
+    name?: string;
+    stack?: string;
   };
 };
 
@@ -657,6 +662,11 @@ export function handleSupabaseResponse<T, U extends string>(
     postgres: {
       code: error.code as PostgreSQLErrorCode,
       message: PostgreSQLErrorMessages[error.code as PostgreSQLErrorCode] || error.message,
+      hint: error.hint,
+      details: error.details,
+      cause: error.cause,
+      name: error.name,
+      stack: error.stack,
     },
   });
 }

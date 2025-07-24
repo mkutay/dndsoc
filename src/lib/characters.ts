@@ -5,7 +5,14 @@ export const getCharacterPlayerByShortened = ({ shortened }: { shortened: string
     supabase
       .from("characters")
       .select(
-        "*, races(*), classes(*), players(*, users(*)), received_achievements_character(*, achievements(*)), character_party(*, parties(*))",
+        `
+          *,
+          races(*),
+          classes(*),
+          players(*, users(*)),
+          received_achievements_character(*, achievements(*)),
+          character_party(*, parties(*))
+        `,
       )
       .eq("shortened", shortened)
       .single(),
