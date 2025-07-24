@@ -358,13 +358,13 @@ INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shorte
 -- Data for Name: thingy; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."thingy" ("id", "created_at", "name", "description", "tags", "previous", "shortened", "character_id", "public", "next") VALUES
-	('f49e430c-a073-4edc-9a70-db1fc1278bb1', '2025-07-23 18:45:30.93034+00', 'The amazing staff', 'STAFF!', '{"Adventuring Gear",Ammunition,"Artisan’s Tools"}', NULL, 'the-amazing-staff', 'c81fa02c-c726-49ae-9d47-6582db4e2e0f', false, NULL),
-	('e2ac90a2-b42d-4f9a-881b-bed4caccaa29', '2025-07-23 22:54:38.865167+00', 'hello-3', 'HELLO12', '{Futuristic,Firearm,Instrument,"Heavy Armor"}', '11445ff0-c60c-4218-a727-a30790687ec6', 'hello-3', '923e4548-143e-4285-bb3d-b298231919bd', false, NULL),
-	('f1d6180b-dacb-4bd6-bd70-5045585b0d97', '2025-07-23 22:57:04.062144+00', 'wooo', 'wooo', '{}', NULL, 'wooo', '923e4548-143e-4285-bb3d-b298231919bd', true, NULL),
-	('11445ff0-c60c-4218-a727-a30790687ec6', '2025-07-23 22:53:43.800284+00', 'hello-2', 'HELLO12', '{Futuristic,Firearm,Instrument,"Heavy Armor"}', 'd908c816-1bfa-4550-a42e-a96818aa8fa4', 'hello-2', '923e4548-143e-4285-bb3d-b298231919bd', true, 'e2ac90a2-b42d-4f9a-881b-bed4caccaa29'),
-	('b7ddbe36-11ee-4e1c-a7de-924fb40f880d', '2025-07-23 21:11:39.578684+00', 'hello', 'HELLO', '{Futuristic,"Gaming Set","Illegal Drug","Generic Variant",Firearm,Instrument}', NULL, 'hello', '923e4548-143e-4285-bb3d-b298231919bd', false, 'd908c816-1bfa-4550-a42e-a96818aa8fa4'),
-	('d908c816-1bfa-4550-a42e-a96818aa8fa4', '2025-07-23 22:11:47.793575+00', 'hello-1', 'HELLO1', '{Futuristic,Firearm,Instrument}', 'b7ddbe36-11ee-4e1c-a7de-924fb40f880d', 'hello-1', '923e4548-143e-4285-bb3d-b298231919bd', false, '11445ff0-c60c-4218-a727-a30790687ec6');
+INSERT INTO "public"."thingy" ("id", "created_at", "name", "description", "tags", "shortened", "character_id", "public", "next") VALUES
+	('f49e430c-a073-4edc-9a70-db1fc1278bb1', '2025-07-23 18:45:30.93034+00', 'The amazing staff', 'STAFF!', '{"Adventuring Gear",Ammunition,"Artisan’s Tools"}', 'the-amazing-staff', 'c81fa02c-c726-49ae-9d47-6582db4e2e0f', false, NULL),
+	('e2ac90a2-b42d-4f9a-881b-bed4caccaa29', '2025-07-23 22:54:38.865167+00', 'hello-3', 'HELLO12', '{Futuristic,Firearm,Instrument,"Heavy Armor"}', 'hello-3', '923e4548-143e-4285-bb3d-b298231919bd', false, NULL),
+	('f1d6180b-dacb-4bd6-bd70-5045585b0d97', '2025-07-23 22:57:04.062144+00', 'wooo', 'wooo', '{}', 'wooo', '923e4548-143e-4285-bb3d-b298231919bd', true, NULL),
+	('11445ff0-c60c-4218-a727-a30790687ec6', '2025-07-23 22:53:43.800284+00', 'hello-2', 'HELLO12', '{Futuristic,Firearm,Instrument,"Heavy Armor"}', 'hello-2', '923e4548-143e-4285-bb3d-b298231919bd', true, 'e2ac90a2-b42d-4f9a-881b-bed4caccaa29'),
+	('b7ddbe36-11ee-4e1c-a7de-924fb40f880d', '2025-07-23 21:11:39.578684+00', 'hello', 'HELLO', '{Futuristic,"Gaming Set","Illegal Drug","Generic Variant",Firearm,Instrument}', 'hello', '923e4548-143e-4285-bb3d-b298231919bd', false, 'd908c816-1bfa-4550-a42e-a96818aa8fa4'),
+	('d908c816-1bfa-4550-a42e-a96818aa8fa4', '2025-07-23 22:11:47.793575+00', 'hello-1', 'HELLO1', '{Futuristic,Firearm,Instrument}', 'hello-1', '923e4548-143e-4285-bb3d-b298231919bd', false, '11445ff0-c60c-4218-a727-a30790687ec6');
 
 
 --
