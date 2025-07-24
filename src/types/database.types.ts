@@ -858,7 +858,6 @@ export type Database = {
           id: string
           name: string
           next: string | null
-          previous: string | null
           public: boolean
           shortened: string
           tags: Database["public"]["Enums"]["thingy_type"][]
@@ -870,7 +869,6 @@ export type Database = {
           id?: string
           name: string
           next?: string | null
-          previous?: string | null
           public?: boolean
           shortened: string
           tags: Database["public"]["Enums"]["thingy_type"][]
@@ -882,7 +880,6 @@ export type Database = {
           id?: string
           name?: string
           next?: string | null
-          previous?: string | null
           public?: boolean
           shortened?: string
           tags?: Database["public"]["Enums"]["thingy_type"][]
@@ -898,13 +895,6 @@ export type Database = {
           {
             foreignKeyName: "thingy_next_fkey"
             columns: ["next"]
-            isOneToOne: false
-            referencedRelation: "thingy"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "thingy_previous_fkey"
-            columns: ["previous"]
             isOneToOne: false
             referencedRelation: "thingy"
             referencedColumns: ["id"]

@@ -43,7 +43,6 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>, chara
               description: parsed.description,
               tags: parsed.tags.map((tag) => tag.value),
               shortened,
-              previous: thingyId,
               character_id: characterUuid,
               public: parsed.public,
             }),

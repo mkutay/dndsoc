@@ -30,7 +30,9 @@ export async function CharacterThingies({
           <Card key={thingy.shortened}>
             <CardHeader>
               <CardTitle>{thingy.name}</CardTitle>
-              {!thingy.public ? <CardDescription className="font-quotes">Not Public</CardDescription> : null}
+              {ownsCharacter ? (
+                <CardDescription className="font-quotes">{thingy.public ? "Public" : "Not Public"}</CardDescription>
+              ) : null}
             </CardHeader>
             <CardContent>
               <TypographyParagraph>{thingy.description}</TypographyParagraph>
