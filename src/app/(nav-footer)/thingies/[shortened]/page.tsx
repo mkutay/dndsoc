@@ -10,6 +10,7 @@ import { EditThingy } from "@/components/thingies/edit-thingy";
 import { Badge } from "@/components/ui/badge";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { runQuery } from "@/utils/supabase-run";
+import { getUserRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ const getThingyByShortened = (shortened: string) =>
   runQuery((supabase) =>
     supabase
       .from("thingy")
-      .select("*, characters(*)")
+      .select("*, characters(*, players(auth_user_uuid))")
       .eq("shortened", shortened)
       .order("created_at", { ascending: false })
       .limit(1)
@@ -57,6 +58,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   if (nextR.isErr()) return <ErrorPage error={nextR.error} />;
   const next = nextR.value;
 
+  const user = await getUserRole();
+
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       {next ? (
@@ -77,7 +80,14 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       ) : null}
       <div className="flex flex-row flex-wrap justify-between gap-6 items-center">
         <TypographyH1>{thingy.name}</TypographyH1>
-        {thingy.character_id && !next ? <EditThingy thingy={thingy} characterUuid={thingy.character_id} /> : null}
+        {user.isOk() &&
+        (user.value.role === "admin" ||
+          user.value.role === "dm" ||
+          user.value.auth_user_uuid === thingy.characters?.players.auth_user_uuid) &&
+        thingy.character_id &&
+        !next ? (
+          <EditThingy thingy={thingy} characterUuid={thingy.character_id} />
+        ) : null}
       </div>
       {thingy.tags.length !== 0 && (
         <div className="flex flex-wrap gap-1 max-w-lg mt-6">
