@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { okAsync } from "neverthrow";
 import { cache } from "react";
 
+import Link from "next/link";
 import { TypographyLink, TypographyParagraph, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
@@ -11,6 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
+import { PutOnAuction } from "@/components/thingies/put-on-auction";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +89,10 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           user.value.auth_user_uuid === thingy.characters?.players.auth_user_uuid) &&
         thingy.character_id &&
         !next ? (
-          <EditThingy thingy={thingy} characterUuid={thingy.character_id} />
+          <div className="flex flex-row gap-2">
+            <PutOnAuctionWrapper thingyId={thingy.id} shortened={thingy.shortened} />
+            <EditThingy thingy={thingy} characterUuid={thingy.character_id} />
+          </div>
         ) : null}
       </div>
       {thingy.tags.length !== 0 && (
@@ -103,3 +109,26 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
+
+const PutOnAuctionWrapper = async ({ thingyId, shortened }: { thingyId: string; shortened: string }) => {
+  const auction = await runQuery((supabase) =>
+    supabase
+      .from("auction")
+      .select("id")
+      .or(
+        `and(seller_thingy_id.eq.${thingyId},valid.eq.true,next.is.null),and(buyer_thingy_id.eq.${thingyId},valid.eq.true,next.is.null)`,
+      ),
+  );
+
+  if (auction.isErr()) return;
+
+  if (auction.value.length !== 0) {
+    return (
+      <Button asChild variant="secondary">
+        <Link href={`/auction/${shortened}`}>View Auction</Link>
+      </Button>
+    );
+  }
+
+  return <PutOnAuction thingyId={thingyId} shortened={shortened} />;
+};

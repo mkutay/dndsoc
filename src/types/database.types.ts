@@ -127,46 +127,40 @@ export type Database = {
       auction: {
         Row: {
           amount: number
-          buyer_id: string | null
+          buyer_thingy_id: string | null
           created_at: string
           id: string
           next: string | null
-          previous: string | null
-          seller_id: string
+          seller_thingy_id: string
           status: Database["public"]["Enums"]["auction_state"]
-          thingy_id: string
           valid: boolean
         }
         Insert: {
           amount?: number
-          buyer_id?: string | null
+          buyer_thingy_id?: string | null
           created_at?: string
           id?: string
           next?: string | null
-          previous?: string | null
-          seller_id: string
+          seller_thingy_id: string
           status?: Database["public"]["Enums"]["auction_state"]
-          thingy_id: string
           valid?: boolean
         }
         Update: {
           amount?: number
-          buyer_id?: string | null
+          buyer_thingy_id?: string | null
           created_at?: string
           id?: string
           next?: string | null
-          previous?: string | null
-          seller_id?: string
+          seller_thingy_id?: string
           status?: Database["public"]["Enums"]["auction_state"]
-          thingy_id?: string
           valid?: boolean
         }
         Relationships: [
           {
-            foreignKeyName: "auction_buyer_id_fkey"
-            columns: ["buyer_id"]
+            foreignKeyName: "auction_buyer_thingy_id_fkey"
+            columns: ["buyer_thingy_id"]
             isOneToOne: false
-            referencedRelation: "characters"
+            referencedRelation: "thingy"
             referencedColumns: ["id"]
           },
           {
@@ -177,22 +171,8 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "auction_previous_fkey"
-            columns: ["previous"]
-            isOneToOne: false
-            referencedRelation: "auction"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "auction_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "characters"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "auction_thingy_id_fkey"
-            columns: ["thingy_id"]
+            foreignKeyName: "auction_seller_thingy_id_fkey"
+            columns: ["seller_thingy_id"]
             isOneToOne: false
             referencedRelation: "thingy"
             referencedColumns: ["id"]

@@ -149,29 +149,6 @@ export function AddThingy({ characterUuid }: { characterUuid: string }) {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="amount"
-                disabled={pending}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Amount</FormLabel>
-                    <FormControl>
-                      <NumberInput
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      If you have multiple of the same thingy, you can specify the amount here.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name={`tags`}
