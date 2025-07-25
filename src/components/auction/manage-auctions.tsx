@@ -4,7 +4,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 
 import { Check, X } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
   AlertDialog,
   AlertDialogAction,

@@ -1,7 +1,7 @@
 import { forbidden } from "next/navigation";
 
 import { ErrorPage } from "@/components/error-page";
-import { ManageAuctions } from "@/components/manage-auctions";
+import { ManageAuctions } from "@/components/auction/manage-auctions";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { getUserRole } from "@/lib/roles";
@@ -103,7 +103,8 @@ const getAllAuctions = () =>
       created_at: auction.created_at,
       valid: auction.valid,
       next: auction.next,
-      amount: auction.amount,
+      seller_amount: auction.seller_amount,
+      buyer_amount: auction.buyer_amount,
       sold_thingy: {
         created_at: auction.sold_thingy.created_at,
         description: auction.sold_thingy.description,

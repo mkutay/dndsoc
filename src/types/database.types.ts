@@ -126,34 +126,37 @@ export type Database = {
       }
       auction: {
         Row: {
-          amount: number
+          buyer_amount: number | null
           buyer_thingy_id: string | null
           created_at: string
           decision_by: string | null
           id: string
           next: string | null
+          seller_amount: number
           seller_thingy_id: string
           status: Database["public"]["Enums"]["auction_state"]
           valid: boolean
         }
         Insert: {
-          amount?: number
+          buyer_amount?: number | null
           buyer_thingy_id?: string | null
           created_at?: string
           decision_by?: string | null
           id?: string
           next?: string | null
+          seller_amount?: number
           seller_thingy_id: string
           status?: Database["public"]["Enums"]["auction_state"]
           valid?: boolean
         }
         Update: {
-          amount?: number
+          buyer_amount?: number | null
           buyer_thingy_id?: string | null
           created_at?: string
           decision_by?: string | null
           id?: string
           next?: string | null
+          seller_amount?: number
           seller_thingy_id?: string
           status?: Database["public"]["Enums"]["auction_state"]
           valid?: boolean

@@ -7,6 +7,12 @@ export const addToAuctionSchema = z.object({
   amount: z.number().min(1),
 });
 
+export const buyThingySchema = z.object({
+  auctionId: z.uuid(),
+  thingyId: z.uuid(),
+  amount: z.number().min(1),
+});
+
 export const statusPretty: Record<Enums<"auction_state">, string> = {
   created: "Created",
   deleted: "Deleted",
@@ -93,7 +99,8 @@ export type ProcessedAuction = {
   created_at: string;
   valid: boolean;
   next: string | null;
-  amount: number;
+  seller_amount: number;
+  buyer_amount: number | null;
   sold_thingy: {
     created_at: string;
     description: string;

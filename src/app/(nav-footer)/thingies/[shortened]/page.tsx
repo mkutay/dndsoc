@@ -105,7 +105,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         </div>
       )}
       <TypographyHr className="my-12" />
-      <TypographyParagraph className="max-w-prose not-first:mt-0">{thingy.description}</TypographyParagraph>
+      <TypographyParagraph className="max-w-prose text-lg not-first:mt-0">{thingy.description}</TypographyParagraph>
     </div>
   );
 }
