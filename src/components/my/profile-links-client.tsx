@@ -5,6 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { PlayerEditSheet } from "../players/player-edit-sheet";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
@@ -24,61 +25,28 @@ export function ProfileLinksClient({
     achievementsCount: number;
     campaignsCount: number;
     about: string;
+    id: string;
   };
   player: {
     imageUrl: string | null;
     level: number;
     achievementsCount: number;
     about: string;
+    id: string;
   };
 }) {
   const hasDM = dm !== undefined;
-  const [profile, setProfile] = useState<{
-    role: "player" | "dm";
-    imageUrl: string | null;
-    level: number;
-    achievementsCount: number;
-    campaignsCount?: number;
-    about: string;
-  }>(
-    hasDM
-      ? {
-          role: "dm",
-          imageUrl: dm.imageUrl,
-          level: dm.level,
-          achievementsCount: dm.achievementsCount,
-          campaignsCount: dm.campaignsCount,
-          about: dm.about,
-        }
-      : {
-          role: "player",
-          imageUrl: player.imageUrl,
-          level: player.level,
-          achievementsCount: player.achievementsCount,
-          about: player.about,
-        },
-  );
+  const [selectedRole, setSelectedRole] = useState<"player" | "dm">(hasDM ? "dm" : "player");
+
+  const profile = selectedRole === "dm" && dm ? { role: "dm" as const, ...dm } : { role: "player" as const, ...player };
 
   const setDM = () => {
     if (!hasDM) return;
-    setProfile({
-      role: "dm",
-      imageUrl: dm.imageUrl,
-      level: dm.level,
-      achievementsCount: dm.achievementsCount,
-      campaignsCount: dm.campaignsCount,
-      about: dm.about,
-    });
+    setSelectedRole("dm");
   };
 
   const setPlayer = () => {
-    setProfile({
-      role: "player",
-      imageUrl: player.imageUrl,
-      level: player.level,
-      achievementsCount: player.achievementsCount,
-      about: player.about,
-    });
+    setSelectedRole("player");
   };
 
   const roleText = profile.role === "dm" ? "DM" : "Player";
@@ -126,7 +94,10 @@ export function ProfileLinksClient({
           </div>
         ) : null}
 
-        {profile.campaignsCount && Number.isInteger(profile.campaignsCount) && profile.campaignsCount > 0 ? (
+        {profile.role === "dm" &&
+        profile.campaignsCount &&
+        Number.isInteger(profile.campaignsCount) &&
+        profile.campaignsCount > 0 ? (
           <div className="flex items-center gap-2 px-4 rounded-lg">
             <Award size={20} className="text-green-500" />
             <div className="flex sm:flex-row flex-col gap-2">
@@ -161,11 +132,19 @@ export function ProfileLinksClient({
                 View {roleText} Profile
               </Link>
             </Button>
-            <Button asChild variant="outline" className="sm:w-fit w-full">
-              <Link href={`/${profile.role + "s"}/${username}/edit`} target="_blank">
-                Edit
-              </Link>
-            </Button>
+            {profile.role === "player" ? (
+              <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
+                <Button variant="outline" type="button" className="w-fit">
+                  Edit
+                </Button>
+              </PlayerEditSheet>
+            ) : (
+              <Button asChild variant="outline" className="sm:w-fit w-full">
+                <Link href={`/dms/${username}/edit`} target="_blank">
+                  Edit
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </CardFooter>

@@ -36,6 +36,7 @@ export async function ProfileLinks({ role, user }: { role: Enums<"role">; user: 
           return campaignIds.size;
         })(),
         about: dm.value.about,
+        id: dm.value.id,
       }
     : undefined;
 
@@ -49,6 +50,7 @@ export async function ProfileLinks({ role, user }: { role: Enums<"role">; user: 
         level: player.value.level,
         achievementsCount: player.value.received_achievements_player.length,
         about: player.value.about,
+        id: player.value.id,
       }}
     />
   );

@@ -1,23 +1,25 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { Characters } from "@/components/players/characters";
 import { Campaigns } from "@/components/players/campaigns";
-import { EditButton } from "@/components/edit-button";
 import { ErrorPage } from "@/components/error-page";
 import { getPublicUrlByUuid } from "@/lib/storage";
 import { TypographyH2 } from "@/components/typography/headings";
 import { AchievementCards } from "@/components/achievement-cards";
 import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 import { type ReceivedAchievementsPlayer } from "@/types/full-database.types";
+import { PlayerEditSheet } from "@/components/players/player-edit-sheet";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
 const cachedGetPlayer = cache(getPlayerByUsername);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
   const result = await cachedGetPlayer({ username });
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
@@ -84,7 +86,13 @@ export default async function Page({ params }: { params: Promise<{ username: str
           {player.about && player.about.length !== 0 ? (
             <TypographyLead className="indent-6">{player.about}</TypographyLead>
           ) : null}
-          {ownsPlayer ? <EditButton href={`/players/${username}/edit`} /> : null}
+          {ownsPlayer ? (
+            <PlayerEditSheet player={{ about: player.about, id: player.id }} path={`/players/${username}`}>
+              <Button variant="outline" type="button" className="w-fit">
+                Edit Player
+              </Button>
+            </PlayerEditSheet>
+          ) : null}
         </div>
       </div>
       <Characters characters={player.characters} ownsPlayer={ownsPlayer} playerUuid={player.id} />
@@ -94,11 +102,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   );
 }
 
-export const PlayerAchievements = ({
-  receivedAchievements,
-}: {
-  receivedAchievements: ReceivedAchievementsPlayer[];
-}) => {
+const PlayerAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsPlayer[] }) => {
   if (!receivedAchievements || receivedAchievements.length === 0) return null;
 
   return (

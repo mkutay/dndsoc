@@ -4,8 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-
 import { Edit } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -76,7 +76,7 @@ export function UserEditForm({
                 <FormItem>
                   <FormLabel>Your Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kutay" {...field} />
+                    <Input placeholder="Awesome Person" {...field} />
                   </FormControl>
                   <FormDescription>This is your public display name.</FormDescription>
                   <FormMessage />
