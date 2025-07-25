@@ -621,6 +621,11 @@ export type SupabaseQueryError<T extends string> = {
   postgres: {
     code: PostgreSQLErrorCode;
     message: string;
+    hint?: string;
+    details?: string;
+    cause?: unknown;
+    name?: string;
+    stack?: string;
   };
 };
 
@@ -650,13 +655,18 @@ export function handleSupabaseResponse<T, U extends string>(
   }
 
   return errAsync({
-    message: `Database query failed${caller ? ` in ${caller}` : ""}`,
+    message: `Database query failed${caller ? ` in ${caller}` : ""}. ${error.message}`,
     code: (caller ? `DATABASE_ERROR_${caller}` : "DATABASE_ERROR") as U extends string
       ? `DATABASE_ERROR_${U}`
       : "DATABASE_ERROR",
     postgres: {
       code: error.code as PostgreSQLErrorCode,
       message: PostgreSQLErrorMessages[error.code as PostgreSQLErrorCode] || error.message,
+      hint: error.hint,
+      details: error.details,
+      cause: error.cause,
+      name: error.name,
+      stack: error.stack,
     },
   });
 }

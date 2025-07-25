@@ -1,7 +1,8 @@
 import { errAsync, okAsync } from "neverthrow";
+import type { Metadata } from "next";
 import { Dot } from "lucide-react";
 import Image from "next/image";
-import { cache } from "react";
+import { cache, Suspense } from "react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
@@ -17,13 +18,14 @@ import { runQuery } from "@/utils/supabase-run";
 import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
 import { AchievementCards } from "@/components/achievement-cards";
 import { PartyCard } from "@/components/party-card";
+import { CharacterThingies } from "@/components/characters/character-thingies";
 
 export const dynamic = "force-dynamic";
 
 const cachedGetCharacter = cache(getCharacterPlayerByShortened);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
@@ -116,22 +118,21 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         </div>
       </div>
       <CharacterAchievements receivedAchievements={character.received_achievements_character} />
-      <Campaigns characterUuid={character.id} />
       <TypographyH2 className="mt-6">Parties</TypographyH2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         {parties.map((party) => (
           <PartyCard key={party.id} party={party} />
         ))}
       </div>
+      <Suspense>
+        <CharacterThingies ownsCharacter={ownsCharacter} characterUuid={character.id} />
+      </Suspense>
+      <Campaigns characterUuid={character.id} />
     </div>
   );
 }
 
-export const CharacterAchievements = ({
-  receivedAchievements,
-}: {
-  receivedAchievements: ReceivedAchievementsCharacter[];
-}) => {
+const CharacterAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsCharacter[] }) => {
   if (!receivedAchievements || receivedAchievements.length === 0) return null;
 
   return (
@@ -165,7 +166,7 @@ async function Campaigns({ characterUuid }: { characterUuid: string }) {
   );
 }
 
-export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
+const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
   runQuery(
     (supabase) =>
       supabase
