@@ -54,6 +54,7 @@
     "react-dom": "19.0.0",
     "react-hook-form": "^7.60.0",
     "react-icons": "^5.5.0",
+    "react-number-format": "^5.4.4",
     "three": "^0.178.0",
     "tw-animate-css": "^1.3.5",
     "zod": "^4.0.5"
