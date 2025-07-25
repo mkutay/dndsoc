@@ -1,6 +1,7 @@
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
 import { runQuery } from "@/utils/supabase-run";
@@ -40,11 +41,11 @@ export default async function Page() {
                       ? "Someone has requested to buy this auction item."
                       : null}
                 </p>
-                <div className="flex flex-wrap gap-1">
-                  {auction.sold_thingy.tags.slice(0, 6).map((tag) => (
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {auction.sold_thingy.tags.slice(0, 3).map((tag) => (
                     <Badge key={tag}>{tag}</Badge>
                   ))}
-                  {auction.sold_thingy.tags.length > 6 && (
+                  {auction.sold_thingy.tags.length > 3 && (
                     <Badge>
                       <DotsHorizontalIcon />
                     </Badge>
@@ -56,8 +57,10 @@ export default async function Page() {
               <TypographyParagraph>{truncateText(auction.sold_thingy.description, 120)}</TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
-              <Button asChild size="sm" variant="default">
-                <Link href={`/auction/${auction.sold_thingy.shortened}`}>View Thingy</Link>
+              <Button asChild size="xs" variant="ghost" className="font-quotes">
+                <Link href={`/auction/${auction.sold_thingy.shortened}`} className="flex items-center gap-0.5">
+                  View Listing <ArrowRight size={20} />
+                </Link>
               </Button>
             </CardFooter>
           </Card>

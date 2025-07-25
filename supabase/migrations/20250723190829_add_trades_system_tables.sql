@@ -1,4 +1,4 @@
-create type "public"."auction_state" as enum ('deleted', 'created', 'listing_approved', 'buy_request', 'signed_off', 'deal_completed');
+create type "public"."auction_state" as enum ('created', 'listing_approved', 'listing_rejected', 'buy_request', 'buy_request_rejected', 'signed_off', 'deal_completed', 'final_deal_rejected', 'deleted');
 
 create type "public"."thingy_type" as enum ('Adventuring Gear', 'Ammunition', 'Artisan’s Tools', 'Explosive', 'Firearm', 'Food and Drink', 'Futuristic', 'Gaming Set', 'Generic Variant', 'Heavy Armor', 'Illegal Drug', 'Instrument', 'Light Armor', 'Martial Weapon', 'Medium Armor', 'Melee Weapon', 'Modern', 'Mount', 'Other', 'Poison', 'Potion', 'Ranged Weapon', 'Renaissance', 'Ring', 'Rod', 'Scroll', 'Shield', 'Simple Weapon', 'Spellcasting Focus', 'Staff', 'Tack and Harness', 'Tattoo', 'Tool', 'Trade Bar', 'Trade Good', 'Treasure (Art Object)', 'Treasure (Coinage)', 'Treasure (Gemstone)', 'Vehicle (Air)', 'Vehicle (Land)', 'Vehicle (Space)', 'Vehicle (Water)', 'Wand', 'Wondrous Item');
 

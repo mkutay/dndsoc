@@ -129,6 +129,7 @@ export type Database = {
           amount: number
           buyer_thingy_id: string | null
           created_at: string
+          decision_by: string | null
           id: string
           next: string | null
           seller_thingy_id: string
@@ -139,6 +140,7 @@ export type Database = {
           amount?: number
           buyer_thingy_id?: string | null
           created_at?: string
+          decision_by?: string | null
           id?: string
           next?: string | null
           seller_thingy_id: string
@@ -149,6 +151,7 @@ export type Database = {
           amount?: number
           buyer_thingy_id?: string | null
           created_at?: string
+          decision_by?: string | null
           id?: string
           next?: string | null
           seller_thingy_id?: string
@@ -161,6 +164,13 @@ export type Database = {
             columns: ["buyer_thingy_id"]
             isOneToOne: false
             referencedRelation: "thingy"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_decision_by_fkey"
+            columns: ["decision_by"]
+            isOneToOne: false
+            referencedRelation: "dms"
             referencedColumns: ["id"]
           },
           {
@@ -1073,12 +1083,15 @@ export type Database = {
     Enums: {
       achievement_type: "dm" | "player" | "character"
       auction_state:
-        | "deleted"
         | "created"
         | "listing_approved"
+        | "listing_rejected"
         | "buy_request"
+        | "buy_request_rejected"
         | "signed_off"
         | "deal_completed"
+        | "final_deal_rejected"
+        | "deleted"
       difficulty: "easy" | "medium" | "hard" | "impossible"
       request_status: "approved" | "denied" | "pending"
       role: "admin" | "dm" | "player"
@@ -1259,12 +1272,15 @@ export const Constants = {
     Enums: {
       achievement_type: ["dm", "player", "character"],
       auction_state: [
-        "deleted",
         "created",
         "listing_approved",
+        "listing_rejected",
         "buy_request",
+        "buy_request_rejected",
         "signed_off",
         "deal_completed",
+        "final_deal_rejected",
+        "deleted",
       ],
       difficulty: ["easy", "medium", "hard", "impossible"],
       request_status: ["approved", "denied", "pending"],
