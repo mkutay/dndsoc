@@ -61,25 +61,23 @@ export function ProfileLinksClient({
         <CardDescription>Your public profile as a {roleText}.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="flex items-start gap-4">
+        <div className="space-x-4">
           {profile.imageUrl ? (
             <Image
               src={profile.imageUrl}
               alt={`Profile image of ${name}`}
               width={128}
               height={128}
-              className="w-28 h-28 rounded-full object-cover border-2 border-border"
+              className="w-28 h-28 rounded-full object-cover border-2 border-border float-start"
             />
           ) : (
-            <div className="w-28 h-28 rounded-full bg-border flex items-center justify-center">
+            <div className="w-28 h-28 rounded-full bg-border flex items-center justify-center float-start">
               <User size={24} className="text-muted-foreground" />
             </div>
           )}
-          <div>
-            <TypographyLarge className="text-xl">{name}</TypographyLarge>
-            <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
-            <p className="text-md mt-2">{truncateText(profile.about, 100)}</p>
-          </div>
+          <TypographyLarge className="text-xl">{name}</TypographyLarge>
+          <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
+          <p className="text-md mt-2">{truncateText(profile.about, 120)}</p>
         </div>
 
         {profile.achievementsCount > 0 ? (
@@ -134,7 +132,7 @@ export function ProfileLinksClient({
             </Button>
             {profile.role === "player" ? (
               <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="outline" type="button" className="w-fit">
+                <Button variant="outline" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </PlayerEditSheet>

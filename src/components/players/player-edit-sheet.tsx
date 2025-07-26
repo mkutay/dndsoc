@@ -71,7 +71,7 @@ export function PlayerEditSheet({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent className="sm:max-w-md p-2 py-6">
+      <SheetContent className="sm:max-w-md sm:p-2 p-0 py-6">
         <ScrollArea className="h-full px-3">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1">
@@ -107,7 +107,7 @@ export function PlayerEditSheet({
                   <FormItem>
                     <FormLabel>About</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="I am awesome!" {...field} />
+                      <Textarea placeholder="I am awesome!" className="h-40" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
