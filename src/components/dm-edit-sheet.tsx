@@ -20,17 +20,17 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { playersEditSchema } from "@/config/players";
-import { updatePlayer } from "@/server/players";
 import { Input } from "@/components/ui/input";
 import { actionResultToResult } from "@/types/error-typing";
+import { DMEditSchema } from "@/config/dms";
+import { updateDM } from "@/server/dms";
 
-export function PlayerEditSheet({
-  player,
+export function DMEditSheet({
+  dm,
   children,
   path,
 }: {
-  player: { about: string; id: string };
+  dm: { about: string; id: string };
   children: React.ReactNode;
   path: string;
 }) {
@@ -38,23 +38,23 @@ export function PlayerEditSheet({
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof playersEditSchema>>({
-    resolver: zodResolver(playersEditSchema),
+  const form = useForm<z.infer<typeof DMEditSchema>>({
+    resolver: zodResolver(DMEditSchema),
     defaultValues: {
-      about: player.about,
-      playerId: player.id,
+      about: dm.about,
+      dmId: dm.id,
     },
   });
 
-  const onSubmit = (values: z.infer<typeof playersEditSchema>) => {
+  const onSubmit = (values: z.infer<typeof DMEditSchema>) => {
     startTransition(async () => {
-      const result = actionResultToResult(await updatePlayer(values, path));
+      const result = actionResultToResult(await updateDM(values, path));
 
       result.match(
         () => {
           toast({
             title: "Update Successful",
-            description: "Your profile has been updated.",
+            description: "Your DM profile has been updated.",
           });
           setOpen(false); // Close sheet only after successful update
         },
@@ -77,11 +77,11 @@ export function PlayerEditSheet({
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1">
               <SheetHeader>
                 <SheetTitle>Edit</SheetTitle>
-                <SheetDescription>Edit your public player page. This is visible to everyone.</SheetDescription>
+                <SheetDescription>Edit your public DM page. This is visible to everyone.</SheetDescription>
               </SheetHeader>
               <FormField
                 control={form.control}
-                name="image"
+                name="avatar"
                 disabled={isPending}
                 render={({ field }) => (
                   <FormItem>
@@ -94,7 +94,7 @@ export function PlayerEditSheet({
                         disabled={field.disabled}
                       />
                     </FormControl>
-                    <FormDescription>Upload a new image for your profile.</FormDescription>
+                    <FormDescription>Upload a new image for your DM profile.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

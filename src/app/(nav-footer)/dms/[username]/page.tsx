@@ -7,7 +7,6 @@ import { TypographyLarge, TypographyLead } from "@/components/typography/paragra
 import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/parties";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import { EditButton } from "@/components/edit-button";
 import { type ReceivedAchievementsDM } from "@/types/full-database.types";
 import { TypographyH2 } from "@/components/typography/headings";
 import { ErrorComponent } from "@/components/error-component";
@@ -17,6 +16,8 @@ import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
 import { runQuery } from "@/utils/supabase-run";
 import { AchievementCards } from "@/components/achievement-cards";
+import { DMEditSheet } from "@/components/dm-edit-sheet";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -91,7 +92,13 @@ export default async function Page({ params }: { params: Promise<{ username: str
           </h1>
           <TypographyLarge>Level: {dm.level}</TypographyLarge>
           {dm.about && dm.about.length !== 0 ? <TypographyLead>{dm.about}</TypographyLead> : null}
-          {ownsDM ? <EditButton href={`/dms/${username}/edit`} /> : null}
+          {ownsDM ? (
+            <DMEditSheet dm={{ about: dm.about, id: dm.id }} path={`/dms/${username}`}>
+              <Button variant="outline" type="button" className="w-fit">
+                Edit DM
+              </Button>
+            </DMEditSheet>
+          ) : null}
         </div>
       </div>
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />

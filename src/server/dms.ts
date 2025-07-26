@@ -10,7 +10,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { DMEditSchema } from "@/config/dms";
 import { uploadImageDM } from "@/lib/storage";
 
-export const updateDM = async (values: z.infer<typeof DMEditSchema>, dmUuid: string) =>
+export const updateDM = async (values: z.infer<typeof DMEditSchema>, path: string) =>
   resultAsyncToActionResult(
     parseSchema(DMEditSchema, values)
       .asyncAndThen(() =>
@@ -20,7 +20,7 @@ export const updateDM = async (values: z.infer<typeof DMEditSchema>, dmUuid: str
             .update({
               about: values.about,
             })
-            .eq("id", dmUuid)
+            .eq("id", values.dmId)
             .select("users(username)")
             .single(),
         ),
@@ -30,10 +30,11 @@ export const updateDM = async (values: z.infer<typeof DMEditSchema>, dmUuid: str
           ? uploadImageDM({
               file: values.avatar,
               shortened: users.username,
-              DMId: dmUuid,
+              DMId: values.dmId,
             })
           : okAsync(),
-      ),
+      )
+      .andTee(() => revalidatePath(path)),
   );
 
 export const removePartyFromDM = async ({

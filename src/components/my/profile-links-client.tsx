@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PlayerEditSheet } from "../players/player-edit-sheet";
+import { DMEditSheet } from "../dm-edit-sheet";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
@@ -56,7 +57,7 @@ export function ProfileLinksClient({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <User size={24} className="mb-[2px]" />
-          Your Profile
+          Your Profile ({roleText})
         </CardTitle>
         <CardDescription>Your public profile as a {roleText}.</CardDescription>
       </CardHeader>
@@ -132,16 +133,16 @@ export function ProfileLinksClient({
             </Button>
             {profile.role === "player" ? (
               <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="outline" type="button" className="sm:w-fit w-full">
+                <Button variant="secondary" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </PlayerEditSheet>
             ) : (
-              <Button asChild variant="outline" className="sm:w-fit w-full">
-                <Link href={`/dms/${username}/edit`} target="_blank">
+              <DMEditSheet dm={{ about: profile.about, id: profile.id }} path="/my">
+                <Button variant="secondary" type="button" className="sm:w-fit w-full">
                   Edit
-                </Link>
-              </Button>
+                </Button>
+              </DMEditSheet>
             )}
           </div>
         </div>

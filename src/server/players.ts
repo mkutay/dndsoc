@@ -5,7 +5,7 @@ import { okAsync } from "neverthrow";
 import { revalidatePath } from "next/cache";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { playersEditSchema } from "@/config/player-edit-schema";
+import { playersEditSchema } from "@/config/players";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { uploadImagePlayer } from "@/lib/storage";
