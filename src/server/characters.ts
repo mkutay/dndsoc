@@ -36,9 +36,9 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
       })),
   );
 
-export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterShortened: string) {
+export async function updateCharacter(values: z.infer<typeof characterEditSchema>, path: string) {
   const character = runQuery((supabase) =>
-    supabase.from("characters").select("*, races(*), classes(*)").eq("shortened", characterShortened).single(),
+    supabase.from("characters").select("*, races(*), classes(*)").eq("id", values.characterId).single(),
   );
 
   const parsed = parseSchema(characterEditSchema, values).asyncAndThrough(() =>
@@ -50,7 +50,7 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
             about: values.about,
             level: values.level,
           })
-          .eq("shortened", characterShortened),
+          .eq("id", values.characterId),
       "updateCharacterCharactersResult",
     ),
   );
@@ -58,15 +58,17 @@ export async function updateCharacter(values: z.infer<typeof characterEditSchema
   const result = ResultAsync.combine([character, parsed])
     .andThrough(([character, parsed]) => updateClasses({ classes: parsed.classes, characterId: character.id }))
     .andThrough(([character, parsed]) => updateRace({ race: parsed.race, characterId: character.id }))
-    .andThen(([{ id }]) =>
+    .andThrough(([{ id, shortened }]) =>
       values.avatar
         ? uploadImageCharacter({
             file: values.avatar,
-            shortened: characterShortened,
+            shortened,
             characterId: id,
           })
         : okAsync(),
-    );
+    )
+    .andThen(() => okAsync())
+    .andTee(() => revalidatePath(path));
 
   return resultAsyncToActionResult(result);
 }

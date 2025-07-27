@@ -128,7 +128,7 @@ export function ProfileLinksClient({
             ) : null}
             <Button asChild variant="default" className="w-full">
               <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
-                View {roleText} Profile
+                Go to {roleText} Profile
               </Link>
             </Button>
             {profile.role === "player" ? (

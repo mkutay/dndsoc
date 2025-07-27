@@ -1,4 +1,6 @@
 import { errAsync, okAsync } from "neverthrow";
+import { TiPencil } from "react-icons/ti";
+import type { Metadata } from "next";
 import { Dot } from "lucide-react";
 import Image from "next/image";
 import { cache } from "react";
@@ -10,20 +12,21 @@ import { ErrorPage } from "@/components/error-page";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import { EditButton } from "@/components/edit-button";
 import { getCharacterPlayerByShortened } from "@/lib/characters";
 import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
 import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
 import { AchievementCards } from "@/components/achievement-cards";
 import { PartyCard } from "@/components/party-card";
+import { EditCharacterSheet } from "@/components/edit-character-sheet";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
 const cachedGetCharacter = cache(getCharacterPlayerByShortened);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
@@ -52,8 +55,15 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ shortened: string }>;
+  searchParams: Promise<{ edit: string | null }>;
+}) {
   const { shortened } = await params;
+  const { edit } = await searchParams;
   const result = await cachedGetCharacter({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
   const character = result.value;
@@ -112,7 +122,23 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           {character.about && character.about.length !== 0 ? (
             <TypographyLead className="indent-6">{character.about}</TypographyLead>
           ) : null}
-          {ownsCharacter ? <EditButton href={`/characters/${shortened}/edit`} /> : null}
+          {ownsCharacter ? (
+            <EditCharacterSheet
+              path={`/characters/${character.shortened}`}
+              character={{
+                races: character.races,
+                classes: character.classes,
+                about: character.about,
+                level: character.level,
+                id: character.id,
+              }}
+              edit={edit === "true"}
+            >
+              <Button variant="outline" size="default" className="w-fit">
+                <TiPencil size={24} className="mr-2" /> Edit
+              </Button>
+            </EditCharacterSheet>
+          ) : null}
         </div>
       </div>
       <CharacterAchievements receivedAchievements={character.received_achievements_character} />
@@ -127,11 +153,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   );
 }
 
-export const CharacterAchievements = ({
-  receivedAchievements,
-}: {
-  receivedAchievements: ReceivedAchievementsCharacter[];
-}) => {
+const CharacterAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsCharacter[] }) => {
   if (!receivedAchievements || receivedAchievements.length === 0) return null;
 
   return (
@@ -165,7 +187,7 @@ async function Campaigns({ characterUuid }: { characterUuid: string }) {
   );
 }
 
-export const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
+const getCampaignsByCharacterUuid = ({ characterUuid }: { characterUuid: string }) =>
   runQuery(
     (supabase) =>
       supabase

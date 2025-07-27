@@ -38,7 +38,7 @@ export function AddCharacterForm({ playerUuid }: { playerUuid: string }) {
           description: "You can now edit the specifics of your character.",
           variant: "default",
         });
-        router.push(`/characters/${value.shortened}/edit`);
+        router.push(`/characters/${value.shortened}?edit=true`);
       },
       (error) =>
         toast({

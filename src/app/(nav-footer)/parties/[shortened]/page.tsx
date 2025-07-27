@@ -1,16 +1,18 @@
 import Image from "next/image";
 import { cache } from "react";
+import Link from "next/link";
+import { TiPencil } from "react-icons/ti";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Characters } from "@/components/parties/characters";
 import { Campaigns } from "@/components/parties/campaigns";
 import { getPublicUrlByUuid } from "@/lib/storage";
-import { EditButton } from "@/components/edit-button";
 import { getPlayerRoleUser } from "@/lib/players";
 import { getPartyByShortened } from "@/lib/parties";
 import { getCharacters } from "@/lib/characters";
 import { getCampaigns } from "@/lib/campaigns";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -111,7 +113,13 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           </h1>
           <TypographyLarge>Level: {party.level}</TypographyLarge>
           {party.about && party.about.length !== 0 ? <TypographyLead>{party.about}</TypographyLead> : null}
-          {ownsAs ? <EditButton href={`/parties/${shortened}/edit/${ownsAs === "admin" ? "dm" : ownsAs}`} /> : null}
+          {ownsAs ? (
+            <Button asChild variant="outline" size="default" className="w-fit">
+              <Link href={`/parties/${shortened}/edit/${ownsAs === "admin" ? "dm" : ownsAs}`}>
+                <TiPencil size={24} className="mr-2" /> Edit
+              </Link>
+            </Button>
+          ) : null}
         </div>
       </div>
       <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters?.value} />

@@ -60,12 +60,9 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
                 <TypographyParagraph className="text-sm">{truncateText(character.about, 100)}</TypographyParagraph>
               </CardContent>
             ) : null}
-            <CardFooter className="flex gap-2">
-              <Button asChild size="sm">
-                <Link href={`/characters/${character.shortened}`}>View Character</Link>
-              </Button>
+            <CardFooter className="flex gap-2 justify-end">
               <Button asChild size="sm" variant="outline">
-                <Link href={`/characters/${character.shortened}/edit`}>Edit</Link>
+                <Link href={`/characters/${character.shortened}`}>View Character</Link>
               </Button>
             </CardFooter>
           </Card>
