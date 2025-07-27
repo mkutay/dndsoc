@@ -7,6 +7,7 @@ import { MinusIcon, PlusIcon, RefreshCcw } from "lucide-react";
 import { useState, useTransition } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
+import { NumberInput } from "./ui/number-input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
@@ -154,17 +155,12 @@ export function EditCharacterSheet({
                   <FormItem>
                     <FormLabel>Level</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="1"
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          // Only allow empty input or valid numbers
-                          if (value === "" || /^\d+$/.test(value)) {
-                            field.onChange(value === "" ? "" : Number(value));
-                          }
-                        }}
+                      <NumberInput
                         value={field.value}
+                        onValueChange={field.onChange}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                     </FormControl>
                     <FormDescription>This is your character&apos;s level.</FormDescription>
