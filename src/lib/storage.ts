@@ -95,9 +95,7 @@ export const uploadImageCharacter = ({
     shortened,
     folder: "characters",
   }).andThen(({ id }) =>
-    runQuery((supabase) =>
-      supabase.from("characters").update({ image_uuid: id }).eq("id", characterId).select("name").single(),
-    ),
+    runQuery((supabase) => supabase.from("characters").update({ image_uuid: id }).eq("id", characterId)),
   );
 
 export const uploadImageDM = ({ file, DMId, shortened }: { file: File; DMId: string; shortened: string }) =>
