@@ -1,7 +1,7 @@
+import { TiPencil } from "react-icons/ti";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
-import Link from "next/link";
-import { TiPencil } from "react-icons/ti";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
@@ -13,13 +13,16 @@ import { getPartyByShortened } from "@/lib/parties";
 import { getCharacters } from "@/lib/characters";
 import { getCampaigns } from "@/lib/campaigns";
 import { Button } from "@/components/ui/button";
+import { EditPartyPlayerSheet } from "@/components/parties/edit-party-player-sheet";
+import { EditPartyDMSheet } from "@/components/parties/edit-party-dm-sheet";
+import { getDMs } from "@/lib/dms";
 
 export const dynamic = "force-dynamic";
 
 const cachedGetParty = cache(getPartyByShortened);
 const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const result = await cachedGetParty({ shortened });
   if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
@@ -45,8 +48,15 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ shortened: string }>;
+  searchParams: Promise<{ edit: string | null }>;
+}) {
   const { shortened } = await params;
+  const { edit } = await searchParams;
   const result = await cachedGetParty({ shortened });
   if (result.isErr()) return <ErrorPage error={result.error} caller="/parties/[shortened]/page.tsx" isNotFound />;
   const party = result.value;
@@ -78,8 +88,15 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   if (allCharacters && allCharacters.isErr())
     return <ErrorPage error={allCharacters.error} caller="/parties/[shortened]/page.tsx" />;
 
+  const allDMs = ownsAs === "dm" || ownsAs === "admin" ? await getDMs() : undefined;
+  if (allDMs && allDMs.isErr()) return <ErrorPage error={allDMs.error} caller="/parties/[shortened]/page.tsx" />;
+
   const imageUrlResult = party.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+
+  const thisDMId = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
+  if (!thisDMId && (ownsAs === "dm" || ownsAs === "admin"))
+    return <ErrorPage error="Could not find your DM ID." caller="/parties/[shortened]/page.tsx" />;
 
   // it doesn't start loading the image until all of the data is fetched above,
   // only have things needed for the image here, put everything else in another component
@@ -113,12 +130,60 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           </h1>
           <TypographyLarge>Level: {party.level}</TypographyLarge>
           {party.about && party.about.length !== 0 ? <TypographyLead>{party.about}</TypographyLead> : null}
-          {ownsAs ? (
-            <Button asChild variant="outline" size="default" className="w-fit">
-              <Link href={`/parties/${shortened}/edit/${ownsAs === "admin" ? "dm" : ownsAs}`}>
+          {ownsAs === "player" ? (
+            <EditPartyPlayerSheet party={{ about: party.about, id: party.id }} path={`/parties/${shortened}`}>
+              <Button variant="outline" size="default" className="w-fit">
                 <TiPencil size={24} className="mr-2" /> Edit
-              </Link>
-            </Button>
+              </Button>
+            </EditPartyPlayerSheet>
+          ) : (ownsAs === "dm" || ownsAs === "admin") && allCampaigns && allCharacters && allDMs ? (
+            <EditPartyDMSheet
+              path={`/parties/${shortened}`}
+              party={{
+                about: party.about,
+                id: party.id,
+                name: party.name,
+                level: party.level,
+                characters: characters.map((char) => ({
+                  id: char.id,
+                  name: char.name,
+                  shortened: char.shortened,
+                  player: {
+                    id: char.players.id,
+                    username: char.players.users.username,
+                    name: char.players.users.name,
+                  },
+                })),
+                campaigns,
+                dms: dmedBy.map((dm) => ({
+                  id: dm.id,
+                  username: dm.users.username,
+                  name: dm.users.name,
+                })),
+              }}
+              campaigns={allCampaigns.value}
+              characters={allCharacters.value.map((char) => ({
+                id: char.id,
+                name: char.name,
+                shortened: char.shortened,
+                player: {
+                  id: char.players.id,
+                  username: char.players.users.username,
+                  name: char.players.users.name,
+                },
+              }))}
+              dms={allDMs.value.map((dm) => ({
+                id: dm.id,
+                username: dm.users.username,
+                name: dm.users.name,
+              }))}
+              dmId={thisDMId}
+              edit={edit === "true"}
+            >
+              <Button variant="outline" size="default" className="w-fit">
+                <TiPencil size={24} className="mr-2" /> Edit
+              </Button>
+            </EditPartyDMSheet>
           ) : null}
         </div>
       </div>

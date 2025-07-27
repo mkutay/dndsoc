@@ -39,7 +39,7 @@ export function CreatePartyForm({ campaignUuid }: { campaignUuid: string }) {
           variant: "default",
         });
 
-        router.push(`/parties/${value.shortened}/edit/dm`);
+        router.push(`/parties/${value.shortened}?edit=true`);
       },
       (error) =>
         toast({

@@ -41,9 +41,6 @@ export function PartyCard(props: Props) {
         </Button>
         {"ownsDM" in props && props.ownsDM ? (
           <div className="flex items-center flex-row gap-2">
-            <Button size="sm" variant="outline" asChild>
-              <Link href={`/parties/${party.shortened}/edit/dm`}>Edit</Link>
-            </Button>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

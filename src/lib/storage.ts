@@ -75,11 +75,7 @@ export const uploadImageParty = ({ file, partyId, shortened }: { file: File; par
     file,
     shortened,
     folder: "parties",
-  }).andThen(({ id }) =>
-    runQuery((supabase) =>
-      supabase.from("parties").update({ image_uuid: id }).eq("id", partyId).select("name").single(),
-    ),
-  );
+  }).andThen(({ id }) => runQuery((supabase) => supabase.from("parties").update({ image_uuid: id }).eq("id", partyId)));
 
 export const uploadImageCharacter = ({
   file,

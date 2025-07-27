@@ -6,6 +6,7 @@ const nameSchema = z.string().min(1, "Name is required.").max(60, "Name must be 
 
 export const partyPlayerEditSchema = z.object({
   about: aboutSchema,
+  partyId: z.uuid(),
 });
 
 export const partyDMEditSchema = z.object({
@@ -46,6 +47,7 @@ export const partyDMEditSchema = z.object({
   selectedCampaign: z.string().optional(), // For the combobox
   selectedDM: z.string().optional(), // For the combobox
   image: imageSchema.optional(),
+  partyId: z.uuid(),
 });
 
 export const createPartySchema = z.object({
