@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       {/* Journal title skeleton */}
-      <Skeleton className="lg:h-11 h-9 w-80 mb-2" />
+      <Skeleton className="lg:h-11 h-9 w-[600px] mb-2" />
 
       {/* Date skeleton */}
       <div className="text-right mt-2">

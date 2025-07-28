@@ -1,6 +1,6 @@
 "use server";
 
-import { ResultAsync } from "neverthrow";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { journalAllEditSchema, journalCreateSchema, journalPartyEntryEditSchema } from "@/config/journal-schema";
@@ -9,7 +9,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import { convertToShortened } from "@/utils/formatting";
 
-export const updateJournalAll = async (journalId: string, data: z.infer<typeof journalAllEditSchema>) => {
+export const updateJournalAll = async (data: z.infer<typeof journalAllEditSchema>, path: string) => {
   const parsed = parseSchema(journalAllEditSchema, data);
 
   const journal = parsed.asyncAndThen(() =>
@@ -22,41 +22,40 @@ export const updateJournalAll = async (journalId: string, data: z.infer<typeof j
           title: data.title,
           shortened: data.shortened,
         })
-        .eq("id", journalId),
+        .eq("id", data.journalId),
     ),
   );
 
-  const partyEntries = parsed.asyncAndThen(() =>
-    runQuery((supabase) =>
-      supabase.from("party_entries").upsert(
-        data.entries.map((entry) => ({
-          party_id: entry.partyId,
-          journal_id: journalId,
-          text: entry.text,
-        })),
-        { onConflict: "party_id,journal_id" },
-      ),
-    ),
-  );
+  // const partyEntries = parsed.asyncAndThen(() =>
+  //   runQuery((supabase) =>
+  //     supabase.from("party_entries").upsert(
+  //       data.entries.map((entry) => ({
+  //         party_id: entry.partyId,
+  //         journal_id: data.journalId,
+  //         text: entry.text,
+  //       })),
+  //       { onConflict: "party_id,journal_id" },
+  //     ),
+  //   ),
+  // );
 
-  return resultAsyncToActionResult(ResultAsync.combine([journal, partyEntries]));
+  return resultAsyncToActionResult(journal.andTee(() => revalidatePath(path)));
 };
 
-export const updateJournalPartyEntry = async (
-  journalId: string,
-  partyId: string,
-  data: z.infer<typeof journalPartyEntryEditSchema>,
-) => {
-  const parsed = parseSchema(journalPartyEntryEditSchema, data);
-
-  const partyEntry = parsed.asyncAndThen(() =>
-    runQuery((supabase) =>
-      supabase.from("party_entries").update({ text: data.text }).eq("journal_id", journalId).eq("party_id", partyId),
-    ),
+export const updateJournalPartyEntry = async (data: z.infer<typeof journalPartyEntryEditSchema>, path: string) =>
+  resultAsyncToActionResult(
+    parseSchema(journalPartyEntryEditSchema, data)
+      .asyncAndThen(() =>
+        runQuery((supabase) =>
+          supabase
+            .from("party_entries")
+            .update({ text: data.text })
+            .eq("journal_id", data.journalId)
+            .eq("party_id", data.partyId),
+        ),
+      )
+      .andTee(() => revalidatePath(path)),
   );
-
-  return resultAsyncToActionResult(partyEntry);
-};
 
 export const createJournal = async (data: z.infer<typeof journalCreateSchema>) => {
   const parsed = parseSchema(journalCreateSchema, data);

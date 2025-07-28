@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { okAsync } from "neverthrow";
 import { format } from "date-fns";
 import { cache } from "react";
@@ -9,6 +10,8 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
+import { EditJournalPartySheet } from "@/components/journal/edit-journal-party-sheet";
+import { EditJournalAdminSheet } from "@/components/journal/edit-journal-admin-sheet";
 
 export const dynamic = "force-dynamic";
 
@@ -18,10 +21,10 @@ const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
       .from("journal")
       .select(
         `
-      *,
-      campaigns:campaigns!inner(*),
-      party_entries:party_entries(*, parties:parties(*))
-    `,
+        *,
+        campaigns:campaigns!inner(*, party_campaigns(*, parties!inner(*))),
+        party_entries:party_entries(*, parties:parties(*))
+        `,
       )
       .eq("shortened", shortened)
       .single(),
@@ -29,7 +32,7 @@ const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
 
 const cachedGetJournalWithPartyEntries = cache(getJournalWithPartyEntries);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
 
   const result = await cachedGetJournalWithPartyEntries({ shortened });
@@ -55,7 +58,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   const partyIds = journal.party_entries.map((entry) => entry.parties.id);
 
   const user = await getUserRole();
-  const partiesResult = await user.asyncAndThen((user) =>
+  const parties = await user.asyncAndThen((user) =>
     user.role === "player"
       ? getPlayerParties({
           authUuid: user.auth_user_uuid,
@@ -69,8 +72,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
         : okAsync(partyIds),
   );
 
-  if (partiesResult.isErr() && partiesResult.error.code !== "NOT_LOGGED_IN")
-    return <ErrorComponent error={partiesResult.error} caller="/journal/[shortened]/page.tsx" />;
+  if (parties.isErr() && parties.error.code !== "NOT_LOGGED_IN")
+    return <ErrorComponent error={parties.error} caller="/journal/[shortened]/page.tsx" />;
 
   const partyEntries: React.ReactNode[] = [];
   for (let i = 0; i < journal.party_entries.length; i++) {
@@ -95,11 +98,24 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
             {entry.parties.name}
           </Link>
         </div>
-        {partiesResult.isOk() && partiesResult.value.includes(entry.party_id) && (
+        {parties.isOk() && parties.value.includes(entry.party_id) && (
           <div className="flex flex-row justify-end w-full mt-2">
-            <Button variant="outline" asChild className="w-fit">
-              <Link href={`/journal/${journal.shortened}/edit/${entry.parties.shortened}`}>Edit Entry</Link>
-            </Button>
+            <EditJournalPartySheet
+              journal={{
+                id: journal.id,
+                title: journal.title,
+                text: entry.text,
+                party: {
+                  id: entry.party_id,
+                  name: entry.parties.name,
+                  shortened: entry.parties.shortened,
+                },
+              }}
+            >
+              <Button variant="outline" className="w-fit">
+                Edit Entry
+              </Button>
+            </EditJournalPartySheet>
           </div>
         )}
       </div>,
@@ -115,10 +131,8 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <TypographyH1>{journal.title}</TypographyH1>
       <div className="text-right italic font-quotes text-lg mt-2">{format(journal.date, "PP")}</div>
       {user.isOk() && user.value.role === "admin" && (
-        <div className="flex flex-row justify-end w-full mt-4">
-          <Button variant="outline" asChild className="w-fit">
-            <Link href={`/journal/${journal.shortened}/edit`}>Edit Journal</Link>
-          </Button>
+        <div className="flex justify-end w-full mt-4">
+          <EditJournalAdminSheet journal={journal}>Edit Journal</EditJournalAdminSheet>
         </div>
       )}
       <div className="flex flex-col gap-6 mt-6">{partyEntries}</div>
@@ -132,10 +146,10 @@ const getPlayerParties = ({ authUuid, partyIds }: { authUuid: string; partyIds: 
       .from("character_party")
       .select(
         `
-      *,
-      characters!inner(*, players!inner(*)),
-      parties!inner(*)
-    `,
+        *,
+        characters!inner(*, players!inner(*)),
+        parties!inner(*)
+        `,
       )
       .eq("characters.players.auth_user_uuid", authUuid)
       .in("parties.id", partyIds),
@@ -147,10 +161,10 @@ const getDMParties = ({ authUuid, partyIds }: { authUuid: string; partyIds: stri
       .from("dm_party")
       .select(
         `
-      *,
-      dms!inner(*),
-      parties!inner(*)
-    `,
+        *,
+        dms!inner(*),
+        parties!inner(*)
+        `,
       )
       .eq("dms.auth_user_uuid", authUuid)
       .in("parties.id", partyIds),

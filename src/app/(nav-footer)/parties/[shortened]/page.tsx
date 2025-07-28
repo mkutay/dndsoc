@@ -95,7 +95,7 @@ export default async function Page({
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   const thisDMId = dmedBy.find((dm) => dm.auth_user_uuid === auth?.auth_user_uuid)?.id;
-  if (!thisDMId && (ownsAs === "dm" || ownsAs === "admin"))
+  if (!thisDMId && ownsAs === "dm")
     return <ErrorPage error="Could not find your DM ID." caller="/parties/[shortened]/page.tsx" />;
 
   // it doesn't start loading the image until all of the data is fetched above,
