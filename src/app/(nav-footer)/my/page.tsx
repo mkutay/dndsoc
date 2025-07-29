@@ -61,7 +61,7 @@ export default async function Page() {
                   level: dm.level,
                   achievementsCount: dm.received_achievements_dm
                     .map(({ count }) => count)
-                    .reduce((prev, now) => prev + now),
+                    .reduce((prev, now) => prev + now, 0),
                   campaignsCount: (() => {
                     const campaignIds = new Set<string>();
                     dm.dm_party.forEach((party) => {
@@ -105,6 +105,7 @@ export default async function Page() {
             shortened: dp.parties.shortened,
           }))}
           dmUuid={dm.id}
+          admin={user.role === "admin"}
         />
       ) : null}
       {user.role === "admin" && <MyAssociatesRequests />}

@@ -110,6 +110,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
           parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
           allParties={parties?.value}
           revalidate="/dms/[username]"
+          admin={role === "admin"}
         />
       </div>
       <Campaigns DMUuid={dm.id} />

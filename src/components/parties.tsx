@@ -19,12 +19,14 @@ export function Parties({
   ownsDM,
   allParties,
   revalidate,
+  admin,
 }: {
   DMUuid: string;
   parties: Party[];
   ownsDM: boolean;
   allParties: Party[] | undefined;
   revalidate: string;
+  admin: boolean;
 }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -100,7 +102,7 @@ export function Parties({
         />
       ))}
       {ownsDM ? <CreateParty /> : null}
-      {ownsDM && availableParties.length > 0 ? (
+      {admin && availableParties.length > 0 ? (
         <AddParty parties={availableParties} onAdd={handleAddParty} isLoading={isPending} />
       ) : null}
     </div>
