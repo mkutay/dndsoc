@@ -13,9 +13,6 @@ type NotLoggedInError = {
   code: "NOT_LOGGED_IN";
 };
 
-export const insertPlayer = (player: PlayerArgument) =>
-  runQuery((supabase) => supabase.from("players").insert(player).select("*").single());
-
 export const upsertPlayer = (player: PlayerArgument) =>
   runQuery((supabase) =>
     supabase

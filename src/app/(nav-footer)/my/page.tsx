@@ -1,9 +1,8 @@
 import { forbidden } from "next/navigation";
 
+import { ok, okAsync, ResultAsync } from "neverthrow";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
-import { getCharactersByAuthUuid } from "@/lib/characters";
-import { getPartiesByDMAuthUuid } from "@/lib/parties";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getPublicUrl } from "@/lib/storage";
 import { runQuery } from "@/utils/supabase-run";
@@ -14,77 +13,77 @@ import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
 import { ProfileLinksClient } from "@/components/my/profile-links-client";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export default async function Page() {
-  const userResult = await getUserRole();
-  if (userResult.isErr()) {
-    if (userResult.error.code !== "NOT_LOGGED_IN")
-      return <ErrorPage error={userResult.error} caller="/my/page.tsx (user)" />;
-    else forbidden();
+  const userR = getUserRole();
+
+  const playerR = userR.andThen((user) =>
+    getPlayer(user.auth_user_uuid)
+      .andThen((player) =>
+        player.images
+          ? getPublicUrl({ path: player.images.name }).map((url) => ({ url, player }))
+          : ok({ player, url: undefined }),
+      )
+      .map(({ player, url }) => ({ player, url })),
+  );
+
+  const DMR = userR.andThen((user) =>
+    user.role === "dm" || user.role === "admin"
+      ? getDM(user.auth_user_uuid).andThen((dm) =>
+          dm.images ? getPublicUrl({ path: dm.images.name }).map((url) => ({ url, dm })) : ok({ dm, url: undefined }),
+        )
+      : okAsync({ dm: undefined, url: undefined }),
+  );
+
+  const result = await ResultAsync.combine([userR, playerR, DMR]);
+
+  if (result.isErr()) {
+    return result.error.code === "NOT_LOGGED_IN" ? (
+      forbidden()
+    ) : (
+      <ErrorPage error={result.error} caller="/my/page.tsx" />
+    );
   }
 
-  const user = userResult.value;
-  const role = user.role;
-
-  const characters = await getCharactersByAuthUuid({ authUuid: user.auth_user_uuid });
-  if (characters.isErr()) return <ErrorPage error={characters.error} caller="/my/page.tsx (characters)" />;
-
-  const partiesDM = await getPartiesByDMAuthUuid({ authUuid: user.auth_user_uuid });
-  if (partiesDM.isErr()) return <ErrorPage error={partiesDM.error} caller="/my/page.tsx (parties)" />;
-
-  // from profile linkes
-
-  const player = await getPlayerByUsername({ username: user.users.username });
-  const dm = role === "admin" || role === "dm" ? await getDMByUsername({ username: user.users.username }) : null;
-
-  if (player.isErr()) return <ErrorPage error={player.error} caller="/components/my/profile-links.tsx" />;
-
-  const playerImageUrl = player.value.images ? getPublicUrl({ path: player.value.images.name }) : null;
-  const DMImageUrl = dm?.isOk() && dm.value.images ? getPublicUrl({ path: dm.value.images.name }) : null;
-
-  if (playerImageUrl && playerImageUrl.isErr()) {
-    return <ErrorPage error={playerImageUrl.error} caller="/components/my/profile-links.tsx" />;
-  }
-
-  if (DMImageUrl && DMImageUrl.isErr()) {
-    return <ErrorPage error={DMImageUrl.error} caller="/components/my/profile-links.tsx" />;
-  }
-
-  const dmProps = dm?.isOk()
-    ? {
-        imageUrl: DMImageUrl?.value ?? null,
-        level: dm.value.level,
-        achievementsCount: dm.value.received_achievements_dm.length,
-        campaignsCount: (() => {
-          const campaignIds = new Set<string>();
-          dm.value.dm_party.forEach((party) => {
-            party.parties.party_campaigns.forEach((campaign) => {
-              campaignIds.add(campaign.campaigns.id);
-            });
-          });
-          return campaignIds.size;
-        })(),
-        about: dm.value.about,
-        id: dm.value.id,
-      }
-    : undefined;
+  const [user, { player, url: playerUrl }, { dm, url: DMUrl }] = result.value;
 
   return (
-    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
+    <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4 space-y-8">
       <TypographyH1>Your Page</TypographyH1>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ProfileLinksClient
           username={user.users.username}
           name={user.users.name}
-          dm={dmProps}
+          dm={
+            dm
+              ? {
+                  imageUrl: DMUrl,
+                  level: dm.level,
+                  achievementsCount: dm.received_achievements_dm
+                    .map(({ count }) => count)
+                    .reduce((prev, now) => prev + now),
+                  campaignsCount: (() => {
+                    const campaignIds = new Set<string>();
+                    dm.dm_party.forEach((party) => {
+                      party.parties.party_campaigns.forEach((pc) => {
+                        campaignIds.add(pc.campaign_id);
+                      });
+                    });
+                    return campaignIds.size;
+                  })(),
+                  about: dm.about,
+                  id: dm.id,
+                }
+              : undefined
+          }
           player={{
-            imageUrl: playerImageUrl?.value ?? null,
-            level: player.value.level,
-            achievementsCount: player.value.received_achievements_player.length,
-            about: player.value.about,
-            id: player.value.id,
+            imageUrl: playerUrl,
+            level: player.level,
+            achievementsCount: player.received_achievements_player
+              .map(({ count }) => count)
+              .reduce((prev, now) => prev + now, 0),
+            about: player.about,
+            id: player.id,
           }}
         />
         <MyProfile
@@ -94,36 +93,41 @@ export default async function Page() {
           email={user.users.email}
         />
       </div>
-
-      <div className="mt-10 space-y-10">
-        <MyCharacters characters={characters.value} />
-        {(role === "admin" || role === "dm") && (
-          <MyParties parties={partiesDM.value} dmUuid={partiesDM.value[0]?.dm_party[0].dm_id} />
-        )}
-        {role === "admin" && <MyAssociatesRequests />}
-      </div>
+      <MyCharacters characters={player.characters} playerId={player.id} />
+      {dm ? (
+        <MyParties
+          parties={dm.dm_party.map((dp) => ({
+            about: dp.parties.about,
+            id: dp.parties.id,
+            image_uuid: dp.parties.image_uuid,
+            level: dp.parties.level,
+            name: dp.parties.name,
+            shortened: dp.parties.shortened,
+          }))}
+          dmUuid={dm.id}
+        />
+      ) : null}
+      {user.role === "admin" && <MyAssociatesRequests />}
     </div>
   );
 }
 
-const getDMByUsername = ({ username }: { username: string }) =>
+const getDM = (userId: string) =>
   runQuery((supabase) =>
     supabase
       .from("dms")
-      .select(
-        `*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*, party_campaigns(*, campaigns(*)))), images(*)`,
-      )
-      .eq("users.username", username)
+      .select(`*, received_achievements_dm(count), dm_party(*, parties(*, party_campaigns(campaign_id))), images(*)`)
+      .eq("auth_user_uuid", userId)
       .single(),
   );
 
-const getPlayerByUsername = ({ username }: { username: string }) =>
+const getPlayer = (userId: string) =>
   runQuery(
     (supabase) =>
       supabase
         .from("players")
-        .select(`*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*), images(*)`)
-        .eq("users.username", username)
+        .select(`*, received_achievements_player(count), characters(*, races(*), classes(*)), images(*)`)
+        .eq("auth_user_uuid", userId)
         .single(),
     "getPlayerByUsername",
   );

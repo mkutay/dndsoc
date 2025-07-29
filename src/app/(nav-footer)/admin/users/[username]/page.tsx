@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { cache } from "react";
 
 import { AdminRoleEditForm } from "./role-form";
@@ -12,11 +13,11 @@ export const dynamic = "force-dynamic";
 const cachedGetPlayer = cache(getPlayerByUsername);
 const cachedGetRole = cache(getRole);
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
   const player = await cachedGetPlayer({ username });
   if (player.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
-  const role = await cachedGetRole({ authUuid: player.value.auth_user_uuid });
+  const role = await cachedGetRole({ id: player.value.auth_user_uuid });
   if (role.isErr()) return { title: "Role Not Found", description: "This role does not exist." };
 
   const name = player.value.users.name;
@@ -38,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
   const player = await cachedGetPlayer({ username });
   if (player.isErr()) return <ErrorPage error={player.error} caller="/admin/users/[username]/page.tsx" isNotFound />;
 
-  const role = await cachedGetRole({ authUuid: player.value.auth_user_uuid });
+  const role = await cachedGetRole({ id: player.value.auth_user_uuid });
   if (role.isErr()) return <ErrorPage error={role.error} caller="/admin/users/[username]/page.tsx" />;
 
   const name = player.value.users.name;

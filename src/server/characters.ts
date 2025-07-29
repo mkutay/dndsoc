@@ -71,9 +71,9 @@ export const updateCharacter = async (values: z.infer<typeof characterEditSchema
 const updateRace = ({ race, characterId }: { race: string; characterId: string }) =>
   deleteCharacterRace({ characterId })
     .andThen(() => upsertRace({ race }))
-    .andThen((response) =>
+    .andThen((race) =>
       upsertCharacterRace({
-        raceId: response.id,
+        raceId: race.id,
         characterId,
       }),
     );

@@ -16,11 +16,6 @@ export const getPartyByShortened = ({ shortened }: { shortened: string }) =>
       .single(),
   );
 
-export const getPartiesByDMAuthUuid = ({ authUuid }: { authUuid: string }) =>
-  runQuery((supabase) =>
-    supabase.from("parties").select("*, dm_party!inner(*, dms!inner(*))").eq("dm_party.dms.auth_user_uuid", authUuid),
-  );
-
 export const getPartiesByPlayerAuthUuid = ({ authUuid }: { authUuid: string }) =>
   runQuery((supabase) =>
     supabase

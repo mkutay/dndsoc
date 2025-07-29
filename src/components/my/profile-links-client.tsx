@@ -21,7 +21,7 @@ export function ProfileLinksClient({
   username: string;
   name: string;
   dm?: {
-    imageUrl: string | null;
+    imageUrl: string | undefined;
     level: number;
     achievementsCount: number;
     campaignsCount: number;
@@ -29,7 +29,7 @@ export function ProfileLinksClient({
     id: string;
   };
   player: {
-    imageUrl: string | null;
+    imageUrl: string | undefined;
     level: number;
     achievementsCount: number;
     about: string;

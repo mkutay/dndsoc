@@ -9,27 +9,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ErrorPage } from "@/components/error-page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { type Tables } from "@/types/database.types";
 import { formatList, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
-import { getPlayerRoleUser } from "@/lib/players";
 
 interface MyCharactersProps {
   characters: (Tables<"characters"> & {
     races: Tables<"races">[];
     classes: Tables<"classes">[];
-    players: Tables<"players">;
   })[];
+  playerId: string;
 }
 
-export async function MyCharacters({ characters }: MyCharactersProps) {
-  const player = characters.length === 0 ? await getPlayerRoleUser() : null;
-  if (player && player.isErr()) return <ErrorPage error={player.error} caller="/components/my/my-characters.tsx" />;
-
+export function MyCharacters({ characters, playerId }: MyCharactersProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
@@ -83,7 +78,7 @@ export async function MyCharacters({ characters }: MyCharactersProps) {
               <DialogTitle>Add Character</DialogTitle>
               <DialogDescription>You can add a new character to your player.</DialogDescription>
             </DialogHeader>
-            <AddCharacterForm playerUuid={player ? player.value.players.id : characters[0].players.id} />
+            <AddCharacterForm playerUuid={playerId} />
           </DialogContent>
         </Dialog>
       </div>
