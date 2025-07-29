@@ -37,7 +37,7 @@ export const updateSession = async (request: NextRequest) => {
   }
 
   // Edit page in any protected route
-  if (pathname.includes("/edit") && user.error) {
+  if (pathname.includes("?edit") && user.error) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 

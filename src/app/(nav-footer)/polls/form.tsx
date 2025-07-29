@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
@@ -27,6 +27,7 @@ export function CreatePoll() {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof createPollSchema>>({
     resolver: zodResolver(createPollSchema),
@@ -48,7 +49,7 @@ export function CreatePoll() {
           variant: "default",
         });
         setOpen(false);
-        redirect(`/polls/${shortened}/edit`);
+        router.push(`/polls/${shortened}?edit=true`);
       },
       (error) => {
         toast({
