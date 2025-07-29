@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Github,
   Library,
+  Mail,
 } from "lucide-react";
 import { GiCurlyMask, GiDiceSixFacesThree, GiRollingDiceCup } from "react-icons/gi";
 import { DiscordLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
@@ -739,23 +740,27 @@ export default function ResourcesPage() {
 
             <div className="flex flex-row flex-wrap justify-center gap-6 mb-8">
               {/* KCLSU Official Society Page */}
-              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-blue-50/50 dark:to-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50">
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-blue-50/50 dark:to-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 max-w-xs w-full">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto">
                     <Crown className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-blue-800 dark:text-blue-200 font-headings text-2xl">
+                  <h3 className="font-semibold text-blue-800 dark:text-blue-200 font-headings text-2xl">
                     Official Society
                   </h3>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <TypographyParagraph className="text-sm mb-4 text-blue-700 dark:text-blue-300">
+                <CardContent>
+                  <TypographyParagraph className="text-base text-blue-700 dark:text-blue-300">
                     Join us officially through KCLSU
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
-                    <Link href="https://www.kclsu.org/groups/activities/join/26717/" target="_blank">
+                  <Button asChild size="sm" className="w-full" variant="outline">
+                    <Link
+                      href="https://www.kclsu.org/groups/activities/join/26717/"
+                      target="_blank"
+                      className="font-quotes"
+                    >
                       Join Now <ExternalLink className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
@@ -763,28 +768,23 @@ export default function ResourcesPage() {
               </Card>
 
               {/* GitHub Repository */}
-              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-slate-50/50 dark:to-slate-950/30 border-2 border-slate-200/50 dark:border-slate-800/50">
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-slate-50/50 dark:to-slate-950/30 border-2 border-slate-200/50 dark:border-slate-800/50 max-w-xs w-full">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900/30 rounded-full flex items-center justify-center mx-auto">
                     <Github className="w-6 h-6 text-slate-600 dark:text-slate-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-slate-800 dark:text-slate-200 font-headings text-2xl">
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200 font-headings text-2xl">
                     Open Source
                   </h3>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <TypographyParagraph className="text-sm mb-4 text-slate-700 dark:text-slate-300">
+                <CardContent>
+                  <TypographyParagraph className="text-base text-slate-700 dark:text-slate-300">
                     Contribute to our website
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-slate-300 hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800"
-                  >
-                    <Link href="https://github.com/mkutay/dndsoc" target="_blank">
+                  <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href="https://github.com/mkutay/dndsoc" target="_blank" className="font-quotes">
                       View Code <ExternalLink className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
@@ -792,44 +792,37 @@ export default function ResourcesPage() {
               </Card>
 
               {/* WhatsApp */}
-              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-green-50/50 dark:to-green-950/30 border-2 border-green-200/50 dark:border-green-800/50">
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-green-50/50 dark:to-green-950/30 border-2 border-green-200/50 dark:border-green-800/50 max-w-xs w-full">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
                     <MessageSquare className="w-6 h-6 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-green-800 dark:text-green-200 font-headings text-2xl">
-                    WhatsApp
-                  </h3>
+                  <h3 className="font-semibold text-green-800 dark:text-green-200 font-headings text-2xl">WhatsApp</h3>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <TypographyParagraph className="text-sm mb-4 text-green-700 dark:text-green-300">
+                <CardContent>
+                  <TypographyParagraph className="text-base text-green-700 dark:text-green-300">
                     Quick updates & casual chats
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-green-300 dark:border-green-700"
-                    disabled
-                  >
-                    Link Coming Soon
+                  <Button variant="outline" size="sm" className="w-full border-green-300 dark:border-green-700" asChild>
+                    <Link href="/api/join?social=whatsapp" prefetch={false} target="_blank" className="font-quotes">
+                      View! <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
 
               {/* Discord */}
-              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-indigo-50/50 dark:to-indigo-950/30 border-2 border-indigo-200/50 dark:border-indigo-800/50">
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-indigo-50/50 dark:to-indigo-950/30 border-2 border-indigo-200/50 dark:border-indigo-800/50 max-w-xs w-full">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto">
                     <DiscordLogoIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-indigo-800 dark:text-indigo-200 font-headings text-2xl">
-                    Discord
-                  </h3>
+                  <h3 className="font-semibold text-indigo-800 dark:text-indigo-200 font-headings text-2xl">Discord</h3>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <TypographyParagraph className="text-sm mb-4 text-indigo-700 dark:text-indigo-300">
+                <CardContent>
+                  <TypographyParagraph className="text-base text-indigo-700 dark:text-indigo-300">
                     Voice chats & event coordination
                   </TypographyParagraph>
                 </CardContent>
@@ -838,30 +831,63 @@ export default function ResourcesPage() {
                     variant="outline"
                     size="sm"
                     className="w-full border-indigo-300 dark:border-indigo-700"
-                    disabled
+                    asChild
                   >
-                    Link Coming Soon
+                    <Link href="/api/join?social=discord" prefetch={false} target="_blank" className="font-quotes">
+                      Join! <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
 
-              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-pink-50/50 dark:to-pink-950/30 border-2 border-pink-200/50 dark:border-pink-800/50 max-w-sm">
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-pink-50/50 dark:to-pink-950/30 border-2 border-pink-200/50 dark:border-pink-800/50 max-w-xs w-full">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center mx-auto">
                     <InstagramLogoIcon className="w-6 h-6 text-pink-600 dark:text-pink-400" />
                   </div>
-                  <h3 className="font-semibold mb-2 text-pink-800 dark:text-pink-200 font-headings text-2xl">
-                    Instagram
-                  </h3>
+                  <h3 className="font-semibold text-pink-800 dark:text-pink-200 font-headings text-2xl">Instagram</h3>
                 </CardHeader>
-                <CardContent className="p-6">
-                  <TypographyParagraph className="text-sm mb-4 text-pink-700 dark:text-pink-300">
+                <CardContent>
+                  <TypographyParagraph className="text-base text-pink-700 dark:text-pink-300">
                     Session photos & character art
                   </TypographyParagraph>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full border-pink-300 dark:border-pink-700" disabled>
-                    Link Coming Soon
+                  <Button variant="outline" size="sm" className="w-full border-pink-300 dark:border-pink-700" asChild>
+                    <Link
+                      href="https://www.instagram.com/kcl_dnd"
+                      target="_blank"
+                      prefetch={false}
+                      className="font-quotes"
+                    >
+                      Like! <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-xl transition-all duration-300 hover:scale-[102%] bg-linear-to-br from-background to-orange-50/50 dark:to-orange-950/30 border-2 border-orange-200/50 dark:border-orange-800/50 max-w-xs w-full">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto">
+                    <Mail className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  </div>
+                  <h3 className="font-semibold text-orange-800 dark:text-orange-200 font-headings text-2xl">Email</h3>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="text-base text-orange-700 dark:text-orange-300">
+                    For inquiries, feedback, or just to say hi!
+                  </TypographyParagraph>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-orange-300 dark:border-orange-700"
+                    asChild
+                  >
+                    <Link href="mailto:hello@kcldnd.uk" target="_blank" prefetch={false} className="font-quotes">
+                      hello@kcldnd.uk <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
