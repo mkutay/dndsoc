@@ -1,4 +1,3 @@
-import { GiCrossedSwords } from "react-icons/gi";
 import Link from "next/link";
 
 import {
@@ -16,7 +15,7 @@ import { type Tables } from "@/types/database.types";
 import { formatList, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
 
-export function MyCharacters({
+export function Characters({
   characters,
   playerId,
 }: {
@@ -24,21 +23,20 @@ export function MyCharacters({
     races: Tables<"races">[];
     classes: Tables<"classes">[];
   })[];
-  playerId: string;
+  playerId?: string; // If provided, it indicates that the session can create character for this player, either admin or self
 }) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <GiCrossedSwords size={36} />
-        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
-          Your Characters ({characters.length})
-        </h3>
-      </div>
-      {characters.length === 0 && (
-        <TypographyParagraph className="text-muted-foreground">
-          You don&apos;t have any characters yet. Create your first character to start adventuring!
-        </TypographyParagraph>
-      )}
+      {characters.length === 0 &&
+        (playerId ? (
+          <TypographyParagraph className="text-muted-foreground">
+            You don&apos;t have any characters yet. Create your first character to start adventuring!
+          </TypographyParagraph>
+        ) : (
+          <TypographyParagraph className="text-muted-foreground">
+            This player does not have any characters yet.
+          </TypographyParagraph>
+        ))}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {characters.map((character) => (
           <Card key={character.id}>
@@ -68,25 +66,27 @@ export function MyCharacters({
             </CardFooter>
           </Card>
         ))}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="nothing"
-              type="button"
-              className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
-              asChild
-            >
-              <Card className="text-3xl font-book-card-titles tracking-widest">Create Character</Card>
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Character</DialogTitle>
-              <DialogDescription>You can add a new character to your player.</DialogDescription>
-            </DialogHeader>
-            <AddCharacterForm playerUuid={playerId} />
-          </DialogContent>
-        </Dialog>
+        {playerId ? (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="nothing"
+                type="button"
+                className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
+                asChild
+              >
+                <Card className="text-3xl font-book-card-titles tracking-widest">Create Character</Card>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Character</DialogTitle>
+                <DialogDescription>You can add a new character to your player.</DialogDescription>
+              </DialogHeader>
+              <AddCharacterForm playerUuid={playerId} />
+            </DialogContent>
+          </Dialog>
+        ) : null}
       </div>
     </div>
   );

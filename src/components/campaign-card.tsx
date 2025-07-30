@@ -37,9 +37,9 @@ export function CampaignCard(props: Props) {
       <CardContent>
         <TypographyParagraph>{campaign.description}</TypographyParagraph>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link href={`/campaigns/${campaign.shortened}`}>View {campaign.name}</Link>
+          <Link href={`/campaigns/${campaign.shortened}`}>View Campaign</Link>
         </Button>
         {"ownsAs" in props && props.ownsAs === "admin" && (
           <TooltipProvider>

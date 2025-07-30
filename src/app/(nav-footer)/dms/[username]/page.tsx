@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
 
+import { Edit } from "lucide-react";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/parties";
@@ -91,11 +92,11 @@ export default async function Page({ params }: { params: Promise<{ username: str
             {name.slice(1)}
           </h1>
           <TypographyLarge>Level: {dm.level}</TypographyLarge>
-          {dm.about && dm.about.length !== 0 ? <TypographyLead>{dm.about}</TypographyLead> : null}
+          {dm.about && dm.about.length !== 0 ? <TypographyLead className="indent-6">{dm.about}</TypographyLead> : null}
           {ownsDM ? (
             <DMEditSheet dm={{ about: dm.about, id: dm.id }} path={`/dms/${username}`}>
-              <Button variant="outline" type="button" className="w-fit">
-                Edit
+              <Button variant="outline" type="button" className="w-fit mt-1.5">
+                <Edit className="w-5 h-5 mr-2" /> Edit
               </Button>
             </DMEditSheet>
           ) : null}

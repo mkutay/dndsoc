@@ -1,37 +1,49 @@
+import { errAsync, okAsync } from "neverthrow";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { cache } from "react";
 
+import { Edit } from "lucide-react";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { Characters } from "@/components/players/characters";
 import { Campaigns } from "@/components/players/campaigns";
 import { ErrorPage } from "@/components/error-page";
-import { getPublicUrlByUuid } from "@/lib/storage";
+import { getWithImage } from "@/lib/storage";
 import { TypographyH2 } from "@/components/typography/headings";
 import { AchievementCards } from "@/components/achievement-cards";
-import { getPlayerByUsername, getPlayerRoleUser } from "@/lib/players";
 import { type ReceivedAchievementsPlayer } from "@/types/full-database.types";
 import { PlayerEditSheet } from "@/components/players/player-edit-sheet";
 import { Button } from "@/components/ui/button";
+import { runQuery } from "@/utils/supabase-run";
+import { getUserRole } from "@/lib/roles";
+import { Characters } from "@/components/characters";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetPlayer = cache(getPlayerByUsername);
-const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+const getPlayerByUsername = ({ username }: { username: string }) =>
+  runQuery(
+    (supabase) =>
+      supabase
+        .from("players")
+        .select(
+          `*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*, races(*), classes(*)), images(*)`,
+        )
+        .eq("users.username", username)
+        .single(),
+    "getPlayerByUsername",
+  );
+
+const getPlayer = cache(getPlayerByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
-  const result = await cachedGetPlayer({ username });
+  const result = await getPlayer({ username }).andThen(getWithImage);
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
-  const player = result.value;
+  const { data: player, url } = result.value;
 
   const level = player.level;
   const ach = player.received_achievements_player.length;
   const description = `Some statistics about player ${player.users.name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Player ${player.users.name}`;
-
-  const imageUrlResult = player.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
   return {
     title,
@@ -39,36 +51,32 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [imageUrl ?? "/logo-light.png"],
+      images: [url ?? "/logo-light.png"],
     },
   };
 }
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await cachedGetPlayer({ username });
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx 1" />;
-  const player = result.value;
+  const result = await getPlayer({ username })
+    .andThen(getWithImage)
+    .andThen((result) =>
+      getUserRole()
+        .orElse((error) => (error.code === "NOT_LOGGED_IN" ? okAsync(null) : errAsync(error)))
+        .map((user) => ({ ...result, user })),
+    );
 
-  const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
-    return <ErrorPage error={combinedAuth.error} caller="/players/[username]/page.tsx 2" />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/players/[username]/page.tsx" />;
+  const { data: player, url, user } = result.value;
 
-  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
-  const role = auth ? auth.roles?.role : null;
-  const ownsPlayer = player.auth_user_uuid === auth?.auth_user_uuid || role === "admin";
-
-  const name = player.users.name;
-
-  const imageUrlResult = player.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: player.image_uuid }) : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+  const ownsPlayer = player.auth_user_uuid === user?.auth_user_uuid || user?.role === "admin";
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        {imageUrl ? (
+        {url ? (
           <Image
-            src={imageUrl}
+            src={url}
             alt={`Image of ${player.users.name}`}
             width={144}
             height={144}
@@ -79,24 +87,27 @@ export default async function Page({ params }: { params: Promise<{ username: str
         )}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
-            <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>
-            <div>{name.slice(1)}</div>
+            <div className="font-drop-caps text-7xl font-medium">{player.users.name.charAt(0)}</div>
+            <div>{player.users.name.slice(1)}</div>
           </h1>
-          <TypographyLarge>Level: {player.level}</TypographyLarge>
+          <TypographyLarge className="-mt-1.5">Level: {player.level}</TypographyLarge>
           {player.about && player.about.length !== 0 ? (
             <TypographyLead className="indent-6">{player.about}</TypographyLead>
           ) : null}
           {ownsPlayer ? (
             <PlayerEditSheet player={{ about: player.about, id: player.id }} path={`/players/${username}`}>
-              <Button variant="outline" type="button" className="w-fit">
-                Edit
+              <Button variant="outline" type="button" className="w-fit mt-1.5">
+                <Edit className="w-5 h-5 mr-2" /> Edit
               </Button>
             </PlayerEditSheet>
           ) : null}
         </div>
       </div>
-      <Characters characters={player.characters} ownsPlayer={ownsPlayer} playerUuid={player.id} />
       <PlayerAchievements receivedAchievements={player.received_achievements_player} />
+      <div className="flex flex-col mt-6 space-y-6">
+        <TypographyH2>Characters</TypographyH2>
+        <Characters characters={player.characters} playerId={ownsPlayer ? player.id : undefined} />
+      </div>
       <Campaigns playerUuid={player.id} />
     </div>
   );

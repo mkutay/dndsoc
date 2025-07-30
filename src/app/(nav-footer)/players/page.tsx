@@ -46,7 +46,7 @@ function PlayerCard({ player }: { player: Player }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{player.users.name.toUpperCase()}</CardTitle>
+        <CardTitle>{player.users.name}</CardTitle>
         <CardDescription className="flex flex-row">
           {level}
           {achievementCount > 0 && <Dot />}
@@ -66,7 +66,7 @@ function PlayerCard({ player }: { player: Player }) {
 }
 
 const getPlayers = () =>
-  runQuery<Player[], "GET_PLAYERS">(
+  runQuery(
     (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
     "GET_PLAYERS",
   );

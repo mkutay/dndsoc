@@ -1,4 +1,4 @@
-import { errAsync, fromSafePromise, ok, okAsync } from "neverthrow";
+import { errAsync, fromSafePromise, ok, okAsync, Result } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createClientSync } from "@/utils/supabase/client";
@@ -100,3 +100,8 @@ export const uploadImageDM = ({ file, DMId, shortened }: { file: File; DMId: str
     shortened,
     folder: "dms",
   }).andThen(({ id }) => runQuery((supabase) => supabase.from("dms").update({ image_uuid: id }).eq("id", DMId)));
+
+export const getWithImage = <T extends { images: { id: string; name: string } | null }>(
+  data: T,
+): Result<{ url: string | undefined; data: T }, never> =>
+  data.images ? getPublicUrl({ path: data.images.name }).map((url) => ({ url, data })) : ok({ url: undefined, data });

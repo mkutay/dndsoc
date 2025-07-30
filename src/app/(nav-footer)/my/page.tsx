@@ -1,13 +1,14 @@
 import { forbidden } from "next/navigation";
-import { ok, okAsync, ResultAsync } from "neverthrow";
+import { okAsync, ResultAsync } from "neverthrow";
 
+import { GiCrossedSwords } from "react-icons/gi";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
-import { getPublicUrl } from "@/lib/storage";
+import { getWithImage } from "@/lib/storage";
 import { runQuery } from "@/utils/supabase-run";
 import { MyProfile } from "@/components/my/my-profile";
-import { MyCharacters } from "@/components/my/my-characters";
+import { Characters } from "@/components/characters";
 import { MyParties } from "@/components/my/my-parties";
 import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
 import { ProfileLinksClient } from "@/components/my/profile-links-client";
@@ -18,22 +19,12 @@ export const dynamic = "force-dynamic";
 export default async function Page() {
   const userR = getUserRole();
 
-  const playerR = userR.andThen((user) =>
-    getPlayer(user.auth_user_uuid)
-      .andThen((player) =>
-        player.images
-          ? getPublicUrl({ path: player.images.name }).map((url) => ({ url, player }))
-          : ok({ player, url: undefined }),
-      )
-      .map(({ player, url }) => ({ player, url })),
-  );
+  const playerR = userR.andThen((user) => getPlayer(user.auth_user_uuid).andThen(getWithImage));
 
   const DMR = userR.andThen((user) =>
     user.role === "dm" || user.role === "admin"
-      ? getDM(user.auth_user_uuid).andThen((dm) =>
-          dm.images ? getPublicUrl({ path: dm.images.name }).map((url) => ({ url, dm })) : ok({ dm, url: undefined }),
-        )
-      : okAsync({ dm: undefined, url: undefined }),
+      ? getDM(user.auth_user_uuid).andThen(getWithImage)
+      : okAsync({ data: undefined, url: undefined }),
   );
 
   const result = await ResultAsync.combine([userR, playerR, DMR]);
@@ -46,7 +37,7 @@ export default async function Page() {
     );
   }
 
-  const [user, { player, url: playerUrl }, { dm, url: DMUrl }] = result.value;
+  const [user, { data: player, url: playerUrl }, { data: dm, url: DMUrl }] = result.value;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4 space-y-8">
@@ -85,7 +76,15 @@ export default async function Page() {
           email={user.users.email}
         />
       </div>
-      <MyCharacters characters={player.characters} playerId={player.id} />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <GiCrossedSwords size={36} />
+          <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
+            Your Characters ({player.characters.length})
+          </h3>
+        </div>
+        <Characters characters={player.characters} playerId={player.id} />
+      </div>
       {dm && (user.role === "admin" || user.role === "dm") ? (
         <MyParties
           parties={dm.dm_party.map((dp) => ({
