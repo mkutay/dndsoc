@@ -1,9 +1,9 @@
 import { errAsync, okAsync } from "neverthrow";
+import { cache, Suspense } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
-import { cache } from "react";
-
 import { Edit } from "lucide-react";
+import Image from "next/image";
+
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/parties";
@@ -74,7 +74,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
         : okAsync({ ...result, parties: undefined }),
     );
 
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" />;
   const { data: dm, url, user, ownsDM, parties } = result.value;
 
   return (
@@ -128,7 +128,9 @@ export default async function Page({ params }: { params: Promise<{ username: str
           />
         ) : null}
       </div>
-      <Campaigns DMUuid={dm.id} />
+      <Suspense>
+        <Campaigns DMUuid={dm.id} />
+      </Suspense>
     </div>
   );
 }

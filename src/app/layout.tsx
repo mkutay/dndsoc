@@ -22,8 +22,6 @@ import "@/app/globals.css";
 
 const defaultUrl = env.NEXT_PUBLIC_SITE_URL;
 
-export { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection };
-
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
