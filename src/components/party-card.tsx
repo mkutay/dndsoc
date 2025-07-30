@@ -34,7 +34,7 @@ export function PartyCard(props: Props) {
       <CardContent>
         <TypographyParagraph>{truncateText(party.about, 100)}</TypographyParagraph>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-end gap-2">
         <Button variant="outline" asChild size="sm">
           <Link href={`/parties/${party.shortened}`}>View Party</Link>
         </Button>
