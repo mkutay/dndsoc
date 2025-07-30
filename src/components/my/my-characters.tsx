@@ -1,4 +1,4 @@
-import { Sword } from "lucide-react";
+import { GiCrossedSwords } from "react-icons/gi";
 import Link from "next/link";
 
 import {
@@ -16,23 +16,29 @@ import { type Tables } from "@/types/database.types";
 import { formatList, truncateText } from "@/utils/formatting";
 import { AddCharacterForm } from "@/components/players/add-character-form";
 
-interface MyCharactersProps {
+export function MyCharacters({
+  characters,
+  playerId,
+}: {
   characters: (Tables<"characters"> & {
     races: Tables<"races">[];
     classes: Tables<"classes">[];
   })[];
   playerId: string;
-}
-
-export function MyCharacters({ characters, playerId }: MyCharactersProps) {
+}) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <Sword size={28} />
+        <GiCrossedSwords size={36} />
         <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
           Your Characters ({characters.length})
         </h3>
       </div>
+      {characters.length === 0 && (
+        <TypographyParagraph className="text-muted-foreground">
+          You don&apos;t have any characters yet. Create your first character to start adventuring!
+        </TypographyParagraph>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {characters.map((character) => (
           <Card key={character.id}>
@@ -52,7 +58,7 @@ export function MyCharacters({ characters, playerId }: MyCharactersProps) {
             </CardHeader>
             {character.about ? (
               <CardContent>
-                <TypographyParagraph className="text-sm">{truncateText(character.about, 100)}</TypographyParagraph>
+                <TypographyParagraph>{truncateText(character.about, 100)}</TypographyParagraph>
               </CardContent>
             ) : null}
             <CardFooter className="flex gap-2 justify-end">

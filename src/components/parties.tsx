@@ -13,25 +13,30 @@ type Party = Tables<"parties">;
 
 type PartyAction = { type: "add"; party: Party } | { type: "remove"; partyId: string };
 
-export function Parties({
-  DMUuid,
-  parties,
-  ownsDM,
-  allParties,
-  revalidate,
-  admin,
-}: {
-  DMUuid: string;
-  parties: Party[];
-  ownsDM: boolean;
-  allParties: Party[] | undefined;
-  revalidate: string;
-  admin: boolean;
-}) {
+type Props =
+  | {
+      role: "player" | "otherDM";
+      parties: Party[];
+    }
+  | {
+      role: "dm";
+      parties: Party[];
+      DMUuid: string;
+    }
+  | {
+      role: "admin";
+      parties: Party[];
+      DMUuid: string;
+      allParties: Party[];
+      revalidate: string;
+      mine: boolean;
+    };
+
+export function Parties(props: Props) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
-  const [optimisticParties, updateOptimisticParties] = useOptimistic(parties, (state, action: PartyAction) => {
+  const [optimisticParties, updateOptimisticParties] = useOptimistic(props.parties, (state, action: PartyAction) => {
     switch (action.type) {
       case "add":
         return [...state, action.party];
@@ -48,13 +53,15 @@ export function Parties({
   });
 
   const handleRemoveParty = async (party: Party) => {
+    if (props.role !== "admin") return;
+
     startTransition(async () => {
       updateOptimisticParties({ type: "remove", partyId: party.id });
 
       const result = await removePartyFromDM({
         partyId: party.id,
-        dmUuid: DMUuid,
-        revalidate,
+        dmUuid: props.DMUuid,
+        revalidate: props.revalidate,
       });
 
       if (!result.ok) {
@@ -68,13 +75,15 @@ export function Parties({
   };
 
   const handleAddParty = async (party: Party) => {
+    if (props.role !== "admin") return;
+
     startTransition(async () => {
       updateOptimisticParties({ type: "add", party });
 
       const result = await addPartyToDM({
-        dmUuid: DMUuid,
+        dmUuid: props.DMUuid,
         partyId: party.id,
-        revalidate,
+        revalidate: props.revalidate,
       });
 
       if (!result.ok) {
@@ -87,23 +96,28 @@ export function Parties({
     });
   };
 
-  const availableParties = allParties?.filter((party) => !optimisticParties.some((p) => p.id === party.id)) ?? [];
-
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-      {sortedParties.map((party) => (
-        <PartyCard
-          key={party.id}
-          party={party}
-          ownsDM={ownsDM}
-          onRemove={() => handleRemoveParty(party)}
+      {sortedParties.map((party) =>
+        props.role === "admin" ? (
+          <PartyCard
+            key={party.id}
+            party={party}
+            onRemove={() => handleRemoveParty(party)}
+            isLoading={isPending}
+            removeText="Don't DM this party anymore."
+          />
+        ) : (
+          <PartyCard key={party.id} party={party} />
+        ),
+      )}
+      {props.role === "dm" || (props.role === "admin" && props.mine) ? <CreateParty /> : null}
+      {props.role === "admin" ? (
+        <AddParty
+          parties={props.allParties.filter((party) => !optimisticParties.some((p) => p.id === party.id))}
+          onAdd={handleAddParty}
           isLoading={isPending}
-          removeText="Don't DM this party anymore."
         />
-      ))}
-      {ownsDM ? <CreateParty /> : null}
-      {admin && availableParties.length > 0 ? (
-        <AddParty parties={availableParties} onAdd={handleAddParty} isLoading={isPending} />
       ) : null}
     </div>
   );

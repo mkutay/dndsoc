@@ -15,7 +15,6 @@ import { getCampaigns } from "@/lib/campaigns";
 import { Button } from "@/components/ui/button";
 import { EditPartyPlayerSheet } from "@/components/parties/edit-party-player-sheet";
 import { EditPartyDMSheet } from "@/components/parties/edit-party-dm-sheet";
-import { getDMs } from "@/lib/dms";
 
 export const dynamic = "force-dynamic";
 
@@ -88,9 +87,6 @@ export default async function Page({
   if (allCharacters && allCharacters.isErr())
     return <ErrorPage error={allCharacters.error} caller="/parties/[shortened]/page.tsx" />;
 
-  const allDMs = ownsAs === "dm" || ownsAs === "admin" ? await getDMs() : undefined;
-  if (allDMs && allDMs.isErr()) return <ErrorPage error={allDMs.error} caller="/parties/[shortened]/page.tsx" />;
-
   const imageUrlResult = party.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: party.image_uuid }) : null;
   const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
 
@@ -136,7 +132,7 @@ export default async function Page({
                 <TiPencil size={24} className="mr-2" /> Edit
               </Button>
             </EditPartyPlayerSheet>
-          ) : (ownsAs === "dm" || ownsAs === "admin") && allCampaigns && allCharacters && allDMs ? (
+          ) : (ownsAs === "dm" || ownsAs === "admin") && allCharacters ? (
             <EditPartyDMSheet
               path={`/parties/${shortened}`}
               party={{
@@ -154,14 +150,7 @@ export default async function Page({
                     name: char.players.users.name,
                   },
                 })),
-                campaigns,
-                dms: dmedBy.map((dm) => ({
-                  id: dm.id,
-                  username: dm.users.username,
-                  name: dm.users.name,
-                })),
               }}
-              campaigns={allCampaigns.value}
               characters={allCharacters.value.map((char) => ({
                 id: char.id,
                 name: char.name,
@@ -172,12 +161,6 @@ export default async function Page({
                   name: char.players.users.name,
                 },
               }))}
-              dms={allDMs.value.map((dm) => ({
-                id: dm.id,
-                username: dm.users.username,
-                name: dm.users.name,
-              }))}
-              dmId={thisDMId}
               edit={edit === "true"}
             >
               <Button variant="outline" size="default" className="w-fit">
@@ -189,7 +172,6 @@ export default async function Page({
       </div>
       <Characters characters={characters} ownsAs={ownsAs} partyId={party.id} allCharacters={allCharacters?.value} />
       <Campaigns campaigns={campaigns} ownsAs={ownsAs} partyId={party.id} allCampaigns={allCampaigns?.value} />
-      {/* <PlayerAchievements receivedAchievements={player.received_achievements_player} /> */}
     </div>
   );
 }

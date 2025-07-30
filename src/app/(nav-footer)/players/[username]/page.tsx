@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
           {ownsPlayer ? (
             <PlayerEditSheet player={{ about: player.about, id: player.id }} path={`/players/${username}`}>
               <Button variant="outline" type="button" className="w-fit">
-                Edit Player
+                Edit
               </Button>
             </PlayerEditSheet>
           ) : null}

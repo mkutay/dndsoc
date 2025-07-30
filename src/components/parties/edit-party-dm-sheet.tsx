@@ -41,15 +41,6 @@ import { cn } from "@/utils/styling";
 import { partyDMEditSchema } from "@/config/parties";
 import { updateDMParty } from "@/server/parties";
 
-type Campaign = {
-  description: string;
-  end_date: string | null;
-  id: string;
-  name: string;
-  shortened: string;
-  start_date: string;
-};
-
 type Character = {
   id: string;
   name: string;
@@ -61,20 +52,11 @@ type Character = {
   };
 };
 
-type DM = {
-  id: string;
-  username: string;
-  name: string;
-};
-
 export function EditPartyDMSheet({
   party,
   children,
   path,
   characters,
-  dms,
-  campaigns,
-  dmId,
   edit,
 }: {
   party: {
@@ -83,14 +65,9 @@ export function EditPartyDMSheet({
     level: number;
     id: string;
     characters: Character[];
-    campaigns: Campaign[];
-    dms: DM[];
   };
   characters: Character[];
-  dms: DM[];
-  campaigns: Campaign[];
   children: React.ReactNode;
-  dmId: string | undefined; // thisDMId -- undefined when admin
   path: string;
   edit: boolean;
 }) {
@@ -98,8 +75,6 @@ export function EditPartyDMSheet({
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(edit);
   const [charactersDialogOpen, setCharactersDialogOpen] = useState(false);
-  const [campaignsDialogOpen, setCampaignsDialogOpen] = useState(false);
-  const [dmsDialogOpen, setDmsDialogOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -118,12 +93,6 @@ export function EditPartyDMSheet({
       characters: party.characters.map((character) => ({
         id: character.id,
       })),
-      campaigns: party.campaigns.map((campaign) => ({
-        id: campaign.id,
-      })),
-      dms: party.dms.map((dm) => ({
-        id: dm.id,
-      })),
       selectedCharacter: "",
       selectedCampaign: "",
       selectedDM: "",
@@ -137,24 +106,6 @@ export function EditPartyDMSheet({
   } = useFieldArray({
     control: form.control,
     name: "characters",
-  });
-
-  const {
-    fields: campaignsFields,
-    append: campaignsAppend,
-    remove: campaignsRemove,
-  } = useFieldArray({
-    control: form.control,
-    name: "campaigns",
-  });
-
-  const {
-    fields: dmsFields,
-    append: dmsAppend,
-    remove: dmsRemove,
-  } = useFieldArray({
-    control: form.control,
-    name: "dms",
   });
 
   const onSubmit = async (values: z.infer<typeof partyDMEditSchema>) => {
@@ -241,7 +192,7 @@ export function EditPartyDMSheet({
                         ref={field.ref}
                       />
                     </FormControl>
-                    <FormDescription>This is your character&apos;s level.</FormDescription>
+                    <FormDescription>This is your parties level.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -308,7 +259,7 @@ export function EditPartyDMSheet({
                               onClick={() => {
                                 charactersRemove(index);
                               }}
-                              disabled={charactersFields.length <= 1 || pending}
+                              disabled={pending}
                             >
                               <MinusIcon size={14} />
                             </Button>
@@ -441,328 +392,6 @@ export function EditPartyDMSheet({
                                   form.setValue("selectedCharacter", "");
                                 }}
                                 disabled={pending || form.getValues("characters").length === characters.length}
-                              >
-                                Add
-                              </Button>
-                            </div>
-                          </DialogFooter>
-                        </FormItem>
-                      )}
-                    />
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <div className="space-y-2">
-                {campaignsFields.map((field, index) => (
-                  <FormField
-                    control={form.control}
-                    key={field.id}
-                    name={`campaigns.${index}`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={cn(index !== 0 ? "hidden" : "flex")}>Campaigns</FormLabel>
-                        <FormControl>
-                          <div className="relative w-full items-center">
-                            <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
-                              {!field.value && "Select a character..."}
-                              {field.value
-                                ? (() => {
-                                    const campaign = campaigns.find((campaign) => field.value.id === campaign.id);
-                                    return campaign ? (
-                                      <span>
-                                        <TypographyLink
-                                          target="_blank"
-                                          href={`/campaigns/${campaign.shortened}`}
-                                          variant="default"
-                                        >
-                                          {campaign.name}
-                                        </TypographyLink>
-                                      </span>
-                                    ) : null;
-                                  })()
-                                : null}
-                            </div>
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
-                              onClick={() => {
-                                campaignsRemove(index);
-                              }}
-                              disabled={campaignsFields.length <= 1 || pending}
-                            >
-                              <MinusIcon size={14} />
-                            </Button>
-                          </div>
-                        </FormControl>
-                        <FormDescription className={cn(index !== campaignsFields.length - 1 ? "hidden" : "flex")}>
-                          These are the campaigns that your party is playing (or has played).
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
-                <Dialog open={campaignsDialogOpen} onOpenChange={setCampaignsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
-                      <PlusIcon size="18px" />
-                      <span>Add Campaign</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Add Campaign</DialogTitle>
-                      <DialogDescription>You can select a new campaign to add to your party.</DialogDescription>
-                    </DialogHeader>
-                    <FormField
-                      control={form.control}
-                      name="selectedCampaign"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <Popover modal={true}>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  role="combobox"
-                                  className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
-                                >
-                                  {!field.value && "Select a campaign..."}
-                                  {field.value
-                                    ? (() => {
-                                        const campaign = campaigns.find((campaign) => field.value === campaign.id);
-                                        return campaign ? (
-                                          <span>
-                                            <TypographyLink
-                                              target="_blank"
-                                              href={`/campaigns/${campaign.shortened}`}
-                                              variant="default"
-                                            >
-                                              {campaign.name}
-                                            </TypographyLink>
-                                          </span>
-                                        ) : null;
-                                      })()
-                                    : null}
-                                  <ChevronsUpDown className="opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[250px] p-0 pointer-events-auto">
-                              <Command>
-                                <CommandInput placeholder="Search a DM..." className="h-9" />
-                                <CommandList>
-                                  <CommandEmpty>No other campaign found.</CommandEmpty>
-                                  <CommandGroup>
-                                    {campaigns.map(
-                                      (campaign) =>
-                                        !form
-                                          .getValues("campaigns")
-                                          .some((selectedCampaign) => selectedCampaign.id === campaign.id) && (
-                                          <CommandItem
-                                            value={campaign.name}
-                                            key={campaign.id}
-                                            onSelect={() => {
-                                              form.setValue("selectedCampaign", campaign.id);
-                                            }}
-                                          >
-                                            <span>
-                                              <TypographyLink
-                                                target="_blank"
-                                                href={`/campaigns/${campaign.shortened}`}
-                                                variant="default"
-                                              >
-                                                {campaign.name}
-                                              </TypographyLink>
-                                            </span>
-                                            <Check
-                                              className={cn(
-                                                "ml-auto",
-                                                campaign.id === field.value ? "opacity-100" : "opacity-0",
-                                              )}
-                                            />
-                                          </CommandItem>
-                                        ),
-                                    )}
-                                  </CommandGroup>
-                                </CommandList>
-                              </Command>
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                          <DialogFooter>
-                            <div className="w-full flex flex-row justify-end">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="default"
-                                className="mt-2 space-x-1 items-center w-fit"
-                                onClick={() => {
-                                  campaignsAppend({ id: field.value ?? "" });
-                                  setCampaignsDialogOpen(false);
-                                  form.setValue("selectedCampaign", "");
-                                }}
-                                disabled={pending || form.getValues("campaigns").length === campaigns.length}
-                              >
-                                Add
-                              </Button>
-                            </div>
-                          </DialogFooter>
-                        </FormItem>
-                      )}
-                    />
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <div className="space-y-2">
-                {dmsFields.map((field, index) => (
-                  <FormField
-                    control={form.control}
-                    key={field.id}
-                    name={`dms.${index}`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={cn(index !== 0 ? "hidden" : "flex")}>DMs</FormLabel>
-                        <FormControl>
-                          <div className="relative w-full items-center">
-                            <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm">
-                              {!field.value && "Select a DM..."}
-                              {field.value
-                                ? (() => {
-                                    const dm = dms.find((dm) => field.value.id === dm.id);
-                                    return dm ? (
-                                      <span>
-                                        <TypographyLink target="_blank" href={`/dms/${dm.username}`} variant="default">
-                                          {dm.name}
-                                        </TypographyLink>
-                                      </span>
-                                    ) : null;
-                                  })()
-                                : null}
-                            </div>
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="icon"
-                              className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full shrink-0"
-                              onClick={() => {
-                                dmsRemove(index);
-                              }}
-                              disabled={dmsFields.length <= 1 || pending || dmId === field.value.id}
-                            >
-                              <MinusIcon size={14} />
-                            </Button>
-                          </div>
-                        </FormControl>
-                        <FormDescription className={cn(index !== dmsFields.length - 1 ? "hidden" : "flex")}>
-                          These are the DMs that is hosting your party.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ))}
-                <Dialog open={dmsDialogOpen} onOpenChange={setDmsDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="mt-2 space-x-1 items-center" disabled={pending}>
-                      <PlusIcon size="18px" />
-                      <span>Add DM</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Add DM</DialogTitle>
-                      <DialogDescription>You can select a DM to add to your party.</DialogDescription>
-                    </DialogHeader>
-                    <FormField
-                      control={form.control}
-                      name="selectedDM"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <Popover modal={true}>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  role="combobox"
-                                  className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
-                                >
-                                  {!field.value && "Select a DM..."}
-                                  {field.value
-                                    ? (() => {
-                                        const dm = dms.find((dm) => field.value === dm.id);
-                                        return dm ? (
-                                          <span>
-                                            <TypographyLink
-                                              target="_blank"
-                                              href={`/dms/${dm.username}`}
-                                              variant="default"
-                                            >
-                                              {dm.name}
-                                            </TypographyLink>
-                                          </span>
-                                        ) : null;
-                                      })()
-                                    : null}
-                                  <ChevronsUpDown className="opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[250px] p-0 pointer-events-auto">
-                              <Command>
-                                <CommandInput placeholder="Search a campaign..." className="h-9" />
-                                <CommandList>
-                                  <CommandEmpty>No other DM found.</CommandEmpty>
-                                  <CommandGroup>
-                                    {dms.map(
-                                      (dm) =>
-                                        !form.getValues("dms").some((selectedDM) => selectedDM.id === dm.id) && (
-                                          <CommandItem
-                                            value={dm.name}
-                                            key={dm.id}
-                                            onSelect={() => {
-                                              form.setValue("selectedDM", dm.id);
-                                            }}
-                                          >
-                                            <span>
-                                              <TypographyLink
-                                                target="_blank"
-                                                href={`/dms/${dm.username}`}
-                                                variant="default"
-                                              >
-                                                {dm.name}
-                                              </TypographyLink>
-                                            </span>
-                                            <Check
-                                              className={cn(
-                                                "ml-auto",
-                                                dm.id === field.value ? "opacity-100" : "opacity-0",
-                                              )}
-                                            />
-                                          </CommandItem>
-                                        ),
-                                    )}
-                                  </CommandGroup>
-                                </CommandList>
-                              </Command>
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                          <DialogFooter>
-                            <div className="w-full flex flex-row justify-end">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="default"
-                                className="mt-2 space-x-1 items-center w-fit"
-                                onClick={() => {
-                                  dmsAppend({ id: field.value ?? "" });
-                                  setDmsDialogOpen(false);
-                                  form.setValue("selectedDM", "");
-                                }}
-                                disabled={pending || form.getValues("dms").length === dms.length}
                               >
                                 Add
                               </Button>

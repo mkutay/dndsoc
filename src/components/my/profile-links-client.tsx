@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Gamepad2, Trophy, Award } from "lucide-react";
+import { User, Gamepad2, Trophy } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,7 +24,6 @@ export function ProfileLinksClient({
     imageUrl: string | undefined;
     level: number;
     achievementsCount: number;
-    campaignsCount: number;
     about: string;
     id: string;
   };
@@ -82,28 +81,13 @@ export function ProfileLinksClient({
         </div>
 
         {profile.achievementsCount > 0 ? (
-          <div className="flex items-center gap-2 px-4 rounded-lg mt-2">
+          <div className="flex sm:justify-start justify-center items-center gap-2 px-4 rounded-lg mt-2">
             <Trophy size={20} className="text-amber-500" />
             <div className="flex sm:flex-row flex-col gap-2">
               <TypographySmall className="font-medium uppercase">
                 {profile.achievementsCount} Achievement{profile.achievementsCount !== 1 ? "s" : ""}
               </TypographySmall>
-              <TypographySmall className="text-muted-foreground">Earned as {roleText}</TypographySmall>
-            </div>
-          </div>
-        ) : null}
-
-        {profile.role === "dm" &&
-        profile.campaignsCount &&
-        Number.isInteger(profile.campaignsCount) &&
-        profile.campaignsCount > 0 ? (
-          <div className="flex items-center gap-2 px-4 rounded-lg">
-            <Award size={20} className="text-green-500" />
-            <div className="flex sm:flex-row flex-col gap-2">
-              <TypographySmall className="font-medium uppercase">
-                {profile.campaignsCount} Campaign{profile.campaignsCount !== 1 ? "s" : ""}
-              </TypographySmall>
-              <TypographySmall className="text-muted-foreground">Managed as DM</TypographySmall>
+              <TypographySmall className="text-muted-foreground">Earned as a {roleText}</TypographySmall>
             </div>
           </div>
         ) : null}
@@ -112,13 +96,13 @@ export function ProfileLinksClient({
         <div className="flex flex-col gap-2 w-full">
           <div className="flex sm:flex-row flex-col gap-2">
             {profile.role === "player" && dm ? (
-              <Button variant="outline" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
+              <Button variant="secondary" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
                 <Gamepad2 size={16} />
                 View as DM
               </Button>
             ) : profile.role !== "player" ? (
               <Button
-                variant="outline"
+                variant="secondary"
                 className="sm:w-fit w-full flex flex-row items-center gap-1"
                 onClick={setPlayer}
               >
@@ -133,13 +117,13 @@ export function ProfileLinksClient({
             </Button>
             {profile.role === "player" ? (
               <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="secondary" type="button" className="sm:w-fit w-full">
+                <Button variant="outline" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </PlayerEditSheet>
             ) : (
               <DMEditSheet dm={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="secondary" type="button" className="sm:w-fit w-full">
+                <Button variant="outline" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </DMEditSheet>

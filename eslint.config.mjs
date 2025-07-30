@@ -10,7 +10,6 @@ const eslintConfig = [
     extends: [
       "next",
       "plugin:prettier/recommended",
-      "plugin:jsx-a11y/recommended",
       "next/typescript",
       "next/core-web-vitals",
       "prettier",
@@ -63,13 +62,6 @@ const eslintConfig = [
       "import/order": "error",
       "import/no-duplicates": "error",
       "import/no-unused-modules": "error",
-      // Accessibility Rules
-      "jsx-a11y/alt-text": "warn",
-      "jsx-a11y/aria-props": "warn",
-      "jsx-a11y/aria-proptypes": "warn",
-      "jsx-a11y/aria-unsupported-elements": "warn",
-      "jsx-a11y/role-has-required-aria-props": "warn",
-      "jsx-a11y/role-supports-aria-props": "warn",
     },
   }),
   {

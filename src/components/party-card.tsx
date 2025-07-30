@@ -15,7 +15,6 @@ type Party = Tables<"parties">;
 type Props =
   | {
       party: Party;
-      ownsDM: boolean;
       onRemove: () => void;
       isLoading: boolean;
       removeText?: string;
@@ -39,7 +38,7 @@ export function PartyCard(props: Props) {
         <Button variant="outline" asChild size="sm">
           <Link href={`/parties/${party.shortened}`}>View Party</Link>
         </Button>
-        {"ownsDM" in props && props.ownsDM ? (
+        {"onRemove" in props ? (
           <div className="flex items-center flex-row gap-2">
             <TooltipProvider>
               <Tooltip>

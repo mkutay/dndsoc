@@ -95,7 +95,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
           {ownsDM ? (
             <DMEditSheet dm={{ about: dm.about, id: dm.id }} path={`/dms/${username}`}>
               <Button variant="outline" type="button" className="w-fit">
-                Edit DM
+                Edit
               </Button>
             </DMEditSheet>
           ) : null}
@@ -104,14 +104,23 @@ export default async function Page({ params }: { params: Promise<{ username: str
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
       <div className="mt-6 flex flex-col">
         <TypographyH2>Parties</TypographyH2>
-        <Parties
-          DMUuid={dm.id}
-          ownsDM={ownsDM}
-          parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
-          allParties={parties?.value}
-          revalidate="/dms/[username]"
-          admin={role === "admin"}
-        />
+        {role === "player" || (role === "dm" && !ownsDM) ? (
+          <Parties
+            role={role === "player" ? "player" : "otherDM"}
+            parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
+          />
+        ) : role === "dm" ? (
+          <Parties role="dm" DMUuid={dm.id} parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))} />
+        ) : role === "admin" && parties ? (
+          <Parties
+            role="admin"
+            DMUuid={dm.id}
+            parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
+            allParties={parties.value}
+            revalidate={`/dms/${username}`}
+            mine={username === auth?.users.username}
+          />
+        ) : null}
       </div>
       <Campaigns DMUuid={dm.id} />
     </div>

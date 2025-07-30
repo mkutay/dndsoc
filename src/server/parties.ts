@@ -134,42 +134,6 @@ export const updateDMParty = async (values: z.infer<typeof partyDMEditSchema>, p
           "updateDMParty (character_party upsert)",
         ),
       )
-      .andThrough((supabase) =>
-        supabaseRun(
-          supabase.from("dm_party").delete().eq("party_id", values.partyId),
-          "updateDMParty (dm_party delete)",
-        ),
-      )
-      .andThrough((supabase) =>
-        supabaseRun(
-          supabase.from("dm_party").upsert(
-            values.dms.map((dm) => ({
-              dm_id: dm.id,
-              party_id: values.partyId,
-            })),
-            { onConflict: "dm_id, party_id", ignoreDuplicates: false },
-          ),
-          "updateDMParty (dm_party upsert)",
-        ),
-      )
-      .andThrough((supabase) =>
-        supabaseRun(
-          supabase.from("party_campaigns").delete().eq("party_id", values.partyId),
-          "updateDMParty (party_campaigns delete)",
-        ),
-      )
-      .andThen((supabase) =>
-        supabaseRun(
-          supabase.from("party_campaigns").upsert(
-            values.campaigns.map((campaign) => ({
-              campaign_id: campaign.id,
-              party_id: values.partyId,
-            })),
-            { onConflict: "campaign_id, party_id", ignoreDuplicates: false },
-          ),
-          "updateDMParty (party_campaigns upsert)",
-        ),
-      )
       .andThen(() =>
         values.image
           ? uploadImageParty({

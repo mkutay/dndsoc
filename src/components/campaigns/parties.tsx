@@ -76,16 +76,19 @@ export function Parties({
     <div className="mt-6 flex flex-col">
       <TypographyH2>Parties</TypographyH2>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-6">
-        {optimisticParties.map((party) => (
-          <PartyCard
-            key={party.id}
-            party={party}
-            ownsDM={isAdmin}
-            onRemove={() => onSubmit(party)}
-            isLoading={false}
-            removeText="Remove this party from the campaign."
-          />
-        ))}
+        {optimisticParties.map((party) =>
+          isAdmin ? (
+            <PartyCard
+              key={party.id}
+              party={party}
+              onRemove={() => onSubmit(party)}
+              isLoading={false}
+              removeText="Remove this party from the campaign."
+            />
+          ) : (
+            <PartyCard key={party.id} party={party} />
+          ),
+        )}
         {isAdmin ? <CreatePartyButton campaignUuid={campaignUuid} /> : null}
         {isAdmin ? (
           <AddPartyButtonWrapper

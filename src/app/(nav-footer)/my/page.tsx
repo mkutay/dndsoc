@@ -1,6 +1,6 @@
 import { forbidden } from "next/navigation";
-
 import { ok, okAsync, ResultAsync } from "neverthrow";
+
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
@@ -62,15 +62,6 @@ export default async function Page() {
                   achievementsCount: dm.received_achievements_dm
                     .map(({ count }) => count)
                     .reduce((prev, now) => prev + now, 0),
-                  campaignsCount: (() => {
-                    const campaignIds = new Set<string>();
-                    dm.dm_party.forEach((party) => {
-                      party.parties.party_campaigns.forEach((pc) => {
-                        campaignIds.add(pc.campaign_id);
-                      });
-                    });
-                    return campaignIds.size;
-                  })(),
                   about: dm.about,
                   id: dm.id,
                 }
@@ -94,7 +85,7 @@ export default async function Page() {
         />
       </div>
       <MyCharacters characters={player.characters} playerId={player.id} />
-      {dm ? (
+      {dm && (user.role === "admin" || user.role === "dm") ? (
         <MyParties
           parties={dm.dm_party.map((dp) => ({
             about: dp.parties.about,
@@ -105,7 +96,7 @@ export default async function Page() {
             shortened: dp.parties.shortened,
           }))}
           dmUuid={dm.id}
-          admin={user.role === "admin"}
+          role={user.role}
         />
       ) : null}
       {user.role === "admin" && <MyAssociatesRequests />}
@@ -117,7 +108,7 @@ const getDM = (userId: string) =>
   runQuery((supabase) =>
     supabase
       .from("dms")
-      .select(`*, received_achievements_dm(count), dm_party(*, parties(*, party_campaigns(campaign_id))), images(*)`)
+      .select(`*, received_achievements_dm(count), dm_party(*, parties(*)), images(*)`)
       .eq("auth_user_uuid", userId)
       .single(),
   );

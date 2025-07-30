@@ -44,7 +44,7 @@ export function CreateParty() {
       result.match(
         (value) => {
           toast({
-            title: "Success: Party created.",
+            title: "Party created",
             description: "You can now edit the specifics of your party.",
             variant: "default",
           });
@@ -52,7 +52,7 @@ export function CreateParty() {
         },
         (error) =>
           toast({
-            title: "Error: Could not create party.",
+            title: "Could not create party",
             description: error.message,
             variant: "destructive",
           }),
@@ -66,7 +66,7 @@ export function CreateParty() {
         <Button
           variant="nothing"
           type="button"
-          className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-60"
+          className="w-full h-full rounded-lg hover:bg-card/80 bg-card min-h-52"
           asChild
         >
           <Card className="text-3xl font-book-card-titles tracking-widest">Create a New Party</Card>

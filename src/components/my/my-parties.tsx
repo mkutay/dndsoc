@@ -1,27 +1,24 @@
-import { Crown } from "lucide-react";
+import { GiCrown } from "react-icons/gi";
+import { Suspense } from "react";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { type Tables } from "@/types/database.types";
 import { Parties } from "@/components/parties";
 import { getParties } from "@/lib/parties";
-import { ErrorPage } from "@/components/error-page";
 
-export async function MyParties({
+export function MyParties({
   parties,
   dmUuid,
-  admin,
+  role,
 }: {
   parties: Tables<"parties">[];
   dmUuid: string;
-  admin: boolean;
+  role: "dm" | "admin";
 }) {
-  const allParties = await getParties();
-  if (allParties.isErr()) return <ErrorPage error={allParties.error} caller="/components/my/my-parties.tsx" />;
-
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <Crown size={20} />
+        <GiCrown size={36} />
         <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
           Parties You DM ({parties.length})
         </h3>
@@ -31,14 +28,20 @@ export async function MyParties({
           You don&apos;t DM any parties yet. Create your first party to start DMing!
         </TypographyParagraph>
       )}
-      <Parties
-        ownsDM={true}
-        parties={parties}
-        allParties={allParties.value}
-        DMUuid={dmUuid}
-        revalidate="/my"
-        admin={admin}
-      />
+      {role === "dm" ? (
+        <Parties role="dm" parties={parties} DMUuid={dmUuid} />
+      ) : role === "admin" ? (
+        <Suspense>
+          <Admin parties={parties} dmUuid={dmUuid} />
+        </Suspense>
+      ) : null}
     </div>
   );
+}
+
+async function Admin({ parties, dmUuid }: { parties: Tables<"parties">[]; dmUuid: string }) {
+  const allParties = await getParties();
+  if (allParties.isErr()) return <Parties role="dm" parties={parties} DMUuid={dmUuid} />;
+
+  return <Parties role="admin" parties={parties} allParties={allParties.value} DMUuid={dmUuid} revalidate="/my" mine />;
 }

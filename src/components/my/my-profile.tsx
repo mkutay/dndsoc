@@ -52,7 +52,7 @@ export function MyProfile({
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => setIsEditing(true)} variant="outline">
+        <Button onClick={() => setIsEditing(true)} variant="outline" className="sm:w-fit w-full flex">
           <Edit size={16} className="mr-2" />
           Edit Profile
         </Button>
