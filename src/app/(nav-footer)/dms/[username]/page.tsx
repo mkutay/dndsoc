@@ -7,12 +7,11 @@ import { Edit } from "lucide-react";
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
 import { Parties } from "@/components/parties";
-import { getPublicUrlByUuid } from "@/lib/storage";
+import { getWithImage } from "@/lib/storage";
 import { type ReceivedAchievementsDM } from "@/types/full-database.types";
 import { TypographyH2 } from "@/components/typography/headings";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
-import { getDMByUsername } from "@/lib/dms";
 import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
 import { runQuery } from "@/utils/supabase-run";
@@ -22,14 +21,22 @@ import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetDM = cache(getDMByUsername);
-const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+const getDMByUsername = ({ username }: { username: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("dms")
+      .select(`*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*)), images(*)`)
+      .eq("users.username", username)
+      .single(),
+  );
+
+const getDM = cache(getDMByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
-  const result = await cachedGetDM({ username });
+  const result = await getDM({ username }).andThen(getWithImage);
   if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
-  const dm = result.value;
+  const { data: dm, url } = result.value;
 
   const level = dm.level;
   const ach = dm.received_achievements_dm.length;
@@ -37,47 +44,45 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   const description = `Some statistics about our DM ${name}: Level ${level} · Received ${ach} Achievement${ach === 1 ? "" : "s"}`;
   const title = `Our Awesome DM ${name}`;
 
-  const imageUrlResult = dm.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
-
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: [imageUrl ?? "/logo-light.png"],
+      images: [url ?? "/logo-light.png"],
     },
   };
 }
 
 export default async function Page({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const result = await cachedGetDM({ username });
+  const result = await getDM({ username })
+    .andThen(getWithImage)
+    .andThen((result) =>
+      getUserRole()
+        .orElse((error) => (error.code === "NOT_LOGGED_IN" ? okAsync(null) : errAsync(error)))
+        .map((user) => ({ ...result, user })),
+    )
+    .map((result) => ({
+      ...result,
+      ownsDM: result.data.auth_user_uuid === result.user?.auth_user_uuid || result.user?.role === "admin",
+    }))
+    .andThen((result) =>
+      result.ownsDM
+        ? getParties().map((parties) => ({ ...result, parties }))
+        : okAsync({ ...result, parties: undefined }),
+    );
+
   if (result.isErr()) return <ErrorPage error={result.error} caller="/dms/[username]" isNotFound />;
-  const dm = result.value;
-
-  const roled = await getUserRole();
-  if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN")
-    return <ErrorPage error={roled.error} caller="/dms/[username]" />;
-
-  const auth = roled.isOk() ? roled.value : null;
-  const role = auth ? auth.role : null;
-  const ownsDM = dm.auth_user_uuid === auth?.auth_user_uuid || role === "admin";
-  const name = dm.users.name;
-
-  const parties = ownsDM ? await getParties() : undefined;
-  if (parties && parties.isErr()) return <ErrorPage error={parties.error} caller="/dms/[username]/page.tsx" />;
-
-  const imageUrlResult = dm.image_uuid ? await cachedGetPublicUrlByUuid({ imageUuid: dm.image_uuid }) : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
+  const { data: dm, url, user, ownsDM, parties } = result.value;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        {imageUrl ? (
+        {url ? (
           <Image
-            src={imageUrl}
+            src={url}
             alt={`Image of ${dm.users.name}`}
             width={144}
             height={144}
@@ -88,8 +93,8 @@ export default async function Page({ params }: { params: Promise<{ username: str
         )}
         <div className="flex flex-col mt-3 max-w-prose gap-1.5">
           <h1 className="text-primary flex flex-row font-extrabold text-5xl font-headings tracking-wide items-start">
-            <div className="font-drop-caps text-7xl font-medium">{name.charAt(0)}</div>
-            {name.slice(1)}
+            <div className="font-drop-caps text-7xl font-medium">{dm.users.name.charAt(0)}</div>
+            {dm.users.name.slice(1)}
           </h1>
           <TypographyLarge>Level: {dm.level}</TypographyLarge>
           {dm.about && dm.about.length !== 0 ? <TypographyLead className="indent-6">{dm.about}</TypographyLead> : null}
@@ -105,21 +110,21 @@ export default async function Page({ params }: { params: Promise<{ username: str
       <DMAchievements receivedAchievements={dm.received_achievements_dm} />
       <div className="mt-6 flex flex-col">
         <TypographyH2>Parties</TypographyH2>
-        {role === "player" || (role === "dm" && !ownsDM) ? (
+        {user?.role === "player" || (user?.role === "dm" && !ownsDM) ? (
           <Parties
-            role={role === "player" ? "player" : "otherDM"}
+            role={user?.role === "player" ? "player" : "otherDM"}
             parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
           />
-        ) : role === "dm" ? (
+        ) : user?.role === "dm" ? (
           <Parties role="dm" DMUuid={dm.id} parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))} />
-        ) : role === "admin" && parties ? (
+        ) : user?.role === "admin" && parties ? (
           <Parties
             role="admin"
             DMUuid={dm.id}
             parties={dm.dm_party.map((dmParty) => ({ ...dmParty.parties }))}
-            allParties={parties.value}
+            allParties={parties}
             revalidate={`/dms/${username}`}
-            mine={username === auth?.users.username}
+            mine={username === user?.users.username}
           />
         ) : null}
       </div>

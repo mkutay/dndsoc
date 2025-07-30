@@ -1,9 +1,9 @@
 import { errAsync, okAsync } from "neverthrow";
+import { cache, Suspense } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
-import { cache } from "react";
-
 import { Edit } from "lucide-react";
+import Image from "next/image";
+
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
 import { Campaigns } from "@/components/players/campaigns";
 import { ErrorPage } from "@/components/error-page";
@@ -108,7 +108,9 @@ export default async function Page({ params }: { params: Promise<{ username: str
         <TypographyH2>Characters</TypographyH2>
         <Characters characters={player.characters} playerId={ownsPlayer ? player.id : undefined} />
       </div>
-      <Campaigns playerUuid={player.id} />
+      <Suspense>
+        <Campaigns playerUuid={player.id} />
+      </Suspense>
     </div>
   );
 }

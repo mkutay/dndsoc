@@ -9,15 +9,6 @@ type DMArgument = {
 
 export const getDMs = () => runQuery((supabase) => supabase.from("dms").select("*, users(*)"));
 
-export const getDMByUsername = ({ username }: { username: string }) =>
-  runQuery((supabase) =>
-    supabase
-      .from("dms")
-      .select(`*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*))`)
-      .eq("users.username", username)
-      .single(),
-  );
-
 export const insertDM = (dm: DMArgument) =>
   runQuery((supabase) =>
     supabase.from("dms").upsert(dm, { onConflict: "auth_user_uuid", ignoreDuplicates: false }).select("*").single(),
