@@ -51,7 +51,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-prose mt-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="role"
@@ -65,7 +65,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
                     <Button
                       variant="outline"
                       role="combobox"
-                      className={cn("w-[250px] justify-between", !field.value && "text-muted-foreground")}
+                      className={cn("w-full justify-between", !field.value && "text-muted-foreground")}
                       disabled={pending || field.value === "admin"}
                     >
                       {field.value ? rolesLabel.find((role) => role.value === field.value)?.label : "Select role"}
@@ -73,7 +73,7 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[250px] p-0">
+                <PopoverContent className="w-[300px] p-0">
                   <Command>
                     <CommandInput placeholder="Search role..." className="h-9" />
                     <CommandList>
@@ -106,9 +106,11 @@ export function AdminRoleEditForm({ role }: { role: Tables<"roles"> }) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={pending || role.role === "admin"}>
-          Update
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={pending || role.role === "admin"}>
+            Update
+          </Button>
+        </div>
       </form>
     </Form>
   );

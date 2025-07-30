@@ -11,6 +11,7 @@ import { MyCharacters } from "@/components/my/my-characters";
 import { MyParties } from "@/components/my/my-parties";
 import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
 import { ProfileLinksClient } from "@/components/my/profile-links-client";
+import { MyAdmin } from "@/components/my/my-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -100,6 +101,7 @@ export default async function Page() {
         />
       ) : null}
       {user.role === "admin" && <MyAssociatesRequests />}
+      {user.role === "admin" && <MyAdmin />}
     </div>
   );
 }
