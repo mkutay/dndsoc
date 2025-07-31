@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { TypographyH2 } from "./typography/headings";
-import { ErrorPage } from "./error-page";
+import { TypographyH2 } from "../typography/headings";
+import { ErrorPage } from "../error-page";
 import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 

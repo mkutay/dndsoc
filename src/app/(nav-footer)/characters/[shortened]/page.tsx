@@ -15,7 +15,7 @@ import { getWithImage } from "@/lib/storage";
 import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
 import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
-import { AchievementCards } from "@/components/achievement-cards";
+import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { PartyCard } from "@/components/party-card";
 import { EditCharacterSheet } from "@/components/edit-character-sheet";
 import { Button } from "@/components/ui/button";

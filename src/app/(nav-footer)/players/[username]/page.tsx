@@ -9,7 +9,7 @@ import { Campaigns } from "@/components/players/campaigns";
 import { ErrorPage } from "@/components/error-page";
 import { getWithImage } from "@/lib/storage";
 import { TypographyH2 } from "@/components/typography/headings";
-import { AchievementCards } from "@/components/achievement-cards";
+import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { type ReceivedAchievementsPlayer } from "@/types/full-database.types";
 import { PlayerEditSheet } from "@/components/players/player-edit-sheet";
 import { Button } from "@/components/ui/button";

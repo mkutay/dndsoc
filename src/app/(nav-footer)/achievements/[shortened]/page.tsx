@@ -1,4 +1,5 @@
 import { InfoIcon } from "lucide-react";
+import type { Metadata } from "next";
 import { cache } from "react";
 
 import {
@@ -8,9 +9,9 @@ import {
   TypographySmall,
 } from "@/components/typography/paragraph";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ReceivedAchievementsCharacter } from "@/components/received-achievements-characters";
-import { ReceivedAchievementsDM } from "@/components/received-achievements-dm";
-import { ReceivedAchievementsPlayer } from "@/components/received-achievements-player";
+import { ReceivedAchievementsCharacter } from "@/components/achievements/received-achievements-characters";
+import { ReceivedAchievementsDM } from "@/components/achievements/received-achievements-dm";
+import { ReceivedAchievementsPlayer } from "@/components/achievements/received-achievements-player";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { type Tables } from "@/types/database.types";
@@ -23,7 +24,7 @@ const getAchievementByShortened = (shortened: string) =>
 
 const cachedGetAchievementByShortened = cache(getAchievementByShortened);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const result = await cachedGetAchievementByShortened(shortened);
   if (result.isErr()) return { title: "Achievement Not Found" };

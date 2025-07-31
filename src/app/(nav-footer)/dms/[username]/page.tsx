@@ -15,7 +15,7 @@ import { CampaignCards } from "@/components/campaign-cards";
 import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
 import { runQuery } from "@/utils/supabase-run";
-import { AchievementCards } from "@/components/achievement-cards";
+import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { DMEditSheet } from "@/components/dm-edit-sheet";
 import { Button } from "@/components/ui/button";
 import type { Enums } from "@/types/database.types";
