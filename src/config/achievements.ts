@@ -28,3 +28,7 @@ export const editAchievementSchema = z.object({
   type: z.enum(Constants.public.Enums.achievement_type),
   isHidden: z.boolean(),
 });
+
+export const createAchievementSchema = z.object({
+  name: z.string().min(1, { message: "Achievement name is required." }),
+});

@@ -50,16 +50,16 @@ export type Database = {
         }
         Insert: {
           category?: string | null
-          description: string
+          description?: string
           description_long?: string
           difficulty?: Database["public"]["Enums"]["difficulty"]
           id?: string
           is_hidden?: boolean
           max_unlocks?: number
           name: string
-          points: number
+          points?: number
           shortened: string
-          type: Database["public"]["Enums"]["achievement_type"]
+          type?: Database["public"]["Enums"]["achievement_type"]
         }
         Update: {
           category?: string | null

@@ -4,9 +4,27 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { editAchievementSchema, giveAchievementSchema, removeAchievementSchema } from "@/config/achievements";
+import {
+  createAchievementSchema,
+  editAchievementSchema,
+  giveAchievementSchema,
+  removeAchievementSchema,
+} from "@/config/achievements";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
+import { convertToShortened } from "@/utils/formatting";
+
+export const createAchievement = async (values: z.infer<typeof createAchievementSchema>) =>
+  resultAsyncToActionResult(
+    parseSchema(createAchievementSchema, values).asyncAndThen((parsed) =>
+      runQuery((supabase) =>
+        supabase.from("achievements").insert({
+          name: parsed.name,
+          shortened: convertToShortened(parsed.name),
+        }),
+      ),
+    ),
+  );
 
 export const editAchievement = async (values: z.infer<typeof editAchievementSchema>, path: string) =>
   resultAsyncToActionResult(

@@ -1,4 +1,5 @@
 import { type Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,8 @@ import { runQuery } from "@/utils/supabase-run";
 import { type Tables } from "@/types/database.types";
 import { truncateText } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
+import { CreateAchievement } from "@/components/achievements/create-achievement";
+import { getUserRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
 
@@ -29,12 +32,28 @@ export default async function Page() {
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <TypographyH1>Achievements</TypographyH1>
+      <Suspense>
+        <Create />
+      </Suspense>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
         {achievements.value.map((achievement) => (
           <AchievementCard key={achievement.id} achievement={achievement} />
         ))}
       </div>
     </div>
+  );
+}
+
+async function Create() {
+  const user = await getUserRole();
+  if (user.isErr()) return null;
+  if (user.value.role !== "admin" && user.value.role !== "dm") return null;
+  return (
+    <CreateAchievement>
+      <Button variant="outline" type="button" className="w-fit ml-auto">
+        Create Achievement
+      </Button>
+    </CreateAchievement>
   );
 }
 
