@@ -50,7 +50,7 @@ async function Create() {
   if (user.value.role !== "admin" && user.value.role !== "dm") return null;
   return (
     <CreateAchievement>
-      <Button variant="outline" type="button" className="w-fit ml-auto">
+      <Button variant="outline" type="button" className="w-fit ml-auto mt-4">
         Create Achievement
       </Button>
     </CreateAchievement>

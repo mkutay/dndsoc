@@ -8,6 +8,17 @@ import { RefreshCcw } from "lucide-react";
 import { useState, useTransition } from "react";
 
 import { Switch } from "../ui/switch";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { NumberInput } from "@/components/ui/number-input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -29,7 +40,7 @@ import { Input } from "@/components/ui/input";
 import { actionResultToResult } from "@/types/error-typing";
 import type { Tables } from "@/types/database.types";
 import { editAchievementSchema } from "@/config/achievements";
-import { editAchievement } from "@/server/achievements";
+import { deleteAchievement, editAchievement } from "@/server/achievements";
 import { convertToShortened } from "@/utils/formatting";
 
 export function EditAchievementSheet({
@@ -282,19 +293,62 @@ export function EditAchievementSheet({
                   </FormItem>
                 )}
               />
-              <SheetFooter className="flex sm:flex-row sm:justify-between items-end w-full gap-2">
-                <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
-                  <RefreshCcw />
-                </Button>
-                <div className="flex flex-row gap-2 items-center sm:w-fit w-full">
-                  <SheetClose asChild className="sm:w-fit w-full">
-                    <Button variant="outline" disabled={pending}>
-                      Close
+              <SheetFooter className="flex sm:flex-col flex-col gap-2">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" className="w-fit ml-auto" disabled={pending}>
+                      Delete Achievement
                     </Button>
-                  </SheetClose>
-                  <Button type="submit" disabled={pending} className="sm:w-fit w-full">
-                    Submit
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the achievement and all its data.
+                        Please make sure you want to do this.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          const result = actionResultToResult(await deleteAchievement(achievement.id));
+                          result.match(
+                            () => {
+                              toast({
+                                title: "Delete Successful",
+                              });
+                              setOpenSeachParams(false);
+                              router.push("/achievements");
+                            },
+                            (error) =>
+                              toast({
+                                title: "Delete Failed",
+                                description: "Please try again. " + error.message,
+                                variant: "destructive",
+                              }),
+                          );
+                        }}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <div className="flex sm:flex-row sm:justify-between items-end w-full gap-2">
+                  <Button type="reset" variant="ghost" size="icon" disabled={pending} onClick={() => form.reset()}>
+                    <RefreshCcw />
                   </Button>
+                  <div className="flex flex-row gap-2 items-center sm:w-fit w-full">
+                    <SheetClose asChild className="sm:w-fit w-full">
+                      <Button variant="outline" disabled={pending}>
+                        Close
+                      </Button>
+                    </SheetClose>
+                    <Button type="submit" disabled={pending} className="sm:w-fit w-full">
+                      Submit
+                    </Button>
+                  </div>
                 </div>
               </SheetFooter>
             </form>

@@ -14,6 +14,9 @@ import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
 
+export const deleteAchievement = async (id: string) =>
+  resultAsyncToActionResult(runQuery((supabase) => supabase.from("achievements").delete().eq("id", id)));
+
 export const createAchievement = async (values: z.infer<typeof createAchievementSchema>) =>
   resultAsyncToActionResult(
     parseSchema(createAchievementSchema, values).asyncAndThen((parsed) =>
