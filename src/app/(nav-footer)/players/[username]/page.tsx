@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { Characters } from "@/components/characters";
+import type { Enums } from "@/types/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +104,12 @@ export default async function Page({ params }: { params: Promise<{ username: str
           ) : null}
         </div>
       </div>
-      <PlayerAchievements receivedAchievements={player.received_achievements_player} />
+      <PlayerAchievements
+        receivedAchievements={player.received_achievements_player}
+        role={user?.role ?? null}
+        playerId={player.id}
+        username={username}
+      />
       <div className="flex flex-col mt-6 space-y-6">
         <TypographyH2>Characters</TypographyH2>
         <Characters characters={player.characters} playerId={ownsPlayer ? player.id : undefined} />
@@ -115,13 +121,45 @@ export default async function Page({ params }: { params: Promise<{ username: str
   );
 }
 
-const PlayerAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsPlayer[] }) => {
-  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+const PlayerAchievements = async ({
+  receivedAchievements,
+  role,
+  playerId,
+  username,
+}: {
+  receivedAchievements: ReceivedAchievementsPlayer[];
+  role: Enums<"role"> | null;
+  playerId: string;
+  username: string;
+}) => {
+  if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
-  return (
+  const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
       <AchievementCards receivedAchievements={receivedAchievements} />
     </>
   );
+
+  if (role === "admin" || role === "dm") {
+    const achievements = await runQuery((supabase) =>
+      supabase.from("achievements").select("*").eq("type", "player").order("name", { ascending: true }),
+    );
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={playerId}
+          receiverType="player"
+          path={`/players/${username}`}
+        />
+      </>
+    );
+  }
+
+  return normal;
 };

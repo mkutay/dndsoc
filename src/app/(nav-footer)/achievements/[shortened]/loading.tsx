@@ -27,11 +27,11 @@ export default function Loading() {
           <Skeleton className="h-8 w-48" />
 
           {/* Achievement cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
             {Array.from({ length: 6 }, (_, i) => (
               <Skeleton key={i} className="h-32 w-full rounded-md" />
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

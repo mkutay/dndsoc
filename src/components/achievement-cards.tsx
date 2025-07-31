@@ -1,16 +1,29 @@
 import Link from "next/link";
 
+import { GiveAchievement } from "./give-achievement";
+import { RemoveAchievement } from "./remove-achievement";
 import type {
   ReceivedAchievementsCharacter,
   ReceivedAchievementsDM,
   ReceivedAchievementsPlayer,
 } from "@/types/full-database.types";
+import type { Tables } from "@/types/database.types";
 
-export async function AchievementCards({
-  receivedAchievements,
-}: {
+type Props = {
   receivedAchievements: ReceivedAchievementsPlayer[] | ReceivedAchievementsDM[] | ReceivedAchievementsCharacter[];
-}) {
+} & (
+  | {
+      achievements: Tables<"achievements">[];
+      receiverType: "player" | "character" | "dm";
+      receiverId: string;
+      path: string;
+    }
+  | { achievements?: never }
+);
+
+export async function AchievementCards(props: Props) {
+  const { receivedAchievements, achievements } = props;
+
   const times = [
     "Never",
     "Once",
@@ -40,34 +53,25 @@ export async function AchievementCards({
         >
           <div className="font-quotes text-lg">{achievement.achievements.name}</div>
           <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
-          <div className="tracking-wide">Received {times[achievement.count]}</div>
+          {achievement.count > 1 ? <div className="tracking-wide">Received {times[achievement.count]}</div> : null}
         </Link>
       ))}
+      {achievements ? (
+        <>
+          <GiveAchievement
+            achievements={achievements}
+            receiverType={props.receiverType}
+            receiverId={props.receiverId}
+            path={props.path}
+          />
+          <RemoveAchievement
+            achievements={receivedAchievements}
+            removalType={props.receiverType}
+            removalId={props.receiverId}
+            path={props.path}
+          />
+        </>
+      ) : null}
     </div>
   );
-}
-
-// Old card, LOL:
-{
-  /* <Card key={index} className="w-full">
-  <CardHeader>
-    <CardTitle>{achievement.achievements.name}</CardTitle>
-    <CardDescription>
-      Recived {times[achievement.count]}
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <TypographyParagraph>
-      {achievement.achievements.description}
-    </TypographyParagraph>
-  </CardContent>
-  <CardFooter>
-    {achievement.first_received_date !== achievement.last_received_date ? <div className="flex flex-col gap-2">
-      <TypographySmall>First received on: {format(achievement.first_received_date, "PP")}</TypographySmall>
-      <TypographySmall>Last received on: {format(achievement.last_received_date, "PP")}</TypographySmall>
-    </div> : <TypographyParagraph>
-      Received on: {format(achievement.first_received_date, "PP")}
-    </TypographyParagraph>}
-  </CardFooter>
-</Card> */
 }

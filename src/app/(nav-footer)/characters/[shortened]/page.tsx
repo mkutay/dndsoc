@@ -19,6 +19,7 @@ import { AchievementCards } from "@/components/achievement-cards";
 import { PartyCard } from "@/components/party-card";
 import { EditCharacterSheet } from "@/components/edit-character-sheet";
 import { Button } from "@/components/ui/button";
+import type { Enums } from "@/types/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -139,7 +140,14 @@ export default async function Page({
           ) : null}
         </div>
       </div>
-      <CharacterAchievements receivedAchievements={character.received_achievements_character} />
+      <Suspense>
+        <CharacterAchievements
+          receivedAchievements={character.received_achievements_character}
+          role={user?.roles.role ?? null}
+          characterId={character.id}
+          shortened={character.shortened}
+        />
+      </Suspense>
       <Suspense>
         <Campaigns characterUuid={character.id} />
       </Suspense>
@@ -153,15 +161,47 @@ export default async function Page({
   );
 }
 
-const CharacterAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsCharacter[] }) => {
-  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+const CharacterAchievements = async ({
+  receivedAchievements,
+  role,
+  characterId,
+  shortened,
+}: {
+  receivedAchievements: ReceivedAchievementsCharacter[];
+  role: Enums<"role"> | null;
+  characterId: string;
+  shortened: string;
+}) => {
+  if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
-  return (
+  const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
       <AchievementCards receivedAchievements={receivedAchievements} />
     </>
   );
+
+  if (role === "admin" || role === "dm") {
+    const achievements = await runQuery((supabase) =>
+      supabase.from("achievements").select("*").eq("type", "character").order("name", { ascending: true }),
+    );
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={characterId}
+          receiverType="character"
+          path={`/characters/${shortened}`}
+        />
+      </>
+    );
+  }
+
+  return normal;
 };
 
 async function Campaigns({ characterUuid }: { characterUuid: string }) {

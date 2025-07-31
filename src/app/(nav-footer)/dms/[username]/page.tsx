@@ -18,6 +18,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { AchievementCards } from "@/components/achievement-cards";
 import { DMEditSheet } from "@/components/dm-edit-sheet";
 import { Button } from "@/components/ui/button";
+import type { Enums } from "@/types/database.types";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,14 @@ export default async function Page({ params }: { params: Promise<{ username: str
           ) : null}
         </div>
       </div>
-      <DMAchievements receivedAchievements={dm.received_achievements_dm} />
+      <Suspense>
+        <DMAchievements
+          receivedAchievements={dm.received_achievements_dm}
+          role={user?.role ?? null}
+          dmId={dm.id}
+          username={username}
+        />
+      </Suspense>
       <div className="mt-6 flex flex-col">
         <TypographyH2>Parties</TypographyH2>
         {user?.role === "player" || (user?.role === "dm" && !ownsDM) ? (
@@ -157,16 +165,48 @@ async function Campaigns({ DMUuid }: { DMUuid: string }) {
   );
 }
 
-function DMAchievements({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsDM[] }) {
-  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+const DMAchievements = async ({
+  receivedAchievements,
+  role,
+  dmId,
+  username,
+}: {
+  receivedAchievements: ReceivedAchievementsDM[];
+  role: Enums<"role"> | null;
+  dmId: string;
+  username: string;
+}) => {
+  if (receivedAchievements.length === 0 && role !== "admin") return null;
 
-  return (
+  const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
       <AchievementCards receivedAchievements={receivedAchievements} />
     </>
   );
-}
+
+  if (role === "admin") {
+    const achievements = await runQuery((supabase) =>
+      supabase.from("achievements").select("*").eq("type", "dm").order("name", { ascending: true }),
+    );
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={dmId}
+          receiverType="dm"
+          path={`/dms/${username}`}
+        />
+      </>
+    );
+  }
+
+  return normal;
+};
 
 const getCampaignsByDMUuid = ({ DMUuid }: { DMUuid: string }) =>
   runQuery(
