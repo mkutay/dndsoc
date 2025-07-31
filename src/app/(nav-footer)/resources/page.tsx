@@ -15,7 +15,26 @@ import {
   Library,
   Mail,
 } from "lucide-react";
-import { GiCurlyMask, GiDiceSixFacesThree, GiRollingDiceCup } from "react-icons/gi";
+import {
+  GiBonsaiTree,
+  GiCurlyMask,
+  GiDiceSixFacesThree,
+  GiPapers,
+  GiRollingDiceCup,
+  GiCrown,
+  GiCastle,
+  GiScrollQuill,
+  GiDungeonGate,
+  GiWorld,
+  GiTreasureMap,
+  GiDiceTarget,
+  GiScrollUnfurled,
+  GiBattleGear,
+  GiSpellBook,
+  GiBookmarklet,
+  GiBookshelf,
+  GiGlobe,
+} from "react-icons/gi";
 import { DiscordLogoIcon, InstagramLogoIcon } from "@radix-ui/react-icons";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -94,77 +113,108 @@ export default function ResourcesPage() {
 
       {/* Quick Start Guide */}
       <section className="py-10 md:py-14">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="md:flex flex-row flex-none gap-2 w-fit mx-auto items-center p-3 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 mb-12">
-                <Info className="w-8 h-8 text-blue-600 dark:text-blue-400 float-start md:float-none" />
-                <p className="text-xl font-quotes text-blue-800 dark:text-blue-200">
-                  Information on this page will be updated regularly!
-                </p>
-              </div>
-              <h2 className="tracking-wide text-3xl md:text-4xl font-bold mb-4 font-headings flex flex-row gap-2 justify-center items-center border-border border-b-4 w-fit mx-auto px-10 pb-3">
-                First Time? Start Here
-              </h2>
-              <TypographyParagraph className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Don&apos;t worry about memorising everything — we&apos;ll teach you as we play!
-              </TypographyParagraph>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="flex flex-col w-fit mx-auto gap-3 px-4 py-3 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 mb-12">
+              <Info className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              <p className="text-xl font-quotes text-blue-800 dark:text-blue-200">
+                Information on this page will be updated regularly!
+              </p>
             </div>
+            <h2 className="tracking-wide text-3xl md:text-4xl font-bold mb-4 font-headings flex flex-row gap-2 justify-center items-center border-border border-b-4 w-fit mx-auto px-10 pb-3">
+              First Time? Start Here
+            </h2>
+            <TypographyParagraph className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Don&apos;t worry about memorising everything — we&apos;ll teach you as we play!
+            </TypographyParagraph>
+          </div>
 
-            <div className="grid lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="relative lg:min-h-96">
-                <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
-                  a
-                </div>
-                <Card className="lg:min-h-64 dark:hover:border-primary/60 dark:border-border dark:border-2 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Globe className="w-7 h-7 text-primary" />
+          <div className="flex lg:flex-row flex-col gap-6 max-w-4xl mx-auto">
+            <div className="relative lg:w-1/2">
+              <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
+                a
+              </div>
+              <Card className="lg:min-h-[360px] hover:border-primary/60 transition-all duration-300 border-2 border-border">
+                <CardHeader>
+                  <div className="flex sm:flex-row flex-col gap-4 items-start justify-between">
+                    <CardTitle className="flex items-start gap-2">
+                      <GiBonsaiTree className="w-10 h-10 text-primary" />
                       Create Your Character
                     </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <TypographyParagraph>
-                      We recommend starting with D&D Beyond, a free online character builder that makes it easy to
-                      create and manage your character.
-                    </TypographyParagraph>
-                  </CardContent>
-                  <CardFooter>
-                    <Button asChild size="sm" className="w-full">
-                      <Link href="https://www.dndbeyond.com" target="_blank">
-                        Go to D&D Beyond <ExternalLink className="w-4 h-4 ml-2" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </div>
+                    <Badge>Beginner&nbsp;Friendly</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="mb-3">
+                    <strong className="tracking-wider">D&D Beyond</strong> is the easiest way to create your first
+                    character. It guides you through every step and does the math for you!
+                  </TypographyParagraph>
+                  <div className="text-sm text-muted-foreground space-y-1 font-quotes">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Step-by-step character creation
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Automatic calculations
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Built-in spell tracker
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild size="sm" className="w-full">
+                    <Link href="https://www.dndbeyond.com" target="_blank">
+                      Go to D&D Beyond <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
 
-              <div className="relative">
-                <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
-                  b
-                </div>
-                <Card className="lg:min-h-64 dark:hover:border-primary/60 dark:border-border dark:border-2 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="w-7 h-7 text-primary" />
-                      Get Your Sheet
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <TypographyParagraph>
-                      You can also download a fillable PDF character sheet to keep track of your character! Especially
-                      useful if you prefer pen and paper or want to print it out.
-                    </TypographyParagraph>
-                  </CardContent>
-                  <CardFooter>
-                    <Button asChild variant="secondary" size="sm" className="w-full">
-                      <Link href="/resources/5E_CharacterSheet_Fillable.pdf" target="_blank">
-                        Download Sheet <Download className="w-4 h-4 ml-2" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+            <div className="relative lg:w-1/2">
+              <div className="absolute -top-[10px] -left-[10px] w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-2xl z-10 font-quotes">
+                b
               </div>
+              <Card className="lg:min-h-[360px] dark:hover:border-primary/60 dark:border-border dark:border-2 transition-all duration-300">
+                <CardHeader>
+                  <div className="flex sm:flex-row flex-col items-start justify-between gap-4">
+                    <CardTitle className="flex items-start gap-2 w-fit">
+                      <GiPapers className="w-10 h-10 text-primary" />
+                      Traditional Character Sheet
+                    </CardTitle>
+                    <Badge variant="secondary">Experienced&nbsp;Players</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="mb-3">
+                    For veterans or those who prefer the classic pen-and-paper experience. Great for offline play!
+                  </TypographyParagraph>
+                  <div className="text-sm text-muted-foreground space-y-1 font-quotes">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Fillable PDF format
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Print-friendly design
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      Complete creative control
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild variant="secondary" size="sm" className="w-full">
+                    <Link href="/resources/5E_CharacterSheet_Fillable.pdf" target="_blank">
+                      Download Sheet <Download className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
             </div>
           </div>
         </div>
@@ -184,18 +234,16 @@ export default function ResourcesPage() {
               </TypographyParagraph>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 mb-12 max-w-6xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-4 mb-12 max-w-6xl mx-auto">
               <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-bl-full"></div>
                 <div className="absolute top-4 right-4">
-                  <BookOpen className="w-8 h-8 text-primary" />
+                  <GiBookshelf className="w-12 h-12 text-primary" />
                 </div>
                 <CardHeader className="pb-2">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full font-semibold">
-                      CORE RULEBOOK
-                    </span>
-                  </div>
+                  <Badge className="mb-2 w-fit" variant="outline">
+                    Core Rulebook
+                  </Badge>
                   <CardTitle>Player&apos;s Handbook (2014)</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -213,7 +261,7 @@ export default function ResourcesPage() {
                 <CardFooter>
                   <Button asChild className="w-full group-hover:bg-primary/90">
                     <Link href="/resources/DnD-5e-Players-Handbook.pdf" target="_blank">
-                      <FileText className="w-4 h-4 mr-2" />
+                      <GiBookshelf className="w-6 h-6 mr-2" />
                       Open Player&apos;s Handbook
                     </Link>
                   </Button>
@@ -223,14 +271,12 @@ export default function ResourcesPage() {
               <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-bl-full"></div>
                 <div className="absolute top-4 right-4">
-                  <Globe className="w-8 h-8 text-primary" />
+                  <GiGlobe className="w-12 h-12 text-primary" />
                 </div>
                 <CardHeader className="pb-2">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-semibold">
-                      DIGITAL TOOL
-                    </span>
-                  </div>
+                  <Badge className="mb-2 w-fit" variant="outline">
+                    Digital Tool
+                  </Badge>
                   <CardTitle>5e.tools</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -248,20 +294,86 @@ export default function ResourcesPage() {
                 <CardFooter>
                   <Button asChild className="w-full group-hover:bg-primary/90">
                     <Link href="https://2014.5e.tools" target="_blank">
-                      <Globe className="w-4 h-4 mr-2" />
+                      <GiGlobe className="w-6 h-6 mr-2" />
                       Visit 5e.tools
-                      <ExternalLink className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-accent/30 to-transparent rounded-bl-full"></div>
+                <div className="absolute top-4 right-4">
+                  <GiCrown className="w-12 h-12 text-primary" />
+                </div>
+                <CardHeader className="pb-2">
+                  <Badge className="mb-2 w-fit" variant="outline">
+                    Featured Tool
+                  </Badge>
+                  <CardTitle>Kutay&apos;s DM Screen</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="mb-4">
+                    A comprehensive digital DM screen with all the essential rules, tables, and references you need to
+                    run smooth D&D sessions.
+                  </TypographyParagraph>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Badge variant="secondary">Quick Reference</Badge>
+                    <Badge variant="secondary">Combat Rules</Badge>
+                    <Badge variant="secondary">Conditions</Badge>
+                    <Badge variant="secondary">Tables</Badge>
+                    <Badge variant="secondary">Interactive</Badge>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full">
+                    <Link href="/resources/dm-screen" target="_blank">
+                      <GiCrown className="w-6 h-6 mr-2" />
+                      Explore the DM Screen
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border-2 border-border hover:border-primary/80">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary/20 to-transparent rounded-bl-full"></div>
+                <div className="absolute top-4 right-4">
+                  <GiBookmarklet className="w-12 h-12 text-primary" />
+                </div>
+                <CardHeader className="pb-2">
+                  <Badge className="mb-2 w-fit" variant="outline">
+                    Quick Reference
+                  </Badge>
+                  <CardTitle>Rules Reference</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph className="mb-4">
+                    Essential D&D 5e rules and actions at your fingertips. Perfect for players and DMs who need quick
+                    access to game mechanics.
+                  </TypographyParagraph>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Badge variant="secondary">Actions</Badge>
+                    <Badge variant="secondary">Skills</Badge>
+                    <Badge variant="secondary">Conditions</Badge>
+                    <Badge variant="secondary">Movement</Badge>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full group-hover:bg-primary/90">
+                    <Link href="/resources/quick-reference">
+                      <GiBookmarklet className="w-6 h-6 mr-2" />
+                      Explore Quick Reference
                     </Link>
                   </Button>
                 </CardFooter>
               </Card>
             </div>
 
-            <div className="grid lg:grid-cols-5 grid-cols-1 gap-4">
+            <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 max-w-5xl mx-auto">
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
-                    <FileText className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <GiScrollUnfurled className="w-12 h-12 text-primary mx-auto mb-4" />
                     <h3 className="font-headings text-xl mb-2">Character Sheet</h3>
                   </CardTitle>
                 </CardHeader>
@@ -280,7 +392,7 @@ export default function ResourcesPage() {
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
-                    <Users className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <GiBattleGear className="w-12 h-12 text-primary mx-auto mb-4" />
                     <h3 className="font-headings text-xl mb-2">Battle Grid</h3>
                   </CardTitle>
                 </CardHeader>
@@ -296,29 +408,10 @@ export default function ResourcesPage() {
                 </CardFooter>
               </Card>
 
-              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-accent to-accent/80 dark:border-border dark:border-2 border-transparent text-accent-foreground">
-                <CardHeader>
-                  <CardTitle>
-                    <Crown className="w-12 h-12 text-primary mx-auto" />
-                    <h3 className="font-headings text-xl mt-2">Kutay&apos;s DM Screen</h3>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <TypographyParagraph>Please it took so long</TypographyParagraph>
-                </CardContent>
-                <CardFooter className="mx-auto">
-                  <Button asChild size="sm" variant="default">
-                    <Link href="/resources/dm-screen" target="_blank">
-                      EXPLORE
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
-                    <Globe className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <GiSpellBook className="w-12 h-12 text-primary mx-auto mb-4" />
                     <h3 className="font-headings text-xl mb-2">D&D Beyond</h3>
                   </CardTitle>
                 </CardHeader>
@@ -337,16 +430,115 @@ export default function ResourcesPage() {
               <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
                 <CardHeader>
                   <CardTitle>
-                    <Crown className="w-12 h-12 text-primary mx-auto" />
-                    <h3 className="font-headings text-xl mt-2">Quick Reference</h3>
+                    <GiCastle className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">2 Minute Tabletop</h3>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TypographyParagraph>Essential rules and actions</TypographyParagraph>
+                  <TypographyParagraph>Beautiful battle maps and tokens for virtual tabletop play</TypographyParagraph>
                 </CardContent>
                 <CardFooter className="mx-auto">
                   <Button asChild size="sm" variant="outline">
-                    <Link href="/resources/quick-reference">Explore</Link>
+                    <Link href="https://2minutetabletop.com" target="_blank">
+                      Visit <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
+                <CardHeader>
+                  <CardTitle>
+                    <GiScrollQuill className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">Fantasy Name Generator</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>Generate names for characters, places, taverns, and more</TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="https://www.fantasynamegenerators.com" target="_blank">
+                      Generate <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
+                <CardHeader>
+                  <CardTitle>
+                    <GiDungeonGate className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">Donjon</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>Random dungeon generator, encounters, and treasure</TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="https://donjon.bin.sh" target="_blank">
+                      Generate <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
+                <CardHeader>
+                  <CardTitle>
+                    <GiWorld className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">Azgaar&apos;s Map Generator</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>
+                    Create detailed fantasy world maps with politics and culture
+                  </TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="https://azgaar.github.io/Fantasy-Map-Generator/" target="_blank">
+                      Create <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
+                <CardHeader>
+                  <CardTitle>
+                    <GiTreasureMap className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">Pinterest Maps</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>Community-shared battle maps and inspiration boards</TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="https://pinterest.com/search/pins/?q=dnd%20battle%20maps" target="_blank">
+                      Browse <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all hover:scale-[102%] duration-300 bg-linear-to-br from-background to-muted/50 dark:border-border dark:border-2 border-transparent">
+                <CardHeader>
+                  <CardTitle>
+                    <GiDiceTarget className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="font-headings text-xl mb-2">Random Encounters</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <TypographyParagraph>Generate random encounters for any environment or level</TypographyParagraph>
+                </CardContent>
+                <CardFooter className="mx-auto">
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="https://donjon.bin.sh/5e/random/#type=encounter" target="_blank">
+                      Generate <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -364,9 +556,37 @@ export default function ResourcesPage() {
                 <GiCurlyMask className="md:h-12 md:w-12 h-8 w-8 float-left" />
                 Character Inspiration Gallery
               </h2>
-              <TypographyParagraph className="font-quotes text-muted-foreground md:text-xl text-lg">
+              <TypographyParagraph className="font-quotes text-muted-foreground md:text-xl text-lg mb-8">
                 Explore official pre-made level 3 characters to spark your creativity!
               </TypographyParagraph>
+
+              {/* Character Building Basics */}
+              <div className="bg-linear-to-r from-primary/5 via-primary/10 to-primary/5 rounded-xl p-6 border-2 border-border mb-8">
+                <h3 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2 font-headings">
+                  <Info className="w-5 h-5 text-primary" />
+                  Understanding Character Creation
+                </h3>
+                <div className="grid md:grid-cols-3 gap-4 text-base">
+                  <div className="space-y-2">
+                    <h4 className="font-quotes text-primary">Classes</h4>
+                    <p className="text-muted-foreground">
+                      Your character&apos;s profession and abilities (Fighter, Wizard, etc.)
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-quotes text-primary">Races</h4>
+                    <p className="text-muted-foreground">
+                      Your character&apos;s species and inherited traits (Human, Elf, etc.)
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-quotes text-primary">Backgrounds</h4>
+                    <p className="text-muted-foreground">
+                      Your character&apos;s life before adventuring (Soldier, Scholar, etc.)
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="max-w-3xl mx-auto flex flex-col gap-6">
@@ -605,43 +825,57 @@ export default function ResourcesPage() {
       </section>
 
       {/* Fun Motivational Section */}
-      <section className="py-16 md:py-20 bg-linear-to-br from-amber-50/50 via-orange-50/30 to-red-50/50 dark:from-amber-950/20 dark:via-orange-950/10 dark:to-red-950/20">
+      <section className="py-16 md:py-20 bg-linear-to-br from-background via-muted/10 to-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-linear-to-r from-primary/10 to-primary/5 rounded-3xl p-8 md:p-12 border border-primary/20 backdrop-blur-sm">
-              <div className="flex flex-col gap-6 justify-center items-center">
+            <div className="bg-linear-to-r from-primary/10 via-transparent to-primary/10 rounded-3xl p-8 md:p-12 border-2 border-border backdrop-blur-sm">
+              <div className="flex flex-col gap-8 justify-center items-center text-center">
                 <div className="shrink-0">
-                  <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
-                    <Heart className="w-8 h-8 text-primary mt-1.5" />
+                  <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary/30">
+                    <Heart className="w-8 h-8 text-primary" />
                   </div>
                 </div>
-                <div>
-                  <TypographyH2 className="text-center">Remember: It&apos;s All About the Fun</TypographyH2>
-                  <div className="flex flex-col gap-4 mt-4 w-fit mx-auto">
-                    <div className="text-base flex flex-row gap-2 items-center">
-                      <Badge>New players:</Badge> Don&apos;t stress about knowing every rule!
+                <div className="w-full">
+                  <TypographyH2 className="font-headings text-3xl md:text-4xl">
+                    Beyond the Rules: The Heart of the Game
+                  </TypographyH2>
+                  <div className="grid sm:grid-cols-2 gap-4 mt-8 max-w-2xl mx-auto">
+                    <div className="text-base flex flex-col gap-2 items-center p-4 bg-background/50 rounded-lg border-2 border-border">
+                      <Badge>For New Players</Badge>
+                      <p className="text-muted-foreground">
+                        Embrace the chaos! Your first adventure is for learning, not perfection.
+                      </p>
                     </div>
-                    <div className="text-base flex flex-row gap-2 items-center">
-                      <Badge>Veterans:</Badge> Help newcomers feel welcome.
+                    <div className="text-base flex flex-col gap-2 items-center p-4 bg-background/50 rounded-lg border-2 border-border">
+                      <Badge>For Veterans</Badge>
+                      <p className="text-muted-foreground">
+                        Be a guide. Share your wisdom and help new stories unfold.
+                      </p>
                     </div>
-                    <div className="text-base flex flex-row gap-2 items-center">
-                      <Badge>DMs:</Badge> Focus on memorable moments.
+                    <div className="text-base flex flex-col gap-2 items-center p-4 bg-background/50 rounded-lg border-2 border-border">
+                      <Badge>For DMs</Badge>
+                      <p className="text-muted-foreground">
+                        It&apos;s all about creating an inclusive environment. Create a world where everyone can shine.
+                      </p>
                     </div>
-                    <div className="text-base flex flex-row gap-2 items-center">
-                      <Badge>Everyone:</Badge> Collaborative storytelling is key!
+                    <div className="text-base flex flex-col gap-2 items-center p-4 bg-background/50 rounded-lg border-2 border-border">
+                      <Badge>For Everyone</Badge>
+                      <p className="text-muted-foreground">
+                        It&apos;s a shared story. Listen, react, and build on each other&apos;s creativity.
+                      </p>
                     </div>
                   </div>
-                  <div className="mt-8 text-center">
-                    <TypographyParagraph className="text-lg font-medium text-primary font-quotes italic">
+                  <div className="mt-10">
+                    <TypographyParagraph className="text-lg font-medium text-primary font-quotes italic max-w-xl mx-auto">
                       The real treasure was the friends we made along the way... and maybe some cool dice.
                     </TypographyParagraph>
-                    <div className="flex justify-center gap-4 mt-8">
-                      <Button asChild variant="outline">
+                    <div className="flex flex-wrap justify-center gap-2 mt-8">
+                      <Button asChild variant="outline" className="sm:w-fit w-full">
                         <Link href="/about">
                           About Our Society <ArrowRight className="w-4 h-4 ml-2" />
                         </Link>
                       </Button>
-                      <Button asChild>
+                      <Button asChild className="sm:w-fit w-full">
                         <Link href="/dms">
                           Meet Our DMs <Crown className="w-4 h-4 ml-2" />
                         </Link>
@@ -726,9 +960,6 @@ export default function ResourcesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <div className="inline-block p-3 rounded-2xl bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 mb-4">
-                <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-              </div>
               <h2 className="flex flex-row gap-6 text-3xl md:text-4xl font-bold mb-4 font-headings justify-center">
                 <GiRollingDiceCup className="w-10 h-10" />
                 Join Our Community

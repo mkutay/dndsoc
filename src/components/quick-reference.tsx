@@ -1,8 +1,7 @@
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { GiJuggler } from "react-icons/gi";
 import { type IconType } from "react-icons";
 
-import { iconMap, type ReferenceItem } from "@/config/quick-reference-data";
+import { type ReferenceItem } from "@/config/quick-reference-data";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { TypographyH2 } from "@/components/typography/headings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +9,7 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Badge } from "@/components/ui/badge";
 
 export function ReferenceCard({ item }: { item: ReferenceItem }) {
-  const IconComponent = iconMap[item.icon] ?? GiJuggler;
+  const IconComponent = item.icon;
 
   return (
     <Dialog>
