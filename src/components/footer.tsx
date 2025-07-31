@@ -30,7 +30,7 @@ export function Footer() {
             <AccordionItem value="links">
               <AccordionTrigger>Quick Links</AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col space-y-3">
+                <div className="grid grid-cols-2 gap-3">
                   {siteConfig.footerItems.map((item) => (
                     <Link
                       key={item.link}
@@ -97,8 +97,10 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col justify-between">
-            <h3 className="text-sm font-semibold text-foreground/90 uppercase tracking-wider">Quick Links</h3>
-            <div className="flex flex-col gap-2">
+            <h3 className="text-sm text-right font-semibold text-foreground/90 uppercase tracking-wider">
+              Quick Links
+            </h3>
+            <div className="grid grid-cols-3 gap-x-6 gap-y-2">
               {siteConfig.footerItems.map((item) => (
                 <Link
                   key={item.link}

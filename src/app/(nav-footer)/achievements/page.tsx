@@ -63,14 +63,14 @@ function AchievementCard({ achievement }: { achievement: Tables<"achievements"> 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{achievement.name}</CardTitle>
+        <CardTitle className="sm:text-3xl text-2xl sm:tracking-widest tracking-wide">{achievement.name}</CardTitle>
         <CardDescription className="flex flex-row">
           {points}
           {difficulty ? " " : null}
           {difficulty}
         </CardDescription>
       </CardHeader>
-      <CardContent>{truncateText(achievement.description, 100)}</CardContent>
+      <CardContent className="sm:text-base text-sm">{truncateText(achievement.description, 100)}</CardContent>
       <CardFooter className="flex flex-row justify-end">
         <Button asChild size="sm" variant="default">
           <Link href={`/achievements/${achievement.shortened}`}>See More</Link>
