@@ -49,7 +49,7 @@ type Character = {
     id: string;
     username: string;
     name: string;
-  };
+  } | null;
 };
 
 export function EditPartyDMSheet({
@@ -237,15 +237,19 @@ export function EditPartyDMSheet({
                                         >
                                           {character.name}
                                         </TypographyLink>{" "}
-                                        (played by{" "}
-                                        <TypographyLink
-                                          href={`/players/${character.player.username}`}
-                                          target="_blank"
-                                          variant="default"
-                                        >
-                                          {character.player.name}
-                                        </TypographyLink>
-                                        )
+                                        {character.player ? (
+                                          <>
+                                            (played by{" "}
+                                            <TypographyLink
+                                              href={`/players/${character.player.username}`}
+                                              target="_blank"
+                                              variant="default"
+                                            >
+                                              {character.player.name}
+                                            </TypographyLink>
+                                            )
+                                          </>
+                                        ) : null}
                                       </span>
                                     ) : null;
                                   })()
@@ -311,15 +315,19 @@ export function EditPartyDMSheet({
                                             >
                                               {character.name}
                                             </TypographyLink>{" "}
-                                            (played by{" "}
-                                            <TypographyLink
-                                              href={`/players/${character.player.username}`}
-                                              target="_blank"
-                                              variant="default"
-                                            >
-                                              {character.player.name}
-                                            </TypographyLink>
-                                            )
+                                            {character.player ? (
+                                              <>
+                                                (played by{" "}
+                                                <TypographyLink
+                                                  href={`/players/${character.player.username}`}
+                                                  target="_blank"
+                                                  variant="default"
+                                                >
+                                                  {character.player.name}
+                                                </TypographyLink>
+                                                )
+                                              </>
+                                            ) : null}
                                           </span>
                                         ) : null;
                                       })()
@@ -354,15 +362,19 @@ export function EditPartyDMSheet({
                                               >
                                                 {character.name}
                                               </TypographyLink>{" "}
-                                              (played by{" "}
-                                              <TypographyLink
-                                                href={`/players/${character.player.username}`}
-                                                target="_blank"
-                                                variant="default"
-                                              >
-                                                {character.player.name}
-                                              </TypographyLink>
-                                              )
+                                              {character.player ? (
+                                                <>
+                                                  (played by{" "}
+                                                  <TypographyLink
+                                                    href={`/players/${character.player.username}`}
+                                                    target="_blank"
+                                                    variant="default"
+                                                  >
+                                                    {character.player.name}
+                                                  </TypographyLink>
+                                                  )
+                                                </>
+                                              ) : null}
                                             </span>
                                             <Check
                                               className={cn(

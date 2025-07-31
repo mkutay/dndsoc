@@ -25,9 +25,11 @@ export type ReceivedAchievementsCharacter = Tables<"received_achievements_charac
 export type Character = Tables<"characters"> & {
   races: Tables<"races">[];
   classes: Tables<"classes">[];
-  players: Tables<"players"> & {
-    users: Tables<"users">;
-  };
+  players:
+    | (Tables<"players"> & {
+        users: Tables<"users">;
+      })
+    | null;
 };
 
 export const rolesLabel = [

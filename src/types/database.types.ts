@@ -248,7 +248,7 @@ export type Database = {
           image_uuid: string | null
           level: number
           name: string
-          player_uuid: string
+          player_uuid: string | null
           shortened: string
         }
         Insert: {
@@ -257,7 +257,7 @@ export type Database = {
           image_uuid?: string | null
           level?: number
           name?: string
-          player_uuid: string
+          player_uuid?: string | null
           shortened: string
         }
         Update: {
@@ -266,7 +266,7 @@ export type Database = {
           image_uuid?: string | null
           level?: number
           name?: string
-          player_uuid?: string
+          player_uuid?: string | null
           shortened?: string
         }
         Relationships: [

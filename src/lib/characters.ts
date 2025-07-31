@@ -7,4 +7,4 @@ export const deleteCharacterClass = ({ characterId }: { characterId: string }) =
   );
 
 export const getCharacters = () =>
-  runQuery((supabase) => supabase.from("characters").select("*, races(*), classes(*), players!inner(*, users(*))"));
+  runQuery((supabase) => supabase.from("characters").select("*, races(*), classes(*), players(*, users(*))"));

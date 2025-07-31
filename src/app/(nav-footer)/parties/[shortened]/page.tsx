@@ -24,7 +24,7 @@ const getPartyByShortened = ({ shortened }: { shortened: string }) =>
     supabase
       .from("parties")
       .select(
-        `*, dm_party(*, dms!inner(*, users(*))), character_party(*, characters!inner(*, races(*), classes(*), players!inner(*, users(*)))), party_campaigns(*, campaigns!inner(*)), images(*)`,
+        `*, dm_party(*, dms!inner(*, users(*))), character_party(*, characters!inner(*, races(*), classes(*), players(*, users(*)))), party_campaigns(*, campaigns!inner(*)), images(*)`,
       )
       .eq("shortened", shortened)
       .single(),
@@ -156,22 +156,26 @@ export default async function Page({
                   id: char.id,
                   name: char.name,
                   shortened: char.shortened,
-                  player: {
-                    id: char.players.id,
-                    username: char.players.users.username,
-                    name: char.players.users.name,
-                  },
+                  player: char.players
+                    ? {
+                        id: char.players.id,
+                        username: char.players.users.username,
+                        name: char.players.users.name,
+                      }
+                    : null,
                 })),
               }}
               characters={allCharacters.map((char) => ({
                 id: char.id,
                 name: char.name,
                 shortened: char.shortened,
-                player: {
-                  id: char.players.id,
-                  username: char.players.users.username,
-                  name: char.players.users.name,
-                },
+                player: char.players
+                  ? {
+                      id: char.players.id,
+                      username: char.players.users.username,
+                      name: char.players.users.name,
+                    }
+                  : null,
               }))}
               edit={edit === "true"}
             >
