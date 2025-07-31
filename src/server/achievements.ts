@@ -4,9 +4,32 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { giveAchievementSchema, removeAchievementSchema } from "@/config/achievements";
+import { editAchievementSchema, giveAchievementSchema, removeAchievementSchema } from "@/config/achievements";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
+
+export const editAchievement = async (values: z.infer<typeof editAchievementSchema>, path: string) =>
+  resultAsyncToActionResult(
+    parseSchema(editAchievementSchema, values)
+      .asyncAndThen((parsed) =>
+        runQuery((supabase) =>
+          supabase
+            .from("achievements")
+            .update({
+              name: parsed.name,
+              shortened: parsed.shortened,
+              description: parsed.description,
+              description_long: parsed.descriptionLong,
+              points: parsed.points,
+              difficulty: parsed.difficulty,
+              type: parsed.type,
+              is_hidden: parsed.isHidden,
+            })
+            .eq("id", parsed.id),
+        ),
+      )
+      .andTee(() => revalidatePath(path)),
+  );
 
 export const removeAchievement = async (values: z.infer<typeof removeAchievementSchema>, path: string) =>
   resultAsyncToActionResult(

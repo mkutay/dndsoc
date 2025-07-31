@@ -38,39 +38,39 @@ export type Database = {
         Row: {
           category: string | null
           description: string
-          description_long: string | null
-          difficulty: Database["public"]["Enums"]["difficulty"] | null
+          description_long: string
+          difficulty: Database["public"]["Enums"]["difficulty"]
           id: string
           is_hidden: boolean
           max_unlocks: number
           name: string
-          points: number | null
+          points: number
           shortened: string
           type: Database["public"]["Enums"]["achievement_type"]
         }
         Insert: {
           category?: string | null
           description: string
-          description_long?: string | null
-          difficulty?: Database["public"]["Enums"]["difficulty"] | null
+          description_long?: string
+          difficulty?: Database["public"]["Enums"]["difficulty"]
           id?: string
           is_hidden?: boolean
           max_unlocks?: number
           name: string
-          points?: number | null
+          points: number
           shortened: string
           type: Database["public"]["Enums"]["achievement_type"]
         }
         Update: {
           category?: string | null
           description?: string
-          description_long?: string | null
-          difficulty?: Database["public"]["Enums"]["difficulty"] | null
+          description_long?: string
+          difficulty?: Database["public"]["Enums"]["difficulty"]
           id?: string
           is_hidden?: boolean
           max_unlocks?: number
           name?: string
-          points?: number | null
+          points?: number
           shortened?: string
           type?: Database["public"]["Enums"]["achievement_type"]
         }

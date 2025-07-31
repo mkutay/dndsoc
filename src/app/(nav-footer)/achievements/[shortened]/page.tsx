@@ -1,6 +1,6 @@
 import { InfoIcon } from "lucide-react";
 import type { Metadata } from "next";
-import { cache } from "react";
+import { cache, Suspense } from "react";
 
 import {
   TypographyLarge,
@@ -16,6 +16,9 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
+import { getUserRole } from "@/lib/roles";
+import { EditAchievementSheet } from "@/components/achievements/edit-achievement-sheet";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +85,9 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           </TooltipProvider>
         </div>
       ) : null}
+      <Suspense>
+        <Edit achievement={achievement} />
+      </Suspense>
       <Received achievement={achievement} />
     </div>
   );
@@ -94,4 +100,19 @@ function Received({ achievement }: { achievement: Tables<"achievements"> }) {
   else if (achievement.type === "character") received = <ReceivedAchievementsCharacter achievement={achievement} />;
 
   return <div className="mt-6">{received}</div>;
+}
+
+async function Edit({ achievement }: { achievement: Tables<"achievements"> }) {
+  const user = await getUserRole();
+  if (user.isErr()) return null;
+  if (user.value.role !== "admin" && user.value.role !== "dm") return null;
+  if (user.value.role === "dm" && achievement.type !== "dm") return null;
+
+  return (
+    <EditAchievementSheet achievement={achievement} path={`/achievements/${achievement.shortened}`}>
+      <Button className="w-fit mt-4 ml-auto" variant="outline">
+        Edit Achievement
+      </Button>
+    </EditAchievementSheet>
+  );
 }
