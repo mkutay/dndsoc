@@ -517,16 +517,19 @@ export type Database = {
       party_entries: {
         Row: {
           journal_id: string
+          location: string
           party_id: string
           text: string
         }
         Insert: {
           journal_id?: string
+          location?: string
           party_id?: string
           text?: string
         }
         Update: {
           journal_id?: string
+          location?: string
           party_id?: string
           text?: string
         }

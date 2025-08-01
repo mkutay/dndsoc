@@ -32,6 +32,7 @@ export const journalPartyEntryEditSchema = z.object({
   text: entryTextSchema,
   journalId: z.uuid(),
   partyId: z.uuid(),
+  location: z.string().max(150, "Location must be 150 characters or less."),
 });
 
 export const journalCreateSchema = z.object({

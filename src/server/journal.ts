@@ -49,7 +49,7 @@ export const updateJournalPartyEntry = async (data: z.infer<typeof journalPartyE
         runQuery((supabase) =>
           supabase
             .from("party_entries")
-            .update({ text: data.text })
+            .update({ text: data.text, location: data.location })
             .eq("journal_id", data.journalId)
             .eq("party_id", data.partyId),
         ),

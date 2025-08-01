@@ -20,7 +20,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -35,6 +35,7 @@ export function EditJournalPartySheet({
   journal: {
     id: string;
     text: string;
+    location: string;
     title: string;
     party: {
       id: string;
@@ -69,6 +70,7 @@ export function EditJournalPartySheet({
       text: journal.text,
       journalId: journal.id,
       partyId: journal.party.id,
+      location: journal.location,
     },
   });
 
@@ -118,6 +120,24 @@ export function EditJournalPartySheet({
                     <FormControl>
                       <Textarea placeholder="I am awesome!" className="w-full min-h-[160px]" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="location"
+                disabled={isPending}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Location</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="The Gobbledok Tavern" className="w-full min-h-[40px]" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is the location of the party when this entry was made. In other words, the location of the
+                      party in the last session.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

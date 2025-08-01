@@ -1,3 +1,4 @@
+import { MapPinIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { okAsync } from "neverthrow";
 import { format } from "date-fns";
@@ -81,6 +82,12 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
     partyEntries.push(
       <div key={entry.journal_id + entry.party_id} className="flex flex-col gap-2">
+        {entry.location.length !== 0 && (
+          <div className="flex flex-row items-center gap-2 text-sm font-quotes mb-3">
+            <MapPinIcon className="mb-0.5" />
+            {entry.location}
+          </div>
+        )}
         {entry.text.length !== 0 ? (
           <div className="max-w-prose text-lg items-start">
             <div className="text-5xl font-drop-caps float-start mr-2.5">{entry.text[0]}</div>
@@ -105,6 +112,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
                 id: journal.id,
                 title: journal.title,
                 text: entry.text,
+                location: entry.location,
                 party: {
                   id: entry.party_id,
                   name: entry.parties.name,
