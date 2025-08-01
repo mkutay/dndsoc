@@ -1,16 +1,5 @@
 import { Sparkles } from "lucide-react";
-import {
-  GiCastle,
-  GiCrossedSwords,
-  GiLightningStorm,
-  GiLightBulb,
-  GiDiceTwentyFacesTwenty,
-  GiTheater,
-  GiPotionOfMadness,
-  GiCarousel,
-  GiRunningNinja,
-  GiTrapMask,
-} from "react-icons/gi";
+import { GiPotionOfMadness, GiCarousel, GiRunningNinja, GiTrapMask } from "react-icons/gi";
 
 import { TypographyH2, TypographyH3 } from "@/components/typography/headings";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -646,6 +635,7 @@ function Madness() {
     </Card>
   );
 }
+
 const AdvancedEncountersSection: React.FC<AdvancedEncountersSectionProps> = ({ id }) => {
   return (
     <section id={id} className="py-12 md:py-18 bg-linear-to-b from-background via-muted/40 to-background">
@@ -661,117 +651,6 @@ const AdvancedEncountersSection: React.FC<AdvancedEncountersSectionProps> = ({ i
             <ChaseComplications />
             <Carousing />
             <Madness />
-          </div>
-
-          {/* Advanced Encounters Tips */}
-          <div className="py-6 md:py-8 px-8 md:px-12 bg-linear-to-r from-violet-50/50 via-indigo-50/30 to-purple-50/50 dark:from-violet-950/20 dark:via-indigo-950/10 dark:to-purple-950/20 rounded-2xl border border-violet-200/50 dark:border-violet-800/50">
-            <CardTitle className="mb-6 text-violet-700 dark:text-violet-300 flex items-center gap-3">
-              <Sparkles className="w-7 h-7" />
-              Advanced Encounter Design
-            </CardTitle>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <GiTheater className="w-5 h-5" /> <span>Dynamic Elements</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>• Environmental hazards (lava, ice, poison gas)</li>
-                  <li>• Moving terrain (collapsing bridges, shifting walls)</li>
-                  <li>• Timed objectives (rescue missions, rituals)</li>
-                  <li>• Interactive objects (levers, portals, altars)</li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <Sparkles className="w-5 h-5" /> <span>Encounter Balance</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>• CR is a guideline, not a rule</li>
-                  <li>• Action economy matters most</li>
-                  <li>• Consider party synergies and weaknesses</li>
-                  <li>• Adjust mid-combat if needed</li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <GiTheater className="w-5 h-5" /> <span>Three-Act Structure</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>
-                    • <strong>Setup:</strong> Initial positioning & threats
-                  </li>
-                  <li>
-                    • <strong>Complication:</strong> New enemies or hazards
-                  </li>
-                  <li>
-                    • <strong>Resolution:</strong> Final push or escape
-                  </li>
-                  <li>• Keep encounters evolving</li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <GiCastle className="w-5 h-5" /> <span>Terrain Features</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>• Elevation changes (high ground advantage)</li>
-                  <li>• Cover and concealment options</li>
-                  <li>• Difficult terrain placement</li>
-                  <li>• Chokepoints and open areas</li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <GiCrossedSwords className="w-5 h-5" /> <span>Enemy Tactics</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>• Focus fire on vulnerable targets</li>
-                  <li>• Use positioning and movement</li>
-                  <li>• Exploit party weaknesses</li>
-                  <li>• Retreat when appropriate</li>
-                </ul>
-              </div>
-
-              <div className="space-y-3 p-4 bg-white/50 dark:bg-black/20 rounded-lg border border-violet-200/30 dark:border-violet-700/30">
-                <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes">
-                  <GiLightningStorm className="w-5 h-5" /> <span>Pacing Control</span>
-                </p>
-                <ul className="text-sm space-y-1 text-violet-700 dark:text-violet-300">
-                  <li>• Vary encounter lengths</li>
-                  <li>• Use initiative to build tension</li>
-                  <li>• Know when to end early</li>
-                  <li>• Balance resource management</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-violet-200/50 dark:border-violet-700/50 pt-4">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes text-lg">
-                    <GiLightBulb className="w-5 h-5" /> Quick Escalation Ideas:
-                  </p>
-                  <p className="text-sm text-violet-700 dark:text-violet-300">
-                    Reinforcements arrive • Boss enters second phase • Environment becomes hostile • Objective changes
-                    mid-fight • Ally needs rescue • Time limit imposed
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <p className="font-bold text-violet-800 dark:text-violet-200 flex items-center gap-2 font-quotes text-lg">
-                    <GiDiceTwentyFacesTwenty className="w-5 h-5" /> On-the-Fly Adjustments:
-                  </p>
-                  <p className="text-sm text-violet-700 dark:text-violet-300">
-                    Add/remove enemies • Adjust HP pools • Change terrain • Introduce complications • Modify enemy
-                    behavior • Offer new options
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
