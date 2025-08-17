@@ -16,7 +16,7 @@ export async function ReceivedAchievementsCharacter({ achievement }: { achieveme
     return (
       <div className="font-titles-of-tables text-2xl max-w-prose mt-6">
         No character has unlocked this achievement yet.
-        <div className="mt-4">Will your hero be the first to claim this honor?</div>
+        <div className="mt-4">Will your hero be the first to claim this honour?</div>
       </div>
     );
   }

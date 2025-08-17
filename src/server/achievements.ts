@@ -9,6 +9,7 @@ import {
   editAchievementSchema,
   giveAchievementSchema,
   removeAchievementSchema,
+  requestAchievementSchema,
 } from "@/config/achievements";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
@@ -182,4 +183,60 @@ const giveCharacterAchievement = (characterUuid: string, achievementId: string) 
             .eq("character_uuid", characterUuid)
             .eq("achievement_uuid", achievementId),
         ),
+  );
+
+export const requestAchievement = async (values: z.infer<typeof requestAchievementSchema>, path: string) =>
+  resultAsyncToActionResult(
+    parseSchema(requestAchievementSchema, values)
+      .asyncAndThen((parsed) =>
+        parsed.receiverType === "player"
+          ? requestPlayerAchievement(parsed.receiverId, parsed.achievementId)
+          : parsed.receiverType === "dm"
+            ? requestDMAchievement(parsed.receiverId, parsed.achievementId)
+            : requestCharacterAchievement(parsed.receiverId, parsed.achievementId),
+      )
+      .andTee(() => revalidatePath(path)),
+  );
+
+const requestCharacterAchievement = (characterUuid: string, achievementId: string) =>
+  runQuery((supabase) =>
+    supabase.from("achievement_requests_character").insert({
+      character_id: characterUuid,
+      achievement_id: achievementId,
+      status: "pending",
+    }),
+  );
+
+const requestPlayerAchievement = (playerUuid: string, achievementId: string) =>
+  runQuery((supabase) =>
+    supabase.from("achievement_requests_player").insert({
+      player_id: playerUuid,
+      achievement_id: achievementId,
+      status: "pending",
+    }),
+  );
+
+const requestDMAchievement = (dmUuid: string, achievementId: string) =>
+  runQuery((supabase) =>
+    supabase.from("achievement_requests_dm").insert({
+      dm_id: dmUuid,
+      achievement_id: achievementId,
+      status: "pending",
+    }),
+  );
+
+export const removeDeniedRequest = async (
+  achievementId: string,
+  receiverId: string,
+  receiver: "character" | "player" | "dm",
+  path: string,
+) =>
+  resultAsyncToActionResult(
+    runQuery((supabase) =>
+      supabase
+        .from(`achievement_requests_${receiver}`)
+        .delete()
+        .eq("achievement_id", achievementId)
+        .eq(`${receiver}_id`, receiverId),
+    ).andTee(() => revalidatePath(path)),
   );

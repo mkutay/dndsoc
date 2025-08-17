@@ -39,7 +39,9 @@ export function useAuth() {
             } as SignOutError),
       )
       .andTee(() => {
-        router.push("/");
+        if (pathname.includes("/my")) {
+          router.push("/");
+        }
         setUser(null);
       });
 
