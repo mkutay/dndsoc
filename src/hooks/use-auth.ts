@@ -1,51 +1,37 @@
 "use client";
 
-import { errAsync, fromSafePromise, okAsync } from "neverthrow";
-import type { User } from "@supabase/supabase-js";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import type z from "zod";
 
-import { createClient } from "@/utils/supabase/client";
-
-type SignOutError = {
-  message: string;
-  code: "DATABASE_ERROR";
-};
+import { actionResultToResult } from "@/types/error-typing";
+import { signOutAction } from "@/server/auth/sign-out";
+import { signInAction } from "@/server/auth/sign-in";
+import type { signInFormSchema } from "@/config/auth-schemas";
+import { isLoggedInAction } from "@/server/auth/auth";
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const pathname = usePathname();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    (async () => {
-      await createClient()
-        .asyncAndThen((supabase) => fromSafePromise(supabase.auth.getSession()))
-        .andTee(({ data: { session } }) => {
-          setUser(session?.user ?? null);
-        });
-    })();
-  }, [pathname]);
+    isLoggedInAction().then(setIsLoggedIn);
+  }, []);
 
-  const signOut = () =>
-    createClient()
-      .asyncAndThen((supabase) => fromSafePromise(supabase.auth.signOut()))
-      .andThen((response) =>
-        !response.error
-          ? okAsync()
-          : errAsync({
-              message: response.error.message,
-              code: "DATABASE_ERROR",
-            } as SignOutError),
-      )
-      .andTee(() => {
-        router.refresh();
-        setUser(null);
-      });
+  const signOut = async () =>
+    actionResultToResult(await signOutAction()).andTee(() => {
+      setIsLoggedIn(false);
+      router.refresh();
+    });
+
+  const signIn = async (values: z.infer<typeof signInFormSchema>) =>
+    actionResultToResult(await signInAction(values)).andTee(() => {
+      setIsLoggedIn(true);
+    });
 
   return {
-    user,
-    isLoggedIn: !!user,
+    isLoggedIn,
     signOut,
+    signIn,
   };
 }
