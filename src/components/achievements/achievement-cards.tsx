@@ -78,6 +78,23 @@ export async function AchievementCards(props: Props) {
       ))}
       {owns === "super" ? (
         <>
+          {props.achievements
+            .filter((a) => a.requested.length === 1)
+            .map((achievement) =>
+              achievement.requested[0].status === "pending" ? (
+                <Link
+                  key={achievement.id}
+                  className="w-fit flex flex-row items-center gap-4 px-6 py-4 text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all"
+                  href={`/achievements/${achievement.shortened}`}
+                >
+                  <div className="font-quotes text-lg">{achievement.name}</div>
+                  <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
+                  <div className="font-quotes text-sm pt-[3px]">(Requested)</div>
+                </Link>
+              ) : achievement.requested[0].status === "denied" ? (
+                <RequestDenied key={achievement.id} achievement={achievement} />
+              ) : null,
+            )}
           <GiveAchievement
             achievements={props.achievements}
             receiverType={props.receiverType}

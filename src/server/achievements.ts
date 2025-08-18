@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
+import { okAsync } from "neverthrow";
 import { resultAsyncToActionResult } from "@/types/error-typing";
 import {
   createAchievementSchema,
@@ -14,6 +15,7 @@ import {
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { convertToShortened } from "@/utils/formatting";
+import { getUser } from "@/lib/auth";
 
 export const deleteAchievement = async (id: string) =>
   resultAsyncToActionResult(runQuery((supabase) => supabase.from("achievements").delete().eq("id", id)));
@@ -238,5 +240,84 @@ export const removeDeniedRequest = async (
         .delete()
         .eq("achievement_id", achievementId)
         .eq(`${receiver}_id`, receiverId),
+    ).andTee(() => revalidatePath(path)),
+  );
+
+export const rejectAchievementRequest = async (
+  achievementId: string,
+  receiverId: string,
+  receiver: "character" | "player" | "dm",
+  path: string,
+) =>
+  resultAsyncToActionResult(
+    getUser()
+      .andThen((user) =>
+        receiver === "dm"
+          ? okAsync(["decision_by_admin", user.id] as const)
+          : runQuery((supabase) => supabase.from("dms").select("id").eq("auth_user_uuid", user.id).single()).andThen(
+              ({ id }) => okAsync(["decision_by_dm", id] as const),
+            ),
+      )
+      .andThen(([decisionBy, id]) =>
+        runQuery((supabase) =>
+          supabase
+            .from(`achievement_requests_${receiver}`)
+            .update({ status: "denied", [decisionBy]: id })
+            .eq("achievement_id", achievementId)
+            .eq(`${receiver}_id`, receiverId),
+        ),
+      )
+      .andTee(() => revalidatePath(path)),
+  );
+
+export const approveAchievementRequest = async (
+  achievementId: string,
+  receiverId: string,
+  receiver: "character" | "player" | "dm",
+  path: string,
+) =>
+  resultAsyncToActionResult(
+    getUser()
+      .andThen((user) =>
+        receiver === "dm"
+          ? okAsync(["decision_by_admin", user.id] as const)
+          : runQuery((supabase) => supabase.from("dms").select("id").eq("auth_user_uuid", user.id).single()).andThen(
+              ({ id }) => okAsync(["decision_by_dm", id] as const),
+            ),
+      )
+      .andThen(([decisionBy, id]) =>
+        runQuery((supabase) =>
+          supabase
+            .from(`achievement_requests_${receiver}`)
+            .update({ status: "approved", [decisionBy]: id })
+            .eq("achievement_id", achievementId)
+            .eq(`${receiver}_id`, receiverId),
+        ),
+      )
+      .andThen(() =>
+        receiver === "character"
+          ? giveCharacterAchievement(receiverId, achievementId)
+          : receiver === "player"
+            ? givePlayerAchievement(receiverId, achievementId)
+            : giveDMAchievement(receiverId, achievementId),
+      )
+      .andTee(() => revalidatePath(path)),
+  );
+
+export const removeRequest = async (
+  achievementId: string,
+  receiverId: string,
+  receiver: "character" | "player" | "dm",
+  path: string,
+) =>
+  resultAsyncToActionResult(
+    runQuery(
+      (supabase) =>
+        supabase
+          .from(`achievement_requests_${receiver}`)
+          .delete()
+          .eq("achievement_id", achievementId)
+          .eq(`${receiver}_id`, receiverId)
+          .neq("status", "pending"), // Ensure we only remove requests that are not pending
     ).andTee(() => revalidatePath(path)),
   );

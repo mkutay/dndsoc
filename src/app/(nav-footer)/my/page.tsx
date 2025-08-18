@@ -1,7 +1,7 @@
-import { forbidden } from "next/navigation";
 import { okAsync, ResultAsync } from "neverthrow";
-
 import { GiCrossedSwords } from "react-icons/gi";
+import { forbidden } from "next/navigation";
+
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
@@ -13,6 +13,7 @@ import { MyParties } from "@/components/my/my-parties";
 import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
 import { ProfileLinksClient } from "@/components/my/profile-links-client";
 import { MyAdmin } from "@/components/my/my-admin";
+import { MyAchievementRequests } from "@/components/my/my-achievement-requests";
 
 export const dynamic = "force-dynamic";
 
@@ -99,6 +100,7 @@ export default async function Page() {
           role={user.role}
         />
       ) : null}
+      {user.role === "dm" || user.role === "admin" ? <MyAchievementRequests role={user.role} /> : null}
       {user.role === "admin" && <MyAssociatesRequests />}
       {user.role === "admin" && <MyAdmin />}
     </div>

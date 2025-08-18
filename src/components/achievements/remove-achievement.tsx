@@ -75,7 +75,7 @@ export function RemoveAchievement({
           variant="nothing"
           type="button"
           disabled={pending}
-          className="w-fit h-full text-lg flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all"
+          className="font-quotes w-fit h-full text-lg flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all"
         >
           Remove Achievement
         </Button>

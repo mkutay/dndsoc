@@ -42,6 +42,16 @@ export const actionResultToResult = <
 };
 
 /**
+ * Converts a `Result<T, E>` to an `ActionResult<T, E>`.
+ */
+export const resultToActionResult = <T, E>(result: Result<T, E>): ActionResult<T, E> => {
+  if (result.isOk()) {
+    return actionOk(result.value);
+  }
+  return actionErr(result.error);
+};
+
+/**
  * Converts a `ResultAsync<T, E>` to an `ActionResult<T, E>` by awaiting the ResultAsync.
  */
 export const resultAsyncToActionResult = async <
