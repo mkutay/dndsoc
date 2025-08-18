@@ -71,7 +71,7 @@ export function GiveAchievement({
           variant="nothing"
           type="button"
           disabled={pending}
-          className="font-quotes w-fit h-full text-lg flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all"
+          className="font-quotes w-fit h-full sm:text-lg text-base flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all"
         >
           Give Achievement
         </Button>

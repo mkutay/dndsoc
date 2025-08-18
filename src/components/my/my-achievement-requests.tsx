@@ -59,7 +59,9 @@ type AchievementRequestCharacter = Tables<"achievement_requests_character"> & {
 
 type AchievementRequestPlayer = Tables<"achievement_requests_player"> & {
   achievements: Tables<"achievements">;
-  players: Tables<"players">;
+  players: Tables<"players"> & {
+    users: Tables<"users">;
+  };
   dms:
     | (Tables<"dms"> & {
         users: Tables<"users">;
@@ -69,7 +71,9 @@ type AchievementRequestPlayer = Tables<"achievement_requests_player"> & {
 
 type AchievementRequestDm = Tables<"achievement_requests_dm"> & {
   achievements: Tables<"achievements">;
-  dms: Tables<"dms">;
+  dms: Tables<"dms"> & {
+    users: Tables<"users">;
+  };
   users: Tables<"users"> | null;
 };
 
@@ -81,7 +85,7 @@ function getPendingRequests(receiver: "character" | "player" | "dm") {
     supabase
       .from(`achievement_requests_${receiver}`)
       .select(
-        `*, achievements(*), ${receiver}s(*), ${receiver === "character" || receiver === "player" ? "dms(*, users(*))" : "users(*)"}`,
+        `*, achievements(*), ${receiver}s(*${receiver !== "character" ? ", users(*)" : ""}), ${receiver === "character" || receiver === "player" ? "dms(*, users(*))" : "users(*)"}`,
       )
       .order("created_at", { ascending: false })
       .eq("status", "pending"),

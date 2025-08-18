@@ -80,7 +80,7 @@ export function RequestAchievement({
           variant="nothing"
           type="button"
           disabled={pending}
-          className="w-fit h-full text-lg flex flex-row items-center gap-4 px-6 py-4 font-quotes text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all"
+          className="w-fit h-full sm:text-lg text-base flex flex-row items-center gap-4 px-6 py-4 font-quotes text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all"
         >
           Request Achievement
         </Button>

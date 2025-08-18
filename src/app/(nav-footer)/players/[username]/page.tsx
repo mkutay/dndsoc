@@ -109,6 +109,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
         role={user?.role ?? null}
         playerId={player.id}
         username={username}
+        ownsPlayer={player.auth_user_uuid === user?.auth_user_uuid}
       />
       <div className="flex flex-col mt-6 space-y-6">
         <TypographyH2>Characters</TypographyH2>
@@ -126,25 +127,33 @@ const PlayerAchievements = async ({
   role,
   playerId,
   username,
+  ownsPlayer,
 }: {
   receivedAchievements: ReceivedAchievementsPlayer[];
   role: Enums<"role"> | null;
   playerId: string;
   username: string;
+  ownsPlayer: boolean;
 }) => {
   if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
   const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <AchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} owns="outsider" />
     </>
   );
 
   if (role === "admin" || role === "dm") {
     const achievements = await runQuery((supabase) =>
-      supabase.from("achievements").select("*").eq("type", "player").order("name", { ascending: true }),
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_player(*)")
+        .eq("achievement_requests_player.player_id", playerId)
+        .eq("type", "player")
+        .order("name", { ascending: true }),
     );
+
     if (achievements.isErr()) return normal;
 
     return (
@@ -156,6 +165,33 @@ const PlayerAchievements = async ({
           receiverId={playerId}
           receiverType="player"
           path={`/players/${username}`}
+          owns="super"
+        />
+      </>
+    );
+  } else if (ownsPlayer) {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_player(*)")
+        .eq("achievement_requests_player.player_id", playerId)
+        .eq("type", "player")
+        .eq("is_hidden", false)
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={playerId}
+          receiverType="player"
+          path={`/players/${username}`}
+          owns="self"
         />
       </>
     );

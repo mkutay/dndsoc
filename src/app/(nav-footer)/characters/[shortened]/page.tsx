@@ -231,7 +231,7 @@ const CharacterAchievements = async ({
           receiverId={characterId}
           receiverType="character"
           path={`/characters/${shortened}`}
-          owns="character"
+          owns="self"
         />
       </>
     );

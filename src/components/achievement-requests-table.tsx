@@ -32,7 +32,9 @@ export function AchievementRequestsTable({
 }: {
   dmRequests?: (Tables<"achievement_requests_dm"> & {
     achievements: Tables<"achievements">;
-    dms: Tables<"dms">;
+    dms: Tables<"dms"> & {
+      users: Tables<"users">;
+    };
     users: Tables<"users"> | null;
   })[];
   characterRequests: (Tables<"achievement_requests_character"> & {
@@ -46,7 +48,9 @@ export function AchievementRequestsTable({
   })[];
   playerRequests: (Tables<"achievement_requests_player"> & {
     achievements: Tables<"achievements">;
-    players: Tables<"players">;
+    players: Tables<"players"> & {
+      users: Tables<"users">;
+    };
     dms:
       | (Tables<"dms"> & {
           users: Tables<"users">;
@@ -133,8 +137,9 @@ export function AchievementRequestsTable({
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="text-center">Receiver</TableHead>
             <TableHead className="text-center">Achievement Name</TableHead>
-            <TableHead className="text-center">Character Name</TableHead>
+            <TableHead className="text-center">Receiver Name</TableHead>
             <TableHead className="text-center">Status</TableHead>
             <TableHead className="text-center">Created</TableHead>
             <TableHead className="text-center">Actions</TableHead>
@@ -145,6 +150,9 @@ export function AchievementRequestsTable({
         <TableBody>
           {characterRequests.map((request) => (
             <TableRow key={request.achievement_id + request.character_id}>
+              <TableCell className="text-center">
+                <Badge variant="secondary">Character</Badge>
+              </TableCell>
               <TableCell>
                 <div className="text-sm text-center">
                   {request.achievements.name}{" "}
@@ -281,6 +289,304 @@ export function AchievementRequestsTable({
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleRemoveRequest(request.character_id, request.achievement_id, "character")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+          {playerRequests.map((request) => (
+            <TableRow key={request.achievement_id + request.player_id}>
+              <TableCell className="text-center">
+                <Badge variant="secondary">Player</Badge>
+              </TableCell>
+              <TableCell>
+                <div className="text-sm text-center">
+                  {request.achievements.name}{" "}
+                  <TypographyLink href={`/achievements/${request.achievements.shortened}`} target="_blank">
+                    ({request.achievements.shortened})
+                  </TypographyLink>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="text-sm text-center">
+                  {request.players.users.name}{" "}
+                  <TypographyLink href={`/players/${request.players.users.username}`} target="_blank">
+                    ({request.players.users.username})
+                  </TypographyLink>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                <Badge
+                  variant={
+                    request.status === "approved"
+                      ? "default"
+                      : request.status === "denied"
+                        ? "destructive"
+                        : "secondary"
+                  }
+                >
+                  {request.status[0].toUpperCase() + request.status.slice(1)}
+                </Badge>
+              </TableCell>
+              <TableCell className="text-center">
+                <div className="flex flex-row items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Calendar size={14} />
+                  {format(request.created_at, "MMM dd, yyyy HH:mm")}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex flex-row items-center justify-center gap-1">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostPrimary"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status !== "pending"}
+                      >
+                        <Check size={16} />
+                        <span className="sr-only">Approve</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action will approve the request and grant the achievement to the player. Are you sure you
+                          want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleApprove(request.player_id, request.achievement_id, "player")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostDestructive"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status !== "pending"}
+                      >
+                        <X size={16} />
+                        <span className="sr-only">Reject</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will reject the request.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleReject(request.player_id, request.achievement_id, "player")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                {request.dms ? (
+                  <TypographyLink
+                    href={`/dms/${request.dms.users.username}`}
+                    className="flex items-center justify-center gap-2 text-sm"
+                    target="_blank"
+                  >
+                    {request.dms.users.name}
+                  </TypographyLink>
+                ) : (
+                  <span className="text-muted-foreground text-sm italic">Pending</span>
+                )}
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center justify-center">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostDestructive"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status === "pending"}
+                      >
+                        <Trash size={16} />
+                        <span className="sr-only">Remove Request</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action will remove the request from the system. Are you sure you want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleRemoveRequest(request.player_id, request.achievement_id, "player")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+          {dmRequests?.map((request) => (
+            <TableRow key={request.achievement_id + request.dm_id}>
+              <TableCell className="text-center">
+                <Badge variant="secondary">DM</Badge>
+              </TableCell>
+              <TableCell>
+                <div className="text-sm text-center">
+                  {request.achievements.name}{" "}
+                  <TypographyLink href={`/achievements/${request.achievements.shortened}`} target="_blank">
+                    ({request.achievements.shortened})
+                  </TypographyLink>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="text-sm text-center">
+                  {request.dms.users.name}{" "}
+                  <TypographyLink href={`/dms/${request.dms.users.username}`} target="_blank">
+                    ({request.dms.users.username})
+                  </TypographyLink>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                <Badge
+                  variant={
+                    request.status === "approved"
+                      ? "default"
+                      : request.status === "denied"
+                        ? "destructive"
+                        : "secondary"
+                  }
+                >
+                  {request.status[0].toUpperCase() + request.status.slice(1)}
+                </Badge>
+              </TableCell>
+              <TableCell className="text-center">
+                <div className="flex flex-row items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Calendar size={14} />
+                  {format(request.created_at, "MMM dd, yyyy HH:mm")}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex flex-row items-center justify-center gap-1">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostPrimary"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status !== "pending"}
+                      >
+                        <Check size={16} />
+                        <span className="sr-only">Approve</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action will approve the request and grant the achievement to the DM. Are you sure you
+                          want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleApprove(request.dm_id, request.achievement_id, "dm")}>
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostDestructive"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status !== "pending"}
+                      >
+                        <X size={16} />
+                        <span className="sr-only">Reject</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will reject the request.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleReject(request.dm_id, request.achievement_id, "dm")}>
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </TableCell>
+              <TableCell className="text-center">
+                {request.users ? (
+                  <TypographyLink
+                    href={`/dms/${request.users.username}`}
+                    className="flex items-center justify-center gap-2 text-sm"
+                    target="_blank"
+                  >
+                    {request.users.name}
+                  </TypographyLink>
+                ) : (
+                  <span className="text-muted-foreground text-sm italic">Pending</span>
+                )}
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center justify-center">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghostDestructive"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={loading || request.status === "pending"}
+                      >
+                        <Trash size={16} />
+                        <span className="sr-only">Remove Request</span>
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action will remove the request from the system. Are you sure you want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleRemoveRequest(request.dm_id, request.achievement_id, "dm")}
                         >
                           Continue
                         </AlertDialogAction>

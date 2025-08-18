@@ -34,7 +34,7 @@ type Props = {
       receiverId: string;
       receiverType: "player" | "character" | "dm";
       path: string;
-      owns: "character";
+      owns: "self";
     }
   | {
       owns: "outsider";
@@ -68,10 +68,10 @@ export async function AchievementCards(props: Props) {
       {receivedAchievements.map((achievement) => (
         <Link
           key={achievement.achievement_uuid}
-          className="w-fit flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all"
+          className="w-fit flex flex-row items-center gap-4 px-6 py-4 bg-card rounded-2xl shadow-md hover:bg-card/80 transition-all sm:text-lg text-base"
           href={`/achievements/${achievement.achievements.shortened}`}
         >
-          <div className="font-quotes text-lg">{achievement.achievements.name}</div>
+          <div className="font-quotes">{achievement.achievements.name}</div>
           <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
           {achievement.count > 1 ? <div className="tracking-wide">Received {times[achievement.count]}</div> : null}
         </Link>
@@ -84,12 +84,12 @@ export async function AchievementCards(props: Props) {
               achievement.requested[0].status === "pending" ? (
                 <Link
                   key={achievement.id}
-                  className="w-fit flex flex-row items-center gap-4 px-6 py-4 text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all"
+                  className="w-fit flex flex-row items-center gap-4 px-6 py-4 text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all sm:text-lg text-base"
                   href={`/achievements/${achievement.shortened}`}
                 >
-                  <div className="font-quotes text-lg">{achievement.name}</div>
+                  <div className="font-quotes">{achievement.name}</div>
                   <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
-                  <div className="font-quotes text-sm pt-[3px]">(Requested)</div>
+                  <div className="font-quotes sm:text-sm text-xs pt-[3px]">(Requested)</div>
                 </Link>
               ) : achievement.requested[0].status === "denied" ? (
                 <RequestDenied key={achievement.id} achievement={achievement} />
@@ -108,7 +108,7 @@ export async function AchievementCards(props: Props) {
             path={props.path}
           />
         </>
-      ) : owns === "character" ? (
+      ) : owns === "self" ? (
         <>
           {props.achievements
             .filter((a) => a.requested.length === 1)
@@ -116,12 +116,12 @@ export async function AchievementCards(props: Props) {
               achievement.requested[0].status === "pending" ? (
                 <Link
                   key={achievement.id}
-                  className="w-fit flex flex-row items-center gap-4 px-6 py-4 text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all"
+                  className="w-fit flex flex-row items-center gap-4 px-6 py-4 text-secondary-foreground bg-secondary rounded-2xl shadow-md hover:bg-secondary/80 transition-all sm:text-lg text-base"
                   href={`/achievements/${achievement.shortened}`}
                 >
-                  <div className="font-quotes text-lg">{achievement.name}</div>
+                  <div className="font-quotes">{achievement.name}</div>
                   <div className="w-3.5 h-3.5 bg-linear-to-br from-white/30 to-gray-400 rounded-full shadow-inner border border-white/20"></div>
-                  <div className="font-quotes text-sm pt-[3px]">(Requested)</div>
+                  <div className="font-quotes sm:text-sm text-xs pt-[3px]">(Requested)</div>
                 </Link>
               ) : achievement.requested[0].status === "denied" ? (
                 <RequestDenied key={achievement.id} achievement={achievement} />
