@@ -9,7 +9,7 @@ import { env } from "@/env";
 export const createPublicClientAsync = async () => {
   const cookieStore = await cookies();
 
-  return createServerClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+  return createServerClient<Database>(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -26,7 +26,7 @@ export const createPublicClientAsync = async () => {
 };
 
 export const createServiceClientAsync = async () => {
-  return supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+  return supaCreateClient<Database>(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
