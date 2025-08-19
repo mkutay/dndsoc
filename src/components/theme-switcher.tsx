@@ -2,7 +2,6 @@
 
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,37 +11,38 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/utils/styling";
 
 const ThemeSwitcher = () => {
-  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const ICON_SIZE = 16;
-
-  if (!mounted) {
-    return (
-      <Button variant="ghost" size={"sm"} suppressHydrationWarning>
-        <Laptop key="system" size={ICON_SIZE} className={"text-muted-foreground"} />
-      </Button>
-    );
-  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size={"sm"} suppressHydrationWarning>
-          {theme === "light" ? (
-            <Sun key="light" size={ICON_SIZE} className={"text-muted-foreground"} />
-          ) : theme === "dark" ? (
-            <Moon key="dark" size={ICON_SIZE} className={"text-muted-foreground"} />
-          ) : (
-            <Laptop key="system" size={ICON_SIZE} className={"text-muted-foreground"} />
-          )}
+          <Sun
+            key="light"
+            size={ICON_SIZE}
+            className={cn("text-muted-foreground", theme !== "light" ? "hidden" : "flex")}
+            suppressHydrationWarning
+            id="theme-light-button"
+          />
+          <Moon
+            key="dark"
+            size={ICON_SIZE}
+            className={cn("text-muted-foreground", theme !== "dark" ? "hidden" : "flex")}
+            suppressHydrationWarning
+            id="theme-dark-button"
+          />
+          <Laptop
+            key="system"
+            size={ICON_SIZE}
+            className={cn("text-muted-foreground", theme !== "system" ? "hidden" : "flex")}
+            suppressHydrationWarning
+            id="theme-system-button"
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-content" align="start">

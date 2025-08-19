@@ -39,7 +39,7 @@ export function AuthButtons() {
         id="sign-out-button"
         suppressHydrationWarning
       >
-        Sign out
+        Sign Out
       </Button>
     </div>
   );
