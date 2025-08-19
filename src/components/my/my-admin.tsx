@@ -77,6 +77,26 @@ async function Users() {
                     </Button>
                   )}
                 </div>
+                <div className="grid xs:grid-cols-2 grod-cols-1 gap-4 mb-2">
+                  <div className="space-y-1">
+                    <p className="text-lg font-normal tracking-wide">Display Name</p>
+                    <p className="text-sm text-muted-foreground font-quotes uppercase">{user.name}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-md font-medium">Username</p>
+                    <p className="text-sm text-muted-foreground font-quotes uppercase">@{user.username}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-md font-medium">K—Number</p>
+                    <p className="text-sm text-muted-foreground font-quotes uppercase">
+                      {user.knumber ?? "No K—Number"}
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-md font-medium">Email</p>
+                    <p className="text-sm text-muted-foreground font-quotes uppercase">{user.email}</p>
+                  </div>
+                </div>
                 <AdminRoleEditForm role={user.roles} />
               </DialogContent>
             </Dialog>
