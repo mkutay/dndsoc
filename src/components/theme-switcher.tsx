@@ -22,16 +22,20 @@ const ThemeSwitcher = () => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
   const ICON_SIZE = 16;
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size={"sm"} suppressHydrationWarning>
+        <Laptop key="system" size={ICON_SIZE} className={"text-muted-foreground"} />
+      </Button>
+    );
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"}>
+        <Button variant="ghost" size={"sm"} suppressHydrationWarning>
           {theme === "light" ? (
             <Sun key="light" size={ICON_SIZE} className={"text-muted-foreground"} />
           ) : theme === "dark" ? (

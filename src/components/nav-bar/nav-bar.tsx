@@ -23,6 +23,7 @@ export function NavBar() {
         <div className="flex-row place-items-center gap-4 lg:flex hidden">
           <ThemeSwitcher />
           <AuthButtons />
+          <InlineScript />
         </div>
         <div className="flex-row place-items-center gap-4 flex lg:hidden">
           <ThemeSwitcher />
@@ -30,5 +31,65 @@ export function NavBar() {
         </div>
       </div>
     </nav>
+  );
+}
+
+function InlineScript() {
+  return (
+    <script
+      suppressHydrationWarning
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{
+        __html: `(${(() => {
+          function parseCookie(cookie: string) {
+            return cookie.split(";").reduce((acc: Record<string, string>, cookie) => {
+              const [key, value] = cookie.split("=");
+              if (key && value !== undefined) {
+                acc[key.trim()] = decodeURIComponent(value.trim());
+              }
+              return acc;
+            }, {});
+          }
+
+          const cookies = parseCookie(document.cookie);
+          // For local (127) and prod (supa):
+          if (!cookies["sb-127-auth-token"] && !cookies["sb-supa-auth-token"]) {
+            const signInButton = document.getElementById("sign-in-button");
+            const signUpButton = document.getElementById("sign-up-button");
+            const signOutButton = document.getElementById("sign-out-button");
+
+            if (signInButton) {
+              signInButton.classList.remove("hidden");
+              signInButton.classList.add("inline-flex");
+            }
+            if (signUpButton) {
+              signUpButton.classList.remove("hidden");
+              signUpButton.classList.add("inline-flex");
+            }
+            if (signOutButton) {
+              signOutButton.classList.remove("inline-flex");
+              signOutButton.classList.add("hidden");
+            }
+          } else {
+            const signOutButton = document.getElementById("sign-out-button");
+            const signInButton = document.getElementById("sign-in-button");
+            const signUpButton = document.getElementById("sign-up-button");
+
+            if (signOutButton) {
+              signOutButton.classList.remove("hidden");
+              signOutButton.classList.add("inline-flex");
+            }
+            if (signInButton) {
+              signInButton.classList.remove("inline-flex");
+              signInButton.classList.add("hidden");
+            }
+            if (signUpButton) {
+              signUpButton.classList.remove("inline-flex");
+              signUpButton.classList.add("hidden");
+            }
+          }
+        }).toString()})()`,
+      }}
+    />
   );
 }
