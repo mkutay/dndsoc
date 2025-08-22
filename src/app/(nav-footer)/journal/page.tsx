@@ -14,8 +14,7 @@ import { runServiceQuery } from "@/utils/supabase-run";
 import { getCampaigns } from "@/lib/campaigns";
 import { getUserRole } from "@/lib/roles";
 
-export const experimental_ppr = true;
-export const dynamic = "auto";
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Journal",

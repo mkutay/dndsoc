@@ -14,8 +14,7 @@ import { Button } from "@/components/ui/button";
 import { EditJournalPartySheet } from "@/components/journal/edit-journal-party-sheet";
 import { EditJournalAdminSheet } from "@/components/journal/edit-journal-admin-sheet";
 
-export const experimental_ppr = true;
-export const dynamic = "auto";
+export const dynamic = "force-dynamic";
 
 const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
   runServiceQuery((supabase) =>
@@ -63,13 +62,6 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
       description: "View the details of this journal.",
     },
   };
-}
-
-export async function generateStaticParams() {
-  const journals = await runServiceQuery((supabase) => supabase.from("journal").select("shortened"));
-  if (journals.isErr()) return [];
-
-  return journals.value;
 }
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
