@@ -71,7 +71,7 @@ export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" type="button" className="w-fit mt-4">
+        <Button variant="default" type="button" className="w-fit">
           Write a New Journal
         </Button>
       </DialogTrigger>

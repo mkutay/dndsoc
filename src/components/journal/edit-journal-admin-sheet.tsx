@@ -30,7 +30,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { actionResultToResult } from "@/types/error-typing";
 import { updateJournalAll } from "@/server/journal";
-import { journalAllEditSchema } from "@/config/journal-schema";
+import { journalEditSchema } from "@/config/journal-schema";
 import type { Tables } from "@/types/database.types";
 import { convertToShortened } from "@/utils/formatting";
 import { cn } from "@/utils/styling";
@@ -62,8 +62,8 @@ export function EditJournalAdminSheet({
     setOpen(o);
   };
 
-  const form = useForm<z.infer<typeof journalAllEditSchema>>({
-    resolver: zodResolver(journalAllEditSchema),
+  const form = useForm<z.infer<typeof journalEditSchema>>({
+    resolver: zodResolver(journalEditSchema),
     defaultValues: {
       excerpt: journal.excerpt,
       date: new Date(journal.date),
@@ -73,7 +73,7 @@ export function EditJournalAdminSheet({
     },
   });
 
-  const onSubmit = (values: z.infer<typeof journalAllEditSchema>) => {
+  const onSubmit = (values: z.infer<typeof journalEditSchema>) => {
     startTransition(async () => {
       const result = actionResultToResult(await updateJournalAll(values, pathname));
 
