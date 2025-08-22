@@ -123,13 +123,13 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <div className="flex flex-row items-center justify-between flex-wrap gap-2">
+      <div className="flex flex-row items-center justify-between flex-wrap gap-4">
         <TypographyH1>{journal.title}</TypographyH1>
         <Suspense>
           <EditJournalAdminSheetSuspense journal={journal} />
         </Suspense>
       </div>
-      <div className="text-right italic font-quotes text-lg mt-2">{format(journal.date, "PP")}</div>
+      <div className="text-right italic font-quotes text-lg mt-4">{format(journal.date, "PP")}</div>
       <div className="flex flex-col gap-6 mt-6">{partyEntries}</div>
     </div>
   );
@@ -148,25 +148,23 @@ async function EditJournalPartySheetSuspense({ journal, entry }: { journal: Jour
   return (
     parties.isOk() &&
     parties.value.ids.includes(entry.party_id) && (
-      <div className="flex flex-row justify-end w-full">
-        <EditJournalPartySheet
-          journal={{
-            id: journal.id,
-            title: journal.title,
-            text: entry.text,
-            location: entry.location,
-            party: {
-              id: entry.party_id,
-              name: entry.parties.name,
-              shortened: entry.parties.shortened,
-            },
-          }}
-        >
-          <Button variant="outline" className="w-fit">
-            Edit Entry
-          </Button>
-        </EditJournalPartySheet>
-      </div>
+      <EditJournalPartySheet
+        journal={{
+          id: journal.id,
+          title: journal.title,
+          text: entry.text,
+          location: entry.location,
+          party: {
+            id: entry.party_id,
+            name: entry.parties.name,
+            shortened: entry.parties.shortened,
+          },
+        }}
+      >
+        <Button variant="outline" className="w-fit">
+          Edit Entry
+        </Button>
+      </EditJournalPartySheet>
     )
   );
 }
