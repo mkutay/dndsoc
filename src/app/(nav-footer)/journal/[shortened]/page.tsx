@@ -65,6 +65,13 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   };
 }
 
+export async function generateStaticParams() {
+  const journals = await runServiceQuery((supabase) => supabase.from("journal").select("shortened"));
+  if (journals.isErr()) return [];
+
+  return journals.value;
+}
+
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
@@ -78,7 +85,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
 
     partyEntries.push(
       <div key={entry.journal_id + entry.party_id} className="flex lg:flex-row flex-col gap-6 justify-between">
-        <div className="flex flex-col gap-2 max-w-prose">
+        <div className="flex flex-col gap-2 max-w-prose w-full">
           {entry.location.length !== 0 && (
             <div className="flex flex-row items-center gap-2 text-sm font-quotes mb-3">
               <MapPinIcon className="mb-0.5" />
