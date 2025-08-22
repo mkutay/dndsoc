@@ -46,5 +46,5 @@ export default async function Page({ params }: { params: Promise<{ code: string 
   );
 }
 
-export const getWhen2DnDPollFromCode = (code: string) =>
+const getWhen2DnDPollFromCode = (code: string) =>
   runQuery((supabase) => supabase.from("when2dnd_polls").select("*").eq("code", code).single());

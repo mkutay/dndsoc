@@ -7,10 +7,16 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
-    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts", "eslint.config.mjs"],
+    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
   },
   ...compat.config({
-  extends:  ["next", "plugin:prettier/recommended", "next/typescript", "next/core-web-vitals", "prettier"],
+    extends: [
+      "plugin:@next/next/recommended",
+      "plugin:prettier/recommended",
+      "next/typescript",
+      "next/core-web-vitals",
+      "prettier",
+    ],
     // Keep generic parserOptions only; scoped typed config is added below
     parserOptions: {
       ecmaVersion: "latest",

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { format } from "date-fns";
 import { cache } from "react";
 
@@ -10,7 +11,7 @@ import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
-export const getCampaign = ({ shortened }: { shortened: string }) =>
+const getCampaign = ({ shortened }: { shortened: string }) =>
   runQuery(
     (supabase) =>
       supabase.from("campaigns").select("*, party_campaigns(*, parties!inner(*))").eq("shortened", shortened).single(),
@@ -19,7 +20,7 @@ export const getCampaign = ({ shortened }: { shortened: string }) =>
 
 const cachedGetCampaign = cache(getCampaign);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const campaigned = await cachedGetCampaign({ shortened });
   if (campaigned.isErr()) return { title: "Campaign Not Found", description: "This campaign does not exist." };

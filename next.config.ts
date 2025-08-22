@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     },
     useCache: true,
     globalNotFound: true,
+    ppr: "incremental",
   },
   images: {
     remotePatterns: [
