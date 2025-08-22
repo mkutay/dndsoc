@@ -10,6 +10,8 @@ import { AnimatedDice } from "@/components/animated-dice";
 import { FeaturesSection } from "@/components/home-features-section";
 import { TypographyHr } from "@/components/typography/blockquote";
 
+export const dynamic = "force-static";
+
 export default function Home() {
   return (
     <main className="flex-1">

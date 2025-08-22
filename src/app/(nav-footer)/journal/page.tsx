@@ -26,17 +26,17 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const journals = await getAllJournals();
+  const journals = await runServiceQuery((supabase) => supabase.from("journal").select("*, campaigns!inner(*)"));
   if (journals.isErr()) return <ErrorComponent error={journals.error} caller="/journal/page.tsx" />;
 
-  const infos: React.ReactNode[] = [];
+  const journalComponents: React.ReactNode[] = [];
 
   // Sort journals by date in descending order
   journals.value.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   for (let i = 0; i < journals.value.length; i++) {
     const journal = journals.value[i];
-    infos.push(
+    journalComponents.push(
       <div key={journal.id}>
         <Link
           href={`/journal/${journal.shortened}`}
@@ -65,7 +65,7 @@ export default async function Page() {
     );
 
     if (i !== journals.value.length - 1) {
-      infos.push(<TypographyHr key={`hr-${journal.id}`} />);
+      journalComponents.push(<TypographyHr key={`hr-${journal.id}`} />);
     }
   }
 
@@ -77,7 +77,7 @@ export default async function Page() {
           <CreateJournalSuspense />
         </Suspense>
       </div>
-      <div className="flex flex-col gap-6 mt-8">{infos}</div>
+      <div className="flex flex-col gap-6 mt-8">{journalComponents}</div>
     </div>
   );
 }
@@ -97,5 +97,3 @@ const CreateJournalSuspense = async () => {
 
   return campaigns.isOk() ? <CreateJournal campaigns={campaigns.value} /> : null;
 };
-
-const getAllJournals = () => runServiceQuery((supabase) => supabase.from("journal").select("*, campaigns!inner(*)"));
