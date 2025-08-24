@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RefreshCcw } from "lucide-react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
@@ -47,22 +47,8 @@ export function EditJournalPartySheet({
 }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [open, setOpen] = useState(searchParams.get("edit") === journal.party.shortened);
-
-  const setOpenSeachParams = (o: boolean) => {
-    if (o) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("edit", "admin");
-      // router.replace(pathname + "?" + params.toString());
-    } else {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete("edit");
-      // router.replace(pathname + "?" + params.toString());
-    }
-    setOpen(o);
-  };
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof journalPartyEntryEditSchema>>({
     resolver: zodResolver(journalPartyEntryEditSchema),
@@ -85,7 +71,7 @@ export function EditJournalPartySheet({
             description: "Your journal entry has been updated.",
             variant: "default",
           });
-          setOpenSeachParams(false);
+          setOpen(false);
         },
         (error) =>
           toast({
@@ -98,7 +84,7 @@ export function EditJournalPartySheet({
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpenSeachParams}>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="sm:max-w-md sm:p-2 p-0 py-6">
         <ScrollArea className="h-full px-3">

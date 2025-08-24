@@ -5,34 +5,34 @@ import { format } from "date-fns";
 import { cache, Suspense } from "react";
 import Link from "next/link";
 
-import { ErrorComponent } from "@/components/error-component";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { TypographyH1 } from "@/components/typography/headings";
 import { runQuery, runServiceQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
-import { EditJournalPartySheet } from "@/components/journal/edit-journal-party-sheet";
-import { EditJournalAdminSheet } from "@/components/journal/edit-journal-admin-sheet";
+import { EditJournalPartySheet } from "@/app/(nav-footer)/journal/[shortened]/_components/edit-journal-party-sheet";
+import { EditJournalAdminSheet } from "@/app/(nav-footer)/journal/[shortened]/_components/edit-journal-admin-sheet";
+import { ErrorPage } from "@/components/error-page";
 
 export const dynamic = "force-dynamic";
 
-const getJournalWithPartyEntries = ({ shortened }: { shortened: string }) =>
+const getJournal = cache(({ shortened }: { shortened: string }) =>
   runServiceQuery((supabase) =>
     supabase
       .from("journal")
       .select(
         `
         *,
-        campaigns:campaigns!inner(*, party_campaigns(*, parties!inner(*))),
-        party_entries:party_entries(*, parties:parties(*))
+        campaigns!inner(*, party_campaigns(*, parties!inner(*))),
+        party_entries(*, parties:parties(*))
         `,
       )
       .eq("shortened", shortened)
       .single(),
-  );
+  ),
+);
 
-const cachedGetJournalWithPartyEntries = cache(getJournalWithPartyEntries);
-const cachedParties = cache(async (partyIds: string[]) => {
+const getParties = cache((partyIds: string[]) => {
   return getUserRole().andThen((user) =>
     user.role === "player"
       ? getPlayerParties({
@@ -51,15 +51,15 @@ const cachedParties = cache(async (partyIds: string[]) => {
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
 
-  const result = await cachedGetJournalWithPartyEntries({ shortened });
+  const result = await getJournal({ shortened });
   if (result.isErr()) return { title: "Journal Not Found" };
 
   return {
     title: `Journal: ${result.value.title}`,
-    description: "View the details of this journal.",
+    description: "View the details of this journal by all parties.",
     openGraph: {
       title: `Journal: ${result.value.title}`,
-      description: "View the details of this journal.",
+      description: "View the details of this journal by all parties.",
     },
   };
 }
@@ -67,14 +67,13 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const result = await cachedGetJournalWithPartyEntries({ shortened });
-  if (result.isErr()) return <ErrorComponent error={result.error} caller="/journal/[shortened]/page.tsx" />;
+  const result = await getJournal({ shortened });
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/journal/[shortened]/page.tsx" />;
   const journal = result.value;
 
   const partyEntries: React.ReactNode[] = [];
-  for (let i = 0; i < journal.party_entries.length; i++) {
-    const entry = journal.party_entries[i];
 
+  journal.party_entries.forEach((entry, i) => {
     partyEntries.push(
       <div key={entry.journal_id + entry.party_id} className="flex lg:flex-row flex-col gap-6 justify-between">
         <div className="flex flex-col gap-2 max-w-prose w-full">
@@ -111,7 +110,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     if (i !== journal.party_entries.length - 1) {
       partyEntries.push(<TypographyHr key={"hr-" + entry.journal_id + entry.party_id} />);
     }
-  }
+  });
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -127,15 +126,15 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
   );
 }
 
-type Journal = ReturnType<Awaited<ReturnType<typeof getJournalWithPartyEntries>>["_unsafeUnwrap"]>;
+type Journal = ReturnType<Awaited<ReturnType<typeof getJournal>>["_unsafeUnwrap"]>;
 type Entry = Journal["party_entries"][number];
 
 async function EditJournalPartySheetSuspense({ journal, entry }: { journal: Journal; entry: Entry }) {
   const partyIds = journal.party_entries.map((entry) => entry.parties.id);
-  const parties = await cachedParties(partyIds);
+  const parties = await getParties(partyIds);
 
   if (parties.isErr() && parties.error.code !== "NOT_LOGGED_IN")
-    return <ErrorComponent error={parties.error} caller="/journal/[shortened]/page.tsx" />;
+    return <ErrorPage error={parties.error} caller="/journal/[shortened]/page.tsx" />;
 
   return (
     parties.isOk() &&
@@ -163,14 +162,14 @@ async function EditJournalPartySheetSuspense({ journal, entry }: { journal: Jour
 
 async function EditJournalAdminSheetSuspense({ journal }: { journal: Journal }) {
   const partyIds = journal.party_entries.map((entry) => entry.parties.id);
-  const parties = await cachedParties(partyIds);
+  const parties = await getParties(partyIds).map((p) => p.role);
 
   if (parties.isErr() && parties.error.code !== "NOT_LOGGED_IN")
-    return <ErrorComponent error={parties.error} caller="/journal/[shortened]/page.tsx" />;
+    return <ErrorPage error={parties.error} caller="/journal/[shortened]/page.tsx" />;
 
   return (
     parties.isOk() &&
-    parties.value.role === "admin" && <EditJournalAdminSheet journal={journal}>Edit Journal</EditJournalAdminSheet>
+    parties.value === "admin" && <EditJournalAdminSheet journal={journal}>Edit Journal</EditJournalAdminSheet>
   );
 }
 

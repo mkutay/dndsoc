@@ -53,11 +53,11 @@ export function EditJournalAdminSheet({
     if (o) {
       const params = new URLSearchParams(searchParams.toString());
       params.set("edit", "admin");
-      // router.replace(pathname + "?" + params.toString());
+      router.replace(pathname + "?" + params.toString());
     } else {
       const params = new URLSearchParams(searchParams.toString());
       params.delete("edit");
-      // router.replace(pathname + "?" + params.toString());
+      router.replace(pathname + "?" + params.toString());
     }
     setOpen(o);
   };

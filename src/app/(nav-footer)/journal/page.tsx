@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 import { CreateJournal } from "./form";
-import { ErrorComponent } from "@/components/error-component";
 import { TypographyHr } from "@/components/typography/blockquote";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
@@ -13,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { runServiceQuery } from "@/utils/supabase-run";
 import { getCampaigns } from "@/lib/campaigns";
 import { getUserRole } from "@/lib/roles";
+import { ErrorPage } from "@/components/error-page";
 
 export const dynamic = "force-dynamic";
 
@@ -21,21 +21,20 @@ export const metadata: Metadata = {
   description: "List of our journals in the KCL Dungeons and Dragons app.",
   openGraph: {
     title: "Journal",
-    description: "List of our polls in the KCL Dungeons and Dragons app.",
+    description: "List of our journals in the KCL Dungeons and Dragons app.",
   },
 };
 
 export default async function Page() {
   const journals = await runServiceQuery((supabase) => supabase.from("journal").select("*, campaigns!inner(*)"));
-  if (journals.isErr()) return <ErrorComponent error={journals.error} caller="/journal/page.tsx" />;
-
-  const journalComponents: React.ReactNode[] = [];
+  if (journals.isErr()) return <ErrorPage error={journals.error} caller="/journal/page.tsx" />;
 
   // Sort journals by date in descending order
   journals.value.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  for (let i = 0; i < journals.value.length; i++) {
-    const journal = journals.value[i];
+  const journalComponents: React.ReactNode[] = [];
+
+  journals.value.forEach((journal, index) => {
     journalComponents.push(
       <div key={journal.id}>
         <Link
@@ -64,10 +63,10 @@ export default async function Page() {
       </div>,
     );
 
-    if (i !== journals.value.length - 1) {
+    if (index !== journals.value.length - 1) {
       journalComponents.push(<TypographyHr key={`hr-${journal.id}`} />);
     }
-  }
+  });
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -92,8 +91,9 @@ const CreateJournalSuspense = async () => {
         }),
   );
 
-  if (campaigns.isErr() && campaigns.error.code !== "NOT_LOGGED_IN" && campaigns.error.code !== "NOT_ADMIN")
-    return <ErrorComponent error={campaigns.error} caller="/journal/page.tsx" />;
-
-  return campaigns.isOk() ? <CreateJournal campaigns={campaigns.value} /> : null;
+  return campaigns.isOk() ? (
+    <CreateJournal campaigns={campaigns.value} />
+  ) : campaigns.error.code !== "NOT_LOGGED_IN" && campaigns.error.code !== "NOT_ADMIN" ? (
+    <ErrorPage error={campaigns.error} caller="/journal/page.tsx" />
+  ) : null;
 };
