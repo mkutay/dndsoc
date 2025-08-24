@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json
           operationName?: string
           query?: string
           variables?: Json
-          extensions?: Json
         }
         Returns: Json
       }
@@ -213,6 +213,42 @@ export type Database = {
           type?: Database["public"]["Enums"]["achievement_type"]
         }
         Relationships: []
+      }
+      admins: {
+        Row: {
+          about: string
+          auth_user_uuid: string
+          id: string
+          image_uuid: string | null
+        }
+        Insert: {
+          about?: string
+          auth_user_uuid: string
+          id?: string
+          image_uuid?: string | null
+        }
+        Update: {
+          about?: string
+          auth_user_uuid?: string
+          id?: string
+          image_uuid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admins_auth_user_uuid_fkey1"
+            columns: ["auth_user_uuid"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "admins_image_uuid_fkey"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       associates_requests: {
         Row: {
@@ -1098,9 +1134,9 @@ export type Database = {
       }
       vote_on: {
         Args: {
+          a_auth_user_uuid: string
           a_option_id: string
           a_poll_id: string
-          a_auth_user_uuid: string
         }
         Returns: undefined
       }
