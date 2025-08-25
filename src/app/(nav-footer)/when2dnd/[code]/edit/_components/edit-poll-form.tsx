@@ -66,7 +66,7 @@ export function EditPollForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-fit md:mx-0 mx-auto">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 w-fit">
         <p className="text-left font-quotes text-base">*All times are in your local timezone</p>
         <div className="space-y-6 mt-2">
           <FormField

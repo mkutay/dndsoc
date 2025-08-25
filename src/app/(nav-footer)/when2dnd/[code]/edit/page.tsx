@@ -1,24 +1,28 @@
 import { forbidden } from "next/navigation";
 import Link from "next/link";
 
+import { EditPollForm } from "./_components/edit-poll-form";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
-import { EditPollForm } from "@/components/when2dnd/edit-poll-form";
 import { runQuery } from "@/utils/supabase-run";
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
-  const user = await getUserRole();
-  if (user.isErr()) {
-    return user.error.code === "NOT_LOGGED_IN" ? forbidden() : <ErrorPage error={user.error} />;
+  const result = await getUserRole().andThen((user) =>
+    runQuery((supabase) => supabase.from("when2dnd_polls").select("*").eq("code", code).single()).map((poll) => ({
+      user,
+      poll,
+    })),
+  );
+
+  if (result.isErr()) {
+    return result.error.code === "NOT_LOGGED_IN" ? forbidden() : <ErrorPage error={result.error} />;
   }
 
-  const poll = await getWhen2DnDPollFromCode(code);
-  if (poll.isErr()) return <ErrorPage error={poll.error} />;
+  const { user, poll } = result.value;
 
-  const isDM =
-    (user.value.role === "dm" && poll.value.created_by === user.value.auth_user_uuid) || user.value.role === "admin";
+  const isDM = (user.role === "dm" && poll.created_by === user.auth_user_uuid) || user.role === "admin";
 
   if (!isDM) {
     return forbidden();
@@ -37,14 +41,11 @@ export default async function Page({ params }: { params: Promise<{ code: string 
         The easiest way to schedule your Dungeons & Dragons sessions.
       </p>
       <EditPollForm
-        title={poll.value.title}
-        dateRange={{ from: new Date(poll.value.date_from), to: new Date(poll.value.date_to) }}
-        deadline={poll.value.deadline ? new Date(poll.value.deadline) : undefined}
-        pollId={poll.value.id}
+        title={poll.title}
+        dateRange={{ from: new Date(poll.date_from), to: new Date(poll.date_to) }}
+        deadline={poll.deadline ? new Date(poll.deadline) : undefined}
+        pollId={poll.id}
       />
     </div>
   );
 }
-
-const getWhen2DnDPollFromCode = (code: string) =>
-  runQuery((supabase) => supabase.from("when2dnd_polls").select("*").eq("code", code).single());
