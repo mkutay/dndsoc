@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { type Tables } from "@/types/database.types";
 import { formatList } from "@/utils/formatting";
-import { AddCharacterForm } from "@/components/players/add-character-form";
+import { AddCharacterForm } from "@/components/add-character-form";
 
 export function Characters({
   characters,

@@ -10,17 +10,6 @@ export default function Loading() {
           <Skeleton className="h-12 w-64" /> {/* Player name */}
           <Skeleton className="h-6 w-24" /> {/* Level */}
           <Skeleton className="h-6 w-2/3" /> {/* About section */}
-          <Skeleton className="h-10 w-32 mt-2" /> {/* Edit button */}
-        </div>
-      </div>
-
-      {/* Characters section */}
-      <div className="mt-8">
-        <Skeleton className="h-8 w-32 mb-4" />
-        <div className="flex flex-row gap-2 w-full items-center flex-wrap">
-          <Skeleton className="h-10 w-28" />
-          <Skeleton className="h-10 w-36" />
-          <Skeleton className="h-10 w-32" />
         </div>
       </div>
 
