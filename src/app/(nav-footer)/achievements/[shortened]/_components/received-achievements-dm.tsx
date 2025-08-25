@@ -1,14 +1,22 @@
 import Link from "next/link";
 
-import { TypographyH2 } from "../../../../../components/typography/headings";
-import { ErrorPage } from "../../../../../components/error-page";
+import { TypographyH2 } from "@/components/typography/headings";
+import { ErrorPage } from "@/components/error-page";
 import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 
-export async function ReceivedAchievementsDM({ achievement }: { achievement: Tables<"achievements"> }) {
-  if (achievement.type !== "dm") return null;
+export async function ReceivedAchievementsDM({
+  achievement,
+}: {
+  achievement: { type: "dm" } & Tables<"achievements">;
+}) {
+  const result = await runQuery((supabase) =>
+    supabase
+      .from("received_achievements_dm")
+      .select("*, dms(*, users!inner(*))")
+      .eq("achievement_uuid", achievement.id),
+  );
 
-  const result = await getReceivedAchievementsDM(achievement.id);
   if (result.isErr()) return <ErrorPage error={result.error} caller="received-achievements-dm.tsx" />;
   const dms = result.value;
 
@@ -38,8 +46,3 @@ export async function ReceivedAchievementsDM({ achievement }: { achievement: Tab
     </div>
   );
 }
-
-const getReceivedAchievementsDM = (id: string) =>
-  runQuery((supabase) =>
-    supabase.from("received_achievements_dm").select("*, dms(*, users!inner(*))").eq("achievement_uuid", id),
-  );

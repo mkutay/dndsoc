@@ -1,14 +1,18 @@
 import Link from "next/link";
 
-import { TypographyH2 } from "../../../../../components/typography/headings";
-import { ErrorPage } from "../../../../../components/error-page";
+import { TypographyH2 } from "@/components/typography/headings";
+import { ErrorPage } from "@/components/error-page";
 import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 
-export async function ReceivedAchievementsCharacter({ achievement }: { achievement: Tables<"achievements"> }) {
-  if (achievement.type !== "character") return null;
-
-  const result = await getReceivedAchievementsCharacter(achievement.id);
+export async function ReceivedAchievementsCharacter({
+  achievement,
+}: {
+  achievement: { type: "character" } & Tables<"achievements">;
+}) {
+  const result = await runQuery((supabase) =>
+    supabase.from("received_achievements_character").select("*, characters(*)").eq("achievement_uuid", achievement.id),
+  );
   if (result.isErr()) return <ErrorPage error={result.error} caller="received-achievements-character.tsx" />;
   const characters = result.value;
 
@@ -38,8 +42,3 @@ export async function ReceivedAchievementsCharacter({ achievement }: { achieveme
     </div>
   );
 }
-
-const getReceivedAchievementsCharacter = (id: string) =>
-  runQuery((supabase) =>
-    supabase.from("received_achievements_character").select("*, characters(*)").eq("achievement_uuid", id),
-  );

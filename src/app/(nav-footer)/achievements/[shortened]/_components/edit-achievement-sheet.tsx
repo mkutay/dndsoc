@@ -42,15 +42,18 @@ import type { Tables } from "@/types/database.types";
 import { editAchievementSchema } from "@/config/achievements";
 import { deleteAchievement, editAchievement } from "@/server/achievements";
 import { convertToShortened } from "@/utils/formatting";
+import { cn } from "@/utils/styling";
 
 export function EditAchievementSheet({
   achievement,
   children,
   path,
+  isAdmin,
 }: {
   achievement: Tables<"achievements">;
   children: React.ReactNode;
   path: string;
+  isAdmin: boolean;
 }) {
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
@@ -259,11 +262,13 @@ export function EditAchievementSheet({
                         className="flex flex-row justify-between flex-wrap"
                       >
                         {["player", "character", "dm"].map((type) => (
-                          <FormItem key={type} className="flex items-center space-x-2">
+                          <FormItem key={type} className="flex items-end space-x-2">
                             <FormControl>
-                              <RadioGroupItem value={type} />
+                              <RadioGroupItem value={type} disabled={type === "dm" && !isAdmin} />
                             </FormControl>
-                            <FormLabel className="font-quotes">
+                            <FormLabel
+                              className={cn("font-quotes", type === "dm" && !isAdmin ? "text-muted-foreground" : "")}
+                            >
                               {type === "dm" ? "DM" : type.charAt(0).toUpperCase() + type.slice(1)}
                             </FormLabel>
                           </FormItem>
@@ -274,6 +279,7 @@ export function EditAchievementSheet({
                     <FormDescription>
                       This is the type of the achievement. Player achievements are for players, character achievements
                       are for characters, and DM achievements are for DMs.
+                      {!isAdmin ? " Since you are not an admin, you cannot select DM." : null}
                     </FormDescription>
                   </FormItem>
                 )}
