@@ -2,18 +2,18 @@ import { okAsync, ResultAsync } from "neverthrow";
 import { GiCrossedSwords } from "react-icons/gi";
 import { forbidden } from "next/navigation";
 
+import { MyProfile } from "./_components/my-profile";
+import { ProfileLinksClient } from "./_components/profile-links-client";
+import { MyParties } from "./_components/my-parties";
+import { MyAchievementRequests } from "./_components/my-achievement-requests";
+import { MyAssociatesRequests } from "./_components/my-associates-requests";
+import { MyAdmin } from "./_components/my-admin";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { TypographyH1 } from "@/components/typography/headings";
 import { getWithImage } from "@/lib/storage";
 import { runQuery } from "@/utils/supabase-run";
-import { MyProfile } from "@/components/my/my-profile";
 import { Characters } from "@/components/characters";
-import { MyParties } from "@/components/my/my-parties";
-import { MyAssociatesRequests } from "@/components/my/my-associates-requests";
-import { ProfileLinksClient } from "@/components/my/profile-links-client";
-import { MyAdmin } from "@/components/my/my-admin";
-import { MyAchievementRequests } from "@/components/my/my-achievement-requests";
 
 export const dynamic = "force-dynamic";
 
