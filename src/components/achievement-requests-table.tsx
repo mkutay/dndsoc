@@ -32,10 +32,12 @@ export function AchievementRequestsTable({
 }: {
   dmRequests?: (Tables<"achievement_requests_dm"> & {
     achievements: Tables<"achievements">;
+    admins: Tables<"admins"> & {
+      users: Tables<"users">;
+    };
     dms: Tables<"dms"> & {
       users: Tables<"users">;
     };
-    users: Tables<"users"> | null;
   })[];
   characterRequests: (Tables<"achievement_requests_character"> & {
     achievements: Tables<"achievements">;
@@ -550,13 +552,13 @@ export function AchievementRequestsTable({
                 </div>
               </TableCell>
               <TableCell className="text-center">
-                {request.users ? (
+                {request.admins ? (
                   <TypographyLink
-                    href={`/dms/${request.users.username}`}
+                    href={`/admins/${request.admins.users.username}`}
                     className="flex items-center justify-center gap-2 text-sm"
                     target="_blank"
                   >
-                    {request.users.name}
+                    {request.admins.users.name}
                   </TypographyLink>
                 ) : (
                   <span className="text-muted-foreground text-sm italic">Pending</span>

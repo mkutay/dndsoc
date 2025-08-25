@@ -111,11 +111,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "achievement_requests_dm_decision_by_admin_fkey"
+            foreignKeyName: "achievement_requests_dm_decision_by_admin_fkey1"
             columns: ["decision_by_admin"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["auth_user_uuid"]
+            referencedRelation: "admins"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "achievement_requests_dm_dm_id_fkey"
