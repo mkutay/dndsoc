@@ -34,9 +34,7 @@ const getPendingAssociatesRequests = () =>
   runQuery((supabase) =>
     supabase
       .from("associates_requests")
-      .select(
-        "*, decision_by_user:users!associates_requests_decision_by_fkey(*), user:users!associates_requests_user_id_fkey(*)",
-      )
+      .select("*, admins(*, users(*)), user:users!associates_requests_user_id_fkey(*)")
       .order("created_at", { ascending: false })
       .eq("status", "pending"),
   );

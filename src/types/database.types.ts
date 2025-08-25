@@ -283,11 +283,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "associates_requests_decision_by_fkey"
+            foreignKeyName: "associates_requests_decision_by_fkey2"
             columns: ["decision_by"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["auth_user_uuid"]
+            referencedRelation: "admins"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "associates_requests_user_id_fkey"
