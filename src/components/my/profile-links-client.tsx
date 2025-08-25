@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Gamepad2, Trophy, ExternalLink, Glasses } from "lucide-react";
+import { User, Gamepad2, Trophy, ExternalLink, Glasses, Edit } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -114,12 +114,7 @@ export function ProfileLinksClient({
       </CardContent>
       <CardFooter className="w-full">
         <div className="flex flex-col gap-2 w-full">
-          <div className="flex sm:flex-row flex-col gap-2">
-            <Button asChild variant="default" size="icon">
-              <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
-                <ExternalLink className="w-4 h-4" />
-              </Link>
-            </Button>
+          <div className="flex sm:flex-row flex-col gap-2 justify-end">
             {profile.role !== "admin" && admin ? (
               <Button variant="secondary" className="grow flex flex-row items-center gap-1" onClick={setAdmin}>
                 <Glasses size={16} />
@@ -138,25 +133,35 @@ export function ProfileLinksClient({
                 View as Player
               </Button>
             ) : null}
-            {profile.role === "player" ? (
-              <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="outline" type="button" className="sm:w-fit w-full">
-                  Edit
-                </Button>
-              </PlayerEditSheet>
-            ) : profile.role === "dm" ? (
-              <DMEditSheet dm={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="outline" type="button" className="sm:w-fit w-full">
-                  Edit
-                </Button>
-              </DMEditSheet>
-            ) : (
-              <AdminEditSheet admin={{ about: profile.about, id: profile.id }} path="/my">
-                <Button variant="outline" type="button" className="sm:w-fit w-full">
-                  Edit
-                </Button>
-              </AdminEditSheet>
-            )}
+            <div className="flex flex-row gap-2">
+              {profile.role === "player" ? (
+                <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
+                  <Button variant="outline" type="button" className="sm:w-fit grow">
+                    <Edit size={16} className="mr-1.5" />
+                    Edit
+                  </Button>
+                </PlayerEditSheet>
+              ) : profile.role === "dm" ? (
+                <DMEditSheet dm={{ about: profile.about, id: profile.id }} path="/my">
+                  <Button variant="outline" type="button" className="sm:w-fit grow">
+                    <Edit size={16} className="mr-1.5" />
+                    Edit
+                  </Button>
+                </DMEditSheet>
+              ) : (
+                <AdminEditSheet admin={{ about: profile.about, id: profile.id }} path="/my">
+                  <Button variant="outline" type="button" className="sm:w-fit grow">
+                    <Edit size={16} className="mr-1.5" />
+                    Edit
+                  </Button>
+                </AdminEditSheet>
+              )}
+              <Button asChild variant="default" size="icon">
+                <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </CardFooter>
