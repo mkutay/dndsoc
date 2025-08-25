@@ -1,12 +1,13 @@
 "use client";
 
-import { User, Gamepad2, Trophy } from "lucide-react";
+import { User, Gamepad2, Trophy, ExternalLink, Glasses } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { PlayerEditSheet } from "../players/player-edit-sheet";
 import { DMEditSheet } from "../dm-edit-sheet";
+import { AdminEditSheet } from "../admin-edit-sheet";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ export function ProfileLinksClient({
   name,
   dm,
   player,
+  admin,
 }: {
   username: string;
   name: string;
@@ -34,14 +36,30 @@ export function ProfileLinksClient({
     about: string;
     id: string;
   };
+  admin?: {
+    imageUrl: string | undefined;
+    about: string;
+    id: string;
+  };
 }) {
-  const hasDM = dm !== undefined;
-  const [selectedRole, setSelectedRole] = useState<"player" | "dm">(hasDM ? "dm" : "player");
+  const [selectedRole, setSelectedRole] = useState<"player" | "dm" | "admin">(
+    admin !== undefined ? "admin" : dm !== undefined ? "dm" : "player",
+  );
 
-  const profile = selectedRole === "dm" && dm ? { role: "dm" as const, ...dm } : { role: "player" as const, ...player };
+  const profile =
+    selectedRole === "admin" && admin
+      ? { role: "admin" as const, ...admin }
+      : selectedRole === "dm" && dm
+        ? { role: "dm" as const, ...dm }
+        : { role: "player" as const, ...player };
+
+  const setAdmin = () => {
+    if (admin === undefined) return;
+    setSelectedRole("admin");
+  };
 
   const setDM = () => {
-    if (!hasDM) return;
+    if (dm === undefined) return;
     setSelectedRole("dm");
   };
 
@@ -49,7 +67,7 @@ export function ProfileLinksClient({
     setSelectedRole("player");
   };
 
-  const roleText = profile.role === "dm" ? "DM" : "Player";
+  const roleText = profile.role === "admin" ? "Admin" : profile.role === "dm" ? "DM" : "Player";
 
   return (
     <Card>
@@ -76,11 +94,13 @@ export function ProfileLinksClient({
             </div>
           )}
           <TypographyLarge className="text-xl">{name}</TypographyLarge>
-          <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
+          {"level" in profile && (
+            <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
+          )}
           <p className="text-md mt-2">{truncateText(profile.about, 120)}</p>
         </div>
 
-        {profile.achievementsCount > 0 ? (
+        {"achievementsCount" in profile && profile.achievementsCount > 0 ? (
           <div className="flex sm:justify-start justify-center items-center gap-2 px-4 rounded-lg mt-2">
             <Trophy size={20} className="text-amber-500" />
             <div className="flex sm:flex-row flex-col gap-2">
@@ -95,38 +115,47 @@ export function ProfileLinksClient({
       <CardFooter className="w-full">
         <div className="flex flex-col gap-2 w-full">
           <div className="flex sm:flex-row flex-col gap-2">
-            {profile.role === "player" && dm ? (
-              <Button variant="secondary" className="sm:w-fit w-full flex flex-row items-center gap-1" onClick={setDM}>
+            <Button asChild variant="default" size="icon">
+              <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
+                <ExternalLink className="w-4 h-4" />
+              </Link>
+            </Button>
+            {profile.role !== "admin" && admin ? (
+              <Button variant="secondary" className="grow flex flex-row items-center gap-1" onClick={setAdmin}>
+                <Glasses size={16} />
+                View as Admin
+              </Button>
+            ) : null}
+            {profile.role !== "dm" && dm ? (
+              <Button variant="secondary" className="grow flex flex-row items-center gap-1" onClick={setDM}>
                 <Gamepad2 size={16} />
                 View as DM
               </Button>
-            ) : profile.role !== "player" ? (
-              <Button
-                variant="secondary"
-                className="sm:w-fit w-full flex flex-row items-center gap-1"
-                onClick={setPlayer}
-              >
+            ) : null}
+            {profile.role !== "player" ? (
+              <Button variant="secondary" className="grow flex flex-row items-center gap-1" onClick={setPlayer}>
                 <User size={16} />
                 View as Player
               </Button>
             ) : null}
-            <Button asChild variant="default" className="w-full">
-              <Link href={`/${profile.role + "s"}/${username}`} target="_blank">
-                Go to {roleText} Profile
-              </Link>
-            </Button>
             {profile.role === "player" ? (
               <PlayerEditSheet player={{ about: profile.about, id: profile.id }} path="/my">
                 <Button variant="outline" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </PlayerEditSheet>
-            ) : (
+            ) : profile.role === "dm" ? (
               <DMEditSheet dm={{ about: profile.about, id: profile.id }} path="/my">
                 <Button variant="outline" type="button" className="sm:w-fit w-full">
                   Edit
                 </Button>
               </DMEditSheet>
+            ) : (
+              <AdminEditSheet admin={{ about: profile.about, id: profile.id }} path="/my">
+                <Button variant="outline" type="button" className="sm:w-fit w-full">
+                  Edit
+                </Button>
+              </AdminEditSheet>
             )}
           </div>
         </div>

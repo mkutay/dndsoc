@@ -28,7 +28,13 @@ export default async function Page() {
       : okAsync({ data: undefined, url: undefined }),
   );
 
-  const result = await ResultAsync.combine([userR, playerR, DMR]);
+  const adminR = userR.andThen((user) =>
+    user.role === "admin"
+      ? getAdmin(user.auth_user_uuid).andThen(getWithImage)
+      : okAsync({ data: undefined, url: undefined }),
+  );
+
+  const result = await ResultAsync.combine([userR, playerR, DMR, adminR]);
 
   if (result.isErr()) {
     return result.error.code === "NOT_LOGGED_IN" ? (
@@ -38,7 +44,8 @@ export default async function Page() {
     );
   }
 
-  const [user, { data: player, url: playerUrl }, { data: dm, url: DMUrl }] = result.value;
+  const [user, { data: player, url: playerUrl }, { data: dm, url: DMUrl }, { data: admin, url: adminUrl }] =
+    result.value;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4 space-y-8">
@@ -69,6 +76,15 @@ export default async function Page() {
             about: player.about,
             id: player.id,
           }}
+          admin={
+            admin
+              ? {
+                  imageUrl: adminUrl,
+                  about: admin.about,
+                  id: admin.id,
+                }
+              : undefined
+          }
         />
         <MyProfile
           username={user.users.username}
@@ -115,6 +131,9 @@ const getDM = (userId: string) =>
       .eq("auth_user_uuid", userId)
       .single(),
   );
+
+const getAdmin = (userId: string) =>
+  runQuery((supabase) => supabase.from("admins").select(`*, images(*)`).eq("auth_user_uuid", userId).single());
 
 const getPlayer = (userId: string) =>
   runQuery(
