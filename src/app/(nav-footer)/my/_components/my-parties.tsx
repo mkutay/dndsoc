@@ -1,4 +1,3 @@
-import { GiCrown } from "react-icons/gi";
 import { Suspense } from "react";
 
 import { TypographyParagraph } from "@/components/typography/paragraph";
@@ -17,12 +16,6 @@ export function MyParties({
 }) {
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <GiCrown size={36} />
-        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
-          Parties You DM ({parties.length})
-        </h3>
-      </div>
       {parties.length === 0 && (
         <TypographyParagraph className="text-muted-foreground not-first:mt-2">
           You don&apos;t DM any parties yet. Create your first party to start DMing!

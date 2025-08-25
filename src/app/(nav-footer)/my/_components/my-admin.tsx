@@ -2,6 +2,7 @@ import { GiAxeSwing } from "react-icons/gi";
 import { Suspense } from "react";
 import Link from "next/link";
 
+import { AdminRoleEditForm } from "./admin-role-edit-form";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { rolesLabel } from "@/types/full-database.types";
@@ -14,7 +15,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AdminRoleEditForm } from "@/components/my/admin-role-edit-form";
 
 export function MyAdmin() {
   return (

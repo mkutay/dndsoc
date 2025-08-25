@@ -1,4 +1,3 @@
-import { GiBowArrow } from "react-icons/gi";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -14,12 +13,6 @@ export async function MyAssociatesRequests() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-2">
-        <GiBowArrow size={36} />
-        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
-          Pending Associates Requests
-        </h3>
-      </div>
       <AssociatesRequestsTable requests={requests.value} />
       <div className="flex justify-end">
         <Button variant="outline" asChild className="w-fit" size="lg">

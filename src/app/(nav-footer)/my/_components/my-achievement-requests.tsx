@@ -1,4 +1,3 @@
-import { GiBowArrow } from "react-icons/gi";
 import Link from "next/link";
 
 import { AchievementRequestsTable } from "@/components/achievement-requests-table";
@@ -26,12 +25,6 @@ export async function MyAchievementRequests({ role }: { role: "dm" | "admin" }) 
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-2">
-        <GiBowArrow size={36} />
-        <h3 className="scroll-m-20 sm:text-3xl text-2xl font-semibold tracking-tight font-headings">
-          Pending Achievement Requests
-        </h3>
-      </div>
       <AchievementRequestsTable
         characterRequests={characterRequests.value}
         playerRequests={playerRequests.value}

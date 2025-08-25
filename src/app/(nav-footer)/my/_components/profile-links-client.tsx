@@ -5,13 +5,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { PlayerEditSheet } from "../players/player-edit-sheet";
-import { DMEditSheet } from "../dm-edit-sheet";
-import { AdminEditSheet } from "../admin-edit-sheet";
+import { DMEditSheet } from "@/components/dm-edit-sheet";
+import { AdminEditSheet } from "@/components/admin-edit-sheet";
+import { PlayerEditSheet } from "@/components/player-edit-sheet";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
-import { truncateText } from "@/utils/formatting";
 
 export function ProfileLinksClient({
   username,
@@ -70,7 +69,7 @@ export function ProfileLinksClient({
   const roleText = profile.role === "admin" ? "Admin" : profile.role === "dm" ? "DM" : "Player";
 
   return (
-    <Card>
+    <Card className="min-h-[330px]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <User size={24} className="mb-[2px]" />
@@ -97,7 +96,7 @@ export function ProfileLinksClient({
           {"level" in profile && (
             <TypographySmall className="text-muted-foreground">Level {profile.level}</TypographySmall>
           )}
-          <p className="text-md mt-2">{truncateText(profile.about, 120)}</p>
+          <p className="text-md mt-2 line-clamp-3">{profile.about}</p>
         </div>
 
         {"achievementsCount" in profile && profile.achievementsCount > 0 ? (
