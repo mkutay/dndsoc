@@ -1,11 +1,9 @@
 import { createHash } from "crypto";
-import { Edit } from "lucide-react";
-import Link from "next/link";
 
 import { OptimisticWrapper } from "./_components/optimistic-wrapper";
+import { EditPollSheet } from "./_components/edit-poll-sheet";
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
-import { Button } from "@/components/ui/button";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
 import { ForbiddenSignInButton } from "@/components/forbidden-sign-in-button";
@@ -37,12 +35,12 @@ export default async function Page({ params }: { params: Promise<{ code: string 
           </p>
         </div>
         {canEdit ? (
-          <Button className="w-fit ml-auto" asChild>
-            <Link href={`/when2dnd/${code}/edit`} className="flex items-center gap-2">
-              <Edit className="w-5 h-5 mb-0.5" />
-              Edit the Poll
-            </Link>
-          </Button>
+          <EditPollSheet
+            title={poll.title}
+            dateRange={{ from: new Date(poll.date_from), to: new Date(poll.date_to) }}
+            deadline={poll.deadline ? new Date(poll.deadline) : undefined}
+            pollId={poll.id}
+          />
         ) : null}
       </div>
       <OptimisticWrapper
