@@ -9,15 +9,15 @@ import {
   TypographySmall,
 } from "@/components/typography/paragraph";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ReceivedAchievementsCharacter } from "@/components/achievements/received-achievements-characters";
-import { ReceivedAchievementsDM } from "@/components/achievements/received-achievements-dm";
-import { ReceivedAchievementsPlayer } from "@/components/achievements/received-achievements-player";
+import { ReceivedAchievementsCharacter } from "@/app/(nav-footer)/achievements/[shortened]/_components/received-achievements-characters";
+import { ReceivedAchievementsDM } from "@/app/(nav-footer)/achievements/[shortened]/_components/received-achievements-dm";
+import { ReceivedAchievementsPlayer } from "@/app/(nav-footer)/achievements/[shortened]/_components/received-achievements-player";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { type Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
-import { EditAchievementSheet } from "@/components/achievements/edit-achievement-sheet";
+import { EditAchievementSheet } from "@/app/(nav-footer)/achievements/[shortened]/_components/edit-achievement-sheet";
 import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";

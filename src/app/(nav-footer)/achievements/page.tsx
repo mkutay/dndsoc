@@ -9,7 +9,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { type Tables } from "@/types/database.types";
 import { truncateText } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
-import { CreateAchievement } from "@/components/achievements/create-achievement";
+import { CreateAchievement } from "@/app/(nav-footer)/achievements/_components/create-achievement";
 import { getUserRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";

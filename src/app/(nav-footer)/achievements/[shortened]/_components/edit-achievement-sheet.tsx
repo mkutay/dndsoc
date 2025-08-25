@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { RefreshCcw } from "lucide-react";
 import { useState, useTransition } from "react";
 
-import { Switch } from "../ui/switch";
+import { Switch } from "../../../../../components/ui/switch";
 import {
   AlertDialog,
   AlertDialogAction,

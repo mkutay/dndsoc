@@ -6,7 +6,7 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { getUserRole } from "@/lib/roles";
 import type { Tables } from "@/types/database.types";
 import { runQuery } from "@/utils/supabase-run";
-import { AchievementRequestsTable } from "@/components/achievement-requests-table";
+import { AchievementRequestsTable } from "@/components/achievements/achievement-requests-table";
 
 export const dynamic = "force-dynamic";
 

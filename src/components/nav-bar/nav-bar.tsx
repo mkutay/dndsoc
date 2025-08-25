@@ -3,7 +3,7 @@ import Link from "next/link";
 import { NavBarSheet } from "./nav-bar-sheet";
 import { Logo } from "@/components/logo";
 import { AuthButtons } from "@/components/nav-bar/auth-buttons";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ThemeSwitcher } from "@/components/nav-bar/theme-switcher";
 import { siteConfig } from "@/config/site";
 
 export function NavBar() {

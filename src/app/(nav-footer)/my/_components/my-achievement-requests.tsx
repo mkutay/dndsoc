@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AchievementRequestsTable } from "@/components/achievement-requests-table";
+import { AchievementRequestsTable } from "@/components/achievements/achievement-requests-table";
 import type { Tables } from "@/types/database.types";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
