@@ -1,6 +1,7 @@
 "use client";
 
 import { User, Gamepad2, Trophy, ExternalLink, Glasses, Edit } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { TypographySmall, TypographyLarge } from "@/components/typography/paragraph";
 import { Button } from "@/components/ui/button";
 
-export function ProfileLinksClient({
+export function ProfileLinks({
   username,
   name,
   dm,
@@ -41,9 +42,16 @@ export function ProfileLinksClient({
     id: string;
   };
 }) {
-  const [selectedRole, setSelectedRole] = useState<"player" | "dm" | "admin">(
-    admin !== undefined ? "admin" : dm !== undefined ? "dm" : "player",
-  );
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const initialRole = searchParams.get("role") as "player" | "dm" | "admin" | null;
+  const [selectedRole, setSelectedRole] = useState<"player" | "dm" | "admin">(() => {
+    if (initialRole === "admin" && admin) return "admin";
+    if (initialRole === "dm" && dm) return "dm";
+    if (initialRole === "player") return "player";
+    return admin !== undefined ? "admin" : dm !== undefined ? "dm" : "player";
+  });
 
   const profile =
     selectedRole === "admin" && admin
@@ -54,15 +62,18 @@ export function ProfileLinksClient({
 
   const setAdmin = () => {
     if (admin === undefined) return;
+    router.replace(`?role=admin`);
     setSelectedRole("admin");
   };
 
   const setDM = () => {
     if (dm === undefined) return;
+    router.replace(`?role=dm`);
     setSelectedRole("dm");
   };
 
   const setPlayer = () => {
+    router.replace(`?role=player`);
     setSelectedRole("player");
   };
 

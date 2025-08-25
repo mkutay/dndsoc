@@ -4,7 +4,7 @@ import { forbidden } from "next/navigation";
 import { cache, Suspense } from "react";
 
 import { MyProfile } from "./_components/my-profile";
-import { ProfileLinksClient } from "./_components/profile-links-client";
+import { ProfileLinks } from "./_components/profile-links";
 import { MyParties } from "./_components/my-parties";
 import { MyAchievementRequests } from "./_components/my-achievement-requests";
 import { MyAssociatesRequests } from "./_components/my-associates-requests";
@@ -201,7 +201,7 @@ async function ProfileLinksSuspense() {
     result.value;
 
   return (
-    <ProfileLinksClient
+    <ProfileLinks
       username={user.users.username}
       name={user.users.name}
       dm={
