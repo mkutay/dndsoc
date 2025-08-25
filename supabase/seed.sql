@@ -349,7 +349,7 @@ INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shorte
 
 INSERT INTO "public"."dms" ("auth_user_uuid", "level", "id", "about", "image_uuid") VALUES
 	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 20, '8913c906-bbb1-426a-a9ce-ef9134fb828f', 'An admin, a DM.', 'ff8ea5e5-472f-4c10-a5df-1741a9b5782b'),
-	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 1, '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'hello! THIS IS ME THE ADMIN ', NULL);
+	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 1, '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'hello! THIS IS ME THE ADMIN  ', NULL);
 
 
 --
@@ -361,12 +361,20 @@ INSERT INTO "public"."achievement_requests_character" ("achievement_id", "create
 
 
 --
+-- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."admins" ("auth_user_uuid", "id", "about", "image_uuid") VALUES
+	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '90f62039-f728-4c55-9675-fe6bd2dd03a7', 'admin', NULL);
+
+
+--
 -- Data for Name: achievement_requests_dm; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO "public"."achievement_requests_dm" ("achievement_id", "created_at", "dm_id", "decision_by_admin", "status") VALUES
 	('83838629-8da2-4e96-a086-5acea3721ab3', '2025-08-18 10:43:33.783076+00', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', NULL, 'pending'),
-	('2ddb6c8c-d5fa-4522-b003-59db236c93c4', '2025-08-18 10:47:12.402194+00', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'approved');
+	('2ddb6c8c-d5fa-4522-b003-59db236c93c4', '2025-08-18 10:47:12.402194+00', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '90f62039-f728-4c55-9675-fe6bd2dd03a7', 'approved');
 
 
 --
@@ -384,10 +392,10 @@ INSERT INTO "public"."achievement_requests_player" ("achievement_id", "created_a
 --
 
 INSERT INTO "public"."associates_requests" ("id", "created_at", "email", "name", "notes", "status", "user_id", "decision_by") VALUES
-	('40b46aed-c05e-4a73-ac58-41d1de613d0b', '2025-07-19 16:10:10.4438+00', 'testing@a.com', 'testing', 'testing', 'approved', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc'),
-	('022ed341-7e03-40fc-890e-7ddf56aa20ef', '2025-07-19 16:20:58.897797+00', 'amogus@a.com', 'amogus', 'amogus', 'denied', NULL, '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc'),
 	('7ec540b5-9235-40fe-90b9-aadeacf26a28', '2025-07-19 16:37:58.897797+00', 'waaa@a.com', 'waaaa', 'waaa', 'pending', NULL, NULL),
-	('b0623b26-8dff-44fe-baf5-ed3ed5eb6d27', '2025-07-19 16:21:30.203815+00', 'this@is.a.test', 'this is a test', 'I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND ', 'approved', NULL, '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc');
+	('022ed341-7e03-40fc-890e-7ddf56aa20ef', '2025-07-19 16:20:58.897797+00', 'amogus@a.com', 'amogus', 'amogus', 'denied', NULL, '90f62039-f728-4c55-9675-fe6bd2dd03a7'),
+	('40b46aed-c05e-4a73-ac58-41d1de613d0b', '2025-07-19 16:10:10.4438+00', 'testing@a.com', 'testing', 'testing', 'approved', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', '90f62039-f728-4c55-9675-fe6bd2dd03a7'),
+	('b0623b26-8dff-44fe-baf5-ed3ed5eb6d27', '2025-07-19 16:21:30.203815+00', 'this@is.a.test', 'this is a test', 'I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND ', 'approved', NULL, '90f62039-f728-4c55-9675-fe6bd2dd03a7');
 
 
 --
