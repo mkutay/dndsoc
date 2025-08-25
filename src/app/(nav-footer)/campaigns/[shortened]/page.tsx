@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { format } from "date-fns";
 import { cache } from "react";
 
+import { Parties } from "./_components/parties";
 import { TypographyLead, TypographyParagraph } from "@/components/typography/paragraph";
-import { Parties } from "@/components/campaigns/parties";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { getParties } from "@/lib/parties";
@@ -11,18 +11,17 @@ import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
-const getCampaign = ({ shortened }: { shortened: string }) =>
+const getCampaign = cache(({ shortened }: { shortened: string }) =>
   runQuery(
     (supabase) =>
       supabase.from("campaigns").select("*, party_campaigns(*, parties!inner(*))").eq("shortened", shortened).single(),
     "getCampaign",
-  );
-
-const cachedGetCampaign = cache(getCampaign);
+  ),
+);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
-  const campaigned = await cachedGetCampaign({ shortened });
+  const campaigned = await getCampaign({ shortened });
   if (campaigned.isErr()) return { title: "Campaign Not Found", description: "This campaign does not exist." };
   const campaign = campaigned.value;
 
@@ -45,14 +44,14 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
 
-  const campaigned = await cachedGetCampaign({ shortened });
+  const campaigned = await getCampaign({ shortened });
   if (campaigned.isErr())
     return <ErrorPage error={campaigned.error} caller="/campaigns/[shortened]/page.tsx" isNotFound />;
   const campaign = campaigned.value;
 
   const roled = await getUserRole();
   if (roled.isErr() && roled.error.code !== "NOT_LOGGED_IN")
-    return <ErrorPage error={roled.error} caller="/dms/[username]" />;
+    return <ErrorPage error={roled.error} caller="/campaigns/[shortened]/page.tsx" />;
 
   const auth = roled.isOk() ? roled.value : null;
   const role = auth ? auth.role : null;
