@@ -1,4 +1,3 @@
-import { Libre_Baskerville, Lora, IBM_Plex_Mono } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { ThemeProvider } from "next-themes";
 import { type Metadata } from "next";
@@ -6,6 +5,9 @@ import "katex/dist/katex.min.css";
 
 import {
   BookInsanity,
+  IBMPlexMono,
+  LibreBaskerville,
+  Lora,
   MrEaves,
   NodestoCapsCondensed,
   ScalySans,
@@ -15,33 +17,10 @@ import {
 } from "@/fonts/fonts";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/utils/styling";
-import "@/app/globals.css";
 import { env } from "@/env";
+import "@/app/globals.css";
 
 const defaultUrl = env.NEXT_PUBLIC_SITE_URL;
-
-const sans = Libre_Baskerville({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-  weight: "400",
-});
-
-const serif = Lora({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-  weight: "400",
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-  weight: "400",
-});
-
-export { BookInsanity, MrEaves, NodestoCapsCondensed, ScalySans, ScalySansCaps, SolberaImitation, ZatannaMisdirection };
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
@@ -89,9 +68,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        sans.variable,
-        serif.variable,
-        mono.variable,
+        LibreBaskerville.variable,
+        Lora.variable,
+        IBMPlexMono.variable,
         BookInsanity.variable,
         MrEaves.variable,
         NodestoCapsCondensed.variable,

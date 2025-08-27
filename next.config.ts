@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "8mb",
     },
     useCache: true,
+    globalNotFound: true,
+    reactCompiler: true,
   },
   images: {
     remotePatterns: [

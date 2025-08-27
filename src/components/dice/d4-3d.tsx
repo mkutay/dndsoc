@@ -28,35 +28,17 @@ const sizeMap = {
 };
 
 function createTetrahedronFaces(): FaceData[] {
-  // Create tetrahedron vertices manually
-  const a = Math.sqrt(8 / 9);
-  const b = Math.sqrt(2 / 9);
-  const c = Math.sqrt(2 / 3);
+  const geom = new THREE.TetrahedronGeometry(1, 0);
+  const pos = geom.attributes.position;
+  const faceCount = pos.count / 3; // 4 faces
 
-  const vertices = [
-    new THREE.Vector3(0, a, 0),
-    new THREE.Vector3(-b, -1 / 3, c / 2),
-    new THREE.Vector3(-b, -1 / 3, -c / 2),
-    new THREE.Vector3(2 * b, -1 / 3, 0),
-  ];
+  const faces = Array.from({ length: faceCount }, (_, i) => {
+    const a = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 0);
+    const b = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 1);
+    const c = new THREE.Vector3().fromBufferAttribute(pos, i * 3 + 2);
 
-  // Define faces (each face is a triangle)
-  const faceIndices = [
-    [0, 1, 2], // face 1
-    [0, 2, 3], // face 2
-    [0, 3, 1], // face 3
-    [1, 3, 2], // face 4
-  ];
-
-  return faceIndices.map((face, index) => {
-    const [i1, i2, i3] = face;
-    const v1 = vertices[i1];
-    const v2 = vertices[i2];
-    const v3 = vertices[i3];
-
-    const centroid = new THREE.Vector3().add(v1).add(v2).add(v3).divideScalar(3);
-
-    const normal = new THREE.Vector3().subVectors(v2, v1).cross(new THREE.Vector3().subVectors(v3, v1)).normalize();
+    const centroid = new THREE.Vector3().add(a).add(b).add(c).divideScalar(3);
+    const normal = new THREE.Vector3().subVectors(b, a).cross(new THREE.Vector3().subVectors(c, a)).normalize();
 
     // Ensure normal points outward
     if (normal.dot(centroid) < 0) normal.negate();
@@ -64,9 +46,12 @@ function createTetrahedronFaces(): FaceData[] {
     return {
       centroid,
       normal,
-      number: index + 1,
+      number: i + 1,
     };
   });
+
+  geom.dispose();
+  return faces;
 }
 
 export function D4Dice({ className, size = "md", onRoll, disabled = false }: D4DiceProps) {
@@ -91,7 +76,6 @@ export function D4Dice({ className, size = "md", onRoll, disabled = false }: D4D
 
   return (
     <div className={cn("relative inline-block", className)}>
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div
         className={cn(canvas, "cursor-pointer")}
         onClick={rollDice}
@@ -222,7 +206,7 @@ function D4Mesh({
         </mesh>
 
         {faces.map((face) => {
-          const textPos = face.centroid.clone().addScaledVector(face.normal, 0.15);
+          const textPos = face.centroid.clone().addScaledVector(face.normal, 0.01);
           const textQuat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), face.normal);
 
           return (

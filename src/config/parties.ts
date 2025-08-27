@@ -6,6 +6,7 @@ const nameSchema = z.string().min(1, "Name is required.").max(60, "Name must be 
 
 export const partyPlayerEditSchema = z.object({
   about: aboutSchema,
+  partyId: z.uuid(),
 });
 
 export const partyDMEditSchema = z.object({
@@ -18,34 +19,15 @@ export const partyDMEditSchema = z.object({
         id: z.string().min(1, "Character is required."),
       }),
     )
-    .nonempty("At least one character is required.")
     .refine(
       (characters) => new Set(characters.map((character) => character.id)).size === characters.length,
       "Characters must be unique.",
     ),
-  campaigns: z
-    .array(
-      z.object({
-        id: z.string().min(1, "Campaign is required."),
-      }),
-    )
-    .nonempty("At least one campaign is required.")
-    .refine(
-      (campaigns) => new Set(campaigns.map((campaign) => campaign.id)).size === campaigns.length,
-      "Campaigns must be unique.",
-    ),
-  dms: z
-    .array(
-      z.object({
-        id: z.string().min(1, "DM is required."),
-      }),
-    )
-    .nonempty("At least one DM is required.")
-    .refine((dms) => new Set(dms.map((dm) => dm.id)).size === dms.length, "DMs must be unique."),
   selectedCharacter: z.string().optional(), // For the combobox
   selectedCampaign: z.string().optional(), // For the combobox
   selectedDM: z.string().optional(), // For the combobox
   image: imageSchema.optional(),
+  partyId: z.uuid(),
 });
 
 export const createPartySchema = z.object({

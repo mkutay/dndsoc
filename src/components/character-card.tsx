@@ -38,11 +38,6 @@ export function CharacterCard(props: Props) {
       </CardContent>
       <CardFooter className="flex flex-row justify-end gap-2 flex-wrap">
         <Button asChild size="sm" variant="outline">
-          <Link href={`/players/${character.players.users.username}`} className="text-sm tracking-wide">
-            Played By {character.players.users.name}
-          </Link>
-        </Button>
-        <Button asChild size="sm">
           <Link href={`/characters/${character.shortened}`} className="text-sm tracking-wide">
             View Character
           </Link>

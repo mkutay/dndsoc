@@ -2,8 +2,6 @@ import { errAsync, fromSafePromise, okAsync, ResultAsync } from "neverthrow";
 import type { EmailOtpType, User } from "@supabase/supabase-js";
 
 import { getOrigin } from "./origin";
-import { insertRole } from "./roles";
-import { insertPlayer } from "./players";
 import { createClient } from "@/utils/supabase/server";
 import { runQuery } from "@/utils/supabase-run";
 
@@ -22,7 +20,11 @@ export const resendConfirmationEmail = ({ email, redirectTo }: { email: string; 
         }),
       ),
     )
-    .andThen(() => okAsync());
+    .andThen((response) => (!response.error ? okAsync() : errAsync(response.error)))
+    .mapErr((error) => ({
+      message: "Failed to resend the confirmation email. " + error.message,
+      code: "AUTH_ERROR" as const,
+    }));
 
 type VerifyOtpError = {
   message: string;
@@ -65,33 +67,32 @@ export const getUser = () =>
 
 /**
  * Signed up and authenticated user, so insert role and player into database
- * by getting the userid from the username.
  */
 export const completeSignUp = (user: User) =>
   runQuery((supabase) =>
-    supabase
-      .from("users")
-      .insert({
-        username: user.user_metadata.username,
-        knumber: user.user_metadata.knumber ?? null,
-        name: user.user_metadata.name,
-        email: user.user_metadata.email,
-        auth_user_uuid: user.id,
-      })
-      .select("*")
-      .single(),
+    supabase.from("users").insert({
+      username: user.user_metadata.username,
+      knumber: user.user_metadata.knumber ?? null,
+      name: user.user_metadata.name,
+      email: user.user_metadata.email,
+      auth_user_uuid: user.id,
+    }),
   )
     .andThen(() =>
-      insertRole({
-        role: "player",
-        auth_user_uuid: user.id,
-      }),
+      runQuery((supabase) =>
+        supabase.from("roles").insert({
+          role: "player",
+          auth_user_uuid: user.id,
+        }),
+      ),
     )
     .andThen(() =>
-      insertPlayer({
-        auth_user_uuid: user.id,
-        level: 1,
-      }),
+      runQuery((supabase) =>
+        supabase.from("players").insert({
+          auth_user_uuid: user.id,
+          level: 1,
+        }),
+      ),
     );
 
 type SignUpUserError = {

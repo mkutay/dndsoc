@@ -1,4 +1,4 @@
-import { errAsync, fromSafePromise, ok, okAsync } from "neverthrow";
+import { errAsync, fromSafePromise, ok, okAsync, Result } from "neverthrow";
 
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createClientSync } from "@/utils/supabase/client";
@@ -75,11 +75,7 @@ export const uploadImageParty = ({ file, partyId, shortened }: { file: File; par
     file,
     shortened,
     folder: "parties",
-  }).andThen(({ id }) =>
-    runQuery((supabase) =>
-      supabase.from("parties").update({ image_uuid: id }).eq("id", partyId).select("name").single(),
-    ),
-  );
+  }).andThen(({ id }) => runQuery((supabase) => supabase.from("parties").update({ image_uuid: id }).eq("id", partyId)));
 
 export const uploadImageCharacter = ({
   file,
@@ -95,9 +91,7 @@ export const uploadImageCharacter = ({
     shortened,
     folder: "characters",
   }).andThen(({ id }) =>
-    runQuery((supabase) =>
-      supabase.from("characters").update({ image_uuid: id }).eq("id", characterId).select("name").single(),
-    ),
+    runQuery((supabase) => supabase.from("characters").update({ image_uuid: id }).eq("id", characterId)),
   );
 
 export const uploadImageDM = ({ file, DMId, shortened }: { file: File; DMId: string; shortened: string }) =>
@@ -106,3 +100,15 @@ export const uploadImageDM = ({ file, DMId, shortened }: { file: File; DMId: str
     shortened,
     folder: "dms",
   }).andThen(({ id }) => runQuery((supabase) => supabase.from("dms").update({ image_uuid: id }).eq("id", DMId)));
+
+export const uploadImageAdmin = ({ file, adminId, shortened }: { file: File; adminId: string; shortened: string }) =>
+  upload({
+    file,
+    shortened,
+    folder: "admins",
+  }).andThen(({ id }) => runQuery((supabase) => supabase.from("admins").update({ image_uuid: id }).eq("id", adminId)));
+
+export const getWithImage = <T extends { images: { id: string; name: string } | null }>(
+  data: T,
+): Result<{ url: string | undefined; data: T }, never> =>
+  data.images ? getPublicUrl({ path: data.images.name }).map((url) => ({ url, data })) : ok({ url: undefined, data });

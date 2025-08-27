@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
 import { type Player } from "@/types/full-database.types";
 import { truncateText } from "@/utils/formatting";
-import { runQuery } from "@/utils/supabase-run";
+import { getPlayers } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
@@ -46,7 +46,7 @@ function PlayerCard({ player }: { player: Player }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{player.users.name.toUpperCase()}</CardTitle>
+        <CardTitle>{player.users.name}</CardTitle>
         <CardDescription className="flex flex-row">
           {level}
           {achievementCount > 0 && <Dot />}
@@ -64,9 +64,3 @@ function PlayerCard({ player }: { player: Player }) {
     </Card>
   );
 }
-
-const getPlayers = () =>
-  runQuery<Player[], "GET_PLAYERS">(
-    (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
-    "GET_PLAYERS",
-  );

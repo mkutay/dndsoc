@@ -10,21 +10,8 @@ export const getPartyByShortened = ({ shortened }: { shortened: string }) =>
     supabase
       .from("parties")
       .select(
-        `*, dm_party(*, dms!inner(*, users(*))), character_party(*, characters!inner(*, races(*), classes(*), players!inner(*, users(*)))), party_campaigns(*, campaigns!inner(*))`,
+        `*, dm_party(*, dms!inner(*, users(*))), character_party(*, characters!inner(*, races(*), classes(*), players(*, users(*)))), party_campaigns(*, campaigns!inner(*)), images(*)`,
       )
       .eq("shortened", shortened)
       .single(),
-  );
-
-export const getPartiesByDMAuthUuid = ({ authUuid }: { authUuid: string }) =>
-  runQuery((supabase) =>
-    supabase.from("parties").select("*, dm_party!inner(*, dms!inner(*))").eq("dm_party.dms.auth_user_uuid", authUuid),
-  );
-
-export const getPartiesByPlayerAuthUuid = ({ authUuid }: { authUuid: string }) =>
-  runQuery((supabase) =>
-    supabase
-      .from("parties")
-      .select("*, character_party!inner(*, characters!inner(*, players!inner(*)))")
-      .eq("character_party.characters.players.auth_user_uuid", authUuid),
   );

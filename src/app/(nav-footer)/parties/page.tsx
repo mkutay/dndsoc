@@ -6,7 +6,6 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { ErrorPage } from "@/components/error-page";
-import { truncateText } from "@/utils/formatting";
 import { getParties } from "@/lib/parties";
 
 export const dynamic = "force-dynamic";
@@ -36,7 +35,7 @@ export default async function Page() {
               <CardDescription>Level {party.level}</CardDescription>
             </CardHeader>
             <CardContent>
-              <TypographyParagraph>{truncateText(party.about, 100)}</TypographyParagraph>
+              <TypographyParagraph className="line-clamp-3">{party.about}</TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
               <Button asChild size="sm" variant="default">

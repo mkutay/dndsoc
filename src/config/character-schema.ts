@@ -18,6 +18,7 @@ export const characterEditSchema = z.object({
     )
     .nonempty("At least one class is required."),
   avatar: imageSchema.optional(),
+  characterId: z.uuid(),
 });
 
 export const addCharacterSchema = z.object({

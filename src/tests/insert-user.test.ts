@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 import { type Database } from "@/types/database.types";
 import { env } from "@/env";
 
-export const supabaseServiceRole = supaCreateClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
+export const supabaseServiceRole = supaCreateClient<Database>(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY, {
   auth: {
     persistSession: false,
   },

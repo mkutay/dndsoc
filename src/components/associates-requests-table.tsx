@@ -33,7 +33,11 @@ import { useToast } from "@/hooks/use-toast";
 import { actionResultToResult } from "@/types/error-typing";
 
 type AssociatesRequest = Tables<"associates_requests"> & {
-  decision_by_user: Tables<"users"> | null;
+  admins:
+    | (Tables<"admins"> & {
+        users: Tables<"users">;
+      })
+    | null;
   user: Tables<"users"> | null;
 };
 
@@ -221,13 +225,13 @@ export function AssociatesRequestsTable({ requests }: AssociatesRequestsTablePro
                 </div>
               </TableCell>
               <TableCell className="text-center">
-                {request.decision_by_user ? (
+                {request.admins ? (
                   <TypographyLink
-                    href={`/dms/${request.decision_by_user.username}`}
+                    href={`/admins/${request.admins.users.username}`}
                     className="flex items-center justify-center gap-2 text-sm"
                     target="_blank"
                   >
-                    {request.decision_by_user.name}
+                    {request.admins.users.name}
                   </TypographyLink>
                 ) : (
                   <span className="text-muted-foreground text-sm italic">Pending</span>

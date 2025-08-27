@@ -43,70 +43,34 @@ import {
   GiFalling,
   GiStrong,
   GiWingfoot,
+  GiAcrobatic,
+  GiDogHouse,
+  GiScrollUnfurled,
+  GiMuscleUp,
+  GiTheaterCurtains,
+  GiEyeball,
+  GiHandOk,
+  GiPrayerBeads,
+  GiCardPickup,
+  GiNinjaHeroicStance,
+  GiForestCamp,
+  GiEvilEyes,
 } from "react-icons/gi";
 import { type IconType } from "react-icons";
 
-export const iconMap: { [key: string]: IconType } = {
-  "crossed-swords": GiCrossedSwords,
-  grab: GiGrab,
-  hand: GiHand,
-  "magic-swirl": GiMagicSwirl,
-  sprint: GiSprint,
-  journey: GiJourney,
-  aura: GiAura,
-  manacles: GiManacles,
-  telepathy: GiTelepathy,
-  snatch: GiSnatch,
-  "round-shield": GiRoundShield,
-  hood: GiHood,
-  "magnifying-glass": GiMagnifyingGlass,
-  stopwatch: GiStopwatch,
-  "embrassed-energy": GiEmbrassedEnergy,
-  "first-aid": GiFirstAidKit,
-  juggler: GiJuggler,
-  "one-eyed": GiOneEyed,
-  smitten: GiSmitten,
-  "elf-ear": GiElfEar,
-  crawl: GiWalk,
-  "sharp-smile": GiSharpSmile,
-  "internal-injury": GiInternalInjury,
-  invisible: GiInvisible,
-  "stone-pile": GiStonePile,
-  deathcab: GiDeathSkull,
-  imprisoned: GiImprisoned,
-  coma: GiComa,
-  "dead-head": GiDeadHead,
-  "bleeding-eye": GiBleedingEye,
-  "lightning-tear": GiLightningTear,
-  "star-pupil": GiStarPupil,
-  "semi-closed-eye": GiSemiClosedEye,
-  "worried-eyes": GiWorriedEyes,
-  "eye-shield": GiEyeShield,
-  "broken-shield": GiBrokenShield,
-  "cracked-shield": GiCrackedShield,
-  shield: GiShield,
-  run: GiRun,
-  crags: GiCrags,
-  "at-sea": GiAtSea,
-  falling: GiFalling,
-  strong: GiStrong,
-  wingfoot: GiWingfoot,
-};
-
 export interface ReferenceItem {
   title: string;
-  icon: string;
+  icon: IconType;
   subtitle: string;
   description: string;
   reference: string;
   bullets: string[];
 }
 
-// Content on here is taken from https://github.com/crobi/dnd5e-quickref/
 export const dataAction: ReferenceItem[] = [
   {
     title: "Attack",
-    icon: "crossed-swords",
+    icon: GiCrossedSwords,
     subtitle: "Melee or ranged attack",
     description: "Perform a melee or ranged attack with your weapon",
     reference: "PHB, pgs. 192,194-195.",
@@ -120,7 +84,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Grapple",
-    icon: "grab",
+    icon: GiGrab,
     subtitle: "Special melee attack",
     description: "Attempt to grab a creature or wrestle with it",
     reference: "PHB, pg. 195.",
@@ -133,7 +97,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Shove",
-    icon: "hand",
+    icon: GiHand,
     subtitle: "Special melee attack",
     description: "Shove a creature, either to knock it prone or push it away from you",
     reference: "PHB, pg. 195.",
@@ -146,7 +110,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Cast a Spell",
-    icon: "magic-swirl",
+    icon: GiMagicSwirl,
     subtitle: "Cast time of 1 action",
     description: "Cast a spell with a casting time of 1 action",
     reference: "PHB, pg. 192.",
@@ -159,7 +123,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Dash",
-    icon: "sprint",
+    icon: GiSprint,
     subtitle: "Double movement speed",
     description: "Gain extra movement for the current turn",
     reference: "PHB, pg. 192.",
@@ -167,7 +131,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Disengage",
-    icon: "journey",
+    icon: GiJourney,
     subtitle: "Prevent opportunity attacks",
     description: "Your movement doesn't provoke opportunity attacks for the rest of the turn",
     reference: "PHB, pg. 192.",
@@ -175,7 +139,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Dodge",
-    icon: "aura",
+    icon: GiAura,
     subtitle: "Increase defenses",
     description: "Focus entirely on avoiding attacks",
     reference: "PHB, pg. 192.",
@@ -186,7 +150,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Escape",
-    icon: "manacles",
+    icon: GiManacles,
     subtitle: "Escape a grapple",
     description: "Escape a grapple",
     reference: "PHB, pg. 195.",
@@ -197,7 +161,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Help",
-    icon: "telepathy",
+    icon: GiTelepathy,
     subtitle: "Grant an ally advantage",
     description: "Grant an ally advantage on an ability check or attack",
     reference: "PHB, pg. 192.",
@@ -209,7 +173,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Use Object",
-    icon: "snatch",
+    icon: GiSnatch,
     subtitle: "Interact, use special abilities",
     description: "Interact with a second object or use special object abilities",
     reference: "PHB, pg. 193.",
@@ -220,7 +184,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Use shield",
-    icon: "round-shield",
+    icon: GiRoundShield,
     subtitle: "Equip or unequip a shield",
     description: "Equip or unequip a shield",
     reference: "PHB, pgs. 144-146.",
@@ -231,7 +195,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Hide",
-    icon: "hood",
+    icon: GiHood,
     subtitle: "",
     description: "Attempt to hide",
     reference: "PHB, pg. 192.",
@@ -245,7 +209,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Search",
-    icon: "magnifying-glass",
+    icon: GiMagnifyingGlass,
     subtitle: "",
     description: "Devote your attention to finding something",
     reference: "PHB, pg. 193.",
@@ -255,7 +219,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Ready",
-    icon: "stopwatch",
+    icon: GiStopwatch,
     subtitle: "Choose trigger and action",
     description: "Choose a trigger and a response reaction",
     reference: "PHB, pg. 193.",
@@ -268,7 +232,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Use Class Feature",
-    icon: "embrassed-energy",
+    icon: GiEmbrassedEnergy,
     subtitle: "Some features use actions",
     description: "Use a racial or class feature that uses an action",
     reference: "See class page for more information.",
@@ -276,7 +240,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Stabilize a Creature",
-    icon: "first-aid",
+    icon: GiFirstAidKit,
     subtitle: "Administer first aid to a dying creature",
     description: "Stop a dying creature from needing to make death saving throws",
     reference: "PHB, pg. 197.",
@@ -288,7 +252,7 @@ export const dataAction: ReferenceItem[] = [
   },
   {
     title: "Improvise",
-    icon: "juggler",
+    icon: GiJuggler,
     subtitle: "Any action not on this list",
     description: "Perform any action you can imagine",
     reference: "PHB, pg. 193.",
@@ -301,7 +265,7 @@ export const dataAction: ReferenceItem[] = [
 export const dataBonusAction: ReferenceItem[] = [
   {
     title: "Offhand Attack",
-    icon: "crossed-swords",
+    icon: GiCrossedSwords,
     subtitle: "Use with the Attack action",
     description: "Attack with your off hand",
     reference: "PHB, pgs. 192,194-195.",
@@ -314,7 +278,7 @@ export const dataBonusAction: ReferenceItem[] = [
   },
   {
     title: "Cast a Spell",
-    icon: "magic-swirl",
+    icon: GiMagicSwirl,
     subtitle: "Cast time of 1 bonus action",
     description: "Cast a spell with a casting time of 1 bonus action",
     reference: "PHB, pg. 192.",
@@ -325,7 +289,7 @@ export const dataBonusAction: ReferenceItem[] = [
   },
   {
     title: "Use Class Feature",
-    icon: "embrassed-energy",
+    icon: GiEmbrassedEnergy,
     subtitle: "Some features use bonus actions",
     description: "Use a racial or class feature that uses a bonus action",
     reference: "See class page for more information.",
@@ -336,7 +300,7 @@ export const dataBonusAction: ReferenceItem[] = [
 export const dataCondition: ReferenceItem[] = [
   {
     title: "Blinded",
-    icon: "one-eyed",
+    icon: GiOneEyed,
     subtitle: "You can't see",
     description: "You can't see",
     reference: "PHB, pg. 290.",
@@ -348,7 +312,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Charmed",
-    icon: "smitten",
+    icon: GiSmitten,
     subtitle: "You are charmed",
     description: "You are charmed by another creature",
     reference: "PHB, pg. 290.",
@@ -359,7 +323,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Deafened",
-    icon: "elf-ear",
+    icon: GiElfEar,
     subtitle: "You can't hear",
     description: "You can't hear",
     reference: "PHB, pg. 290.",
@@ -367,7 +331,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Exhaustion",
-    icon: "crawl",
+    icon: GiWalk,
     subtitle: "You are exhausted",
     description: "Exhaustion is measured in six levels",
     reference: "PHB, pg. 291.",
@@ -380,7 +344,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Frightened",
-    icon: "sharp-smile",
+    icon: GiSharpSmile,
     subtitle: "You are frightened",
     description: "You are frightened",
     reference: "PHB, pg. 290.",
@@ -391,7 +355,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Grappled",
-    icon: "grab",
+    icon: GiGrab,
     subtitle: "You are grappled",
     description: "You are grappled",
     reference: "PHB, pg. 290.",
@@ -403,7 +367,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Incapacitated",
-    icon: "internal-injury",
+    icon: GiInternalInjury,
     subtitle: "You can't take actions or reactions",
     description: "You can't take actions or reactions",
     reference: "PHB, pg. 290.",
@@ -411,7 +375,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Invisible",
-    icon: "invisible",
+    icon: GiInvisible,
     subtitle: "You can't be seen",
     description: "You can't be seen without the aid of magic or a special sense",
     reference: "PHB, pg. 291.",
@@ -424,7 +388,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Paralyzed",
-    icon: "internal-injury",
+    icon: GiInternalInjury,
     subtitle: "You are paralyzed",
     description: "You can't do anything",
     reference: "PHB, pg. 291.",
@@ -437,7 +401,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Petrified",
-    icon: "stone-pile",
+    icon: GiStonePile,
     subtitle: "You are transformed into stone",
     description:
       "You are transformed, along with any nonmagical objects you are wearing or carrying, into a solid inanimate substance (usually stone)",
@@ -453,7 +417,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Poisoned",
-    icon: "deathcab",
+    icon: GiDeathSkull,
     subtitle: "You are poisoned",
     description: "You are poisoned",
     reference: "PHB, pg. 292.",
@@ -461,7 +425,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Prone",
-    icon: "crawl",
+    icon: GiWalk,
     subtitle: "You are prone",
     description: "You are prone",
     reference: "PHB, pg. 292.",
@@ -473,7 +437,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Restrained",
-    icon: "imprisoned",
+    icon: GiImprisoned,
     subtitle: "You are restrained",
     description: "You are restrained",
     reference: "PHB, pg. 292.",
@@ -486,7 +450,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Stunned",
-    icon: "internal-injury",
+    icon: GiInternalInjury,
     subtitle: "You are stunned",
     description: "You are stunned",
     reference: "PHB, pg. 292.",
@@ -498,7 +462,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Unconscious",
-    icon: "coma",
+    icon: GiComa,
     subtitle: "You are unconscious",
     description: "You are unconscious",
     reference: "PHB, pg. 292.",
@@ -512,7 +476,7 @@ export const dataCondition: ReferenceItem[] = [
   },
   {
     title: "Dying",
-    icon: "dead-head",
+    icon: GiDeadHead,
     subtitle: "You are dying",
     description: "You have been dropped to zero hit points and are dying",
     reference: "PHB, pg. 197.",
@@ -534,7 +498,7 @@ export const dataCondition: ReferenceItem[] = [
 export const dataEnvironmentObscurance: ReferenceItem[] = [
   {
     title: "Lightly Obscured",
-    icon: "bleeding-eye",
+    icon: GiBleedingEye,
     subtitle: "Disadvantage on Perception",
     description: "Dim light, patchy fog, moderate foliage",
     reference: "PHB, pg. 183.",
@@ -542,7 +506,7 @@ export const dataEnvironmentObscurance: ReferenceItem[] = [
   },
   {
     title: "Heavily Obscured",
-    icon: "lightning-tear",
+    icon: GiLightningTear,
     subtitle: "Effectively blind",
     description: "Darkness, opaque fog, dense foliage",
     reference: "PHB, pg. 183.",
@@ -553,7 +517,7 @@ export const dataEnvironmentObscurance: ReferenceItem[] = [
 export const dataEnvironmentLight: ReferenceItem[] = [
   {
     title: "Bright Light",
-    icon: "star-pupil",
+    icon: GiStarPupil,
     subtitle: "Normal vision",
     description: "Bright light lets most creatures see normally",
     reference: "PHB, pg. 183.",
@@ -563,7 +527,7 @@ export const dataEnvironmentLight: ReferenceItem[] = [
   },
   {
     title: "Dim Light",
-    icon: "semi-closed-eye",
+    icon: GiSemiClosedEye,
     subtitle: "Lightly obscured",
     description: "Dim light, also called shadows",
     reference: "PHB, pg. 183.",
@@ -575,7 +539,7 @@ export const dataEnvironmentLight: ReferenceItem[] = [
   },
   {
     title: "Darkness",
-    icon: "worried-eyes",
+    icon: GiWorriedEyes,
     subtitle: "Heavily obscured",
     description: "Darkness creates a heavily obscured area",
     reference: "PHB, pg. 183.",
@@ -589,7 +553,7 @@ export const dataEnvironmentLight: ReferenceItem[] = [
 export const dataEnvironmentVision: ReferenceItem[] = [
   {
     title: "Blindsight",
-    icon: "one-eyed",
+    icon: GiOneEyed,
     subtitle: "Perceive without sight",
     description: "Perceive your surroundings without relying on sight, within a certain radius",
     reference: "PHB, pg. 183.",
@@ -599,7 +563,7 @@ export const dataEnvironmentVision: ReferenceItem[] = [
   },
   {
     title: "Darkvision",
-    icon: "semi-closed-eye",
+    icon: GiSemiClosedEye,
     subtitle: "Limited vision in darkness",
     description:
       "A creature with Darkvision can see better in the dark or low light conditions, within a certain radius",
@@ -612,7 +576,7 @@ export const dataEnvironmentVision: ReferenceItem[] = [
   },
   {
     title: "Truesight",
-    icon: "eye-shield",
+    icon: GiEyeShield,
     subtitle: "See in darkness",
     description: "A creature with truesight can see everything in its true form, independent of the environment",
     reference: "PHB, pg. 184.",
@@ -626,7 +590,7 @@ export const dataEnvironmentVision: ReferenceItem[] = [
 export const dataEnvironmentCover: ReferenceItem[] = [
   {
     title: "Half Cover",
-    icon: "broken-shield",
+    icon: GiBrokenShield,
     subtitle: "Low wall, furniture, creatures",
     description: "A target has half cover if an obstacle blocks at least half of its body",
     reference: "PHB, pg. 196.",
@@ -638,7 +602,7 @@ export const dataEnvironmentCover: ReferenceItem[] = [
   },
   {
     title: "Three Quarters Cover",
-    icon: "cracked-shield",
+    icon: GiCrackedShield,
     subtitle: "Portcullis, arrow slit",
     description: "A target has three-quarters cover if about three-quarters of it is covered by an obstacle",
     reference: "PHB, pg. 196.",
@@ -650,7 +614,7 @@ export const dataEnvironmentCover: ReferenceItem[] = [
   },
   {
     title: "Full Cover",
-    icon: "shield",
+    icon: GiShield,
     subtitle: "Completely concealed",
     description: "A target has total cover if it is completely concealed by an obstacle",
     reference: "PHB, pg. 196.",
@@ -664,7 +628,7 @@ export const dataEnvironmentCover: ReferenceItem[] = [
 export const dataMovement: ReferenceItem[] = [
   {
     title: "Move",
-    icon: "run",
+    icon: GiRun,
     subtitle: "Cost: 5ft per 5ft",
     description: "Movement cost: 5ft per 5ft moved",
     reference: "PHB, pg. 190.",
@@ -678,7 +642,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Climb",
-    icon: "crags",
+    icon: GiCrags,
     subtitle: "Cost: 10ft per 5ft",
     description: "Movement cost: 10ft per 5ft climbed",
     reference: "PHB, pg. 182.",
@@ -686,7 +650,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Swim",
-    icon: "at-sea",
+    icon: GiAtSea,
     subtitle: "Cost: 10ft per 5ft",
     description: "Movement cost: 10ft per 5ft swum",
     reference: "PHB, pg. 182.",
@@ -694,7 +658,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Drop Prone",
-    icon: "falling",
+    icon: GiFalling,
     subtitle: "Cost: 0ft",
     description: "Movement cost: 0ft (free)",
     reference: "PHB, pgs. 190-191,292.",
@@ -706,7 +670,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Crawl",
-    icon: "crawl",
+    icon: GiWalk,
     subtitle: "Cost: 10ft per 5ft",
     description: "Movement cost: 10ft per 5ft crawled",
     reference: "PHB, pg. 182.",
@@ -714,7 +678,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Stand Up",
-    icon: "strong",
+    icon: GiStrong,
     subtitle: "Cost: half movement speed",
     description: "Movement cost: half of your speed",
     reference: "PHB, pg. 190-191.",
@@ -722,7 +686,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "High Jump",
-    icon: "wingfoot",
+    icon: GiWingfoot,
     subtitle: "Cost: 5ft per 5ft",
     description: "Movement cost: 5ft per 5ft jumped",
     reference: "PHB, pg. 182.",
@@ -735,7 +699,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Long Jump",
-    icon: "wingfoot",
+    icon: GiWingfoot,
     subtitle: "Cost: 5ft per 5ft",
     description: "Movement cost: 5ft per 5ft jumped",
     reference: "PHB, pg. 182.",
@@ -748,7 +712,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Improvise",
-    icon: "juggler",
+    icon: GiJuggler,
     subtitle: "Any stunt not on this list",
     description: "Perform any movement or stunt you can imagine",
     reference: "PHB, pg. 182.",
@@ -758,7 +722,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Difficult Terrain",
-    icon: "stone-pile",
+    icon: GiStonePile,
     subtitle: "Cost modifier: +5ft per 5ft",
     description: "Moving in difficult terrain costs an additional 5ft per 5ft of movement",
     reference: "PHB, pg. 182.",
@@ -766,7 +730,7 @@ export const dataMovement: ReferenceItem[] = [
   },
   {
     title: "Grapple Move",
-    icon: "grab",
+    icon: GiGrab,
     subtitle: "Modifier: speed halved",
     description: "Drag or carry the grappled creature with you",
     reference: "PHB, pg. 195.",
@@ -777,10 +741,245 @@ export const dataMovement: ReferenceItem[] = [
   },
 ];
 
+export const dataSkills: ReferenceItem[] = [
+  {
+    title: "Acrobatics",
+    icon: GiAcrobatic,
+    subtitle: "Dexterity",
+    description:
+      "Your ability to stay on your feet in tricky situations, along with your ability to perform acrobatic stunts",
+    reference: "PHB, pg. 176.",
+    bullets: [
+      "Use when balancing on a narrow surface, trying to land gracefully after a fall, or performing acrobatic stunts",
+      "Common situations: staying upright on a rocking ship deck, walking on a tightrope, tumbling past enemies",
+      "DM tip: Use DC 10 for easy tasks like keeping balance on uneven ground, DC 15 for moderate challenges like a narrow ledge, DC 20+ for difficult feats like landing on your feet after a long fall",
+    ],
+  },
+  {
+    title: "Animal Handling",
+    icon: GiDogHouse,
+    subtitle: "Wisdom",
+    description:
+      "Your ability to calm down a domesticated animal, keep a mount from getting spooked, or intuit an animal's intentions",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when calming frightened animals, controlling mounts in dangerous situations, or training animals",
+      "Common situations: soothing a guard dog, keeping your horse calm during combat, training a falcon",
+      "DM tip: This skill doesn't let you magically communicate with animals or turn wild beasts into pets. Use Wisdom (Insight) to understand an animal's mood or intentions",
+    ],
+  },
+  {
+    title: "Arcana",
+    icon: GiMagicSwirl,
+    subtitle: "Intelligence",
+    description:
+      "Your ability to recall lore about spells, magic items, eldritch symbols, magical traditions, the planes of existence, and the inhabitants of those planes",
+    reference: "PHB, pg. 177.",
+    bullets: [
+      "Use when identifying magical effects, understanding magical phenomena, or recalling knowledge about magical creatures and items",
+      "Common situations: identifying a spell being cast, understanding the purpose of a magic circle, recognizing a magical creature's abilities",
+      "DM tip: This is about theoretical knowledge of magic, not practical spellcasting. Even non-spellcasters can have high Arcana if they've studied magic academically",
+    ],
+  },
+  {
+    title: "Athletics",
+    icon: GiMuscleUp,
+    subtitle: "Strength",
+    description:
+      "Your ability to climb, jump, or swim. Athletics covers difficult situations you encounter while climbing, jumping, or swimming",
+    reference: "PHB, pg. 175.",
+    bullets: [
+      "Use when climbing difficult surfaces, making long or high jumps, swimming in rough water, or breaking free from restraints",
+      "Common situations: scaling a cliff, jumping across a chasm, swimming against a current, breaking down a door",
+      "DM tip: Simple climbing, jumping, or swimming usually doesn't require a check. Call for Athletics only when there's a risk of failure or time pressure",
+    ],
+  },
+  {
+    title: "Deception",
+    icon: GiEvilEyes,
+    subtitle: "Charisma",
+    description:
+      "Your ability to hide the truth, either verbally or through your actions. This encompasses everything from misleading others through ambiguity to telling outright lies",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when lying, creating false identities, wearing disguises, or misleading others through words or actions",
+      "Common situations: lying to guards, maintaining a false identity, bluffing in a card game, creating a diversion",
+      "DM tip: Consider the target's Intelligence and Wisdom when setting DCs. A suspicious guard might be harder to fool than a trusting merchant",
+    ],
+  },
+  {
+    title: "History",
+    icon: GiScrollUnfurled,
+    subtitle: "Intelligence",
+    description:
+      "Your ability to recall lore about historical events, legendary people, ancient kingdoms, past disputes, recent wars, and lost civilizations",
+    reference: "PHB, pg. 177.",
+    bullets: [
+      "Use when recalling information about past events, historical figures, ancient civilizations, or significant political developments",
+      "Common situations: remembering details about a historical battle, recognizing noble heraldry, recalling the fall of an ancient empire",
+      "DM tip: The scope of knowledge depends on the character's background. A scholar might know world history, while a local might only know regional events",
+    ],
+  },
+  {
+    title: "Insight",
+    icon: GiEyeball,
+    subtitle: "Wisdom",
+    description:
+      "Your ability to determine the true intentions of a creature, such as when searching out a lie or predicting someone's next move",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when trying to determine if someone is lying, reading body language, or understanding someone's emotional state",
+      "Common situations: detecting lies, understanding hidden motivations, predicting someone's next action in social situations",
+      "DM tip: This is about reading people, not mind reading. It can reveal emotions and intentions but not specific thoughts or detailed plans",
+    ],
+  },
+  {
+    title: "Intimidation",
+    icon: GiSharpSmile,
+    subtitle: "Charisma",
+    description:
+      "When you attempt to influence someone through overt threats, hostile actions, and physical violence, the DM might ask you to make a Charisma (Intimidation) check",
+    reference: "PHB, pg. 179.",
+    bullets: [
+      "Use when threatening others, trying to extract information through fear, or making yourself appear more dangerous",
+      "Common situations: getting information from a captured enemy, making bandits back down, scaring away wild animals",
+      "DM tip: Intimidation through fear usually only works short-term. Intimidated creatures may seek revenge later or alert authorities",
+    ],
+  },
+  {
+    title: "Investigation",
+    icon: GiMagnifyingGlass,
+    subtitle: "Intelligence",
+    description:
+      "When you look around for clues and make deductions based on those clues, you make an Intelligence (Investigation) check",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when searching for hidden objects, analyzing crime scenes, researching in libraries, or solving puzzles through logical deduction",
+      "Common situations: finding secret doors, determining what happened at a crime scene, researching in a library, solving riddles",
+      "DM tip: Investigation is about logical analysis and deduction, while Perception is about noticing things. Use Investigation when the character needs to piece together information",
+    ],
+  },
+  {
+    title: "Medicine",
+    icon: GiFirstAidKit,
+    subtitle: "Wisdom",
+    description: "A Wisdom (Medicine) check lets you try to stabilize a dying companion or diagnose an illness",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when stabilizing dying creatures, diagnosing diseases or poisons, determining cause of death, or providing medical care",
+      "Common situations: stabilizing a dying ally (DC 10), diagnosing a strange illness, determining if someone was poisoned",
+      "DM tip: Medicine can provide useful information but doesn't replace magical healing. It's more about knowledge of anatomy and medical procedures",
+    ],
+  },
+  {
+    title: "Nature",
+    icon: GiForestCamp,
+    subtitle: "Intelligence",
+    description:
+      "Your Intelligence (Nature) check measures your ability to recall lore about terrain, plants and animals, the weather, and natural cycles",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when identifying plants or animals, understanding natural phenomena, predicting weather, or navigating natural environments",
+      "Common situations: identifying poisonous plants, predicting incoming storms, understanding animal behavior, recognizing dangerous terrain",
+      "DM tip: This represents academic knowledge about nature. Survival is more about practical wilderness skills, while Nature is about understanding natural science",
+    ],
+  },
+  {
+    title: "Perception",
+    icon: GiEyeShield,
+    subtitle: "Wisdom",
+    description: "Your Wisdom (Perception) check lets you spot, hear, or otherwise detect the presence of something",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when actively searching for hidden creatures or objects, listening for sounds, or trying to notice details in your environment",
+      "Common situations: spotting hidden enemies, hearing approaching footsteps, noticing a concealed door, detecting the smell of gas",
+      "DM tip: This is the most commonly used skill. Passive Perception determines what characters notice without actively looking. Use active Perception for detailed searches",
+    ],
+  },
+  {
+    title: "Performance",
+    icon: GiTheaterCurtains,
+    subtitle: "Charisma",
+    description:
+      "Your Charisma (Performance) check determines how well you can delight an audience with music, dance, acting, storytelling, or some other form of entertainment",
+    reference: "PHB, pg. 179.",
+    bullets: [
+      "Use when entertaining crowds, performing artistic works, or using artistic skills to achieve social goals",
+      "Common situations: playing music in a tavern, acting in a play, telling stories around a campfire, busking for coins",
+      "DM tip: Performance can be used to earn money, gather information (people talk to entertainers), or create distractions. Consider the audience and venue when setting DCs",
+    ],
+  },
+  {
+    title: "Persuasion",
+    icon: GiHandOk,
+    subtitle: "Charisma",
+    description:
+      "When you attempt to influence someone or a group of people with tact, social graces, or good nature, the DM might ask you to make a Charisma (Persuasion) check",
+    reference: "PHB, pg. 179.",
+    bullets: [
+      "Use when trying to convince others through logical argument, appealing to emotions, or using social skills to influence behavior",
+      "Common situations: negotiating prices, convincing guards to let you pass, rallying allies, diplomatic discussions",
+      "DM tip: Persuasion works best when the request is reasonable and the character offers good arguments. It can't make people act completely against their nature or interests",
+    ],
+  },
+  {
+    title: "Religion",
+    icon: GiPrayerBeads,
+    subtitle: "Intelligence",
+    description:
+      "Your Intelligence (Religion) check measures your ability to recall lore about deities, rites and prayers, religious hierarchies, holy symbols, and the practices of secret cults",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when identifying religious symbols, understanding religious customs, recalling knowledge about deities and their domains, or recognizing religious artifacts",
+      "Common situations: identifying holy symbols, understanding religious ceremonies, knowing a deity's domains and followers, recognizing consecrated ground",
+      "DM tip: This represents academic knowledge about religions, not personal faith. Even atheist scholars can have high Religion scores",
+    ],
+  },
+  {
+    title: "Sleight of Hand",
+    icon: GiCardPickup,
+    subtitle: "Dexterity",
+    description:
+      "Whenever you attempt an act of legerdemain or manual trickery, such as planting something on someone else or concealing an object on your person, make a Dexterity (Sleight of Hand) check",
+    reference: "PHB, pg. 177.",
+    bullets: [
+      "Use when pickpocketing, hiding small objects on your person, performing magic tricks, or manipulating objects without being noticed",
+      "Common situations: picking pockets, planting evidence, palming a key, cheating at cards, concealing weapons",
+      "DM tip: This skill is often contested against the target's Perception. Consider the target's awareness and the situation's distractions when setting DCs",
+    ],
+  },
+  {
+    title: "Stealth",
+    icon: GiNinjaHeroicStance,
+    subtitle: "Dexterity",
+    description:
+      "Make a Dexterity (Stealth) check when you attempt to conceal yourself from enemies, slink past guards, slip away without being noticed, or sneak up on someone without being seen or heard",
+    reference: "PHB, pg. 177.",
+    bullets: [
+      "Use when hiding from enemies, moving silently, or trying to avoid detection while moving or stationary",
+      "Common situations: sneaking past guards, hiding in shadows, moving silently through a dungeon, staying hidden during combat",
+      "DM tip: Stealth is usually contested against Perception. Heavy armor imposes disadvantage. You can't hide from creatures that can see you clearly unless you have cover or concealment",
+    ],
+  },
+  {
+    title: "Survival",
+    icon: GiCrags,
+    subtitle: "Wisdom",
+    description:
+      "The DM might ask you to make a Wisdom (Survival) check to follow tracks, hunt wild game, guide your group through frozen wastelands, identify signs that owlbears live nearby, predict the weather, or avoid quicksand and other natural hazards",
+    reference: "PHB, pg. 178.",
+    bullets: [
+      "Use when tracking creatures, navigating wilderness, finding food and shelter, or dealing with natural hazards and weather",
+      "Common situations: following tracks, hunting for food, finding shelter, navigating without a map, avoiding natural hazards",
+      "DM tip: This is about practical wilderness skills and experience. It complements Nature (academic knowledge) and can help the party survive in wild environments",
+    ],
+  },
+];
+
 export const dataReaction: ReferenceItem[] = [
   {
     title: "Opportunity Attack",
-    icon: "crossed-swords",
+    icon: GiCrossedSwords,
     subtitle: "Enemy leaves your reach",
     description: "You can rarely move heedlessly past your foes without putting yourself in danger",
     reference: "PHB, pg. 195.",
@@ -793,7 +992,7 @@ export const dataReaction: ReferenceItem[] = [
   },
   {
     title: "Readied Action",
-    icon: "stopwatch",
+    icon: GiStopwatch,
     subtitle: "Part of your Ready action",
     description: "Execute the reaction specified by your Ready action",
     reference: "PHB, pg. 193.",
@@ -801,7 +1000,7 @@ export const dataReaction: ReferenceItem[] = [
   },
   {
     title: "Cast a Spell",
-    icon: "magic-swirl",
+    icon: GiMagicSwirl,
     subtitle: "Cast time of 1 reaction",
     description: "Cast a spell with a casting time of 1 reaction",
     reference: "PHB, pg. 192.",

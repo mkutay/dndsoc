@@ -471,7 +471,7 @@ export default function AboutPage() {
                     Our main hub for voice chats, event coordination, and community discussions.
                   </TypographyParagraph>
                   <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
-                    <Link href="https://www.instagram.com/kcl_dnd" target="_blank">
+                    <Link href="/api/join?social=discord" target="_blank">
                       Go!
                     </Link>
                   </Button>
@@ -490,7 +490,7 @@ export default function AboutPage() {
                     Follow us for photos from sessions, character art, and society highlights.
                   </TypographyParagraph>
                   <Button variant="outline" size="sm" disabled className="font-quotes" asChild>
-                    <Link href="/api/join?social=discord" target="_blank">
+                    <Link href="https://www.instagram.com/kcl_dnd" target="_blank">
                       Go Follow!
                     </Link>
                   </Button>

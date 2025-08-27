@@ -34,7 +34,7 @@ export default async function Page() {
               <CardDescription>Level {dm.level}</CardDescription>
             </CardHeader>
             <CardContent>
-              <TypographyParagraph>{dm.about || "No about available."}</TypographyParagraph>
+              <TypographyParagraph>{dm.about}</TypographyParagraph>
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
               <Button asChild size="sm" variant="default">

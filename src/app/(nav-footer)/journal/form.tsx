@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
@@ -33,6 +33,7 @@ export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] 
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof journalCreateSchema>>({
     resolver: zodResolver(journalCreateSchema),
@@ -55,7 +56,7 @@ export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] 
           variant: "default",
         });
         setOpen(false);
-        redirect(`/journal/${shortened}/edit`);
+        router.push(`/journal/${shortened}?edit=admin`);
       },
       (error) => {
         toast({
@@ -70,7 +71,7 @@ export function CreateJournal({ campaigns }: { campaigns: Tables<"campaigns">[] 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" type="button" className="w-fit mt-4">
+        <Button variant="default" type="button" className="w-fit">
           Write a New Journal
         </Button>
       </DialogTrigger>

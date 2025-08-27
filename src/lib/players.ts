@@ -1,22 +1,12 @@
 import { getUser } from "./auth";
 import { runQuery } from "@/utils/supabase-run";
 
-type PlayerArgument = {
-  about?: string;
-  id?: string;
-  level?: number;
-  auth_user_uuid: string;
-};
-
 type NotLoggedInError = {
   message: string;
   code: "NOT_LOGGED_IN";
 };
 
-export const insertPlayer = (player: PlayerArgument) =>
-  runQuery((supabase) => supabase.from("players").insert(player).select("*").single());
-
-export const upsertPlayer = (player: PlayerArgument) =>
+export const upsertPlayer = (player: { auth_user_uuid: string }) =>
   runQuery((supabase) =>
     supabase
       .from("players")
@@ -25,18 +15,6 @@ export const upsertPlayer = (player: PlayerArgument) =>
       .single(),
   );
 
-export const getPlayerByUsername = ({ username }: { username: string }) =>
-  runQuery(
-    (supabase) =>
-      supabase
-        .from("players")
-        .select(`*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*)`)
-        .eq("users.username", username)
-        .single(),
-    "getPlayerByUsername",
-  );
-
-// Some thing to consider: the admin might not have a player -- so the "!inner" might fail
 export const getPlayerRoleUser = () =>
   getUser()
     .andThen((user) =>
@@ -54,3 +32,22 @@ export const getPlayerRoleUser = () =>
           } as NotLoggedInError)
         : error,
     );
+
+export const getPlayerByUsername = ({ username }: { username: string }) =>
+  runQuery(
+    (supabase) =>
+      supabase
+        .from("players")
+        .select(
+          `*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*, races(*), classes(*)), images(*)`,
+        )
+        .eq("users.username", username)
+        .single(),
+    "getPlayerByUsername",
+  );
+
+export const getPlayers = () =>
+  runQuery(
+    (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
+    "GET_PLAYERS",
+  );

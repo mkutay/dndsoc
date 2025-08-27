@@ -36,7 +36,7 @@ export const resendSignUpEmailConfirmationAction = async (email: string) =>
 
 type CheckUniquenessError = {
   message: string;
-  code: "UNIQUE_VIOLATION" | "DATABASE_ERROR";
+  code: "UNIQUENESS_VIOLATION" | "DATABASE_ERROR";
 };
 
 const checkUniqueness = (values: z.infer<typeof signUpFormSchema>) =>
@@ -50,7 +50,7 @@ const checkUniqueness = (values: z.infer<typeof signUpFormSchema>) =>
       data.length !== 0
         ? errAsync({
             message: "Username, K-Number, or Email already exists.",
-            code: "UNIQUE_VIOLATION",
+            code: "UNIQUENESS_VIOLATION",
           } as CheckUniquenessError)
         : okAsync(),
     )
@@ -61,7 +61,7 @@ const checkUniqueness = (values: z.infer<typeof signUpFormSchema>) =>
       data.length !== 0
         ? errAsync({
             message: "Email already exists.",
-            code: "UNIQUE_VIOLATION",
+            code: "UNIQUENESS_VIOLATION",
           } as CheckUniquenessError)
         : okAsync(),
     );
@@ -71,7 +71,7 @@ const checkUniquenessEmail = ({ email }: { email: string }) =>
     data.length !== 0
       ? errAsync({
           message: "Email already exists.",
-          code: "UNIQUE_VIOLATION",
+          code: "UNIQUENESS_VIOLATION",
         } as CheckUniquenessError)
       : okAsync(),
   );

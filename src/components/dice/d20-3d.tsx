@@ -110,7 +110,6 @@ export function D20Dice({ className, size = "md", onRoll, disabled = false }: D2
 
   return (
     <div className={cn("relative inline-block", className)}>
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div
         className={cn(canvas, "cursor-pointer")}
         onClick={rollDice}

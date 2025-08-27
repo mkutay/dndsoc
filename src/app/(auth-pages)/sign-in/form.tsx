@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { signInFormSchema } from "@/config/auth-schemas";
 import { TypographyLink } from "@/components/typography/paragraph";
-import { signInAction } from "@/server/auth/sign-in";
-import { actionResultToResult } from "@/types/error-typing";
+import { useAuth } from "@/hooks/use-auth";
 
 export function SignInForm() {
   const searchParams = useSearchParams();
@@ -22,6 +21,7 @@ export function SignInForm() {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
@@ -33,7 +33,7 @@ export function SignInForm() {
 
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
     setPending(true);
-    const result = actionResultToResult(await signInAction(values));
+    const result = await signIn(values);
     setPending(false);
 
     result.match(

@@ -1,16 +1,17 @@
 "use server";
 
 import { z } from "zod";
-
 import { okAsync } from "neverthrow";
+import { revalidatePath } from "next/cache";
+
 import { resultAsyncToActionResult } from "@/types/error-typing";
-import { playersEditSchema } from "@/config/player-edit-schema";
+import { playersEditSchema } from "@/config/players";
 import { parseSchema } from "@/utils/parse-schema";
 import { runQuery } from "@/utils/supabase-run";
 import { uploadImagePlayer } from "@/lib/storage";
 
-export const updatePlayer = async (values: z.infer<typeof playersEditSchema>, playerUuid: string) =>
-  resultAsyncToActionResult(
+export async function updatePlayer(values: z.infer<typeof playersEditSchema>, path: string) {
+  return resultAsyncToActionResult(
     parseSchema(playersEditSchema, values)
       .asyncAndThen(() =>
         runQuery((supabase) =>
@@ -19,7 +20,7 @@ export const updatePlayer = async (values: z.infer<typeof playersEditSchema>, pl
             .update({
               about: values.about,
             })
-            .eq("id", playerUuid)
+            .eq("id", values.playerId)
             .select("users(username)")
             .single(),
         ),
@@ -29,8 +30,10 @@ export const updatePlayer = async (values: z.infer<typeof playersEditSchema>, pl
           ? uploadImagePlayer({
               image: values.image,
               shortened: users.username,
-              playerUuid,
+              playerUuid: values.playerId,
             })
           : okAsync(),
-      ),
+      )
+      .andTee(() => revalidatePath(path)),
   );
+}

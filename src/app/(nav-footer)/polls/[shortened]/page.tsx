@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { format } from "date-fns";
 import { cache } from "react";
-import Link from "next/link";
 
 import { ErrorComponent } from "@/components/error-component";
 import { Options } from "@/components/option";
@@ -8,6 +8,7 @@ import { TypographyH1 } from "@/components/typography/headings";
 import { Button } from "@/components/ui/button";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
+import { PollEditSheet } from "@/components/poll-edit-sheet";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ const getPoll = ({ shortened }: { shortened: string }) =>
 
 const cachedGetPoll = cache(getPoll);
 
-export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
 
   const result = await cachedGetPoll({ shortened });
@@ -74,9 +75,23 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       </div>
       {user.isOk() && user.value.role === "admin" && (
         <div className="flex flex-row justify-end w-full mt-4">
-          <Button variant="outline" asChild className="w-fit">
-            <Link href={`/polls/${poll.shortened}/edit`}>Edit Poll</Link>
-          </Button>
+          <PollEditSheet
+            poll={{
+              id: poll.id,
+              question: poll.question,
+              expires_at: poll.expires_at,
+              shortened: poll.shortened,
+              created_at: poll.created_at,
+              options: poll.options.map((option) => ({
+                text: option.text,
+                id: option.id,
+              })),
+            }}
+          >
+            <Button variant="outline" className="w-fit">
+              Edit Poll
+            </Button>
+          </PollEditSheet>
         </div>
       )}
       <Options

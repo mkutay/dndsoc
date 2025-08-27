@@ -10,7 +10,7 @@ export const updateSession = async (request: NextRequest) => {
     },
   });
 
-  const supabase = createServerClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+  const supabase = createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
         return request.cookies.getAll();
@@ -37,7 +37,7 @@ export const updateSession = async (request: NextRequest) => {
   }
 
   // Edit page in any protected route
-  if (pathname.includes("/edit") && user.error) {
+  if (pathname.includes("?edit") && user.error) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 

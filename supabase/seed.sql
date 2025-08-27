@@ -282,6 +282,17 @@ INSERT INTO "public"."achievements" ("id", "name", "description", "shortened", "
 
 
 --
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."images" ("id", "name") VALUES
+	('513bb4b3-cba1-456f-8e19-c40797625fee', 'player.jpg'),
+	('d4b45746-f0c8-462d-b53a-7404862b6034', 'character.png'),
+	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'dm.jpg'),
+	('8516f20e-c458-491a-aff4-3816d44a64d3', 'party.jpg');
+
+
+--
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -291,28 +302,6 @@ INSERT INTO "public"."users" ("auth_user_uuid", "knumber", "username", "name", "
 	('8925dfd6-2ef1-4311-933a-b9037d612649', 'K98765432', 'u-player', 'Player', 'player@kcl.ac.uk'),
 	('e0850e1b-5df4-4f08-a2f2-23d9739658eb', NULL, 'testing', 'testing', 'testing@a.com'),
 	('c6411966-9bfa-4860-a7be-40eeedad4168', 'K34343434', 'testing1312', 'testing1312', 'test@kcl.ac.uk');
-
-
---
--- Data for Name: associates_requests; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO "public"."associates_requests" ("id", "created_at", "email", "name", "notes", "status", "user_id", "decision_by") VALUES
-	('40b46aed-c05e-4a73-ac58-41d1de613d0b', '2025-07-19 16:10:10.4438+00', 'testing@a.com', 'testing', 'testing', 'approved', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc'),
-	('022ed341-7e03-40fc-890e-7ddf56aa20ef', '2025-07-19 16:20:58.897797+00', 'amogus@a.com', 'amogus', 'amogus', 'denied', NULL, '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc'),
-	('7ec540b5-9235-40fe-90b9-aadeacf26a28', '2025-07-19 16:37:58.897797+00', 'waaa@a.com', 'waaaa', 'waaa', 'pending', NULL, NULL),
-	('b0623b26-8dff-44fe-baf5-ed3ed5eb6d27', '2025-07-19 16:21:30.203815+00', 'this@is.a.test', 'this is a test', 'I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND ', 'approved', NULL, '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc');
-
-
---
--- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO "public"."images" ("id", "name") VALUES
-	('513bb4b3-cba1-456f-8e19-c40797625fee', 'player.jpg'),
-	('d4b45746-f0c8-462d-b53a-7404862b6034', 'character.png'),
-	('ff8ea5e5-472f-4c10-a5df-1741a9b5782b', 'dm.jpg'),
-	('8516f20e-c458-491a-aff4-3816d44a64d3', 'party.jpg');
 
 
 --
@@ -348,7 +337,51 @@ INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shorte
 	('4a20df58-e808-4646-96f7-b89978db36b5', '6b9acd55-90d6-4699-b544-cce825a62e50', 'Pluviam', 2, 'pluviam', 'I am an amazing half orc. I help everyone in need.', NULL),
 	('923e4548-143e-4285-bb3d-b298231919bd', '8f42867b-912f-4833-839b-d237470f9983', 'Ulry Flutemane', 20, 'ulry', 'Ulry Flutemane, a veteran of the Silver Legion, wields his ancestral greatsword and Lionheart Stance to sway the tide of any battle. Clad in gleaming plate and crowned with golden hair, he roams the realm to defend the helpless and test his steel against worthy foes.', 'd4b45746-f0c8-462d-b53a-7404862b6034'),
 	('c81fa02c-c726-49ae-9d47-6582db4e2e0f', '8f42867b-912f-4833-839b-d237470f9983', 'Lizzie', 20, 'lizzie', 'WOO it works. EZ', 'd4b45746-f0c8-462d-b53a-7404862b6034'),
-	('fd4cd1d1-65d2-46df-ac81-76ee878ed87d', '98908cdb-16f9-49fc-95f9-d7a4ae788c66', 'Mouse Jr.', 1, 'mouse-jr', '', NULL);
+  	('fd4cd1d1-65d2-46df-ac81-76ee878ed87d', '98908cdb-16f9-49fc-95f9-d7a4ae788c66', 'Mouse Jr.', 1, 'mouse-jr', '', NULL);
+
+
+--
+-- Data for Name: dms; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."dms" ("auth_user_uuid", "level", "id", "about", "image_uuid") VALUES
+	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 20, '8913c906-bbb1-426a-a9ce-ef9134fb828f', 'An admin, a DM.', 'ff8ea5e5-472f-4c10-a5df-1741a9b5782b'),
+	('261d7c3d-2110-4817-9cf4-216d9f91c11c', 1, '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'hello! THIS IS ME THE ADMIN  ', NULL);
+
+
+--
+-- Data for Name: achievement_requests_character; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."achievement_requests_character" ("achievement_id", "created_at", "character_id", "decision_by_dm", "status") VALUES
+	('e4983462-bcc0-4cdc-9e86-970977309b7e', '2025-08-18 09:24:38.326243+00', '923e4548-143e-4285-bb3d-b298231919bd', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'denied');
+
+
+--
+-- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."admins" ("auth_user_uuid", "id", "about", "image_uuid") VALUES
+	('04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '90f62039-f728-4c55-9675-fe6bd2dd03a7', 'admin', NULL);
+
+
+--
+-- Data for Name: achievement_requests_dm; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."achievement_requests_dm" ("achievement_id", "created_at", "dm_id", "decision_by_admin", "status") VALUES
+	('83838629-8da2-4e96-a086-5acea3721ab3', '2025-08-18 10:43:33.783076+00', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', NULL, 'pending'),
+	('2ddb6c8c-d5fa-4522-b003-59db236c93c4', '2025-08-18 10:47:12.402194+00', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '90f62039-f728-4c55-9675-fe6bd2dd03a7', 'approved');
+
+
+--
+-- Data for Name: achievement_requests_player; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."achievement_requests_player" ("achievement_id", "created_at", "player_id", "decision_by_dm", "status") VALUES
+	('fda15fd7-40f7-4209-b595-c6de52648679', '2025-08-18 10:47:54.981783+00', '8f42867b-912f-4833-839b-d237470f9983', NULL, 'pending'),
+	('4066383a-6ea9-45a7-ac10-b862c7780cb0', '2025-08-18 10:48:01.47821+00', '8f42867b-912f-4833-839b-d237470f9983', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'approved'),
+	('44f0ed7b-3f34-47e5-9ede-6451cb899af9', '2025-08-18 10:47:51.677323+00', '8f42867b-912f-4833-839b-d237470f9983', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'denied');
 
 
 --
@@ -383,6 +416,17 @@ INSERT INTO "public"."auction" ("id", "created_at", "valid", "status", "amount",
 	('adb00a79-083a-4e4b-8afa-2cc2103e7d12', '2025-07-24 11:59:59.203611+00', false, 'created', 1, 'cda6a61e-1ca9-4210-970f-55561163be32', NULL, 'e2ac90a2-b42d-4f9a-881b-bed4caccaa29', NULL),
 	('64b61c8a-7a51-41c0-a020-04520ecb0705', '2025-07-25 12:31:24.490218+00', true, 'listing_rejected', 37, NULL, NULL, 'a6291777-b180-4995-a10f-124c1efede1c', '8913c906-bbb1-426a-a9ce-ef9134fb828f'),
 	('2080998c-a8e9-40c4-9f61-f3e706316624', '2025-07-25 12:11:35.627541+00', false, 'created', 37, '64b61c8a-7a51-41c0-a020-04520ecb0705', NULL, 'a6291777-b180-4995-a10f-124c1efede1c', NULL);
+
+
+--
+-- Data for Name: associates_requests; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."associates_requests" ("id", "created_at", "email", "name", "notes", "status", "user_id", "decision_by") VALUES
+	('7ec540b5-9235-40fe-90b9-aadeacf26a28', '2025-07-19 16:37:58.897797+00', 'waaa@a.com', 'waaaa', 'waaa', 'pending', NULL, NULL),
+	('022ed341-7e03-40fc-890e-7ddf56aa20ef', '2025-07-19 16:20:58.897797+00', 'amogus@a.com', 'amogus', 'amogus', 'denied', NULL, '90f62039-f728-4c55-9675-fe6bd2dd03a7'),
+	('40b46aed-c05e-4a73-ac58-41d1de613d0b', '2025-07-19 16:10:10.4438+00', 'testing@a.com', 'testing', 'testing', 'approved', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', '90f62039-f728-4c55-9675-fe6bd2dd03a7'),
+	('b0623b26-8dff-44fe-baf5-ed3ed5eb6d27', '2025-07-19 16:21:30.203815+00', 'this@is.a.test', 'this is a test', 'I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND I LOVE DND ', 'approved', NULL, '90f62039-f728-4c55-9675-fe6bd2dd03a7');
 
 
 --
@@ -529,10 +573,10 @@ INSERT INTO "public"."party_campaigns" ("party_id", "campaign_id") VALUES
 -- Data for Name: party_entries; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."party_entries" ("journal_id", "party_id", "text") VALUES
-	('d32d4348-f114-4c33-8c3b-687c5186b90b', '7b72e056-d45e-4854-889d-345dbafd01c1', 'The party’s mission was simple: retrieve the Whispering Amulet from the Sunken Crypt. Naturally, Aedan tried to charm the ancient, rune-scribed door instead of letting Corwin decipher it, which promptly triggered a volley of poison darts and awoke every ghoul in the antechamber. While Eamon held the line with gritted teeth and a flurry of steel, Corwin frantically dispelled the trap. They finally secured the amulet, only for their “victory” to awaken the crypt’s mummified warden. The session ended with a mad dash for the exit, the party clutching their prize while being chased by an ancient, bandage-wrapped horror—a situation Eamon is blaming entirely on the “half man.”'),
-	('d32d4348-f114-4c33-8c3b-687c5186b90b', '83f7489c-5594-4c62-8cc7-3c10fc383d44', 'The plan was to discreetly question the harbormaster about a smuggling ring. However, when the harbormaster proved uncooperative, Kaelen the Paladin’s “divine persuasion” escalated into a full-blown dockside brawl. Lyra, our rogue, used the chaos to sneak into his office, finding not only the shipping manifests they needed but also a hidden stash of enchanted rum. The session ended with the party making a hasty retreat on a stolen skiff, Kaelen brandishing a broken oar, Lyra taking celebratory swigs from her new bottle, and the entire port watch in hot pursuit.'),
-	('d32d4348-f114-4c33-8c3b-687c5186b90b', '3ca41630-fcc5-498b-ad54-353405f3160b', 'Being tasked with infiltrating a noble’s gala, the party’s stealthy approach was abandoned when Grog the Barbarian challenged the host to an arm-wrestling match. Our wizard’s attempt to magically weaken the noble backfired, instead causing every chandelier in the ballroom to explode in a shower of glass and harmless sparks. The session ended with the party exposed, the guards rushing in, and Grog still determined to win the match amidst the chaos.');
+INSERT INTO "public"."party_entries" ("journal_id", "party_id", "text", "location") VALUES
+	('d32d4348-f114-4c33-8c3b-687c5186b90b', '7b72e056-d45e-4854-889d-345dbafd01c1', 'The party’s mission was simple: retrieve the Whispering Amulet from the Sunken Crypt. Naturally, Aedan tried to charm the ancient, rune-scribed door instead of letting Corwin decipher it, which promptly triggered a volley of poison darts and awoke every ghoul in the antechamber. While Eamon held the line with gritted teeth and a flurry of steel, Corwin frantically dispelled the trap. They finally secured the amulet, only for their “victory” to awaken the crypt’s mummified warden. The session ended with a mad dash for the exit, the party clutching their prize while being chased by an ancient, bandage-wrapped horror—a situation Eamon is blaming entirely on the “half man.”', ''),
+	('d32d4348-f114-4c33-8c3b-687c5186b90b', '83f7489c-5594-4c62-8cc7-3c10fc383d44', 'The plan was to discreetly question the harbormaster about a smuggling ring. However, when the harbormaster proved uncooperative, Kaelen the Paladin’s “divine persuasion” escalated into a full-blown dockside brawl. Lyra, our rogue, used the chaos to sneak into his office, finding not only the shipping manifests they needed but also a hidden stash of enchanted rum. The session ended with the party making a hasty retreat on a stolen skiff, Kaelen brandishing a broken oar, Lyra taking celebratory swigs from her new bottle, and the entire port watch in hot pursuit.', ''),
+	('d32d4348-f114-4c33-8c3b-687c5186b90b', '3ca41630-fcc5-498b-ad54-353405f3160b', 'Being tasked with infiltrating a noble’s gala, the party’s stealthy approach was abandoned when Grog the Barbarian challenged the host to an arm-wrestling match. Our wizard’s attempt to magically weaken the noble backfired, instead causing every chandelier in the ballroom to explode in a shower of glass and harmless sparks. The session ended with the party exposed, the guards rushing in, and Grog still determined to win the match amidst the chaos.', '');
 
 
 --
@@ -540,7 +584,10 @@ INSERT INTO "public"."party_entries" ("journal_id", "party_id", "text") VALUES
 --
 
 INSERT INTO "public"."received_achievements_character" ("achievement_uuid", "character_uuid", "first_received_date", "last_received_date", "count") VALUES
-	('0228139b-0e3c-412e-bdb2-4fc11aa3f41d', '923e4548-143e-4285-bb3d-b298231919bd', '2020-02-20', '2020-02-20', 1);
+	('28e0c4ea-219d-4385-9b66-97933d441d19', '923e4548-143e-4285-bb3d-b298231919bd', '2025-08-18', '2025-08-18', 2),
+	('0228139b-0e3c-412e-bdb2-4fc11aa3f41d', '923e4548-143e-4285-bb3d-b298231919bd', '2020-02-20', '2025-08-18', 2),
+	('bbb887dd-73e5-484b-a9d0-6fce703e8339', '923e4548-143e-4285-bb3d-b298231919bd', '2025-08-18', '2025-08-18', 1),
+	('7819f98c-0ed1-4d6f-bed6-662244b32548', '923e4548-143e-4285-bb3d-b298231919bd', '2025-08-18', '2025-08-18', 1);
 
 
 --
@@ -548,7 +595,8 @@ INSERT INTO "public"."received_achievements_character" ("achievement_uuid", "cha
 --
 
 INSERT INTO "public"."received_achievements_dm" ("achievement_uuid", "dm_uuid", "first_received_date", "last_received_date", "count") VALUES
-	('05027597-cd2a-4c46-99da-220fb54ad167', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '2020-02-20', '2020-02-20', 1);
+	('05027597-cd2a-4c46-99da-220fb54ad167', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '2020-02-20', '2020-02-20', 1),
+	('2ddb6c8c-d5fa-4522-b003-59db236c93c4', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', '2025-08-18', '2025-08-18', 1);
 
 
 --
@@ -557,7 +605,7 @@ INSERT INTO "public"."received_achievements_dm" ("achievement_uuid", "dm_uuid", 
 
 INSERT INTO "public"."received_achievements_player" ("achievement_uuid", "player_uuid", "first_received_date", "last_received_date", "count") VALUES
 	('4066383a-6ea9-45a7-ac10-b862c7780cb0', '535577b6-bb06-4508-938a-2c4e81c0903b', '2025-02-02', '2025-02-02', 1),
-	('4066383a-6ea9-45a7-ac10-b862c7780cb0', '8f42867b-912f-4833-839b-d237470f9983', '2025-02-02', '2020-02-02', 1);
+	('4066383a-6ea9-45a7-ac10-b862c7780cb0', '8f42867b-912f-4833-839b-d237470f9983', '2025-02-02', '2025-08-18', 2);
 
 
 --
@@ -594,13 +642,6 @@ INSERT INTO "public"."when2dnd_votes" ("id", "created_at", "auth_user_uuid", "wh
 	('3df230dc-783d-4ba5-a210-bc6c3bfc34ac', '2025-07-17 16:18:09.2072+00', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-26 07:00:00+00', '2025-07-26 14:00:00+00'),
 	('f21f2ac4-e03b-4814-9ec3-a97ebdd72954', '2025-07-17 16:18:37.236029+00', '8925dfd6-2ef1-4311-933a-b9037d612649', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-25 06:00:00+00', '2025-07-25 14:00:00+00'),
 	('d9ca3b32-2259-4694-86c3-4dd97e283bf1', '2025-07-17 16:18:37.236029+00', '8925dfd6-2ef1-4311-933a-b9037d612649', '6319e63e-f0ba-4282-a964-d8d303860761', '2025-07-26 06:00:00+00', '2025-07-26 14:00:00+00');
-
-
---
--- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
---
-
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 438, true);
 
 
 --

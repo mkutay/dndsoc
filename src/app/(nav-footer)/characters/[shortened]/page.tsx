@@ -1,8 +1,9 @@
 import { errAsync, okAsync } from "neverthrow";
+import { TiPencil } from "react-icons/ti";
+import { cache, Suspense } from "react";
 import type { Metadata } from "next";
 import { Dot } from "lucide-react";
 import Image from "next/image";
-import { cache, Suspense } from "react";
 
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { TypographyH2 } from "@/components/typography/headings";
@@ -10,26 +11,37 @@ import { formatList } from "@/utils/formatting";
 import { ErrorPage } from "@/components/error-page";
 import { ErrorComponent } from "@/components/error-component";
 import { CampaignCards } from "@/components/campaign-cards";
-import { getPublicUrlByUuid } from "@/lib/storage";
-import { EditButton } from "@/components/edit-button";
-import { getCharacterPlayerByShortened } from "@/lib/characters";
+import { getWithImage } from "@/lib/storage";
 import { getPlayerRoleUser } from "@/lib/players";
 import { runQuery } from "@/utils/supabase-run";
 import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
-import { AchievementCards } from "@/components/achievement-cards";
+import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { PartyCard } from "@/components/party-card";
 import { CharacterThingies } from "@/components/characters/character-thingies";
+import { EditCharacterSheet } from "@/components/edit-character-sheet";
+import { Button } from "@/components/ui/button";
+import type { Enums } from "@/types/database.types";
 
 export const dynamic = "force-dynamic";
 
-const cachedGetCharacter = cache(getCharacterPlayerByShortened);
-const cachedGetPublicUrlByUuid = cache(getPublicUrlByUuid);
+const getCharacterPlayerByShortened = ({ shortened }: { shortened: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("characters")
+      .select(
+        "*, races(*), classes(*), players(*, users(*)), received_achievements_character(*, achievements(*)), character_party(*, parties(*)), images(*)",
+      )
+      .eq("shortened", shortened)
+      .single(),
+  );
+
+const getCharacter = cache(getCharacterPlayerByShortened);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
-  const result = await cachedGetCharacter({ shortened });
+  const result = await getCharacter({ shortened }).andThen(getWithImage);
   if (result.isErr()) return { title: "Character Not Found", description: "This character does not exist." };
-  const character = result.value;
+  const { data: character, url } = result.value;
 
   const level = character.level;
   const classes = character.classes;
@@ -38,49 +50,45 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
   const description = `Some statistics about character ${name}: Level ${level} · ${formatList(classes)} · ${formatList(races)}`;
   const title = `Character ${name}`;
 
-  const imageUrlResult = character.image_uuid
-    ? await cachedGetPublicUrlByUuid({ imageUuid: character.image_uuid })
-    : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
-
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: [imageUrl ?? "/logo-light.png"],
+      images: [url ?? "/logo-light.png"],
     },
   };
 }
 
-export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ shortened: string }>;
+  searchParams: Promise<{ edit: string | null }>;
+}) {
   const { shortened } = await params;
-  const result = await cachedGetCharacter({ shortened });
+  const { edit } = await searchParams;
+  const result = await getCharacter({ shortened })
+    .andThen(getWithImage)
+    .andThen((result) =>
+      getPlayerRoleUser()
+        .orElse((error) => (error.code === "NOT_LOGGED_IN" ? okAsync(null) : errAsync(error)))
+        .map((user) => ({ ...result, user })),
+    );
   if (result.isErr()) return <ErrorPage error={result.error} caller="/characters/[shortened]/page.tsx" isNotFound />;
-  const character = result.value;
+  const { data: character, url, user } = result.value;
 
-  const combinedAuth = await getPlayerRoleUser();
-  if (combinedAuth.isErr() && combinedAuth.error.code !== "NOT_LOGGED_IN")
-    return <ErrorPage error={combinedAuth.error} caller="/characters/[shortened]/page.tsx" />;
-
-  const auth = combinedAuth.isOk() ? combinedAuth.value : null;
-  const role = auth ? auth.roles?.role : null;
-  const ownsCharacter = character.player_uuid === auth?.players.id || role === "admin";
-
-  const imageUrlResult = character.image_uuid
-    ? await cachedGetPublicUrlByUuid({ imageUuid: character.image_uuid })
-    : null;
-  const imageUrl = imageUrlResult?.isOk() ? imageUrlResult.value : null;
-
+  const ownsCharacter = character.player_uuid === user?.players.id || user?.roles.role === "admin";
   const parties = Array.from(new Set(character.character_party.map((party) => party.parties)));
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
       <div className="flex lg:flex-row flex-col gap-6">
-        {imageUrl ? (
+        {url ? (
           <Image
-            src={imageUrl}
+            src={url}
             alt={`Image of ${character.name}`}
             width={144}
             height={144}
@@ -104,7 +112,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
               <div>{character.name.slice(1)}</div>
             </h1>
           </div>
-          <div className="flex flex-row">
+          <div className="flex flex-row -mt-1">
             <TypographyLarge>Level {character.level}</TypographyLarge>
             {(character.classes.length !== 0 || character.races.length !== 0) && <Dot className="mt-px" />}
             {character.classes.length !== 0 && <TypographyLarge>{formatList(character.classes)}</TypographyLarge>}
@@ -114,10 +122,34 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           {character.about && character.about.length !== 0 ? (
             <TypographyLead className="indent-6">{character.about}</TypographyLead>
           ) : null}
-          {ownsCharacter ? <EditButton href={`/characters/${shortened}/edit`} /> : null}
+          {ownsCharacter ? (
+            <EditCharacterSheet
+              path={`/characters/${character.shortened}`}
+              character={{
+                races: character.races,
+                classes: character.classes,
+                about: character.about,
+                level: character.level,
+                id: character.id,
+              }}
+              edit={edit === "true"}
+            >
+              <Button variant="outline" size="default" className="w-fit mt-1.5">
+                <TiPencil size={24} className="mr-2" /> Edit
+              </Button>
+            </EditCharacterSheet>
+          ) : null}
         </div>
       </div>
-      <CharacterAchievements receivedAchievements={character.received_achievements_character} />
+      <Suspense>
+        <CharacterAchievements
+          receivedAchievements={character.received_achievements_character}
+          role={user?.roles.role ?? null}
+          characterId={character.id}
+          shortened={character.shortened}
+          ownsCharacter={character.player_uuid === user?.players.id}
+        />
+      </Suspense>
       <TypographyH2 className="mt-6">Parties</TypographyH2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         {parties.map((party) => (
@@ -127,20 +159,89 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       <Suspense>
         <CharacterThingies ownsCharacter={ownsCharacter} characterUuid={character.id} />
       </Suspense>
-      <Campaigns characterUuid={character.id} />
+      <Suspense>
+        <Campaigns characterUuid={character.id} />
+      </Suspense>
     </div>
   );
 }
 
-const CharacterAchievements = ({ receivedAchievements }: { receivedAchievements: ReceivedAchievementsCharacter[] }) => {
-  if (!receivedAchievements || receivedAchievements.length === 0) return null;
+const CharacterAchievements = async ({
+  receivedAchievements,
+  role,
+  characterId,
+  shortened,
+  ownsCharacter,
+}: {
+  receivedAchievements: ReceivedAchievementsCharacter[];
+  role: Enums<"role"> | null;
+  characterId: string;
+  shortened: string;
+  ownsCharacter: boolean;
+}) => {
+  if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
-  return (
+  const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <AchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} owns="outsider" />
     </>
   );
+
+  if (role === "admin" || role === "dm") {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_character(*)")
+        .eq("achievement_requests_character.character_id", characterId)
+        .eq("type", "character")
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={characterId}
+          receiverType="character"
+          path={`/characters/${shortened}`}
+          owns="super"
+        />
+      </>
+    );
+  } else if (ownsCharacter) {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_character(*)")
+        .eq("achievement_requests_character.character_id", characterId)
+        .eq("type", "character")
+        .eq("is_hidden", false)
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={characterId}
+          receiverType="character"
+          path={`/characters/${shortened}`}
+          owns="self"
+        />
+      </>
+    );
+  }
+
+  return normal;
 };
 
 async function Campaigns({ characterUuid }: { characterUuid: string }) {

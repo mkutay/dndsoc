@@ -1,6 +1,6 @@
 "use server";
 
-import { okAsync, ResultAsync } from "neverthrow";
+import { okAsync } from "neverthrow";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -36,47 +36,44 @@ export const insertCharacter = async (values: z.infer<typeof addCharacterSchema>
       })),
   );
 
-export async function updateCharacter(values: z.infer<typeof characterEditSchema>, characterShortened: string) {
-  const character = runQuery((supabase) =>
-    supabase.from("characters").select("*, races(*), classes(*)").eq("shortened", characterShortened).single(),
+export const updateCharacter = async (values: z.infer<typeof characterEditSchema>, path: string) =>
+  resultAsyncToActionResult(
+    parseSchema(characterEditSchema, values)
+      .asyncAndThen((parsed) =>
+        runQuery(
+          (supabase) =>
+            supabase
+              .from("characters")
+              .update({
+                about: values.about,
+                level: values.level,
+              })
+              .eq("id", values.characterId)
+              .select()
+              .single(),
+          "UPDATE_CHARACTERS",
+        ).map(({ shortened }) => ({ shortened, parsed })),
+      )
+      .andThrough(({ parsed }) => updateClasses({ classes: parsed.classes, characterId: parsed.characterId }))
+      .andThrough(({ parsed }) => updateRace({ race: parsed.race, characterId: parsed.characterId }))
+      .andThen(({ parsed, shortened }) =>
+        values.avatar
+          ? uploadImageCharacter({
+              file: values.avatar,
+              shortened,
+              characterId: parsed.characterId,
+            })
+          : okAsync(),
+      )
+      .andTee(() => revalidatePath(path)),
   );
-
-  const parsed = parseSchema(characterEditSchema, values).asyncAndThrough(() =>
-    runQuery(
-      (supabase) =>
-        supabase
-          .from("characters")
-          .update({
-            about: values.about,
-            level: values.level,
-          })
-          .eq("shortened", characterShortened),
-      "updateCharacterCharactersResult",
-    ),
-  );
-
-  const result = ResultAsync.combine([character, parsed])
-    .andThrough(([character, parsed]) => updateClasses({ classes: parsed.classes, characterId: character.id }))
-    .andThrough(([character, parsed]) => updateRace({ race: parsed.race, characterId: character.id }))
-    .andThen(([{ id }]) =>
-      values.avatar
-        ? uploadImageCharacter({
-            file: values.avatar,
-            shortened: characterShortened,
-            characterId: id,
-          })
-        : okAsync(),
-    );
-
-  return resultAsyncToActionResult(result);
-}
 
 const updateRace = ({ race, characterId }: { race: string; characterId: string }) =>
   deleteCharacterRace({ characterId })
     .andThen(() => upsertRace({ race }))
-    .andThen((response) =>
+    .andThen((race) =>
       upsertCharacterRace({
-        raceId: response.id,
+        raceId: race.id,
         characterId,
       }),
     );
