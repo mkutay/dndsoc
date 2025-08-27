@@ -3,13 +3,13 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-import { getPlayerByUsername } from "@/lib/players";
 import { getWithImage } from "@/lib/storage";
+import { getDMByUsername } from "@/lib/dms";
 
 export async function GET(request: Request, { params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
 
-  const result = await getPlayerByUsername({ username }).andThen(getWithImage);
+  const result = await getDMByUsername({ username }).andThen(getWithImage);
   if (result.isErr()) {
     return new Response(JSON.stringify({ error: result.error.message }), {
       status: 500,
@@ -17,14 +17,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     });
   }
 
-  const { data: player, url } = result.value;
+  const { data: dm, url } = result.value;
 
   const headingsFont = readFile(join(process.cwd(), "src/fonts/mr-eaves/Mr Eaves Small Caps.otf"));
   const bodyFont = readFile(join(process.cwd(), "src/fonts/bookinsanity/Bookinsanity.otf"));
   const quotesFont = readFile(join(process.cwd(), "src/fonts/zatanna-misdirection/Zatanna Misdirection.otf"));
 
-  const achievementsCount = player.received_achievements_player.length;
-  const charactersCount = player.characters.length;
+  const achievementsCount = dm.received_achievements_dm.length;
+  const partyCount = dm.dm_party.length;
 
   return new ImageResponse(
     (
@@ -52,7 +52,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
           {url ? (
             <img
               src={url}
-              alt={`${player.users.name}'s profile`}
+              alt={`${dm.users.name}'s profile`}
               style={{
                 borderRadius: "50%",
                 width: "100px",
@@ -111,7 +111,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
                 margin: "0 0 8px 0",
               }}
             >
-              {player.users.name}
+              {dm.users.name}
             </h2>
             <p
               style={{
@@ -121,7 +121,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
                 margin: "0 0 16px 0",
               }}
             >
-              Level {player.level}
+              Level {dm.level}
             </p>
             <p
               style={{
@@ -133,7 +133,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
                 lineClamp: 4,
               }}
             >
-              {player.about}
+              {dm.about}
             </p>
           </div>
         </div>
@@ -189,7 +189,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
             </div>
           )}
 
-          {charactersCount > 0 && (
+          {partyCount > 0 && (
             <div
               style={{
                 display: "flex",
@@ -212,7 +212,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
               >
                 <path d="M0 0h512v512H0z" fill-opacity="1"></path>
                 <g transform="translate(0,0)" fill="hsl(0, 0%, 100%)">
-                  <path d="M372.2 20.34c-21.4 1.16-30 25.84-29.7 42.79.3 18.28 10.2 43.97 29.7 42.87 21.4-1.2 30-25.94 29.7-42.87-.3-18.29-10.2-43.85-29.7-42.79zM175.3 72.73c-36.6 49.47-17.2 102.67 7.3 146.47l53.6-71.3c24.1 22.7 51.8 37.3 56.4 36.8 10-.9 29.9-16.4 42.8-35-5.6 22.9-9.2 46.2-21 63.9 9.3 36.5 48.2 85 85.4 64 10.3-38.2 12.3-89.7 6.7-127.6 29.6 14.8 43.7 46.1 49.3 72.4 2.4 11.9 31.4 19.7 22.1-14.6-10.8-39.7-31.1-84.1-73.6-99.6-8.2 9.5-19.5 16.8-32.1 15.8-16.3-1.4-30.2-10.4-37.3-22.8-11.9 7.1-36.6 41.1-45.7 55.5-14.5-11.2-24.2-20.9-35.3-32.4l60.3-80.27c-58.2-19.69-112.6-2.46-138.9 28.7zm107.4-16.67L241.4 111c-22.3-10.8-32.5 6.8-17.8 23.8L185 186c-18.4-34.8-15.1-75.7 4.7-102.33 27.2-30.02 57.5-32.98 93-27.61zm14.4 162.84c-51.3 11.4-105.7 15.9-151.3 28.6-27.5 7.7-35.1 30.8-41 54.5-11.28 61.7-24.24 105.4-40.5 166.3 8.4 6.9 17 13.6 20.31 23.3H108c-2.5-15.4-8.32-19.5-15.98-30.7L118.1 398c27.7-6.5 45.2-26 60.3-45.8 38 23.8 82.1 9.4 126.5-7.2 9.5 42-9.7 77.3-20.4 111.6 8.3 12.9 21.7 22.4 27.9 35h28.2c-5.6-16.9-11.9-21.5-23.4-31.7 20.1-41.4 28.2-84.3 33.7-124.4 22-8 32.9-16.9 41.2-35.9-52.5 8.7-85.3-50.5-95-80.7zM99.19 265c-12.02-.2-27.04 3.5-28.49 15.8-4.1 34.8-3.85 71.5-38.44 85 8.4 14 21.75 24.1 37.47 15.3 12.85-39.9 11.04-81.5 29.46-116.1zM392 335.7c-6.3 6.7-14.8 11.9-25 14.8 0 .1-.1.2-.1.3l15.4 17.2-8.7 25.6-14.5 3.2c-1.7 8.1-3.7 16.3-6 24.3 34.2 7.7 55.7-31.4 60.2-54.9-5.4-12-12.4-23.2-21.3-30.5zm-210.9 42.6c-5.4 6.8-12.1 14.5-20.2 21.2 16.3 31.4 34.6 62.9 57.5 92.2h26.7c-28.9-35.6-47.8-75.2-64-113.4z"></path>
+                  <path
+                    d="M462.9 19.12c-9.6 0-17.2 7.59-17.2 17.19 0 9.61 7.6 17.19 17.2 17.19s17.2-7.58 17.2-17.19c0-9.6-7.6-17.19-17.2-17.19zm-80.3 21.82c-160.3.8-218.1 217.46-362.93 96.26 3.25 36.8 88.43 78.4 88.43 78.4-26.03 20-34.78 24.7-71.99 25.5 104.09 86.7 338.69-99.8 408.39 40.1l-2.3-38.4-45.4-46.5 42.7.6-.6-10.2-50.7-32.2 48.4-7.2-.7-11.1-50-27.3 47.9-8.8-.6-10.69L381 66.66l50.5-5.85-.8-13.9c-17.1-4.2-33-6.05-48.1-5.97zm70.8 29.97 20.2 423.99 18.7-.9-20.2-423c-6.3 1.54-12.7 1.5-18.7-.1zM360 292.9l-43.6 70 21.3 25L322 493h18.9l15.2-102.3 28-20.2c-8.1-25.9-16.1-51.8-24.1-77.6zm-156.7 17.9-28.8 69.8 20.5 20.2 2.2 92.2h18.7l-2.2-93 19.6-19.9-30-69.3zm-158.16 5-16.4 61.9 17.65 13.2L61.24 493h18.87L64.89 388.3l13.22-17.6-32.93-54.9zm85.96 7.4-28.2 57.5 15.1 17-6.7 95.3H130l6.8-95.3 15.9-14.2-21.6-60.3zM268 355.5l-19.5 68.4 19.4 15.2 5.8 53.9h18.9l-5.9-54.3 16.8-21.6c-11.9-20.5-23.7-41-35.5-61.6zm143.6.1-18.9 68.6 20.3 15.5 6.2 53.3H438l-6.4-55.2 16-20.9z"
+                    fill-opacity="1"
+                  ></path>
                 </g>
               </svg>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
@@ -225,7 +228,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
                     textTransform: "uppercase",
                   }}
                 >
-                  {charactersCount} Character{achievementsCount !== 1 ? "s" : ""}
+                  {partyCount} {achievementsCount !== 1 ? "Parties" : "Party"}
                 </p>
               </div>
             </div>

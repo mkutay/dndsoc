@@ -19,25 +19,17 @@ import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { DMEditSheet } from "@/components/dm-edit-sheet";
 import { Button } from "@/components/ui/button";
 import type { Enums } from "@/types/database.types";
+import { getDMByUsername } from "@/lib/dms";
 
 export const dynamic = "force-dynamic";
-
-const getDMByUsername = ({ username }: { username: string }) =>
-  runQuery((supabase) =>
-    supabase
-      .from("dms")
-      .select(`*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*)), images(*)`)
-      .eq("users.username", username)
-      .single(),
-  );
 
 const getDM = cache(getDMByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
-  const result = await getDM({ username }).andThen(getWithImage);
+  const result = await getDM({ username });
   if (result.isErr()) return { title: "DM Not Found", description: "This DM does not exist." };
-  const { data: dm, url } = result.value;
+  const dm = result.value;
 
   const level = dm.level;
   const ach = dm.received_achievements_dm.length;
@@ -51,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [url ?? "/logo-light.png"],
+      images: [`/api/gen/dms/${username}`],
     },
   };
 }

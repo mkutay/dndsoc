@@ -18,3 +18,12 @@ export const getDMUser = () =>
   getUser().andThen((user) =>
     runQuery((supabase) => supabase.from("dms").select(`*, users(*)`).eq("auth_user_uuid", user.id).single()),
   );
+
+export const getDMByUsername = ({ username }: { username: string }) =>
+  runQuery((supabase) =>
+    supabase
+      .from("dms")
+      .select(`*, users!inner(*), received_achievements_dm(*, achievements(*)), dm_party(*, parties(*)), images(*)`)
+      .eq("users.username", username)
+      .single(),
+  );
