@@ -32,3 +32,22 @@ export const getPlayerRoleUser = () =>
           } as NotLoggedInError)
         : error,
     );
+
+export const getPlayerByUsername = ({ username }: { username: string }) =>
+  runQuery(
+    (supabase) =>
+      supabase
+        .from("players")
+        .select(
+          `*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*, races(*), classes(*)), images(*)`,
+        )
+        .eq("users.username", username)
+        .single(),
+    "getPlayerByUsername",
+  );
+
+export const getPlayers = () =>
+  runQuery(
+    (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
+    "GET_PLAYERS",
+  );

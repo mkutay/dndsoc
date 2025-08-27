@@ -17,28 +17,17 @@ import { getUserRole } from "@/lib/roles";
 import { Characters } from "@/components/characters";
 import type { Enums } from "@/types/database.types";
 import { CampaignCards } from "@/components/campaign-cards";
+import { getPlayerByUsername } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
 
-const getPlayer = cache(({ username }: { username: string }) =>
-  runQuery(
-    (supabase) =>
-      supabase
-        .from("players")
-        .select(
-          `*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*, races(*), classes(*)), images(*)`,
-        )
-        .eq("users.username", username)
-        .single(),
-    "getPlayerByUsername",
-  ),
-);
+const getPlayer = cache(getPlayerByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
-  const result = await getPlayer({ username }).andThen(getWithImage);
+  const result = await getPlayer({ username });
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
-  const { data: player, url } = result.value;
+  const player = result.value;
 
   const level = player.level;
   const ach = player.received_achievements_player.length;
@@ -51,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [url ?? "/logo-light.png"],
+      images: [`/api/gen/players/${username}`],
     },
   };
 }
