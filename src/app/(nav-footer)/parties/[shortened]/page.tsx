@@ -15,27 +15,17 @@ import { getPlayerRoleUser } from "@/lib/players";
 import { getCharacters } from "@/lib/characters";
 import { getCampaigns } from "@/lib/campaigns";
 import { Button } from "@/components/ui/button";
-import { runQuery } from "@/utils/supabase-run";
+import { getPartyByShortened } from "@/lib/parties";
 
 export const dynamic = "force-dynamic";
 
-const getParty = cache(({ shortened }: { shortened: string }) =>
-  runQuery((supabase) =>
-    supabase
-      .from("parties")
-      .select(
-        `*, dm_party(*, dms!inner(*, users(*))), character_party(*, characters!inner(*, races(*), classes(*), players(*, users(*)))), party_campaigns(*, campaigns!inner(*)), images(*)`,
-      )
-      .eq("shortened", shortened)
-      .single(),
-  ).andThen(getWithImage),
-);
+const getParty = cache((props: { shortened: string }) => getPartyByShortened(props).andThen(getWithImage));
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
   const result = await getParty({ shortened });
   if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
-  const { data: party, url } = result.value;
+  const { data: party } = result.value;
 
   const level = party.level;
   const about = party.about;
@@ -49,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
     openGraph: {
       title,
       description,
-      images: [url ?? "/logo-light.png"],
+      images: [`/api/gen/parties/${shortened}`],
     },
   };
 }
