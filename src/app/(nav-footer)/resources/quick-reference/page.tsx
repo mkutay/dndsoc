@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { D20Dice } from "@/components/dice/d20-3d";
 import { ReferenceCard, ReferenceSection } from "@/components/quick-reference";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Quick Reference",
   description:

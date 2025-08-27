@@ -47,6 +47,8 @@ import { Button } from "@/components/ui/button";
 import { D20Dice } from "@/components/dice/d20-3d";
 import { Badge } from "@/components/ui/badge";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Resources",
   description:

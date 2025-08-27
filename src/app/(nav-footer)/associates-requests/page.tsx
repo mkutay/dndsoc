@@ -29,9 +29,7 @@ const getAllAssociatesRequests = () =>
   runQuery((supabase) =>
     supabase
       .from("associates_requests")
-      .select(
-        "*, decision_by_user:users!associates_requests_decision_by_fkey(*), user:users!associates_requests_user_id_fkey(*)",
-      )
+      .select("*, admins(*, users(*)), user:users!associates_requests_user_id_fkey(*)")
       .order("status", { ascending: false })
       .order("created_at", { ascending: false }),
   );

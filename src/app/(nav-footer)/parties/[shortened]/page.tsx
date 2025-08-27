@@ -4,22 +4,22 @@ import Image from "next/image";
 import { cache } from "react";
 
 import { errAsync, okAsync } from "neverthrow";
+import { Characters } from "./_components/characters";
+import { Campaigns } from "./_components/campaigns";
+import { EditPartyPlayerSheet } from "./_components/edit-party-player-sheet";
+import { EditPartyDMSheet } from "./_components/edit-party-dm-sheet";
 import { TypographyLarge, TypographyLead, TypographyLink, TypographySmall } from "@/components/typography/paragraph";
 import { ErrorPage } from "@/components/error-page";
-import { Characters } from "@/components/parties/characters";
-import { Campaigns } from "@/components/parties/campaigns";
 import { getWithImage } from "@/lib/storage";
 import { getPlayerRoleUser } from "@/lib/players";
 import { getCharacters } from "@/lib/characters";
 import { getCampaigns } from "@/lib/campaigns";
 import { Button } from "@/components/ui/button";
-import { EditPartyPlayerSheet } from "@/components/parties/edit-party-player-sheet";
-import { EditPartyDMSheet } from "@/components/parties/edit-party-dm-sheet";
 import { runQuery } from "@/utils/supabase-run";
 
 export const dynamic = "force-dynamic";
 
-const getPartyByShortened = ({ shortened }: { shortened: string }) =>
+const getParty = cache(({ shortened }: { shortened: string }) =>
   runQuery((supabase) =>
     supabase
       .from("parties")
@@ -28,13 +28,12 @@ const getPartyByShortened = ({ shortened }: { shortened: string }) =>
       )
       .eq("shortened", shortened)
       .single(),
-  );
-
-const getParty = cache(getPartyByShortened);
+  ).andThen(getWithImage),
+);
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
-  const result = await getParty({ shortened }).andThen(getWithImage);
+  const result = await getParty({ shortened });
   if (result.isErr()) return { title: "Party Not Found", description: "This party does not exist." };
   const { data: party, url } = result.value;
 
@@ -65,7 +64,6 @@ export default async function Page({
   const { shortened } = await params;
   const { edit } = await searchParams;
   const result = await getParty({ shortened })
-    .andThen(getWithImage)
     .andThen((result) =>
       getPlayerRoleUser()
         .orElse((error) => (error.code === "NOT_LOGGED_IN" ? okAsync(null) : errAsync(error)))

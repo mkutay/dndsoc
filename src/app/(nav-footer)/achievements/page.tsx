@@ -2,14 +2,13 @@ import { type Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 
+import { CreateAchievement } from "./_components/create-achievement";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/typography/headings";
 import { ErrorPage } from "@/components/error-page";
 import { runQuery } from "@/utils/supabase-run";
 import { type Tables } from "@/types/database.types";
-import { truncateText } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
-import { CreateAchievement } from "@/components/achievements/create-achievement";
 import { getUserRole } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";
@@ -26,15 +25,19 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const achievements = await getAllAchievements();
+  const achievements = await runQuery((supabase) =>
+    supabase.from("achievements").select("*").eq("is_hidden", false).order("points", { ascending: true }),
+  );
   if (achievements.isErr()) return <ErrorPage error={achievements.error} />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      <TypographyH1>Achievements</TypographyH1>
-      <Suspense>
-        <Create />
-      </Suspense>
+      <div className="flex flex-row items-start gap-4 flex-wrap">
+        <TypographyH1>Achievements</TypographyH1>
+        <Suspense>
+          <Create />
+        </Suspense>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
         {achievements.value.map((achievement) => (
           <AchievementCard key={achievement.id} achievement={achievement} />
@@ -50,7 +53,7 @@ async function Create() {
   if (user.value.role !== "admin" && user.value.role !== "dm") return null;
   return (
     <CreateAchievement>
-      <Button variant="outline" type="button" className="w-fit ml-auto mt-4">
+      <Button variant="outline" type="button" className="w-fit ml-auto">
         Create Achievement
       </Button>
     </CreateAchievement>
@@ -70,17 +73,12 @@ function AchievementCard({ achievement }: { achievement: Tables<"achievements"> 
           {difficulty}
         </CardDescription>
       </CardHeader>
-      <CardContent className="sm:text-base text-sm">{truncateText(achievement.description, 100)}</CardContent>
+      <CardContent className="sm:text-base text-sm line-clamp-2">{achievement.description}</CardContent>
       <CardFooter className="flex flex-row justify-end">
-        <Button asChild size="sm" variant="default">
+        <Button asChild size="sm" variant="secondary">
           <Link href={`/achievements/${achievement.shortened}`}>See More</Link>
         </Button>
       </CardFooter>
     </Card>
   );
 }
-
-const getAllAchievements = () =>
-  runQuery((supabase) =>
-    supabase.from("achievements").select("*").eq("is_hidden", false).order("points", { ascending: true }),
-  );

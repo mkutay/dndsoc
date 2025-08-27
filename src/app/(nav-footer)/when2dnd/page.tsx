@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { CreatePollForm } from "@/components/when2dnd/create-poll-form";
+import { CreatePollForm } from "./_components/create-poll-form";
+import { EnterCodeForm } from "./_components/enter-code-form";
 import { ErrorPage } from "@/components/error-page";
 import { getUserRole } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
 import { TypographyH1 } from "@/components/typography/headings";
-import { EnterCodeForm } from "@/components/when2dnd/enter-code-form";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 
 export const metadata: Metadata = {

@@ -146,10 +146,8 @@ export default async function Page({
           role={user?.roles.role ?? null}
           characterId={character.id}
           shortened={character.shortened}
+          ownsCharacter={character.player_uuid === user?.players.id}
         />
-      </Suspense>
-      <Suspense>
-        <Campaigns characterUuid={character.id} />
       </Suspense>
       <TypographyH2 className="mt-6">Parties</TypographyH2>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
@@ -157,6 +155,9 @@ export default async function Page({
           <PartyCard key={party.id} party={party} />
         ))}
       </div>
+      <Suspense>
+        <Campaigns characterUuid={character.id} />
+      </Suspense>
     </div>
   );
 }
@@ -166,25 +167,33 @@ const CharacterAchievements = async ({
   role,
   characterId,
   shortened,
+  ownsCharacter,
 }: {
   receivedAchievements: ReceivedAchievementsCharacter[];
   role: Enums<"role"> | null;
   characterId: string;
   shortened: string;
+  ownsCharacter: boolean;
 }) => {
   if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
   const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <AchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} owns="outsider" />
     </>
   );
 
   if (role === "admin" || role === "dm") {
     const achievements = await runQuery((supabase) =>
-      supabase.from("achievements").select("*").eq("type", "character").order("name", { ascending: true }),
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_character(*)")
+        .eq("achievement_requests_character.character_id", characterId)
+        .eq("type", "character")
+        .order("name", { ascending: true }),
     );
+
     if (achievements.isErr()) return normal;
 
     return (
@@ -196,6 +205,33 @@ const CharacterAchievements = async ({
           receiverId={characterId}
           receiverType="character"
           path={`/characters/${shortened}`}
+          owns="super"
+        />
+      </>
+    );
+  } else if (ownsCharacter) {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_character(*)")
+        .eq("achievement_requests_character.character_id", characterId)
+        .eq("type", "character")
+        .eq("is_hidden", false)
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={characterId}
+          receiverType="character"
+          path={`/characters/${shortened}`}
+          owns="self"
         />
       </>
     );

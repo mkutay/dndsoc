@@ -5,18 +5,18 @@ import { Edit } from "lucide-react";
 import Image from "next/image";
 
 import { TypographyLarge, TypographyLead } from "@/components/typography/paragraph";
-import { Campaigns } from "@/components/players/campaigns";
 import { ErrorPage } from "@/components/error-page";
 import { getWithImage } from "@/lib/storage";
 import { TypographyH2 } from "@/components/typography/headings";
 import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { type ReceivedAchievementsPlayer } from "@/types/full-database.types";
-import { PlayerEditSheet } from "@/components/players/player-edit-sheet";
+import { PlayerEditSheet } from "@/components/player-edit-sheet";
 import { Button } from "@/components/ui/button";
 import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { Characters } from "@/components/characters";
 import type { Enums } from "@/types/database.types";
+import { CampaignCards } from "@/components/campaign-cards";
 import { getPlayerByUsername } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
@@ -97,6 +97,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
         role={user?.role ?? null}
         playerId={player.id}
         username={username}
+        ownsPlayer={player.auth_user_uuid === user?.auth_user_uuid}
       />
       <div className="flex flex-col mt-6 space-y-6">
         <TypographyH2>Characters</TypographyH2>
@@ -114,25 +115,33 @@ const PlayerAchievements = async ({
   role,
   playerId,
   username,
+  ownsPlayer,
 }: {
   receivedAchievements: ReceivedAchievementsPlayer[];
   role: Enums<"role"> | null;
   playerId: string;
   username: string;
+  ownsPlayer: boolean;
 }) => {
   if (receivedAchievements.length === 0 && role !== "admin" && role !== "dm") return null;
 
   const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <AchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} owns="outsider" />
     </>
   );
 
   if (role === "admin" || role === "dm") {
     const achievements = await runQuery((supabase) =>
-      supabase.from("achievements").select("*").eq("type", "player").order("name", { ascending: true }),
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_player(*)")
+        .eq("achievement_requests_player.player_id", playerId)
+        .eq("type", "player")
+        .order("name", { ascending: true }),
     );
+
     if (achievements.isErr()) return normal;
 
     return (
@@ -144,6 +153,33 @@ const PlayerAchievements = async ({
           receiverId={playerId}
           receiverType="player"
           path={`/players/${username}`}
+          owns="super"
+        />
+      </>
+    );
+  } else if (ownsPlayer) {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_player(*)")
+        .eq("achievement_requests_player.player_id", playerId)
+        .eq("type", "player")
+        .eq("is_hidden", false)
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={playerId}
+          receiverType="player"
+          path={`/players/${username}`}
+          owns="self"
         />
       </>
     );
@@ -151,3 +187,53 @@ const PlayerAchievements = async ({
 
   return normal;
 };
+
+async function Campaigns({ playerUuid }: { playerUuid: string }) {
+  const result = await getCampaignsByPlayerUuid({ playerUuid });
+  if (result.isErr()) {
+    return result.error.code === "NOT_FOUND" ? <TypographyH2 className="mt-8">No campaigns found</TypographyH2> : null;
+  }
+  const campaigns = result.value;
+
+  return (
+    <>
+      <TypographyH2 className="mt-8">Campaigns</TypographyH2>
+      <CampaignCards campaigns={campaigns} />
+    </>
+  );
+}
+
+const getCampaignsByPlayerUuid = ({ playerUuid }: { playerUuid: string }) =>
+  runQuery(
+    (supabase) =>
+      supabase
+        .from("parties")
+        .select(`*, party_campaigns!inner(*, campaigns(*)), character_party!inner(*, characters!inner(*))`)
+        .eq("character_party.characters.player_uuid", playerUuid),
+    "getCampaignsByPlayerUuid",
+  )
+    .andThen((data) =>
+      data.length === 0
+        ? errAsync({
+            message: `No campaigns found for player with UUID ${playerUuid}`,
+            code: "NOT_FOUND" as const,
+          })
+        : okAsync(data),
+    )
+    .map((parties) =>
+      parties.flatMap((party) =>
+        party.party_campaigns.map((partyCampaign) => ({
+          ...partyCampaign.campaigns,
+        })),
+      ),
+    )
+    .map((campaigns) => {
+      // Remove duplicates based on campaign id
+      const uniqueCampaigns = new Map<string, (typeof campaigns)[0]>();
+      campaigns.forEach((campaign) => {
+        if (!uniqueCampaigns.has(campaign.id)) {
+          uniqueCampaigns.set(campaign.id, campaign);
+        }
+      });
+      return Array.from(uniqueCampaigns.values());
+    });

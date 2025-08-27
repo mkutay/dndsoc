@@ -1,62 +1,63 @@
 import { createHash } from "crypto";
-import Link from "next/link";
-import { Edit } from "lucide-react";
 
+import { OptimisticWrapper } from "./_components/optimistic-wrapper";
+import { EditPollSheet } from "./_components/edit-poll-sheet";
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH1 } from "@/components/typography/headings";
-import { Button } from "@/components/ui/button";
 import { getUserRole } from "@/lib/roles";
 import { runQuery } from "@/utils/supabase-run";
-import { OptimisticWrapper } from "@/components/when2dnd/optimistic-wrapper";
 import { ForbiddenSignInButton } from "@/components/forbidden-sign-in-button";
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
 
-  const user = await getUserRole();
-  if (user.isErr()) {
-    return user.error.code === "NOT_LOGGED_IN" ? <NotSignedIn /> : <ErrorPage error={user.error} />;
+  const result = await getUserRole().andThen((user) =>
+    runQuery((supabase) =>
+      supabase.from("when2dnd_polls").select("*, when2dnd_votes(*)").eq("code", code).single(),
+    ).map((poll) => ({ user, poll })),
+  );
+
+  if (result.isErr()) {
+    return result.error.code === "NOT_LOGGED_IN" ? <NotSignedIn /> : <ErrorPage error={result.error} />;
   }
 
-  const poll = await getPollWithVotes({ code });
-  if (poll.isErr()) return <ErrorPage error={poll.error} />;
+  const { user, poll } = result.value;
 
-  const canEdit =
-    (user.value.role === "dm" && poll.value.created_by === user.value.auth_user_uuid) || user.value.role === "admin";
+  const canEdit = (user.role === "dm" && poll.created_by === user.auth_user_uuid) || user.role === "admin";
 
   return (
     <div className="md:max-w-6xl max-w-prose mx-auto px-4 my-12">
-      <div className="max-w-prose lg:mx-0 mx-auto">
-        <TypographyH1>Welcome to When2DnD</TypographyH1>
-        <p className="text-xl font-quotes text-muted-foreground mt-2">
-          The easiest way to schedule your Dungeons & Dragons sessions.
-        </p>
+      <div className="flex flex-row justify-between items-start gap-6 flex-wrap">
+        <div className="flex flex-col">
+          <TypographyH1>Welcome to When2DnD</TypographyH1>
+          <p className="text-xl font-quotes text-muted-foreground mt-2">
+            The easiest way to schedule your Dungeons & Dragons sessions.
+          </p>
+        </div>
         {canEdit ? (
-          <div className="mt-6 w-full flex justify-start">
-            <Button className="w-fit" asChild>
-              <Link href={`/when2dnd/${code}/edit`} className="flex items-center gap-2">
-                <Edit className="w-5 h-5 mb-0.5" />
-                Edit the Poll
-              </Link>
-            </Button>
-          </div>
+          <EditPollSheet
+            title={poll.title}
+            dateRange={{ from: new Date(poll.date_from), to: new Date(poll.date_to) }}
+            deadline={poll.deadline ? new Date(poll.deadline) : undefined}
+            pollId={poll.id}
+          />
         ) : null}
       </div>
       <OptimisticWrapper
         code={code}
-        allVotes={poll.value.when2dnd_votes.map((vote) => ({
+        allVotes={poll.when2dnd_votes.map((vote) => ({
           from: new Date(vote.start),
           to: new Date(vote.end),
           userHash: vote.auth_user_uuid ? createHash("sha256").update(vote.auth_user_uuid).digest("hex") : null,
         }))}
-        title={poll.value.title}
-        dateRange={{ from: new Date(poll.value.date_from), to: new Date(poll.value.date_to) }}
-        deadline={poll.value.deadline ? new Date(poll.value.deadline) : undefined}
-        pollId={poll.value.id}
-        createdAt={new Date(poll.value.created_at)}
-        authUserUuid={user.value.auth_user_uuid}
-        userVotes={poll.value.when2dnd_votes
-          .filter((vote) => vote.auth_user_uuid === user.value.auth_user_uuid)
+        title={poll.title}
+        dateRange={{ from: new Date(poll.date_from), to: new Date(poll.date_to) }}
+        deadline={poll.deadline ? new Date(poll.deadline) : undefined}
+        pollId={poll.id}
+        createdAt={new Date(poll.created_at)}
+        authUserUuid={user.auth_user_uuid}
+        userVotes={poll.when2dnd_votes
+          .filter((vote) => vote.auth_user_uuid === user.auth_user_uuid)
           .map((vote) => ({
             from: new Date(vote.start),
             to: new Date(vote.end),
@@ -80,6 +81,3 @@ function NotSignedIn() {
     </div>
   );
 }
-
-const getPollWithVotes = ({ code }: { code: string }) =>
-  runQuery((supabase) => supabase.from("when2dnd_polls").select("*, when2dnd_votes(*)").eq("code", code).single());

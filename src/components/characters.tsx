@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { type Tables } from "@/types/database.types";
-import { formatList, truncateText } from "@/utils/formatting";
-import { AddCharacterForm } from "@/components/players/add-character-form";
+import { formatList } from "@/utils/formatting";
+import { AddCharacterForm } from "@/components/add-character-form";
 
 export function Characters({
   characters,
@@ -56,7 +56,7 @@ export function Characters({
             </CardHeader>
             {character.about ? (
               <CardContent>
-                <TypographyParagraph>{truncateText(character.about, 100)}</TypographyParagraph>
+                <TypographyParagraph className="line-clamp-3">{character.about}</TypographyParagraph>
               </CardContent>
             ) : null}
             <CardFooter className="flex gap-2 justify-end">

@@ -114,6 +114,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
           role={user?.role ?? null}
           dmId={dm.id}
           username={username}
+          ownsDM={user?.auth_user_uuid === dm.auth_user_uuid}
         />
       </Suspense>
       <div className="mt-6 flex flex-col">
@@ -170,25 +171,33 @@ const DMAchievements = async ({
   role,
   dmId,
   username,
+  ownsDM,
 }: {
   receivedAchievements: ReceivedAchievementsDM[];
   role: Enums<"role"> | null;
   dmId: string;
   username: string;
+  ownsDM: boolean;
 }) => {
   if (receivedAchievements.length === 0 && role !== "admin") return null;
 
   const normal = (
     <>
       <TypographyH2 className="mt-6">Achievements</TypographyH2>
-      <AchievementCards receivedAchievements={receivedAchievements} />
+      <AchievementCards receivedAchievements={receivedAchievements} owns="outsider" />
     </>
   );
 
   if (role === "admin") {
     const achievements = await runQuery((supabase) =>
-      supabase.from("achievements").select("*").eq("type", "dm").order("name", { ascending: true }),
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_dm(*)")
+        .eq("achievement_requests_dm.dm_id", dmId)
+        .eq("type", "dm")
+        .order("name", { ascending: true }),
     );
+
     if (achievements.isErr()) return normal;
 
     return (
@@ -200,6 +209,33 @@ const DMAchievements = async ({
           receiverId={dmId}
           receiverType="dm"
           path={`/dms/${username}`}
+          owns="super"
+        />
+      </>
+    );
+  } else if (ownsDM) {
+    const achievements = await runQuery((supabase) =>
+      supabase
+        .from("achievements")
+        .select("*, requested:achievement_requests_dm(*)")
+        .eq("achievement_requests_dm.dm_id", dmId)
+        .eq("type", "dm")
+        .eq("is_hidden", false)
+        .order("name", { ascending: true }),
+    );
+
+    if (achievements.isErr()) return normal;
+
+    return (
+      <>
+        <TypographyH2 className="mt-6">Achievements</TypographyH2>
+        <AchievementCards
+          receivedAchievements={receivedAchievements}
+          achievements={achievements.value}
+          receiverId={dmId}
+          receiverType="dm"
+          path={`/dms/${username}`}
+          owns="self"
         />
       </>
     );

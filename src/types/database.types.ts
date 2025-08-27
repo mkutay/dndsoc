@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          extensions?: Json
           operationName?: string
           query?: string
           variables?: Json
-          extensions?: Json
         }
         Returns: Json
       }
@@ -34,6 +34,144 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievement_requests_character: {
+        Row: {
+          achievement_id: string
+          character_id: string
+          created_at: string
+          decision_by_dm: string | null
+          status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          achievement_id: string
+          character_id: string
+          created_at?: string
+          decision_by_dm?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          achievement_id?: string
+          character_id?: string
+          created_at?: string
+          decision_by_dm?: string | null
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievement_requests_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_decision_by_dm_fkey"
+            columns: ["decision_by_dm"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      achievement_requests_dm: {
+        Row: {
+          achievement_id: string
+          created_at: string
+          decision_by_admin: string | null
+          dm_id: string
+          status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          achievement_id: string
+          created_at?: string
+          decision_by_admin?: string | null
+          dm_id: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          achievement_id?: string
+          created_at?: string
+          decision_by_admin?: string | null
+          dm_id?: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievement_requests_dm_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_dm_decision_by_admin_fkey1"
+            columns: ["decision_by_admin"]
+            isOneToOne: false
+            referencedRelation: "admins"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_dm_dm_id_fkey"
+            columns: ["dm_id"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      achievement_requests_player: {
+        Row: {
+          achievement_id: string
+          created_at: string
+          decision_by_dm: string | null
+          player_id: string
+          status: Database["public"]["Enums"]["request_status"]
+        }
+        Insert: {
+          achievement_id: string
+          created_at?: string
+          decision_by_dm?: string | null
+          player_id: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Update: {
+          achievement_id?: string
+          created_at?: string
+          decision_by_dm?: string | null
+          player_id?: string
+          status?: Database["public"]["Enums"]["request_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievement_requests_player_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_player_decision_by_dm_fkey"
+            columns: ["decision_by_dm"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "achievement_requests_player_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       achievements: {
         Row: {
           category: string | null
@@ -76,6 +214,42 @@ export type Database = {
         }
         Relationships: []
       }
+      admins: {
+        Row: {
+          about: string
+          auth_user_uuid: string
+          id: string
+          image_uuid: string | null
+        }
+        Insert: {
+          about?: string
+          auth_user_uuid: string
+          id?: string
+          image_uuid?: string | null
+        }
+        Update: {
+          about?: string
+          auth_user_uuid?: string
+          id?: string
+          image_uuid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admins_auth_user_uuid_fkey1"
+            columns: ["auth_user_uuid"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["auth_user_uuid"]
+          },
+          {
+            foreignKeyName: "admins_image_uuid_fkey"
+            columns: ["image_uuid"]
+            isOneToOne: false
+            referencedRelation: "images"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       associates_requests: {
         Row: {
           created_at: string
@@ -109,11 +283,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "associates_requests_decision_by_fkey"
+            foreignKeyName: "associates_requests_decision_by_fkey2"
             columns: ["decision_by"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["auth_user_uuid"]
+            referencedRelation: "admins"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "associates_requests_user_id_fkey"
@@ -960,9 +1134,9 @@ export type Database = {
       }
       vote_on: {
         Args: {
+          a_auth_user_uuid: string
           a_option_id: string
           a_poll_id: string
-          a_auth_user_uuid: string
         }
         Returns: undefined
       }
