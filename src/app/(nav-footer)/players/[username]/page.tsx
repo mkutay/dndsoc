@@ -17,21 +17,9 @@ import { runQuery } from "@/utils/supabase-run";
 import { getUserRole } from "@/lib/roles";
 import { Characters } from "@/components/characters";
 import type { Enums } from "@/types/database.types";
+import { getPlayerByUsername } from "@/lib/players";
 
 export const dynamic = "force-dynamic";
-
-const getPlayerByUsername = ({ username }: { username: string }) =>
-  runQuery(
-    (supabase) =>
-      supabase
-        .from("players")
-        .select(
-          `*, users!inner(*), received_achievements_player(*, achievements(*)), characters(*, races(*), classes(*)), images(*)`,
-        )
-        .eq("users.username", username)
-        .single(),
-    "getPlayerByUsername",
-  );
 
 const getPlayer = cache(getPlayerByUsername);
 
