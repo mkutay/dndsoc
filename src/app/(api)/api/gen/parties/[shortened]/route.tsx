@@ -4,7 +4,10 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 import { getWithImage } from "@/lib/storage";
-import { getPartyByShortened } from "@/lib/parties";
+import { getParties, getPartyByShortened } from "@/lib/parties";
+
+export const dynamic = "force-static";
+export const revalidate = 1800;
 
 export async function GET(request: Request, { params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
@@ -374,4 +377,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ shor
       ],
     },
   );
+}
+
+export async function generateStaticParams() {
+  const parties = await getParties();
+  if (parties.isErr()) {
+    return [];
+  }
+  return parties.value.map((party) => ({
+    shortened: party.shortened,
+  }));
 }

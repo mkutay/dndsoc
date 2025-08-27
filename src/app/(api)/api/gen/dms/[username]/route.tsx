@@ -4,7 +4,10 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 import { getWithImage } from "@/lib/storage";
-import { getDMByUsername } from "@/lib/dms";
+import { getDMByUsername, getDMs } from "@/lib/dms";
+
+export const dynamic = "force-static";
+export const revalidate = 1800;
 
 export async function GET(request: Request, { params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -261,4 +264,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
       ],
     },
   );
+}
+
+export async function generateStaticParams() {
+  const dms = await getDMs();
+  if (dms.isErr()) {
+    return [];
+  }
+  return dms.value.map((dm) => ({
+    username: dm.users.username,
+  }));
 }

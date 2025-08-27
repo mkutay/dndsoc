@@ -3,8 +3,11 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-import { getPlayerByUsername } from "@/lib/players";
+import { getPlayerByUsername, getPlayers } from "@/lib/players";
 import { getWithImage } from "@/lib/storage";
+
+export const dynamic = "force-static";
+export const revalidate = 1800;
 
 export async function GET(request: Request, { params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
@@ -258,4 +261,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
       ],
     },
   );
+}
+
+export async function generateStaticParams() {
+  const players = await getPlayers();
+  if (players.isErr()) {
+    return [];
+  }
+  return players.value.map((player) => ({
+    username: player.users.username,
+  }));
 }

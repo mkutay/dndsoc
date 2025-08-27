@@ -45,3 +45,9 @@ export const getPlayerByUsername = ({ username }: { username: string }) =>
         .single(),
     "getPlayerByUsername",
   );
+
+export const getPlayers = () =>
+  runQuery(
+    (supabase) => supabase.from("players").select("*, users(*), received_achievements_player(*, achievements(*))"),
+    "GET_PLAYERS",
+  );
