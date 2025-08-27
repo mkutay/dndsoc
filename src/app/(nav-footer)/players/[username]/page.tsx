@@ -25,9 +25,9 @@ const getPlayer = cache(getPlayerByUsername);
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const { username } = await params;
-  const result = await getPlayer({ username }).andThen(getWithImage);
+  const result = await getPlayer({ username });
   if (result.isErr()) return { title: "Player Not Found", description: "This player does not exist." };
-  const { data: player, url } = result.value;
+  const player = result.value;
 
   const level = player.level;
   const ach = player.received_achievements_player.length;
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     openGraph: {
       title,
       description,
-      images: [url ?? "/logo-light.png"],
+      images: [`/api/gen/players/${username}`],
     },
   };
 }
