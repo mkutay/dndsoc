@@ -101,7 +101,6 @@ const getAllAuctions = () =>
       id: auction.id,
       status: auction.status,
       created_at: auction.created_at,
-      valid: auction.valid,
       next: auction.next,
       seller_amount: auction.seller_amount,
       buyer_amount: auction.buyer_amount,

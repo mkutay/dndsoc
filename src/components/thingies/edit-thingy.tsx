@@ -20,6 +20,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -29,12 +40,19 @@ import { useToast } from "@/hooks/use-toast";
 import { actionResultToResult } from "@/types/error-typing";
 import { editThingySchema, Thingy } from "@/config/thingy";
 import { editThingy } from "@/server/thingies";
-import type { Tables } from "@/types/database.types";
+import type { Enums, Tables } from "@/types/database.types";
 
-export function EditThingy({ characterUuid, thingy }: { characterUuid: string; thingy: Tables<"thingy"> }) {
+export function EditThingy({
+  thingy,
+  auctionStatus,
+}: {
+  thingy: Tables<"thingy">;
+  auctionStatus: Enums<"auction_status"> | undefined;
+}) {
   const { toast } = useToast();
   const [pending, setPending] = useState(false);
   const [comboBoxOpen, setComboBoxOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof editThingySchema>>({
@@ -44,6 +62,7 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
       description: thingy.description,
       tags: thingy.tags.map((tag) => ({ value: tag })),
       public: thingy.public,
+      thingyId: thingy.id,
     },
   });
 
@@ -54,7 +73,7 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
 
   const onSubmit = async (values: z.infer<typeof editThingySchema>) => {
     setPending(true);
-    const result = actionResultToResult(await editThingy(values, characterUuid, thingy.id));
+    const result = actionResultToResult(await editThingy(values));
     setPending(false);
 
     result.match(
@@ -64,8 +83,11 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
           description: "Thingy edited successfully.",
           variant: "default",
         });
+        setOpen(false);
         if (shortened !== thingy.shortened) {
           router.replace("/thingies/" + shortened);
+        } else {
+          router.refresh();
         }
       },
       (error) =>
@@ -78,7 +100,7 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" type="button" disabled={pending} className="w-fit">
           Edit Thingy
@@ -133,37 +155,19 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
                       <FormLabel>Is public?</FormLabel>
                       <FormDescription>
                         If you make this public, other people can see that you have this thingy.
+                        {auctionStatus ? " It is currently on auction, so it must be public." : null}
                       </FormDescription>
                     </div>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={auctionStatus ? true : pending}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="amount"
-                disabled={pending}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Amount</FormLabel>
-                    <FormControl>
-                      <NumberInput
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        ref={field.ref}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      If you have multiple of the same thingy, you can specify the amount here.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name={`tags`}
@@ -253,9 +257,32 @@ export function EditThingy({ characterUuid, thingy }: { characterUuid: string; t
                 )}
               />
               <SheetFooter>
-                <Button type="submit" disabled={pending}>
-                  Submit
-                </Button>
+                {!auctionStatus || auctionStatus === "created" ? (
+                  <Button type="submit" disabled={pending}>
+                    Submit
+                  </Button>
+                ) : (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button disabled={pending}>Submit</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This thingy is currently on auction and have gone through the
+                          pipeline of the auction process. Editing it now will revert back the progress of the auction
+                          and all offers made to this thingy will be voided. You will also need to get the auction
+                          approved once again.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction type="submit">Continue</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
                 <SheetClose asChild>
                   <Button variant="outline">Close</Button>
                 </SheetClose>

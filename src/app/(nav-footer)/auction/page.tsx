@@ -77,6 +77,6 @@ const getAll = () =>
       .select(
         "*, sold_thingy:thingy!auction_seller_thingy_id_fkey(*), counter_thingy:thingy!auction_buyer_thingy_id_fkey(*)",
       )
-      .eq("valid", true)
+      .is("next", null)
       .or("status.eq.buy_request,status.eq.listing_approved"),
   );

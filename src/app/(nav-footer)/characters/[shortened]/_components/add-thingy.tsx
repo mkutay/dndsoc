@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PlusIcon } from "lucide-react";
 
-import { Textarea } from "../ui/textarea";
-import { Switch } from "../ui/switch";
-import { Card } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { ScrollArea } from "../ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetClose,

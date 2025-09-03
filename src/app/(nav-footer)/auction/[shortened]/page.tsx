@@ -28,7 +28,7 @@ const get = cache((shortened: string) =>
         `,
       )
       .eq("sold_thingy.shortened", shortened)
-      .eq("valid", true),
+      .is("next", null),
   ).andThen((result) =>
     result.length === 1
       ? okAsync(result[0])

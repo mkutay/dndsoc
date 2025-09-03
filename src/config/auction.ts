@@ -97,7 +97,6 @@ export type ProcessedAuction = {
   id: string;
   status: Enums<"auction_state">;
   created_at: string;
-  valid: boolean;
   next: string | null;
   seller_amount: number;
   buyer_amount: number | null;

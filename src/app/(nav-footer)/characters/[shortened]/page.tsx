@@ -17,7 +17,7 @@ import { runQuery } from "@/utils/supabase-run";
 import { type ReceivedAchievementsCharacter } from "@/types/full-database.types";
 import { AchievementCards } from "@/components/achievements/achievement-cards";
 import { PartyCard } from "@/components/party-card";
-import { CharacterThingies } from "@/components/characters/character-thingies";
+import { CharacterThingies } from "@/app/(nav-footer)/characters/[shortened]/_components/character-thingies";
 import { EditCharacterSheet } from "@/components/edit-character-sheet";
 import { Button } from "@/components/ui/button";
 import type { Enums } from "@/types/database.types";

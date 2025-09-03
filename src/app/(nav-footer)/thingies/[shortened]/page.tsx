@@ -1,5 +1,5 @@
+import { errAsync, okAsync, safeTry } from "neverthrow";
 import type { Metadata } from "next";
-import { okAsync } from "neverthrow";
 import { cache } from "react";
 
 import Link from "next/link";
@@ -17,25 +17,37 @@ import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
-const getThingyByShortened = (shortened: string) =>
+const getThingyByShortened = cache((shortened: string) =>
   runQuery((supabase) =>
     supabase
       .from("thingy")
       .select("*, characters(*, players(auth_user_uuid))")
       .eq("shortened", shortened)
+      .is("next", null)
       .order("created_at", { ascending: false })
       .limit(1)
       .single(),
+  ),
+);
+
+const getAuctionByThingyId = (id: string) =>
+  runQuery((supabase) =>
+    supabase.from("auctions").select("*").eq("seller_thingy_id", id).neq("status", "listing_rejected").is("next", null),
+  ).andThen((auction) =>
+    auction.length > 1
+      ? errAsync({
+          code: "THINGY_AUCTION_CONFLICT" as const,
+          message: "This thingy is in multiple auctions.",
+        })
+      : okAsync(auction.length === 0 ? null : auction[0]),
   );
 
-const getNext = (id: string | null) =>
-  id ? runQuery((supabase) => supabase.from("thingy").select("*").eq("id", id).single()) : okAsync(null);
-
-const cachedGetThingyByShortened = cache(getThingyByShortened);
+const getOffers = ({ thingyId }: { thingyId: string }) =>
+  runQuery((supabase) => supabase.from("auction_offers").select("*").eq("thingy_id", thingyId).is("next", null));
 
 export async function generateMetadata({ params }: { params: Promise<{ shortened: string }> }): Promise<Metadata> {
   const { shortened } = await params;
-  const result = await cachedGetThingyByShortened(shortened);
+  const result = await getThingyByShortened(shortened);
   if (result.isErr()) return { title: "Thingy Not Found" };
   const thingy = result.value;
 
@@ -53,27 +65,24 @@ export async function generateMetadata({ params }: { params: Promise<{ shortened
 
 export default async function Page({ params }: { params: Promise<{ shortened: string }> }) {
   const { shortened } = await params;
-  const result = await cachedGetThingyByShortened(shortened);
+
+  const result = await safeTry(async function* () {
+    const thingy = yield* await getThingyByShortened(shortened);
+    const user = yield* await getUserRole().orElse((err) =>
+      err.code === "NOT_LOGGED_IN" ? okAsync(null) : errAsync(err),
+    );
+    const auction = yield* await getAuctionByThingyId(thingy.id);
+    const offers = yield* await getOffers({ thingyId: thingy.id });
+
+    return okAsync({ thingy, user, auction, offers });
+  });
+
   if (result.isErr()) return <ErrorPage error={result.error} isForbidden />;
-  const thingy = result.value;
 
-  const nextR = await getNext(thingy.next);
-  if (nextR.isErr()) return <ErrorPage error={nextR.error} />;
-  const next = nextR.value;
-
-  const user = await getUserRole();
+  const { thingy, user, auction } = result.value;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
-      {next ? (
-        <TypographyParagraph className="text-destructive mb-6 font-quotes rounded-md text-lg border-2 border-destructive/80 p-6 w-fit mx-auto">
-          NOTE: This thingy is an older version of{" "}
-          <TypographyLink variant="primary" href={`/thingies/${next.shortened}`}>
-            {next.name}
-          </TypographyLink>
-          .
-        </TypographyParagraph>
-      ) : null}
       {thingy.characters ? (
         <TypographySmall>
           <TypographyLink href={`/characters/${thingy.characters.shortened}`}>
@@ -83,15 +92,20 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
       ) : null}
       <div className="flex flex-row flex-wrap justify-between gap-6 items-center">
         <TypographyH1>{thingy.name}</TypographyH1>
-        {user.isOk() &&
-        (user.value.role === "admin" ||
-          user.value.role === "dm" ||
-          user.value.auth_user_uuid === thingy.characters?.players.auth_user_uuid) &&
-        thingy.character_id &&
-        !next ? (
+        {user &&
+        (user.role === "admin" ||
+          user.role === "dm" ||
+          user.auth_user_uuid === thingy.characters?.players?.auth_user_uuid) &&
+        thingy.character_id ? (
           <div className="flex flex-row gap-2">
-            <PutOnAuctionWrapper thingyId={thingy.id} shortened={thingy.shortened} />
-            <EditThingy thingy={thingy} characterUuid={thingy.character_id} />
+            {auction ? (
+              <Button asChild variant="secondary">
+                <Link href={`/auction/${shortened}`}>View Auction</Link>
+              </Button>
+            ) : (
+              <PutOnAuction thingyId={thingy.id} shortened={shortened} />
+            )}
+            <EditThingy thingy={thingy} auctionStatus={auction?.status} />
           </div>
         ) : null}
       </div>
@@ -109,26 +123,3 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
     </div>
   );
 }
-
-const PutOnAuctionWrapper = async ({ thingyId, shortened }: { thingyId: string; shortened: string }) => {
-  const auction = await runQuery((supabase) =>
-    supabase
-      .from("auction")
-      .select("id")
-      .or(
-        `and(seller_thingy_id.eq.${thingyId},valid.eq.true,next.is.null),and(buyer_thingy_id.eq.${thingyId},valid.eq.true,next.is.null)`,
-      ),
-  );
-
-  if (auction.isErr()) return;
-
-  if (auction.value.length !== 0) {
-    return (
-      <Button asChild variant="secondary">
-        <Link href={`/auction/${shortened}`}>View Auction</Link>
-      </Button>
-    );
-  }
-
-  return <PutOnAuction thingyId={thingyId} shortened={shortened} />;
-};

@@ -298,63 +298,119 @@ export type Database = {
           },
         ]
       }
-      auction: {
+      auction_decisions: {
         Row: {
-          buyer_amount: number | null
-          buyer_thingy_id: string | null
-          created_at: string
-          decision_by: string | null
-          id: string
-          next: string | null
-          seller_amount: number
-          seller_thingy_id: string
-          status: Database["public"]["Enums"]["auction_state"]
-          valid: boolean
+          auction_id: string
+          dm_id: string
         }
         Insert: {
-          buyer_amount?: number | null
-          buyer_thingy_id?: string | null
-          created_at?: string
-          decision_by?: string | null
-          id?: string
-          next?: string | null
-          seller_amount?: number
-          seller_thingy_id: string
-          status?: Database["public"]["Enums"]["auction_state"]
-          valid?: boolean
+          auction_id: string
+          dm_id: string
         }
         Update: {
-          buyer_amount?: number | null
-          buyer_thingy_id?: string | null
-          created_at?: string
-          decision_by?: string | null
-          id?: string
-          next?: string | null
-          seller_amount?: number
-          seller_thingy_id?: string
-          status?: Database["public"]["Enums"]["auction_state"]
-          valid?: boolean
+          auction_id?: string
+          dm_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "auction_buyer_thingy_id_fkey"
-            columns: ["buyer_thingy_id"]
+            foreignKeyName: "auction_decisions_auction_id_fkey"
+            columns: ["auction_id"]
             isOneToOne: false
-            referencedRelation: "thingy"
+            referencedRelation: "auctions"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "auction_decision_by_fkey"
-            columns: ["decision_by"]
+            foreignKeyName: "auction_decisions_dm_id_fkey"
+            columns: ["dm_id"]
             isOneToOne: false
             referencedRelation: "dms"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      auction_offers: {
+        Row: {
+          amount: number
+          auction_id: string
+          created_at: string
+          id: string
+          next: string | null
+          status: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id: string
+        }
+        Insert: {
+          amount: number
+          auction_id: string
+          created_at?: string
+          id?: string
+          next?: string | null
+          status: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id: string
+        }
+        Update: {
+          amount?: number
+          auction_id?: string
+          created_at?: string
+          id?: string
+          next?: string | null
+          status?: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_offers_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_offers_next_fkey"
+            columns: ["next"]
+            isOneToOne: true
+            referencedRelation: "auction_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_offers_thingy_id_fkey"
+            columns: ["thingy_id"]
+            isOneToOne: false
+            referencedRelation: "thingy"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auctions: {
+        Row: {
+          created_at: string
+          id: string
+          next: string | null
+          seller_amount: number
+          seller_thingy_id: string
+          status: Database["public"]["Enums"]["auction_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          next?: string | null
+          seller_amount: number
+          seller_thingy_id: string
+          status: Database["public"]["Enums"]["auction_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          next?: string | null
+          seller_amount?: number
+          seller_thingy_id?: string
+          status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Relationships: [
           {
             foreignKeyName: "auction_next_fkey"
             columns: ["next"]
-            isOneToOne: false
-            referencedRelation: "auction"
+            isOneToOne: true
+            referencedRelation: "auctions"
             referencedColumns: ["id"]
           },
           {
@@ -1039,7 +1095,7 @@ export type Database = {
           id?: string
           name: string
           next?: string | null
-          public?: boolean
+          public: boolean
           shortened: string
           tags: Database["public"]["Enums"]["thingy_type"][]
         }
@@ -1065,7 +1121,7 @@ export type Database = {
           {
             foreignKeyName: "thingy_next_fkey"
             columns: ["next"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "thingy"
             referencedColumns: ["id"]
           },
@@ -1262,16 +1318,22 @@ export type Database = {
     }
     Enums: {
       achievement_type: "dm" | "player" | "character"
-      auction_state:
+      auction_offer_status:
+        | "pending"
+        | "rejected"
+        | "accepted"
+        | "withdrawn"
+        | "rescinded"
+        | "amended"
+      auction_status:
         | "created"
         | "listing_approved"
         | "listing_rejected"
-        | "buy_request"
-        | "buy_request_rejected"
-        | "signed_off"
-        | "deal_completed"
-        | "final_deal_rejected"
-        | "deleted"
+        | "offer_accepted"
+        | "trade_approved"
+        | "trade_rejected"
+        | "amended"
+        | "withdrawn"
       difficulty: "easy" | "medium" | "hard" | "impossible"
       request_status: "approved" | "denied" | "pending"
       role: "admin" | "dm" | "player"
@@ -1451,16 +1513,23 @@ export const Constants = {
   public: {
     Enums: {
       achievement_type: ["dm", "player", "character"],
-      auction_state: [
+      auction_offer_status: [
+        "pending",
+        "rejected",
+        "accepted",
+        "withdrawn",
+        "rescinded",
+        "amended",
+      ],
+      auction_status: [
         "created",
         "listing_approved",
         "listing_rejected",
-        "buy_request",
-        "buy_request_rejected",
-        "signed_off",
-        "deal_completed",
-        "final_deal_rejected",
-        "deleted",
+        "offer_accepted",
+        "trade_approved",
+        "trade_rejected",
+        "amended",
+        "withdrawn",
       ],
       difficulty: ["easy", "medium", "hard", "impossible"],
       request_status: ["approved", "denied", "pending"],

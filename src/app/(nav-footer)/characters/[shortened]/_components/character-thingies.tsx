@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { runQuery } from "@/utils/supabase-run";
 import { ErrorPage } from "@/components/error-page";
 import { TypographyH2 } from "@/components/typography/headings";
-import { TypographyParagraph } from "@/components/typography/paragraph";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export async function CharacterThingies({
@@ -34,9 +33,7 @@ export async function CharacterThingies({
                 <CardDescription className="font-quotes">{thingy.public ? "Public" : "Not Public"}</CardDescription>
               ) : null}
             </CardHeader>
-            <CardContent>
-              <TypographyParagraph>{thingy.description}</TypographyParagraph>
-            </CardContent>
+            <CardContent className="line-clamp-3">{thingy.description}</CardContent>
             <CardFooter>
               <Button asChild variant="outline" size="sm">
                 <Link href={`/thingies/${thingy.shortened}`}>View Thingy</Link>
