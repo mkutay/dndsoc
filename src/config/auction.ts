@@ -13,53 +13,45 @@ export const buyThingySchema = z.object({
   amount: z.number().min(1),
 });
 
-export const statusPretty: Record<Enums<"auction_state">, string> = {
+export const statusPretty: Record<Enums<"auction_status">, string> = {
   created: "Created",
-  deleted: "Deleted",
   listing_approved: "Listing Approved",
   listing_rejected: "Listing Rejected",
-  buy_request: "Buy Request",
-  signed_off: "Signed Off",
-  buy_request_rejected: "Buy Request Rejected",
-  deal_completed: "Deal Completed",
-  final_deal_rejected: "Final Deal Rejected",
+  offer_accepted: "Offer Accepted",
+  trade_approved: "Trade Approved",
+  trade_rejected: "Trade Rejected",
+  amended: "Amended",
+  withdrawn: "Withdrawn",
 };
 
-export const statusVariant: Record<Enums<"auction_state">, "default" | "secondary" | "destructive"> = {
+export const statusVariant: Record<Enums<"auction_status">, "default" | "secondary" | "destructive"> = {
   created: "secondary",
-  deleted: "destructive",
   listing_approved: "default",
   listing_rejected: "destructive",
-  buy_request: "default",
-  buy_request_rejected: "destructive",
-  signed_off: "default",
-  deal_completed: "default",
-  final_deal_rejected: "destructive",
+  offer_accepted: "default",
+  trade_approved: "default",
+  trade_rejected: "destructive",
+  amended: "default",
+  withdrawn: "destructive",
 };
 
-export const statusMeaning: Record<Enums<"auction_state">, string> = {
+export const statusMeaning: Record<Enums<"auction_status">, string> = {
   created: "Auction created but not yet approved.",
-  deleted: "Deleted auction.",
   listing_approved: "Auction listing approved by DM/admin and is visible.",
   listing_rejected: "Auction listing rejected by DM/admin.",
-  buy_request: "Another person has requested to buy the auction item in return for another thingy.",
-  buy_request_rejected: "Buy request has been rejected by the auction owner.",
-  signed_off: "Auction has been signed off by both characters.",
-  deal_completed:
-    "Deal has been completed and approved by both DMs/admin of the characters. The auction is now closed.",
-  final_deal_rejected: "Final deal has been rejected by one of the DMs/admins.",
+  offer_accepted: "An offer has been accepted and trade is in progress.",
+  trade_approved: "Trade has been approved by both DMs/admins. The auction is now closed.",
+  trade_rejected: "Trade has been rejected by one of the DMs/admins.",
+  amended: "The auction or offer has been amended.",
+  withdrawn: "The auction has been withdrawn by the seller.",
 };
 
-export const statusAlertDialog: Record<Enums<"auction_state">, { approve: string; reject: string }> = {
+export const statusAlertDialog: Record<Enums<"auction_status">, { approve: string; reject: string }> = {
   created: {
     approve:
       "This will approve the auction and make it visible to all users. The auction will be live and can be interacted with.",
     reject:
       "This will reject the auction and notify the user. The auction will not be visible to anyone. This action cannot be undone.",
-  },
-  deleted: {
-    approve: "This will restore the deleted auction.",
-    reject: "This will permanently delete the auction.",
   },
   listing_approved: {
     approve: "This auction is already approved.",
@@ -69,33 +61,31 @@ export const statusAlertDialog: Record<Enums<"auction_state">, { approve: string
     approve: "This will approve the previously rejected listing.",
     reject: "This auction is already rejected.",
   },
-  buy_request: {
-    approve: "This will approve the buy request and move to signed off status.",
-    reject: "This will reject the buy request and notify the buyer.",
+  offer_accepted: {
+    approve: "This will approve the accepted offer and move to trade approval.",
+    reject: "This will reject the accepted offer.",
   },
-  buy_request_rejected: {
-    approve: "This will approve the previously rejected buy request.",
-    reject: "This buy request is already rejected.",
+  trade_approved: {
+    approve: "This trade is already approved.",
+    reject: "This will reject the approved trade.",
   },
-  signed_off: {
-    approve:
-      "This will approve the trade and the auction will be closed. The auction will be closed and the items will be exchanged.",
-    reject:
-      "This will reject the trade and notify the users. The auction will not be closed and the items will not be exchanged.",
+  trade_rejected: {
+    approve: "This will approve the previously rejected trade.",
+    reject: "This trade is already rejected.",
   },
-  deal_completed: {
-    approve: "This deal is already completed.",
-    reject: "This will reject the completed deal.",
+  amended: {
+    approve: "This will approve the amended auction/offer.",
+    reject: "This will reject the amended auction/offer.",
   },
-  final_deal_rejected: {
-    approve: "This will approve the previously rejected deal.",
-    reject: "This deal is already rejected.",
+  withdrawn: {
+    approve: "This will restore the withdrawn auction.",
+    reject: "This auction is already withdrawn.",
   },
 };
 
 export type ProcessedAuction = {
   id: string;
-  status: Enums<"auction_state">;
+  status: Enums<"auction_status">;
   created_at: string;
   next: string | null;
   seller_amount: number;

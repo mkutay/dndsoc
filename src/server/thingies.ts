@@ -61,6 +61,7 @@ const insert = (parsed: z.infer<typeof addThingySchema>, id: string, shortened: 
         tags: parsed.tags.map((tag) => tag.value),
         shortened,
         public: parsed.public,
+        character_id: parsed.characterId,
       }),
     "INSERT_THINGY",
   );
@@ -81,6 +82,8 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>) =>
   resultAsyncToActionResult(
     safeTry(async function* () {
       const parsed = yield* parseSchema(editThingySchema, values);
+      parsed.public = true; // must be public if it's on auction
+
       const shortened = yield* await getShortened(parsed.name);
       const newId = crypto.randomUUID();
 
@@ -96,7 +99,7 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>) =>
             .neq("auctions.status", "trade_approved")
             .neq("auction_offers.status", "rejected")
             .neq("auction_offers.status", "withdrawn")
-            .is("auction.next", null)
+            .is("auctions.next", null)
             .single(),
         "FETCH_THINGY",
       );
@@ -126,7 +129,6 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>) =>
         const auction = thingy.auctions[0];
         switch (auction.status) {
           case "created":
-            parsed.public = true; // must be public if it's on auction
             yield* await insert(parsed, newId, shortened);
             yield* await updatePrevious(parsed.thingyId, newId);
             yield* await updateAuction(auction.id, {
@@ -139,7 +141,6 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>) =>
             );
             break;
           case "listing_approved":
-            parsed.public = true; // must be public if it's on auction
             yield* await insert(parsed, newId, shortened);
             yield* await updatePrevious(parsed.thingyId, newId);
             // go to the amended state, since listing was only approved for the previous thingy
@@ -211,7 +212,6 @@ export const editThingy = async (values: z.infer<typeof editThingySchema>) =>
         const offer = thingy.auction_offers[0];
         switch (offer.status) {
           case "pending":
-            parsed.public = true; // must be public if it's on an offer
             yield* await insert(parsed, newId, shortened);
             yield* await updatePrevious(parsed.thingyId, newId);
             yield* await updateAuctionOffer(offer.id, {

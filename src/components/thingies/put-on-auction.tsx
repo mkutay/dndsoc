@@ -49,7 +49,7 @@ export function PutOnAuction({ thingyId, shortened }: { thingyId: string; shorte
           title: "Auction set up successfully",
           description: "Your thingy is now up for auction.",
         });
-        router.push(`/auction/${shortened}`);
+        router.push(`/auctions/${shortened}`);
       },
       (error) => {
         toast({

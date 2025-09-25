@@ -1,7 +1,7 @@
 import { forbidden } from "next/navigation";
 
 import { ErrorPage } from "@/components/error-page";
-import { ManageAuctions } from "@/components/auction/manage-auctions";
+import { ManageAuctions } from "@/components/auctions/manage-auctions";
 import { TypographyH1 } from "@/components/typography/headings";
 import { TypographyParagraph } from "@/components/typography/paragraph";
 import { getUserRole } from "@/lib/roles";

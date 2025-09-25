@@ -11,19 +11,9 @@ import { TypographyParagraph } from "@/components/typography/paragraph";
 import { truncateText } from "@/utils/formatting";
 import { Button } from "@/components/ui/button";
 
-/* 
-Meaning for the auction status type:
-"deleted": Deleted auction
-"created": Auction created but not yet approved
-"listing_approved": Auction listing approved by DM/admin and is visible
-"buy_request": Another person has requested to buy the auction item in return for another thingy
-"signed_off": Auction has been signed off by both characters
-"deal_completed": Deal has been completed and approved by both DMs/admin of the characters -- the auction is now closed
-*/
-
 export default async function Page() {
   const result = await getAll();
-  if (result.isErr()) return <ErrorPage error={result.error} caller="/auction/page.tsx" />;
+  if (result.isErr()) return <ErrorPage error={result.error} caller="/auctions/page.tsx" />;
 
   return (
     <div className="flex flex-col w-full mx-auto lg:max-w-6xl max-w-prose lg:my-12 mt-6 mb-12 px-4">
@@ -37,12 +27,17 @@ export default async function Page() {
                 <p>
                   {auction.status === "listing_approved"
                     ? "Listing is approved and live."
-                    : auction.status === "buy_request"
-                      ? "Someone has requested to buy this auction item."
+                    : auction.status === "offer_accepted"
+                      ? "An offer has been accepted for this auction item."
                       : null}
                 </p>
+                {auction.counter_offers.length > 0 && (
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {auction.counter_offers.length} offer{auction.counter_offers.length !== 1 ? "s" : ""} received
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-1 mt-3">
-                  {auction.sold_thingy.tags.slice(0, 3).map((tag) => (
+                  {auction.sold_thingy.tags.slice(0, 3).map((tag: string) => (
                     <Badge key={tag}>{tag}</Badge>
                   ))}
                   {auction.sold_thingy.tags.length > 3 && (
@@ -58,7 +53,7 @@ export default async function Page() {
             </CardContent>
             <CardFooter className="flex flex-row justify-end">
               <Button asChild size="xs" variant="ghost" className="font-quotes">
-                <Link href={`/auction/${auction.sold_thingy.shortened}`} className="flex items-center gap-0.5">
+                <Link href={`/auctions/${auction.sold_thingy.shortened}`} className="flex items-center gap-0.5">
                   View Listing <ArrowRight size={20} />
                 </Link>
               </Button>
@@ -73,10 +68,20 @@ export default async function Page() {
 const getAll = () =>
   runQuery((supabase) =>
     supabase
-      .from("auction")
+      .from("auctions")
       .select(
-        "*, sold_thingy:thingy!auction_seller_thingy_id_fkey(*), counter_thingy:thingy!auction_buyer_thingy_id_fkey(*)",
+        `
+        *,
+        sold_thingy:thingy!auction_seller_thingy_id_fkey(*),
+        counter_offers:auction_offers(*, thingy(*))
+        `,
       )
       .is("next", null)
-      .or("status.eq.buy_request,status.eq.listing_approved"),
+      .neq("status", "created")
+      .neq("status", "listing_rejected")
+      .neq("status", "withdrawn")
+      .neq("status", "trade_rejected")
+      .neq("status", "trade_approved")
+      .neq("auction_offers.status", "rejected")
+      .neq("auction_offers.status", "withdrawn"),
   );

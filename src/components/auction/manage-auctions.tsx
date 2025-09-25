@@ -92,7 +92,7 @@ export function ManageAuctions({ auctions }: { auctions: ProcessedAuction[] }) {
             <TableRow key={auction.id}>
               <TableCell className="text-center">
                 <div>
-                  <TypographyLink href={`/auction/${auction.sold_thingy.shortened}`} target="_blank">
+                  <TypographyLink href={`/auctions/${auction.sold_thingy.shortened}`} target="_blank">
                     {auction.sold_thingy.name}
                   </TypographyLink>
                 </div>
@@ -111,7 +111,7 @@ export function ManageAuctions({ auctions }: { auctions: ProcessedAuction[] }) {
               <TableCell className="text-center">
                 {auction.counter_thingy ? (
                   <div>
-                    <TypographyLink href={`/auction/${auction.counter_thingy.shortened}`} target="_blank">
+                    <TypographyLink href={`/auctions/${auction.counter_thingy.shortened}`} target="_blank">
                       {auction.counter_thingy.name}
                     </TypographyLink>
                   </div>

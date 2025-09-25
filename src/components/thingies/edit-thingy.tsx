@@ -63,6 +63,7 @@ export function EditThingy({
       tags: thingy.tags.map((tag) => ({ value: tag })),
       public: thingy.public,
       thingyId: thingy.id,
+      characterId: thingy.character_id ?? undefined,
     },
   });
 
@@ -109,7 +110,10 @@ export function EditThingy({
       <SheetContent className="sm:max-w-md p-2 py-6">
         <ScrollArea className="h-full px-3">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1">
+            <form
+              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation errors:", errors))}
+              className="space-y-6 px-1"
+            >
               <SheetHeader>
                 <SheetTitle>Edit Thingy</SheetTitle>
               </SheetHeader>
@@ -157,6 +161,7 @@ export function EditThingy({
                         If you make this public, other people can see that you have this thingy.
                         {auctionStatus ? " It is currently on auction, so it must be public." : null}
                       </FormDescription>
+                      <FormMessage />
                     </div>
                     <FormControl>
                       <Switch

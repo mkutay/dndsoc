@@ -100,7 +100,7 @@ export default async function Page({ params }: { params: Promise<{ shortened: st
           <div className="flex flex-row gap-2">
             {auction ? (
               <Button asChild variant="secondary">
-                <Link href={`/auction/${shortened}`}>View Auction</Link>
+                <Link href={`/auctions/${shortened}`}>View Auction</Link>
               </Button>
             ) : (
               <PutOnAuction thingyId={thingy.id} shortened={shortened} />
