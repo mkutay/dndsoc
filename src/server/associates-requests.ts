@@ -11,8 +11,11 @@ export const rejectAssociatesRequest = async ({ id }: { id: string }) =>
   resultAsyncToActionResult(
     getUser()
       .andThen((user) =>
+        runQuery((supabase) => supabase.from("admins").select("id").eq("auth_user_uuid", user.id).single()),
+      )
+      .andThen((admin) =>
         runQuery((supabase) =>
-          supabase.from("associates_requests").update({ status: "denied", decision_by: user.id }).eq("id", id),
+          supabase.from("associates_requests").update({ status: "denied", decision_by: admin.id }).eq("id", id),
         ),
       )
       .andTee(() => {
@@ -25,10 +28,13 @@ export const approveAssociatesRequest = async ({ id }: { id: string }) =>
   resultAsyncToActionResult(
     getUser()
       .andThen((user) =>
+        runQuery((supabase) => supabase.from("admins").select("id").eq("auth_user_uuid", user.id).single()),
+      )
+      .andThen((admin) =>
         runQuery((supabase) =>
           supabase
             .from("associates_requests")
-            .update({ status: "approved", decision_by: user.id })
+            .update({ status: "approved", decision_by: admin.id })
             .eq("id", id)
             .select("email, name, id")
             .single(),
