@@ -597,6 +597,21 @@ export type Database = {
           },
         ]
       }
+      links: {
+        Row: {
+          link: string
+          shortened: string
+        }
+        Insert: {
+          link: string
+          shortened: string
+        }
+        Update: {
+          link?: string
+          shortened?: string
+        }
+        Relationships: []
+      }
       options: {
         Row: {
           id: string
