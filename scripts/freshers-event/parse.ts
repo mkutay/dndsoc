@@ -99,10 +99,29 @@ const timed: {
 }[] = [];
 
 const left: Record<string, number> = {
-  "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.": 35,
-  "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.": 35,
+  "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.": 30,
+  "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.": 30,
   "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.": 60,
 };
+
+result.sort((a, b) => {
+  // if they have a second choice and its 60 option put them later
+  const aValues = Object.values(a);
+  const bValues = Object.values(b);
+  if (
+    aValues[7] === "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots." &&
+    bValues[7] !== "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots."
+  ) {
+    return 1;
+  }
+  if (
+    bValues[7] === "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots." &&
+    aValues[7] !== "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots."
+  ) {
+    return -1;
+  }
+  return 0;
+});
 
 for (let i = 1; i < result.length; i++) {
   const values = Object.values(result[i]);
