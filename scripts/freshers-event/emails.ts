@@ -31,7 +31,7 @@ for (const session of sessions) {
     }
   }
 
-  console.log(`Session: ${session}
+  console.warn(`Session: ${session}
 
 ${emails.join(", ")}
 `);

@@ -22,6 +22,21 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
 
   const { data: player, url } = result.value;
 
+  // Guard against unsupported/undeterminable remote images during prerender (e.g. webp without size)
+  let safeImageUrl: string | undefined;
+  if (url) {
+    try {
+      const res = await fetch(url);
+      const contentType = res.headers.get("content-type") ?? "";
+      const isSupported = res.ok && (contentType.startsWith("image/png") || contentType.startsWith("image/jpeg"));
+      if (isSupported) {
+        safeImageUrl = url;
+      }
+    } catch {
+      // Ignore fetch failures and fall back to placeholder
+    }
+  }
+
   const headingsFont = readFile(join(process.cwd(), "src/fonts/mr-eaves/Mr Eaves Small Caps.otf"));
   const bodyFont = readFile(join(process.cwd(), "src/fonts/bookinsanity/Bookinsanity.otf"));
   const quotesFont = readFile(join(process.cwd(), "src/fonts/zatanna-misdirection/Zatanna Misdirection.otf"));
@@ -52,10 +67,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
           }}
         >
           {/* Profile Image */}
-          {url ? (
+          {safeImageUrl ? (
             <img
-              src={url}
+              src={safeImageUrl}
               alt={`${player.users.name}'s profile`}
+              width={100}
+              height={100}
               style={{
                 borderRadius: "50%",
                 width: "100px",
