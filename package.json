@@ -45,7 +45,7 @@
     "katex": "^0.16.22",
     "lucide-react": "^0.541.0",
     "neverthrow": "^8.2.0",
-    "next": "15.5.0",
+    "next": "15.5.7",
     "next-plausible": "^3.12.4",
     "next-themes": "^0.4.6",
     "ogl": "^1.0.11",
