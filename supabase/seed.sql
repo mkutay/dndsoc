@@ -23,7 +23,6 @@ SET row_security = off;
 --
 
 
-
 --
 -- Data for Name: flow_state; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
@@ -35,12 +34,12 @@ SET row_security = off;
 --
 
 INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") VALUES
-	('00000000-0000-0000-0000-000000000000', '261d7c3d-2110-4817-9cf4-216d9f91c11c', 'authenticated', 'authenticated', 'dm@kcl.ac.uk', '$2a$10$SK.O5Y6x1CdWTHz7jm25xuBpyrcSviepZvcjc2/4z000460/6el.m', '2025-06-14 18:56:31.80452+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-19 16:23:21.412642+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "261d7c3d-2110-4817-9cf4-216d9f91c11c", "name": "DM", "email": "dm@kcl.ac.uk", "knumber": "K87654321", "username": "u-dm", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:56:31.80221+00', '2025-07-19 16:23:21.413833+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '8925dfd6-2ef1-4311-933a-b9037d612649', 'authenticated', 'authenticated', 'player@kcl.ac.uk', '$2a$10$cSNlg209lufdMx1Fjlo2ZuVoUmkLOfYVh1XV5.pg78sS/E8Aodq0O', '2025-06-14 18:57:46.924803+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-19 16:23:29.084306+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "8925dfd6-2ef1-4311-933a-b9037d612649", "name": "Player", "email": "player@kcl.ac.uk", "knumber": "K98765432", "username": "u-player", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:57:46.922871+00', '2025-07-19 16:23:29.085026+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', 'authenticated', 'authenticated', 'testing@a.com', '$2a$10$G72pUKUT67J6Cqgl/4IFneWTtg/9aJELChsOPSbxqZ2Vu/jjvgzEi', '2025-07-19 16:10:36.982922+00', '2025-07-19 16:10:22.921425+00', '', NULL, '', NULL, '', '', NULL, '2025-07-19 16:10:36.983847+00', '{"provider": "email", "providers": ["email"]}', '{"name": "testing", "email": "testing@a.com", "siteUrl": "http://localhost:3000", "username": "testing", "requestId": "40b46aed-c05e-4a73-ac58-41d1de613d0b", "email_verified": true}', NULL, '2025-07-19 16:10:22.917865+00', '2025-07-19 16:10:37.085644+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
 	('00000000-0000-0000-0000-000000000000', 'c5c0e843-3387-46d2-bafb-ccbbdd33cbd7', 'authenticated', 'authenticated', 'this@is.a.test', '', NULL, '2025-07-19 16:28:12.898334+00', 'b7fc974fa1c318521e835ad9547caffc53fe223d6728a1293505b6b7', '2025-07-19 16:28:12.898334+00', '', NULL, '', '', NULL, NULL, '{"provider": "email", "providers": ["email"]}', '{"name": "this is a test", "email": "this@is.a.test", "siteUrl": "http://localhost:3000", "requestId": "b0623b26-8dff-44fe-baf5-ed3ed5eb6d27"}', NULL, '2025-07-19 16:28:12.895204+00', '2025-07-19 16:28:12.909537+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'authenticated', 'authenticated', 'admin@kcl.ac.uk', '$2a$10$OWTk1knl5PmUzSBYPa3L4.7Cd7cwZEEDSwbyaaWqAkjf5iqlQmkVy', '2025-06-14 18:48:31.935074+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-19 16:30:04.230185+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc", "name": "Admin", "email": "admin@kcl.ac.uk", "knumber": "K12345678", "username": "u-admin", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:48:31.931167+00', '2025-07-19 16:30:04.231356+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
-	('00000000-0000-0000-0000-000000000000', 'c6411966-9bfa-4860-a7be-40eeedad4168', 'authenticated', 'authenticated', 'test@kcl.ac.uk', '$2a$10$HWJlTu3K2iQZP5xTNGRauePjm9hT1h6.qz9RVpteCG4SLODK3M3gm', '2025-07-19 16:31:07.910663+00', NULL, '', '2025-07-19 16:31:01.5198+00', '', NULL, '', '', NULL, '2025-07-19 16:31:07.912041+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "c6411966-9bfa-4860-a7be-40eeedad4168", "name": "testing1312", "email": "test@kcl.ac.uk", "knumber": "K34343434", "siteUrl": "http://localhost:3000", "username": "testing1312", "email_verified": true, "phone_verified": false}', NULL, '2025-07-19 16:31:01.515387+00', '2025-07-19 16:31:07.913418+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
+	('00000000-0000-0000-0000-000000000000', 'c6411966-9bfa-4860-a7be-40eeedad4168', 'authenticated', 'authenticated', 'test@kcl.ac.uk', '$2a$10$HWJlTu3K2iQZP5xTNGRauePjm9hT1h6.qz9RVpteCG4SLODK3M3gm', '2025-07-19 16:31:07.910663+00', NULL, '', '2025-07-19 16:31:01.5198+00', '', NULL, '', '', NULL, '2025-07-19 16:31:07.912041+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "c6411966-9bfa-4860-a7be-40eeedad4168", "name": "testing1312", "email": "test@kcl.ac.uk", "knumber": "K34343434", "siteUrl": "http://localhost:3000", "username": "testing1312", "email_verified": true, "phone_verified": false}', NULL, '2025-07-19 16:31:01.515387+00', '2025-07-19 16:31:07.913418+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '8925dfd6-2ef1-4311-933a-b9037d612649', 'authenticated', 'authenticated', 'player@kcl.ac.uk', '$2a$10$cSNlg209lufdMx1Fjlo2ZuVoUmkLOfYVh1XV5.pg78sS/E8Aodq0O', '2025-06-14 18:57:46.924803+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-24 11:18:54.224954+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "8925dfd6-2ef1-4311-933a-b9037d612649", "name": "Player", "email": "player@kcl.ac.uk", "knumber": "K98765432", "username": "u-player", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:57:46.922871+00', '2025-07-24 12:18:41.190012+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', 'e0850e1b-5df4-4f08-a2f2-23d9739658eb', 'authenticated', 'authenticated', 'testing@a.com', '$2a$10$G72pUKUT67J6Cqgl/4IFneWTtg/9aJELChsOPSbxqZ2Vu/jjvgzEi', '2025-07-19 16:10:36.982922+00', '2025-07-19 16:10:22.921425+00', '', NULL, '', NULL, '', '', NULL, '2025-07-25 12:05:54.891802+00', '{"provider": "email", "providers": ["email"]}', '{"name": "testing", "email": "testing@a.com", "siteUrl": "http://localhost:3000", "username": "testing", "requestId": "40b46aed-c05e-4a73-ac58-41d1de613d0b", "email_verified": true}', NULL, '2025-07-19 16:10:22.917865+00', '2025-07-25 12:05:54.892808+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '261d7c3d-2110-4817-9cf4-216d9f91c11c', 'authenticated', 'authenticated', 'dm@kcl.ac.uk', '$2a$10$SK.O5Y6x1CdWTHz7jm25xuBpyrcSviepZvcjc2/4z000460/6el.m', '2025-06-14 18:56:31.80452+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-25 12:32:05.159951+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "261d7c3d-2110-4817-9cf4-216d9f91c11c", "name": "DM", "email": "dm@kcl.ac.uk", "knumber": "K87654321", "username": "u-dm", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:56:31.80221+00', '2025-07-25 12:32:05.160566+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
+	('00000000-0000-0000-0000-000000000000', '04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc', 'authenticated', 'authenticated', 'admin@kcl.ac.uk', '$2a$10$OWTk1knl5PmUzSBYPa3L4.7Cd7cwZEEDSwbyaaWqAkjf5iqlQmkVy', '2025-06-14 18:48:31.935074+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-07-25 12:33:16.185393+00', '{"provider": "email", "providers": ["email"]}', '{"sub": "04ce3b92-dcb1-45e6-b8c0-568e8d3c95cc", "name": "Admin", "email": "admin@kcl.ac.uk", "knumber": "K12345678", "username": "u-admin", "email_verified": true, "phone_verified": false}', NULL, '2025-06-14 18:48:31.931167+00', '2025-07-25 12:33:16.186396+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
 
 --
@@ -67,11 +66,9 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 --
 
 
-
 --
 -- Data for Name: mfa_amr_claims; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
-
 
 
 --
@@ -95,7 +92,6 @@ INSERT INTO "auth"."identities" ("provider_id", "user_id", "identity_data", "pro
 --
 -- Data for Name: refresh_tokens; Type: TABLE DATA; Schema: auth; Owner: supabase_auth_admin
 --
-
 
 
 --
@@ -340,7 +336,8 @@ INSERT INTO "public"."characters" ("id", "player_uuid", "name", "level", "shorte
 	('6d38cbea-8f5e-47c5-8381-4e1172717804', '8f42867b-912f-4833-839b-d237470f9983', 'Giant Lizard', 1, 'giant', 'Testing...', NULL),
 	('4a20df58-e808-4646-96f7-b89978db36b5', '6b9acd55-90d6-4699-b544-cce825a62e50', 'Pluviam', 2, 'pluviam', 'I am an amazing half orc. I help everyone in need.', NULL),
 	('923e4548-143e-4285-bb3d-b298231919bd', '8f42867b-912f-4833-839b-d237470f9983', 'Ulry Flutemane', 20, 'ulry', 'Ulry Flutemane, a veteran of the Silver Legion, wields his ancestral greatsword and Lionheart Stance to sway the tide of any battle. Clad in gleaming plate and crowned with golden hair, he roams the realm to defend the helpless and test his steel against worthy foes.', 'd4b45746-f0c8-462d-b53a-7404862b6034'),
-	('c81fa02c-c726-49ae-9d47-6582db4e2e0f', '8f42867b-912f-4833-839b-d237470f9983', 'Lizzie', 20, 'lizzie', 'WOO it works. EZ', 'd4b45746-f0c8-462d-b53a-7404862b6034');
+	('c81fa02c-c726-49ae-9d47-6582db4e2e0f', '8f42867b-912f-4833-839b-d237470f9983', 'Lizzie', 20, 'lizzie', 'WOO it works. EZ', 'd4b45746-f0c8-462d-b53a-7404862b6034'),
+  	('fd4cd1d1-65d2-46df-ac81-76ee878ed87d', '98908cdb-16f9-49fc-95f9-d7a4ae788c66', 'Mouse Jr.', 1, 'mouse-jr', '', NULL);
 
 
 --
@@ -385,7 +382,6 @@ INSERT INTO "public"."achievement_requests_player" ("achievement_id", "created_a
 	('fda15fd7-40f7-4209-b595-c6de52648679', '2025-08-18 10:47:54.981783+00', '8f42867b-912f-4833-839b-d237470f9983', NULL, 'pending'),
 	('4066383a-6ea9-45a7-ac10-b862c7780cb0', '2025-08-18 10:48:01.47821+00', '8f42867b-912f-4833-839b-d237470f9983', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'approved'),
 	('44f0ed7b-3f34-47e5-9ede-6451cb899af9', '2025-08-18 10:47:51.677323+00', '8f42867b-912f-4833-839b-d237470f9983', '3ecfdcfd-2aa0-4c44-b89b-e2f505cfe733', 'denied');
-
 
 --
 -- Data for Name: associates_requests; Type: TABLE DATA; Schema: public; Owner: postgres

@@ -1,0 +1,446 @@
+[
+  {
+    "name": "Felix Ho",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "felix1103ho@gmail.com"
+  },
+  {
+    "name": "Emma Flanagan",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "emmaflanagan12@yahoo.com"
+  },
+  {
+    "name": "Victor Raga",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "victor.raga@kcl.ac.uk"
+  },
+  {
+    "name": "Nirvaan Parambat",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "nirvaan.parambat@outlook.com"
+  },
+  {
+    "name": "Jessica Taylor",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "jestaylor006@outlook.com"
+  },
+  {
+    "name": "Sofia Davis",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "24031101@kcl.ac.uk"
+  },
+  {
+    "name": "Mahzabin Haque",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "Mahzabin.haque@kcl.ac.uk"
+  },
+  {
+    "name": "Benedict Moorhead",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "benedict.moorhead@kcl.ac.uk"
+  },
+  {
+    "name": "Kate Geron",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k.f.geron@gmail.com"
+  },
+  {
+    "name": "Juliet Filkin",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "juliet.filkin@gmail.com"
+  },
+  {
+    "name": "Ewan Dewar",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "evandevar@gmail.com"
+  },
+  {
+    "name": "Beatrix Addams",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "K23170734@kcl.ac.uk"
+  },
+  {
+    "name": "Annika Pangilinan",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "annika.pangilinan23@gmail.com"
+  },
+  {
+    "name": "Ellis Pollard",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "ellis.pollard23@gmail.com"
+  },
+  {
+    "name": "Kseniia",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k23115333@kcl.ac.uk"
+  },
+  {
+    "name": "Sophia Massouras",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "sophia.massouras@kcl.ac.uk"
+  },
+  {
+    "name": "Ezgi Agir",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "ezgiagir.08@gmail.com"
+  },
+  {
+    "name": "Kitt Maggs",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "caitlyn.maggs@live.co.uk"
+  },
+  {
+    "name": "Felix Lucchini",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "felix_lucchini@icloud.com"
+  },
+  {
+    "name": "Mengying Ren",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "mengren531@gmail.com"
+  },
+  {
+    "name": "Annie Murphy",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25138384@kcl.ac.uk"
+  },
+  {
+    "name": "Aedalene Pupec",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "aedalene.pupec@kcl.ac.uk"
+  },
+  {
+    "name": "Rebecca Elizabeth Yrausquin",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "rebeccayrausquin@gmail.com"
+  },
+  {
+    "name": "Hagen Hermjakob",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "hagenhermjakob@gmail.com"
+  },
+  {
+    "name": "Siham Mahamud",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "siham.mahamud@kcl.ac.uk"
+  },
+  {
+    "name": "Nathan Jabialu",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "nathan.jabialu@kcl.ac.uk"
+  },
+  {
+    "name": "Luis Arija",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25119008@kcl.ac.uk"
+  },
+  {
+    "name": "Baray Efe Rafioglu",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "baray.efe.r@gmail.com"
+  },
+  {
+    "name": "Roque De Monte Furtado",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "K22001852@kcl.ac.uk"
+  },
+  {
+    "name": "Aryan Hunjan",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "Aryan.hunjan@kcl.ac.uk"
+  },
+  {
+    "name": "Annabel Long",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "annabellong99@gmail.com"
+  },
+  {
+    "name": "Henry Brown",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "henry.2.brown@kcl.ac.uk"
+  },
+  {
+    "name": "Akshata Devkar",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "alwxalqx@gmail.com"
+  },
+  {
+    "name": "Matthew Balogun",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "Matthewobalogun@gmail.com"
+  },
+  {
+    "name": "Luis Arija",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "luis.arija.gonzalez@gmail.com"
+  },
+  {
+    "name": "Kavin Govindaraj",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "kaving16@outlook.com"
+  },
+  {
+    "name": "Valerija Rimkute",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "vrimkute29@mail.ru"
+  },
+  {
+    "name": "Karla-Maria Hrom",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "karla24082007@gmail.com"
+  },
+  {
+    "name": "Wei-Chun Yen",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "Weichung.yen@gmail.com"
+  },
+  {
+    "name": "Marcin Kucharski",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "marcin1252005@gmail.com"
+  },
+  {
+    "name": "Archie Macpherson",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "K24027783@kcl.ac.uk"
+  },
+  {
+    "name": "Iman Khan",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "k21010842@kcl.ac.uk"
+  },
+  {
+    "name": "Luka Xue",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "qinxin.xue@kcl.ac.uk"
+  },
+  {
+    "name": "Ian Tayupe-Acosta",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "iantayupeacosta@gmail.com"
+  },
+  {
+    "name": "Keely Lovell",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "777keely@gmail.com"
+  },
+  {
+    "name": "Yersin (Russ) Ordabay",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25157369@kcl.ac.uk"
+  },
+  {
+    "name": "Zu Toltyzewska",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "zuzanna.toltyzewska@kcl.ac.uk"
+  },
+  {
+    "name": "Diana-Gabriela Chitimia",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "didi.g.chitimia@gmail.com"
+  },
+  {
+    "name": "Wren Xiao",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25005609@kcl.ac.uk"
+  },
+  {
+    "name": "David Mckoy",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25095393@kcl.ac.uk"
+  },
+  {
+    "name": "Rebecca Elizabeth Yrausquin",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "rebeccayrausquin@gmail.com"
+  },
+  {
+    "name": "Kalani Tam",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "kalani.tam.24@ucl.ac.uk"
+  },
+  {
+    "name": "Qing Hu Joanna Lui (Joanna)",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "joannalui20@gmail.com"
+  },
+  {
+    "name": "Zoe Escalante",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "K25050954@kcl.ac.uk"
+  },
+  {
+    "name": "Heather Gent",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "heather.gent@kcl.ac.uk"
+  },
+  {
+    "name": "Emilie Siriwattaprayoon",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "emilie.sprayoon@gmail.com"
+  },
+  {
+    "name": "Ruth Laceby-Common",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "K25137491@kcl.ac.uk"
+  },
+  {
+    "name": "Aldo Ngan",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "aldongan@gmail.com"
+  },
+  {
+    "name": "Martin Berthoud",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 1,
+    "email": "mberthoud2@gmail.com"
+  },
+  {
+    "name": "Matthew Horvitz",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "Matthew.horvitz@kcl.ac.uk"
+  },
+  {
+    "name": "Francisco",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "coronel.francisco.97@gmail.com"
+  },
+  {
+    "name": "Darja (Dasha)  Zucok",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "dashazucok@gmail.com"
+  },
+  {
+    "name": "Rushika Madala",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "rushika.madala@kcl.ac.uk"
+  },
+  {
+    "name": "Grace Rumis",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "Gracerumis004@gmail.com"
+  },
+  {
+    "name": "Cecily Taylor",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25000399@kcl.ac.uk"
+  },
+  {
+    "name": "Kaitlan Harrison",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "kaitlan.harrison@gmail.com"
+  },
+  {
+    "name": "Tabitha Prendergast-Coates",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "Tabitha.prendergast-coates@kcl.ac.uk"
+  },
+  {
+    "name": "Baturalp",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "baturalpkaratas06@gmail.com"
+  },
+  {
+    "name": "Louisa Whyte",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "louisa.c.whyte@gmail.com"
+  },
+  {
+    "name": "Chloe Foster",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "achloejfoster@gmail.com"
+  },
+  {
+    "name": "Francis Hallewell-Pearson",
+    "session": "Saturday 27th of September, 2:15PM to 4PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "lhallewellpearson@outlook.com"
+  },
+  {
+    "name": "Sharon Osamor",
+    "session": "Monday 29th of September, 6PM to 8PM at Macadam Building, Strand Campus. Limited to 60 spots.",
+    "choice": 2,
+    "email": "sharonosamor27@gmail.com"
+  },
+  {
+    "name": "Matteo Garbolino Riva",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "sgt.m.garbolino@gmail.com"
+  },
+  {
+    "name": "Charlie Sinclair",
+    "session": "Saturday 27th of September, 4:15PM to 6PM at Arcanist's Tavern (87-91 Hackney Road, E2 8FE). Limited to 35 spots.",
+    "choice": 1,
+    "email": "k25006649@kcl.ac.uk"
+  }
+]
