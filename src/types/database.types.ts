@@ -298,6 +298,130 @@ export type Database = {
           },
         ]
       }
+      auction_decisions: {
+        Row: {
+          auction_id: string
+          dm_id: string
+        }
+        Insert: {
+          auction_id: string
+          dm_id: string
+        }
+        Update: {
+          auction_id?: string
+          dm_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_decisions_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_decisions_dm_id_fkey"
+            columns: ["dm_id"]
+            isOneToOne: false
+            referencedRelation: "dms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auction_offers: {
+        Row: {
+          amount: number
+          auction_id: string
+          created_at: string
+          id: string
+          next: string | null
+          status: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id: string
+        }
+        Insert: {
+          amount: number
+          auction_id: string
+          created_at?: string
+          id?: string
+          next?: string | null
+          status: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id: string
+        }
+        Update: {
+          amount?: number
+          auction_id?: string
+          created_at?: string
+          id?: string
+          next?: string | null
+          status?: Database["public"]["Enums"]["auction_offer_status"]
+          thingy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_offers_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_offers_next_fkey"
+            columns: ["next"]
+            isOneToOne: true
+            referencedRelation: "auction_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_offers_thingy_id_fkey"
+            columns: ["thingy_id"]
+            isOneToOne: false
+            referencedRelation: "thingy"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      auctions: {
+        Row: {
+          created_at: string
+          id: string
+          next: string | null
+          seller_amount: number
+          seller_thingy_id: string
+          status: Database["public"]["Enums"]["auction_status"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          next?: string | null
+          seller_amount: number
+          seller_thingy_id: string
+          status: Database["public"]["Enums"]["auction_status"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          next?: string | null
+          seller_amount?: number
+          seller_thingy_id?: string
+          status?: Database["public"]["Enums"]["auction_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_next_fkey"
+            columns: ["next"]
+            isOneToOne: true
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_seller_thingy_id_fkey"
+            columns: ["seller_thingy_id"]
+            isOneToOne: false
+            referencedRelation: "thingy"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           description: string
@@ -967,6 +1091,57 @@ export type Database = {
           },
         ]
       }
+      thingy: {
+        Row: {
+          character_id: string | null
+          created_at: string
+          description: string
+          id: string
+          name: string
+          next: string | null
+          public: boolean
+          shortened: string
+          tags: Database["public"]["Enums"]["thingy_type"][]
+        }
+        Insert: {
+          character_id?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          name: string
+          next?: string | null
+          public: boolean
+          shortened: string
+          tags: Database["public"]["Enums"]["thingy_type"][]
+        }
+        Update: {
+          character_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          next?: string | null
+          public?: boolean
+          shortened?: string
+          tags?: Database["public"]["Enums"]["thingy_type"][]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thingy_character_id_fkey"
+            columns: ["character_id"]
+            isOneToOne: false
+            referencedRelation: "characters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "thingy_next_fkey"
+            columns: ["next"]
+            isOneToOne: true
+            referencedRelation: "thingy"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           auth_user_uuid: string
@@ -1158,9 +1333,70 @@ export type Database = {
     }
     Enums: {
       achievement_type: "dm" | "player" | "character"
+      auction_offer_status:
+        | "pending"
+        | "rejected"
+        | "accepted"
+        | "withdrawn"
+        | "rescinded"
+        | "amended"
+      auction_status:
+        | "created"
+        | "listing_approved"
+        | "listing_rejected"
+        | "offer_accepted"
+        | "trade_approved"
+        | "trade_rejected"
+        | "amended"
+        | "withdrawn"
       difficulty: "easy" | "medium" | "hard" | "impossible"
       request_status: "approved" | "denied" | "pending"
       role: "admin" | "dm" | "player"
+      thingy_type:
+        | "Adventuring Gear"
+        | "Ammunition"
+        | "Artisan’s Tools"
+        | "Explosive"
+        | "Firearm"
+        | "Food and Drink"
+        | "Futuristic"
+        | "Gaming Set"
+        | "Generic Variant"
+        | "Heavy Armor"
+        | "Illegal Drug"
+        | "Instrument"
+        | "Light Armor"
+        | "Martial Weapon"
+        | "Medium Armor"
+        | "Melee Weapon"
+        | "Modern"
+        | "Mount"
+        | "Other"
+        | "Poison"
+        | "Potion"
+        | "Ranged Weapon"
+        | "Renaissance"
+        | "Ring"
+        | "Rod"
+        | "Scroll"
+        | "Shield"
+        | "Simple Weapon"
+        | "Spellcasting Focus"
+        | "Staff"
+        | "Tack and Harness"
+        | "Tattoo"
+        | "Tool"
+        | "Trade Bar"
+        | "Trade Good"
+        | "Treasure (Art Object)"
+        | "Treasure (Coinage)"
+        | "Treasure (Gemstone)"
+        | "Vehicle (Air)"
+        | "Vehicle (Land)"
+        | "Vehicle (Space)"
+        | "Vehicle (Water)"
+        | "Wand"
+        | "Wondrous Item"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1292,9 +1528,73 @@ export const Constants = {
   public: {
     Enums: {
       achievement_type: ["dm", "player", "character"],
+      auction_offer_status: [
+        "pending",
+        "rejected",
+        "accepted",
+        "withdrawn",
+        "rescinded",
+        "amended",
+      ],
+      auction_status: [
+        "created",
+        "listing_approved",
+        "listing_rejected",
+        "offer_accepted",
+        "trade_approved",
+        "trade_rejected",
+        "amended",
+        "withdrawn",
+      ],
       difficulty: ["easy", "medium", "hard", "impossible"],
       request_status: ["approved", "denied", "pending"],
       role: ["admin", "dm", "player"],
+      thingy_type: [
+        "Adventuring Gear",
+        "Ammunition",
+        "Artisan’s Tools",
+        "Explosive",
+        "Firearm",
+        "Food and Drink",
+        "Futuristic",
+        "Gaming Set",
+        "Generic Variant",
+        "Heavy Armor",
+        "Illegal Drug",
+        "Instrument",
+        "Light Armor",
+        "Martial Weapon",
+        "Medium Armor",
+        "Melee Weapon",
+        "Modern",
+        "Mount",
+        "Other",
+        "Poison",
+        "Potion",
+        "Ranged Weapon",
+        "Renaissance",
+        "Ring",
+        "Rod",
+        "Scroll",
+        "Shield",
+        "Simple Weapon",
+        "Spellcasting Focus",
+        "Staff",
+        "Tack and Harness",
+        "Tattoo",
+        "Tool",
+        "Trade Bar",
+        "Trade Good",
+        "Treasure (Art Object)",
+        "Treasure (Coinage)",
+        "Treasure (Gemstone)",
+        "Vehicle (Air)",
+        "Vehicle (Land)",
+        "Vehicle (Space)",
+        "Vehicle (Water)",
+        "Wand",
+        "Wondrous Item",
+      ],
     },
   },
 } as const

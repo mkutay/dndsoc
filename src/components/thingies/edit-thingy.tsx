@@ -1,0 +1,301 @@
+"use client";
+
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useState } from "react";
+import { PlusIcon } from "lucide-react";
+
+import { useRouter } from "next/navigation";
+import { Textarea } from "../ui/textarea";
+import { Switch } from "../ui/switch";
+import { Badge } from "../ui/badge";
+import { ScrollArea } from "../ui/scroll-area";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { actionResultToResult } from "@/types/error-typing";
+import { editThingySchema, Thingy } from "@/config/thingy";
+import { editThingy } from "@/server/thingies";
+import type { Enums, Tables } from "@/types/database.types";
+
+export function EditThingy({
+  thingy,
+  auctionStatus,
+}: {
+  thingy: Tables<"thingy">;
+  auctionStatus: Enums<"auction_status"> | undefined;
+}) {
+  const { toast } = useToast();
+  const [pending, setPending] = useState(false);
+  const [comboBoxOpen, setComboBoxOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof editThingySchema>>({
+    resolver: zodResolver(editThingySchema),
+    defaultValues: {
+      name: thingy.name,
+      description: thingy.description,
+      tags: thingy.tags.map((tag) => ({ value: tag })),
+      public: thingy.public,
+      thingyId: thingy.id,
+      characterId: thingy.character_id ?? undefined,
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "tags",
+  });
+
+  const onSubmit = async (values: z.infer<typeof editThingySchema>) => {
+    setPending(true);
+    const result = actionResultToResult(await editThingy(values));
+    setPending(false);
+
+    result.match(
+      ({ shortened }) => {
+        toast({
+          title: "Success",
+          description: "Thingy edited successfully.",
+          variant: "default",
+        });
+        setOpen(false);
+        if (shortened !== thingy.shortened) {
+          router.replace("/thingies/" + shortened);
+        } else {
+          router.refresh();
+        }
+      },
+      (error) =>
+        toast({
+          title: "Error: Could not edit thingy.",
+          description: error.message,
+          variant: "destructive",
+        }),
+    );
+  };
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="outline" type="button" disabled={pending} className="w-fit">
+          Edit Thingy
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="sm:max-w-md p-2 py-6">
+        <ScrollArea className="h-full px-3">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit, (errors) => console.error("Validation errors:", errors))}
+              className="space-y-6 px-1"
+            >
+              <SheetHeader>
+                <SheetTitle>Edit Thingy</SheetTitle>
+              </SheetHeader>
+              <FormField
+                control={form.control}
+                name="name"
+                disabled={pending}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="The amazing staff" {...field} />
+                    </FormControl>
+                    {/* <FormDescription>This is the name of the thingy.</FormDescription> */}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                disabled={pending}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="A powerful staff that can cast fireball." {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Be as descriptive as possible in your description of the item. Include any and all details that
+                      might be relevant.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="public"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between">
+                    <div className="space-y-0.5">
+                      <FormLabel>Is public?</FormLabel>
+                      <FormDescription>
+                        If you make this public, other people can see that you have this thingy.
+                        {auctionStatus ? " It is currently on auction, so it must be public." : null}
+                      </FormDescription>
+                      <FormMessage />
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        disabled={auctionStatus ? true : pending}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`tags`}
+                render={() => (
+                  <FormItem className="space-y-1">
+                    <FormLabel>Thingy Type</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-row flex-wrap gap-1 w-full">
+                        {fields.map((field, index) => (
+                          <FormField
+                            control={form.control}
+                            key={field.id}
+                            name={`tags.${index}`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Button
+                                    type="button"
+                                    variant="nothing"
+                                    size="badge"
+                                    onClick={() => {
+                                      remove(index);
+                                    }}
+                                    disabled={pending}
+                                    asChild
+                                  >
+                                    <Badge
+                                      variant="nothing"
+                                      className="text-sm border-transparent bg-secondary text-secondary-foreground hover:bg-destructive hover:text-destructive-foreground"
+                                    >
+                                      {field.value.value}
+                                    </Badge>
+                                  </Button>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        ))}
+                        <Popover open={comboBoxOpen} onOpenChange={setComboBoxOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                size="badge"
+                                variant="nothing"
+                                className="w-[50px] rounded-full"
+                                asChild
+                                disabled={pending}
+                              >
+                                <Badge>
+                                  <PlusIcon size={18} />
+                                </Badge>
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[200px] p-0">
+                            <Command>
+                              <CommandInput placeholder="Search types..." className="h-9" />
+                              <CommandList>
+                                <CommandEmpty>No types left/found.</CommandEmpty>
+                                <CommandGroup>
+                                  {Thingy.filter((t) => !fields.some((field) => field.value === t)).map((thingy) => (
+                                    <CommandItem
+                                      value={thingy}
+                                      key={thingy}
+                                      onSelect={() => {
+                                        setComboBoxOpen(false);
+                                        append({ value: thingy });
+                                      }}
+                                    >
+                                      {thingy}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      This is the type of the thingy. You can add multiple types to the same thingy. Click on the badge
+                      to remove it.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <SheetFooter>
+                {!auctionStatus || auctionStatus === "created" ? (
+                  <Button type="submit" disabled={pending}>
+                    Submit
+                  </Button>
+                ) : (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button disabled={pending}>Submit</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This thingy is currently on auction and have gone through the
+                          pipeline of the auction process. Editing it now will revert back the progress of the auction
+                          and all offers made to this thingy will be voided. You will also need to get the auction
+                          approved once again.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction type="submit">Continue</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+                <SheetClose asChild>
+                  <Button variant="outline">Close</Button>
+                </SheetClose>
+              </SheetFooter>
+            </form>
+          </Form>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
+  );
+}
